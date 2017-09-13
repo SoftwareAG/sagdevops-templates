@@ -1,0 +1,31 @@
+alias: sag-spm-connect
+description: Connect running SPM nodes 
+
+environments:
+  default:  
+    nodes: ${}                              # REQUIRED: host names to connect to
+    spm.port: 8092                          # Remote SPM HTTP/S port
+    spm.secure: false                       # Use SSL?
+    spm.credentials.key: DEFAULT_ADMINISTRATOR  # Remote SPM connection credentials
+
+layers:
+  infra:
+    templates: 
+      - spm
+
+templates:
+  spm: 
+    products:
+      SPM:
+        OSGI-SPM: # REQUIRED for registering OSGI-SPM as infrastructure layer instance
+
+provision:
+  default:
+    infra: ${nodes}
+
+nodes:
+  default:
+    default:
+      port: ${spm.port}                   # port to connect to
+      secure: ${spm.secure}               # HTTP/S port
+      credentials: ${spm.credentials.key} # connection credentials

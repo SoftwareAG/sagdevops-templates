@@ -1,0 +1,36 @@
+alias: sag-spm-local
+description: Local installation on Command Central host
+
+environments:
+  default:  
+    cc.installer: ${}    # REQUIRED: command central bootstrap installer
+    spm.port: 8192       # UNIQUE new node HTTP port, must be free
+    node: dev${spm.port} # UNIQUE new node alias
+    install.dir: ${}     # REQUIRED: UNIQUE installation dir, e.g. /home/user/dev${spm.port}
+
+layers:
+  infra:
+    templates: 
+      - spm
+
+templates:
+  spm: 
+    products:
+      SPM:
+        OSGI-SPM: # REQUIRED for registering OSGI-SPM as infrastructure layer instance
+
+provision:
+  default:
+    infra: ${node}
+
+nodes:
+  default:
+    ${node}:
+      host: localhost      # always on the same host where CCE is running
+      port: ${spm.port}    # this is HTTP SPM port
+      secure: false        # Use HTTP port for development
+      credentials: DEFAULT_ADMINISTRATOR # SPM credentials to set
+      bootstrapInfo:
+        installer: ${cc.installer} # CC bootstrap installer file name
+        installDir: ${install.dir} # local installation directory
+        version: "${release}"      # for backward compatibity when cc.installer is not available

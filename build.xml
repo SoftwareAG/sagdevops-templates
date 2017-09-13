@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<project xmlns="antlib:org.apache.tools.ant" basedir="." default="up" >
+	<import file="antcc/main.xml" />
+
+	<target name="up" depends="templates">
+		<antcall target="apply">
+			<param name="t" value="templates/sag-layer-defs" />
+		</antcall>
+		<cc command="list configuration instances nodeAlias=local runtimeComponentId=OSGI-CCE-ENGINE configurationTypeId=CCE-LAYER-TYPES refresh=true" format="tsv" />
+	</target>
+</project>

@@ -1,0 +1,53 @@
+alias: sag-um-server
+description: Universal Messaging realm server
+
+environments:
+  default:
+    um.license.key:      ${}                # REQUIRED: UM license key
+    um.instance.name:    default            # realm server instance name
+    um.instance.port:    9000               # primary port
+    um.jmx.port:         9988               # jmx port
+    um.memory.init:      512                # memory configuration
+    um.memory.max:       512                # memory configuration
+    um.memory.direct:    1G                 # memory configuration
+    um.fixes:            []
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - um-server
+
+templates:
+  um-server:
+    licenses:
+      "UniversalMessaging/server/templates/licence.xml": ${um.license.key}
+    fixes: ${um.fixes}
+    products:
+      NUMRealmServer:
+        ${um.instance.name}:                                       # instance name is different from realm
+          instance.port: ${um.instance.port}                       # instance port
+          instance.ip:   ${node.host}                              # bind to node's host name
+          runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${instance.name}: 
+              COMMON-MEMORY: 
+                COMMON-MEMORY:                                     
+                  InitSize: ${um.memory.init}
+                  MaxSize:  ${um.memory.max}
+                  ExtendedProperties:                              
+                    Property: 
+                      - 
+                       "@name": "-XX:MaxDirectMemorySize"
+                       $: ${um.memory.direct}
+              COMMON-JAVASYSPROPS: 
+                COMMON-JAVASYSPROPS: | 
+                   REALM=${node.host}                             # IMPORTANT: this can only be set before first startup
+                   com.sun.management.jmxremote.port=${um.jmx.port}
+                   com.sun.management.jmxremote.authenticate=false
+                   com.sun.management.jmxremote.ssl=false
+            
+provision:
+  default:
+    runtime: ${nodes}
