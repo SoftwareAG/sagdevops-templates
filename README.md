@@ -1,6 +1,7 @@
 # Command Central 10.x templates
 
-This project provides basic templates for Command Central 10.1 Stacks feature.
+This project provides basic templates and layer definitions for
+Command Central 10.1 Stacks.
 
 ## Quick start with Docker
 
@@ -10,10 +11,12 @@ import the templates:
 ```bash
 git clone --recursive https://github.com/SoftwareAG/sagdevops-templates.git
 cd sagdevops-templates
+
 docker-compose up -d
 ```
 
 Open [Command Central Stacks UI](https://localhost:8091/cce/web/?entry=stacks#stacks:) and click + icon to create your first stack.
+
 IMPORTANT: if you use Docker Toolbox replace localhost with your Docker VM IP.
 
 ## Adding and recycling nodes
@@ -39,12 +42,12 @@ docker-compose down
 
 ## I don't have Docker
 
-Please see [Command Central server](https://github.com/SoftwareAG/sagdevops-cc-server) project for details.
+Please see [Command Central setup project](https://github.com/SoftwareAG/sagdevops-cc-server) for details.
 
 To build and import templates run:
 
 ```bash
-sagantcc up
+sagccant up
 ```
 
 ______________________
