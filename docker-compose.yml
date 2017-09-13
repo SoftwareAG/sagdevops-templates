@@ -1,0 +1,39 @@
+version: "3.0"
+
+services:
+  cc:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral
+    hostname: cc
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+    volumes:
+      - ./build/data/cce:/opt/softwareag/profiles/CCE/data/
+      - ./build/data/repos:/opt/softwareag/profiles/SPM/configuration/provisioning/
+      - ./build/logs/cce:/opt/softwareag/profiles/CCE/logs/
+      - ./build/logs/spm:/opt/softwareag/profiles/SPM/logs/      
+    environment:
+      - CC_PASSWORD
+      - ACCEPT_EULA=Y
+
+  node:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/builder
+    environment:
+      - CC_SERVER=cc
+      - CC_PASSWORD
+    # volumes:
+    #   - ./build/logs/node:/opt/softwareag/profiles/SPM/logs/
+    links:
+      - cc
+
+  cli:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/cli
+    environment:
+      - CC_SERVER=cc
+      - CC_PASSWORD
+    links:
+      - cc
+    volumes:
+      - ./:/src
+      - ./clients/docker/cc.properties:/root/.sag/cc.properties
+    command: sagccant up -Dcc=docker

@@ -8,10 +8,10 @@ environments:
     is.primary.port:    5555                # Primary port number
     is.diagnostic.port: 9999                # Dialgnostic port number
     is.jmx.port:        8094                # JMX port number
-    is.memory.init:     256                 # Initial memory size
-    is.memory.max:      512                 # Maximum memory size
+    is.memory.init:     128                 # Initial memory size
+    is.memory.max:      256                 # Maximum memory size
     is.install.service: false
-    is.fixes:                               # Default list of IS fixes
+    is.fixes: []                            # Default list of IS fixes
       # - wMFix.integrationServer.Core
       # - wMFix.integrationServer.SPM
       # - wMFix.PLSIS
@@ -31,6 +31,7 @@ templates:
       "IntegrationServer/config/licenseKey.xml": ${is.license.key} 
     fixes: ${is.fixes}
     products:
+      PLS_IS:
       integrationServer:
         ${is.instance.name}: 
           primary.port:    ${is.primary.port}
@@ -38,6 +39,7 @@ templates:
           jmx.port:        ${is.jmx.port}
           license.file:    IntegrationServer/config/licenseKey.xml
           install.service: ${is.install.service}
+          package.list: WmAppPlat # deploy the new package
           configuration:
             OSGI-IS_${instance.name}:
               COMMON-MEMORY:
