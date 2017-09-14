@@ -37,3 +37,11 @@ services:
       - ./:/src
       - ./clients/docker/cc.properties:/root/.sag/cc.properties
     command: sagccant up -Dcc=docker
+
+  oracle:
+    image: wnameless/oracle-xe-11g:16.04
+    ports: 
+      - "49160:22"
+      - "49161:1521"
+    environment: 
+      - ORACLE_ALLOW_REMOTE=true
