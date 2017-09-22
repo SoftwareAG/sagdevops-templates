@@ -4,10 +4,10 @@ description: Integration Server with Application Platform
 environments:
   default:
     is.license.key:     ${}                 # REQUIRED: IS license key
-    is.instance.name:   default             # Instance name
+    is.instance.name:   applatform          # Instance name
     is.primary.port:    5555                # Primary port number
     is.diagnostic.port: 9999                # Dialgnostic port number
-    is.jmx.port:        8094                # JMX port number
+    is.jmx.port:        8095                # JMX port number
     is.memory.init:     128                 # Initial memory size
     is.memory.max:      256                 # Maximum memory size
     is.install.service: false
@@ -16,14 +16,14 @@ environments:
       # - wMFix.integrationServer.SPM
       # - wMFix.PLSIS
       # - wMFix.SPMspm
+    # app.http.port:      8072                # Applatform http port
+    # app.https.port:     8074                # Applatform https port
 
 layers:
   runtime:
     productRepo: ${repo.product}
     fixRepo:     ${repo.fix}
-    templates:
-      - is-server        # first create IS instance profile
-      - app-platform-is  # then provision app platform into it
+    templates:   is-server
 
 templates:
   is-server:
@@ -39,21 +39,85 @@ templates:
           jmx.port:        ${is.jmx.port}
           license.file:    IntegrationServer/config/licenseKey.xml
           install.service: ${is.install.service}
-          package.list: WmAppPlat # deploy the new package
+          package.list:    WmAppPlat # deploy the new package
           configuration:
             OSGI-IS_${instance.name}:
               COMMON-MEMORY:
                 COMMON-MEMORY:
                   InitSize: ${is.memory.init}
                   MaxSize:  ${is.memory.max}
-  app-platform-is:
-    fixes: ${app.fixes}
-    products:
-      PLS_IS:
-      integrationServer:
-        ${is.instance.name}:      # existing IS instance
-          package.list: WmAppPlat # deploy the new package
-            
+              # COMMON-PORTS:
+              #   COMMON-PORTS-defaultHttp:
+              #     Port:
+              #       '@alias': defaultHttp
+              #       Enabled: 'true'
+              #       Type: STANDARD
+              #       Number: ${app.http.port}
+              #       Protocol: http
+              #       ThreadPool:
+              #         '@enabled': 'false'
+              #         Max: '150'
+              #       ExtendedProperties:
+              #         Property:
+              #         - '@name': disableUploadTimeout
+              #           $: 'true'
+              #         - '@name': minSpareThreads
+              #           $: '25'
+              #         - '@name': redirectPort
+              #           $: ${app.https.port}
+              #         - '@name': server
+              #           $: SoftwareAG-Runtime
+              #         - '@name': maxSpareThreads
+              #           $: '75'
+              #         - '@name': enableLookups
+              #           $: 'false'
+              #         - '@name': acceptCount
+              #           $: '100'
+              #         - '@name': connectionTimeout
+              #           $: '20000'
+              #         - '@name': description
+              #           $: Default HTTP Connector
+              #         - '@name': maxHttpHeaderSize
+              #           $: '8192'
+              #   COMMON-PORTS-defaultHttps:
+              #     Port:
+              #       '@alias': defaultHttps
+              #       Enabled: 'true'
+              #       Type: STANDARD
+              #       Number: ${app.https.port}
+              #       Protocol: https
+              #       ThreadPool:
+              #         '@enabled': 'false'
+              #         Max: '150'
+              #       SSL:
+              #         ClientAuth: NONE
+              #         KeystoreDefinition:
+              #           Type: JKS
+              #           Location: /opt/softwareag/profiles/IS_app/configuration/tomcat/conf/localhost_dont_use_in_production.jks
+              #           Password: '{AES/CBC/PKCS5Padding}{rYYvdQhs1FmbG34Bze5ygdPGRdyx1mkPrUkD9z92+dc=}{ulL0NpXEZ0EEeatCjIH9yg==}RLt0CbYrvdMc93EZwKFf38yjncsHMs0qmU5gZpn2if4='
+              #       ExtendedProperties:
+              #         Property:
+              #         - '@name': sslProtocol
+              #           $: TLS
+              #         - '@name': enableLookups
+              #           $: 'false'
+              #         - '@name': maxSpareThreads
+              #           $: '75'
+              #         - '@name': server
+              #           $: SoftwareAG-Runtime
+              #         - '@name': disableUploadTimeout
+              #           $: 'true'
+              #         - '@name': description
+              #           $: Default HTTPS Connector
+              #         - '@name': algorithm
+              #           $: SunX509
+              #         - '@name': minSpareThreads
+              #           $: '25'
+              #         - '@name': acceptCount
+              #           $: '100'
+              #         - '@name': maxHttpHeaderSize
+              #           $: '8192'
+                                                
 provision:
   default:
     runtime: ${nodes}

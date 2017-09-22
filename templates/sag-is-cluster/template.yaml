@@ -10,7 +10,7 @@ environments:
     is.jmx.port:        8094                # JMX port number
     is.memory.init:     128                 # Initial memory size
     is.memory.max:      256                 # Maximum memory size
-    is.install.service: true
+    is.install.service: false
     is.fixes: []                            # Default list of fixes to install
       # - wMFix.integrationServer.Core
       # - wMFix.integrationServer.SPM

@@ -5,11 +5,11 @@ environments:
   default:
     is.license.key:     ${}                 # REQUIRED: MSC license key
     is.instance.name:   msc                 # Instance name
-    is.primary.port:    6666                # Primary port number
-    is.diagnostic.port: 6667                # Dialgnostic port number
-    is.jmx.port:        6668                # JMX port number
-    is.memory.init:     128                 # Initial memory size
-    is.memory.max:      256                 # Maximum memory size
+    is.primary.port:    5555                # Primary port number
+    is.diagnostic.port: 9999                # Dialgnostic port number
+    is.jmx.port:        8094                # JMX port number
+    is.memory.init:     64                  # Initial memory size
+    is.memory.max:      128                 # Maximum memory size
     is.install.service: false
     is.fixes: []                            # Default list of fixes to install
       # - wMFix.integrationServer.Core

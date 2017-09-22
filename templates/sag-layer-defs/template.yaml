@@ -79,14 +79,14 @@ templates:
                       Template:
                         "@alias": sag-is-server                
                          
-                # CCE-LAYER-TYPES-IS-APPLATFORM:
-                #   "@name": IS-APPLATFORM
-                #   Description: Create Integration Server instance with Application Platform
-                #   Type: RUNTIME
-                #   Scalable: 'true'
-                #   Templates:
-                #       Template:
-                #         "@alias": sag-is-applatform                    
+                CCE-LAYER-TYPES-IS-APPLATFORM:
+                  "@name": IS-APPLATFORM
+                  Description: Create Integration Server instance with Application Platform
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-is-applatform                    
 
                 # CCE-LAYER-TYPES-IS-CLUSTER:
                 #   "@name": IS-CLUSTER

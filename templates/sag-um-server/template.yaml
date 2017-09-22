@@ -7,8 +7,8 @@ environments:
     um.instance.name:    default            # realm server instance name
     um.instance.port:    9000               # primary port
     um.jmx.port:         9988               # jmx port
-    um.memory.init:      512                # memory configuration
-    um.memory.max:       512                # memory configuration
+    um.memory.init:      64                 # memory configuration
+    um.memory.max:       128                # memory configuration
     um.memory.direct:    1G                 # memory configuration
     um.fixes:            []
 
