@@ -8,5 +8,6 @@
 		</antcall>
 		<cc command="list inventory components local refresh=true" format="tsv" />
 		<cc command="list configuration instances nodeAlias=local runtimeComponentId=OSGI-CCE-ENGINE configurationTypeId=CCE-LAYER-TYPES refresh=true" format="tsv" />
+		<cc command="add landscape nodes alias=test1 url=https://test1:8093" format="tsv" />
 	</target>
 </project>
