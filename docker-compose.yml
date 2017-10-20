@@ -2,35 +2,20 @@ version: "3.0"
 
 services:
   cc:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral
-    hostname: cc
+    image: store/softwareag/commandcentral:10.1.0.1-server
     ports:
       - "8090:8090"
       - "8091:8091"
-    volumes:
-      - ./build/data/cce:/opt/softwareag/profiles/CCE/data/
-      - ./build/data/repos:/opt/softwareag/profiles/SPM/configuration/provisioning/
-      - ./build/logs/cce:/opt/softwareag/profiles/CCE/logs/
-      - ./build/logs/spm:/opt/softwareag/profiles/SPM/logs/      
-    environment:
-      - CC_PASSWORD
-      - ACCEPT_EULA=Y
 
   node:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/builder
-    environment:
-      - CC_SERVER=cc
-      - CC_PASSWORD
-    # volumes:
-    #   - ./build/logs/node:/opt/softwareag/profiles/SPM/logs/
+    image: store/softwareag/commandcentral:10.1.0.1-node
     links:
       - cc
 
   cli:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/cli
+    image: store/softwareag/commandcentral:10.1.0.1-server
     environment:
       - CC_SERVER=cc
-      - CC_PASSWORD
     links:
       - cc
     volumes:
