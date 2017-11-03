@@ -7,18 +7,18 @@ environments:
     um.instance.name:    default            # instance name
     um.instance.port:    9000               # primary port
     um.jmx.port:         9988               # jmx port
-    um.memory.init:      512                # memory configuration
-    um.memory.max:       512                # memory configuration
+    um.memory.init:      64                 # memory configuration
+    um.memory.max:       128                # memory configuration
     um.memory.direct:    1G                 # memory configuration
     um.fixes:            []
     um.cluster:          cluster
     
-    # Enhance me - auto-resolve from ${nodes}
-    nodes.count:         2                  # how many nodes cluster: 2,3,4 ?
-    nodes[0]:            ${}                # REQUIRED: node1
-    nodes[1]:            ${}                # REQUIRED: node2
-    nodes[2]:                               # only for 3 node cluster
-    nodes[3]:                               # only for 4 node cluster
+    # FEATURE: auto-resolve from selected ${nodes}
+    # cluster.size:        2                # how many nodes cluster: 2,3,4?
+    nodes[0]:            ${}                # REQUIRED: nodes[0].alias
+    hosts[0]:            ${}                # REQUIRED: nodes[0].host
+    nodes[1]:            ${}                # REQUIRED: nodes[1].alias
+    hosts[1]:            ${}                # REQUIRED: nodes[1].host
 
 layers: # tasks
   runtime:
@@ -28,7 +28,7 @@ layers: # tasks
       - um-server
   cluster:
     templates:
-      - um-cluster-${nodes.count}
+      - um-cluster-2 # ${cluster.size}
 
 templates:
   um-server:
@@ -40,6 +40,7 @@ templates:
         ${um.instance.name}:                                       # instance name is different from realm
           instance.port: ${um.instance.port}                       # instance port
           instance.ip:   ${node.host}                              # bind to node's host name
+          node.alias:    ${node.alias}
           runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
           configuration:
             Universal-Messaging-${instance.name}: 
@@ -54,7 +55,7 @@ templates:
                        $: ${um.memory.direct}
               COMMON-JAVASYSPROPS: 
                 COMMON-JAVASYSPROPS: | 
-                   REALM=${node.host}                             # IMPORTANT: this can only be set before first startup
+                   REALM=${node.alias}                             # IMPORTANT: this can only be set before first startup
                    com.sun.management.jmxremote.port=${um.jmx.port}
                    com.sun.management.jmxremote.authenticate=false
                    com.sun.management.jmxremote.ssl=false
@@ -75,10 +76,10 @@ templates:
                     Server:
                       - 
                         "@name": ${nodes[0]}
-                        URL: "nsp://${nodes[0]}:${um.instance.port}"
+                        URL: "nsp://${hosts[0]}:${um.instance.port}"
                       - 
                         "@name": ${nodes[1]}
-                        URL: "nsp://${nodes[1]}:${um.instance.port}"
+                        URL: "nsp://${hosts[1]}:${um.instance.port}"
 
   um-cluster-3:
     description: Cluster configuration for 3 node cluster
@@ -95,13 +96,13 @@ templates:
                     Server:
                       - 
                         "@name": ${nodes[0]}
-                        URL: "nsp://${nodes[0]}:${um.instance.port}"
+                        URL: "nsp://${hosts[0]}:${um.instance.port}"
                       - 
                         "@name": ${nodes[1]}
-                        URL: "nsp://${nodes[1]}:${um.instance.port}"
+                        URL: "nsp://${hosts[1]}:${um.instance.port}"
                       - 
                         "@name": ${nodes[2]}
-                        URL: "nsp://${nodes[2]}:${um.instance.port}"
+                        URL: "nsp://${hosts[2]}:${um.instance.port}"
 
 
   um-cluster-4:
@@ -119,7 +120,7 @@ templates:
                     Server:
                       - 
                         "@name": ${nodes[0]}
-                        URL: "nsp://${nodes[0]}:${um.instance.port}"
+                        URL: "nsp://${hosts[0]}:${um.instance.port}"
                         ExtendedProperties: 
                           Property: 
                             - 
@@ -127,7 +128,7 @@ templates:
                               $: site1
                       - 
                         "@name": ${nodes[1]}
-                        URL: "nsp://${nodes[1]}:${um.instance.port}"
+                        URL: "nsp://${hosts[1]}:${um.instance.port}"
                         ExtendedProperties: 
                           Property: 
                             - 
@@ -135,7 +136,7 @@ templates:
                               $: site1
                       - 
                         "@name": ${nodes[2]}
-                        URL: "nsp://${nodes[2]}:${um.instance.port}"
+                        URL: "nsp://${hosts[2]}:${um.instance.port}"
                         ExtendedProperties: 
                           Property: 
                             - 
@@ -143,7 +144,7 @@ templates:
                               $: site2
                       - 
                         "@name": ${nodes[3]}
-                        URL: "nsp://${nodes[3]}:${um.instance.port}"
+                        URL: "nsp://${hosts[3]}:${um.instance.port}"
                         ExtendedProperties: 
                           Property: 
                             - 

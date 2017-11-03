@@ -43,7 +43,7 @@ docker-compose run --rm test
   * repo.product
   * repo.fix
   * nodes
-* Template SHOULD define one layer only
+* Template SHOULD define only one runtime layer. It MAY have one additional db layer
 * Template MUST define exactly one runtime instance
 
 ## Adding Tests

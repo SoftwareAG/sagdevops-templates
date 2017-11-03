@@ -9,12 +9,18 @@
 		<antcall target="mirrors" /> -->
 	</target>
 
-	<target name="up" depends="waitcc,templates">
+	<target name="up" depends="sagenvInit2,waitcc,templates">
 		<antcall target="apply">
 			<param name="t" value="templates/sag-layer-defs" />
 		</antcall>
 		<cc command="list inventory components local refresh=true" format="tsv" />
 		<cc command="list configuration instances nodeAlias=local runtimeComponentId=OSGI-CCE-ENGINE configurationTypeId=CCE-LAYER-TYPES refresh=true" format="tsv" />
 	</target>
+
+	<target name="oracledb" depends="waitcc,sagenvInit2">
+		<antcall target="apply">
+			<param name="alias" value="sag-db-oracle"/>
+		</antcall>
+	</target>	
 
 </project>

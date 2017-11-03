@@ -41,6 +41,7 @@ services:
       - CC_SERVER=cc
       - CC_PASSWORD
       - CC_ENV=dev
+      - SAG_AQUARIUS
     command: 
       sagccant up
     networks: 
@@ -55,8 +56,9 @@ services:
       - CC_SERVER=cc
       - CC_PASSWORD
       - CC_ENV=dev
+      - SAG_AQUARIUS
     command: 
-      sagccant nodes
+      sagccant up nodes oracledb
     depends_on: 
       - oracle
       - dev1

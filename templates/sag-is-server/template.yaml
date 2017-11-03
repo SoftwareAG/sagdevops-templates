@@ -11,9 +11,7 @@ environments:
     is.memory.init:     128                 # Initial memory size
     is.memory.max:      256                 # Maximum memory size
     is.install.service: false
-    is.fixes: []                            # Default list of IS fixes
-      # - wMFix.integrationServer.Core
-      # - wMFix.integrationServer.SPM
+    is.fixes: [wMFix.integrationServer.Core,wMFix.integrationServer.ART]
 
 layers:
   runtime:

@@ -1,5 +1,5 @@
-alias: sag-is-cluster
-description: Integration Server stateless cluster
+alias: sag-is-statefull-cluster
+description: Integration Server statefull cluster using Terracotta BigMemory
 
 environments:
   default:
@@ -12,7 +12,11 @@ environments:
     is.memory.max:      256                 # Maximum memory size
     is.install.service: false
     is.fixes: [wMFix.integrationServer.Core,wMFix.integrationServer.ART]
-    
+
+    is.cluster.enabled:  true
+    is.cluster.name:     iscluster
+    is.tsa.url:          ${tc.host}:${tc.tsa.port}
+
     # Database connection
     db.type:             oracle             # REQUIRED: Database type: oracle,sqlserver,db2
     db.host:             oracle             # REQUIRED: Database server hostname
@@ -48,6 +52,7 @@ templates:
       "IntegrationServer/config/licenseKey.xml": ${is.license.key} 
     fixes: ${is.fixes}
     products:
+      DatabaseComponentConfigurator:
       integrationServer:
         ${is.instance.name}: 
           primary.port:    ${is.primary.port}
@@ -66,8 +71,14 @@ templates:
                 COMMON-MEMORY:
                   InitSize: ${is.memory.init}
                   MaxSize:  ${is.memory.max}
- 
+              COMMON-CLUSTER:
+                COMMON-CLUSTER:
+                  Name: ${is.cluster.name}
+                  Enabled: ${is.cluster.enabled}
+                  Servers:
+                    Server: 
+                      - 
+                        URL: ${is.tsa.url}  
 provision:
   default:
-    db: local
     runtime: ${nodes}
