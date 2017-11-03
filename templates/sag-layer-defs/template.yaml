@@ -97,14 +97,14 @@ templates:
                     Template:
                       "@alias": sag-is-cluster         
 
-                CCE-LAYER-TYPES-IS-STATEFULL-CLUSTER:
-                  "@name": IS-STATEFULL-CLUSTER
-                  Description: Create Integration STATEFULL cluster Requires RDBMS and Terracotta layer
-                  Type: RUNTIME
-                  Scalable: 'true'
-                  Templates:
-                    Template:
-                      "@alias": sag-is-statefull-cluster         
+                # CCE-LAYER-TYPES-IS-STATEFULL-CLUSTER:
+                #   "@name": IS-STATEFULL-CLUSTER
+                #   Description: Create Integration STATEFULL cluster Requires RDBMS and Terracotta layer
+                #   Type: RUNTIME
+                #   Scalable: 'true'
+                #   Templates:
+                #     Template:
+                #       "@alias": sag-is-statefull-cluster         
 
                 CCE-LAYER-TYPES-TC-SERVER:
                   "@name": TC-SERVER
