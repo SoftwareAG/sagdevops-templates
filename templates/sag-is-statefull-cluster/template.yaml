@@ -15,7 +15,8 @@ environments:
 
     is.cluster.enabled:  true
     is.cluster.name:     iscluster
-    is.tsa.url:          ${tc.host}:${tc.tsa.port}
+    is.tsa.url:          dev1:9010
+    tc.license.key:      any_Terracotta.key # ${} # REQUIRED: license key
 
     # Database connection
     db.type:             oracle             # REQUIRED: Database type: oracle,sqlserver,db2
@@ -50,9 +51,9 @@ templates:
   is-cluster:
     licenses:
       "IntegrationServer/config/licenseKey.xml": ${is.license.key} 
+      "common/conf/terracotta-license.key": ${tc.license.key}      
     fixes: ${is.fixes}
     products:
-      DatabaseComponentConfigurator:
       integrationServer:
         ${is.instance.name}: 
           primary.port:    ${is.primary.port}

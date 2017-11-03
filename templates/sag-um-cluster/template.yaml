@@ -15,10 +15,10 @@ environments:
     
     # FEATURE: auto-resolve from selected ${nodes}
     # cluster.size:        2                # how many nodes cluster: 2,3,4?
-    nodes[0]:            ${}                # REQUIRED: nodes[0].alias
-    hosts[0]:            ${}                # REQUIRED: nodes[0].host
-    nodes[1]:            ${}                # REQUIRED: nodes[1].alias
-    hosts[1]:            ${}                # REQUIRED: nodes[1].host
+    nodes[0]:            dev1               # REQUIRED: nodes[0].alias
+    hosts[0]:            dev1               # REQUIRED: nodes[0].host
+    nodes[1]:            dev2               # REQUIRED: nodes[1].alias
+    hosts[1]:            dev2               # REQUIRED: nodes[1].host
 
 layers: # tasks
   runtime:
