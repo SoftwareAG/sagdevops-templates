@@ -95,8 +95,26 @@ templates:
                 #   Scalable: 'true'
                 #   Templates:
                 #     Template:
-                #       "@alias": sag-is-cluster          
-  
+                #       "@alias": sag-is-cluster         
+
+                CCE-LAYER-TYPES-TC-SERVER:
+                  "@name": TC-SERVER
+                  Description: Create Terracotta Big Memory standalone server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tc-server 
+
+                CCE-LAYER-TYPES-TC-SERVER:
+                  "@name": TC-CLUSTER
+                  Description: Create Terracotta Big Memory cluster
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tc-cluster  
+
 provision:
   default:
     cce: local

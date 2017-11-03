@@ -1,14 +1,33 @@
 # How to add new templates
 
+## Requirements
+
+* Docker
+
+## Setup dev environment
+
+```bash
+export COMPOSE_FILE=dev.yml
+export COMPOSE_PROJECT_NAME=sagdevopstemplates
+export SAG_AQUARIUS=aquarius-dae.eur.ad.sag # or whatever is the closest
+
+# configure CC
+docker-compose run --rm init
+```
+
 ## Steps
 
-* Fork the project
-* See existing templates as examples
-* Add new template under templates/ folder
-* Register new template as new layer type definitino in templates/sag-layer-defs/template.yaml
-* Reimport project
-* Test new template
-* Create pull request for the master branch
+* Fork or branch the project
+* Add new template as templates/sag-xxx/template.yaml. See other templates as examples and Template Guidelines below
+* Add new sag-xxx template as new layer type definition in templates/sag-layer-defs/template.yaml
+* Import new template and test it from Command Central Stacks Web UI
+
+```bash
+# reimport templates, register dev nodes, TBD: run provisioning and tests
+docker-compose run --rm test
+```
+
+* Create pull request to merge into master
 
 ## Template Guidelines
 
@@ -28,5 +47,7 @@
 * Template MUST define exactly one runtime instance
 
 ## Adding Tests
+
+To add automated tests:
 
 TBD

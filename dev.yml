@@ -1,0 +1,69 @@
+version: "3.2"
+
+services:
+  oracle:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11
+    environment: 
+      - ORACLE_ALLOW_REMOTE=true
+    networks: 
+      - commandcentral_default    
+
+  dev1:
+    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-node
+    ports:
+      - target: 5555
+      - target: 9000  
+      - target: 9010 
+      - target: 8092
+    environment:
+      - CC_AUTO_REGISTER=0
+    networks: 
+      - commandcentral_default
+
+  dev2:
+    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-node
+    ports:
+      - target: 5555
+      - target: 9000  
+      - target: 9010 
+      - target: 8092
+    environment:
+      - CC_AUTO_REGISTER=0
+    networks: 
+      - commandcentral_default
+
+  init: # project specific CC init 
+    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-client-alpine
+    volumes: 
+      - ./:/src 
+      - ./clients/docker/cc.properties:/root/.sag/cc.properties          
+    environment: 
+      - CC_SERVER=cc
+      - CC_PASSWORD
+      - CC_ENV=dev
+    command: 
+      sagccant up
+    networks: 
+      - commandcentral_default      
+
+  test:
+    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-client-alpine
+    volumes: 
+      - ./:/src 
+      - ./clients/docker/cc.properties:/root/.sag/cc.properties          
+    environment: 
+      - CC_SERVER=cc
+      - CC_PASSWORD
+      - CC_ENV=dev
+    command: 
+      sagccant nodes
+    depends_on: 
+      - oracle
+      - dev1
+      - dev2      
+    networks: 
+      - commandcentral_default
+
+networks: 
+  commandcentral_default:
+    external: true
