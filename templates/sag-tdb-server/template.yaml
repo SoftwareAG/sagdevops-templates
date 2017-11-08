@@ -1,0 +1,34 @@
+alias: sag-tdb-server
+description: Terracotta DB server
+
+environments:
+  default:
+    tdb.tdbserver.license.key: ${} # REQUIRED: license key
+    tdb.fixes:            ALL
+    tdb.memory.init:      128                # minimil memory configuration
+    tdb.memory.max:       512                # minimal memory configuration
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - tdb-server
+
+templates:
+  tdb-server:
+    # licenses:
+    #   "Terracotta/???": ${tdb.tdbserver.license.key} 
+    fixes: ${tdb.fixes}
+    products:
+      TDBServer:
+        # default:
+        #   configuration:
+        #     TDBServer-default:
+        #       JVM-OPTIONS:
+        #         JVM-OPTIONS:
+        #           options: ${tdb.jvm.options}
+           
+provision:
+  default:
+    runtime: ${nodes}

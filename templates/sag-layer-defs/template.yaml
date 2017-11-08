@@ -115,7 +115,7 @@ templates:
                       Template:
                         "@alias": sag-tc-server 
 
-                CCE-LAYER-TYPES-TC-SERVER:
+                CCE-LAYER-TYPES-TC-CLUSTER:
                   "@name": TC-CLUSTER
                   Description: Create Terracotta Big Memory cluster
                   Type: RUNTIME
@@ -123,6 +123,15 @@ templates:
                   Templates:
                       Template:
                         "@alias": sag-tc-cluster  
+
+                CCE-LAYER-TYPES-TDB-SERVER:
+                  "@name": TDB-SERVER
+                  Description: Create Terracotta DB standalone server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tdb-server 
 
 provision:
   default:
