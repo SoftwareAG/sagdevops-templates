@@ -3,7 +3,7 @@ description: Universal Messaging realm server
 
 environments:
   default:
-    um.license.key:      ${}                # REQUIRED: license key
+    um.numrealmserver.license.key: ${}      # REQUIRED: UM license key
     um.instance.name:    default            # instance name
     um.instance.port:    9000               # primary port
     um.jmx.port:         9988               # jmx port
@@ -33,7 +33,7 @@ layers: # tasks
 templates:
   um-server:
     licenses:
-      "UniversalMessaging/server/templates/licence.xml": ${um.license.key.alias}
+      "UniversalMessaging/server/templates/licence.xml": ${um.numrealmserver.license.key}
     fixes: ${um.fixes}
     products:
       NUMRealmServer:

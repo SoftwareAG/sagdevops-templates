@@ -3,7 +3,7 @@ description: Integration Server core
 
 environments:
   default:
-    is.license.key:     ${}                 # REQUIRED: IS license key
+    is.integrationserver.license.key: ${}   # REQUIRED: IS license key
     is.instance.name:   default             # Instance name
     is.primary.port:    5555                # Primary port number
     is.diagnostic.port: 9999                # Dialgnostic port number
@@ -23,7 +23,7 @@ layers:
 templates:
   is-server:
     licenses:
-      "IntegrationServer/config/licenseKey.xml": ${is.license.key} 
+      "IntegrationServer/config/licenseKey.xml": ${is.integrationserver.license.key} 
     fixes: ${is.fixes}
     products:
       integrationServer:

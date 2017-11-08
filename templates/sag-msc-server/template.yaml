@@ -3,7 +3,7 @@ description: Microservices container instance
 
 environments:
   default:
-    is.license.key:     ${}                 # REQUIRED: MSC license key
+    is.msc.license.key: ${}                 # REQUIRED: MSC license key
     is.instance.name:   msc                 # Instance name
     is.primary.port:    5555                # Primary port number
     is.diagnostic.port: 9999                # Dialgnostic port number
@@ -11,9 +11,7 @@ environments:
     is.memory.init:     64                  # Initial memory size
     is.memory.max:      128                 # Maximum memory size
     is.install.service: false
-    is.fixes: []                            # Default list of fixes to install
-      # - wMFix.integrationServer.Core
-      # - wMFix.integrationServer.SPM
+    is.fixes: [wMFix.integrationServer.Core]
 
 layers:
   runtime:
@@ -25,7 +23,7 @@ layers:
 templates:
   msc-server:
     licenses:
-      "IntegrationServer/config/licenseKey.xml": ${is.license.key} 
+      "IntegrationServer/config/licenseKey.xml": ${is.msc.license.key} 
     fixes: ${is.fixes}
     products:
       MSC:

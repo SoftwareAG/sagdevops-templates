@@ -3,7 +3,7 @@ description: Terracotta Big Memory server
 
 environments:
   default:
-    tc.license.key:      any_Terracotta.key # ${} # REQUIRED: license key
+    tc.tes.license.key:  any_Terracotta.key # ${} # REQUIRED: license key
     tc.tsa.port:         9010
     tc.jmx.port:         9020
     tc.grp.port:         9030
@@ -27,8 +27,7 @@ layers:
 templates:
   tc-server:
     licenses:
-      "common/conf/terracotta-license.key": ${tc.license.key}
-      "Terracotta/terracotta-license.key": ${tc.license.key} 
+      "Terracotta/terracotta-license.key": ${tc.tes.license.key} 
     fixes: ${tc.fixes}
     products:
       TES:

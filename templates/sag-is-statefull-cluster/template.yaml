@@ -3,7 +3,7 @@ description: Integration Server statefull cluster using Terracotta BigMemory
 
 environments:
   default:
-    is.license.key:     ${}                 # REQUIRED: IS license key
+    is.integrationserver.license.key: ${}   # REQUIRED: IS license key
     is.instance.name:   default             # Instance name
     is.primary.port:    5555                # Primary port number
     is.diagnostic.port: 9999                # Dialgnostic port number
@@ -16,7 +16,7 @@ environments:
     is.cluster.enabled:  true
     is.cluster.name:     iscluster
     is.tsa.url:          dev1:9010
-    tc.license.key:      any_Terracotta.key # ${} # REQUIRED: license key
+    tc.tes.license.key:  any_Terracotta.key # ${} # REQUIRED: license key
 
     # Database connection
     db.type:             oracle             # REQUIRED: Database type: oracle,sqlserver,db2
@@ -50,8 +50,8 @@ layers:
 templates:
   is-cluster:
     licenses:
-      "IntegrationServer/config/licenseKey.xml": ${is.license.key} 
-      "common/conf/terracotta-license.key": ${tc.license.key}      
+      "IntegrationServer/config/licenseKey.xml": ${is.integrationserver.license.key} 
+      "common/conf/terracotta-license.key": ${tc.tes.license.key}      
     fixes: ${is.fixes}
     products:
       integrationServer:
