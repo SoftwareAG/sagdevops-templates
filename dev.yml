@@ -9,7 +9,7 @@ services:
       - commandcentral_default    
 
   dev1:
-    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-node
     ports:
       - target: 5555
       - target: 9000  
@@ -21,7 +21,7 @@ services:
       - commandcentral_default
 
   dev2:
-    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-node
     ports:
       - target: 5555
       - target: 9000  
@@ -33,7 +33,7 @@ services:
       - commandcentral_default
 
   init: # project specific CC init 
-    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-client-alpine
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-client
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
@@ -48,7 +48,7 @@ services:
       - commandcentral_default      
 
   test:
-    image: daerepository03.eur.ad.sag:4443/softwareag/commandcentral:10.1.0.1-client-alpine
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-client
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          

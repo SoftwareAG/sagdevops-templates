@@ -124,14 +124,14 @@ templates:
                       Template:
                         "@alias": sag-tc-cluster  
 
-                CCE-LAYER-TYPES-TDB-SERVER:
-                  "@name": TDB-SERVER
-                  Description: Create Terracotta DB standalone server
-                  Type: RUNTIME
-                  Scalable: 'false'
-                  Templates:
-                      Template:
-                        "@alias": sag-tdb-server 
+                # CCE-LAYER-TYPES-TDB-SERVER:
+                #   "@name": TDB-SERVER
+                #   Description: Create Terracotta DB standalone server
+                #   Type: RUNTIME
+                #   Scalable: 'false'
+                #   Templates:
+                #       Template:
+                #         "@alias": sag-tdb-server 
 
 provision:
   default:
