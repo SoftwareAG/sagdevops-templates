@@ -1,15 +1,24 @@
 version: "3.2"
 
 services:
+  cc:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-internal
+    ports:
+      - target: 8090 # CCE
+      - target: 8091 # CCE
+      - target: 8092 # SPM      
+    volumes: 
+      - ./:/src 
+    environment:
+      - SAG_AQUARIUS
+
   oracle:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11
+    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
     environment: 
       - ORACLE_ALLOW_REMOTE=true
-    networks: 
-      - commandcentral_default    
 
   dev1:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-node
     ports:
       - target: 5555
       - target: 9000  
@@ -17,11 +26,9 @@ services:
       - target: 8092
     environment:
       - CC_AUTO_REGISTER=0
-    networks: 
-      - commandcentral_default
 
   dev2:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-node
     ports:
       - target: 5555
       - target: 9000  
@@ -29,43 +36,60 @@ services:
       - target: 8092
     environment:
       - CC_AUTO_REGISTER=0
-    networks: 
-      - commandcentral_default
 
-  init: # project specific CC init 
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-client
+  init1: # init dev env with 1 node, no db
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
     environment: 
       - CC_SERVER=cc
-      - CC_PASSWORD
-      - CC_ENV=dev
-      - SAG_AQUARIUS
+      - CC_ENV=dev   
     command: 
-      sagccant up
-    networks: 
-      - commandcentral_default      
-
-  test:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1.0.3-client
-    volumes: 
-      - ./:/src 
-      - ./clients/docker/cc.properties:/root/.sag/cc.properties          
-    environment: 
-      - CC_SERVER=cc
-      - CC_PASSWORD
-      - CC_ENV=dev
-      - SAG_AQUARIUS
-    command: 
-      sagccant up nodes oracledb
+      sagccant up nodes -Dnodes=dev1:sagdevopstemplates_dev1_1
     depends_on: 
+      - cc
+      - dev1
+
+  init2: # init dev env with 2 nodes, no db
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    volumes: 
+      - ./:/src 
+      - ./clients/docker/cc.properties:/root/.sag/cc.properties          
+    environment: 
+      - CC_SERVER=cc
+      - CC_ENV=dev   
+    command: 
+      sagccant up nodes -Dnodes=dev1:sagdevopstemplates_dev1_1,dev2:sagdevopstemplates_dev2_1
+    depends_on: 
+      - cc
+      - dev1
+      - dev2
+
+  init2db: # init dev with 2 nodes and db 
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    volumes: 
+      - ./:/src 
+      - ./clients/docker/cc.properties:/root/.sag/cc.properties          
+    environment: 
+      - CC_SERVER=cc
+      - CC_ENV=dev   
+    command: 
+      sagccant up nodes oracledb -Dnodes=dev1:sagdevopstemplates_dev1_1,dev2:sagdevopstemplates_dev2_1
+    depends_on: 
+      - cc
       - oracle
       - dev1
-      - dev2      
-    networks: 
-      - commandcentral_default
+      - dev2
 
-networks: 
-  commandcentral_default:
-    external: true
+  test:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    volumes: 
+      - ./:/src 
+      - ./clients/docker/cc.properties:/root/.sag/cc.properties          
+    environment: 
+      - CC_SERVER=cc
+      - CC_ENV=dev
+      - CC_TEMPLATE
+    command: 
+      sagccant test 
