@@ -1,16 +1,16 @@
 alias: sag-um-server
-description: Universal Messaging realm server
+description: Universal Messaging Realm server
 
 environments:
   default:
-    um.numrealmserver.license.key: ${}      # REQUIRED: UM license key
+    um.numrealmserver.license.key: "*_NUMWF_10.*_*_${os.platform}" # UM license key
     um.instance.name:    default            # realm server instance name
     um.instance.port:    9000               # primary port
     um.jmx.port:         9988               # jmx port
     um.memory.init:      64                 # memory configuration
     um.memory.max:       128                # memory configuration
     um.memory.direct:    1G                 # memory configuration
-    um.fixes:            []
+    um.fixes:            ALL                # all fixes
 
 layers:
   runtime:
@@ -22,7 +22,7 @@ layers:
 templates:
   um-server:
     licenses:
-      "UniversalMessaging/server/templates/licence.xml": ${um.numrealmserver.license.key}
+      "UniversalMessaging/server/templates/licence.xml": "${um.numrealmserver.license.key}"
     fixes: ${um.fixes}
     products:
       NUMRealmServer:

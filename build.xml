@@ -2,11 +2,8 @@
 <project xmlns="antlib:org.apache.tools.ant" basedir="." default="up" >
 	<import file="antcc/main.xml" />
 
-	<target name="init" description="Init Command Central" depends="sagenvInit2">
-		<!-- <antcall target="apply">
-			<param name="alias" value="sag-repos-ga"/>
-		</antcall>
-		<antcall target="mirrors" /> -->
+	<target name="waitccinit" depends="sagenvInit2,waitcc">
+		<cc command="sagcc list repository fixes -e GA_Fix_Repo -w 300" format="tsv" />
 	</target>
 
 	<target name="up" depends="sagenvInit2,waitcc,templates">
@@ -17,9 +14,15 @@
 		<cc command="list configuration instances nodeAlias=local runtimeComponentId=OSGI-CCE-ENGINE configurationTypeId=CCE-LAYER-TYPES refresh=true" format="tsv" />
 	</target>
 
-	<target name="oracledb" depends="waitcc,sagenvInit2">
+	<target name="oracledb" depends="waitccinit">
 		<antcall target="apply">
 			<param name="alias" value="sag-db-oracle"/>
+		</antcall>
+	</target>	
+
+	<target name="test" depends="waitcc,sagenvInit2" description="Apply $CC_TEMPLATE">
+		<antcall target="apply">
+			<param name="t" value="templates/${env.CC_TEMPLATE}"/>
 		</antcall>
 	</target>	
 
