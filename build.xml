@@ -3,7 +3,7 @@
 	<import file="antcc/main.xml" />
 
 	<target name="waitccinit" depends="sagenvInit2,waitcc">
-		<cc command="sagcc list repository fixes -e GA_Fix_Repo -w 300" format="tsv" />
+		<cc command="list repository fixes" expectedvalues="GA_Fix_Repo" wait="300" format="tsv" />
 	</target>
 
 	<target name="up" depends="sagenvInit2,waitcc,templates">
@@ -20,9 +20,12 @@
 		</antcall>
 	</target>	
 
-	<target name="test" depends="waitcc,sagenvInit2" description="Apply $CC_TEMPLATE">
+	<target name="test" depends="waitccinit,sagenvInit2" description="Apply $CC_TEMPLATE">
 		<antcall target="apply">
 			<param name="t" value="templates/${env.CC_TEMPLATE}"/>
+		</antcall>
+		<antcall target="sagtest.test">
+			<param name="suite" value="${env.CC_TEMPLATE}"/>
 		</antcall>
 	</target>	
 

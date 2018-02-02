@@ -1,0 +1,62 @@
+alias: jenkins
+description: CloudBees Jenkins as web app in CCE profile
+
+environments:
+  default:
+    #nodes: local         # can be local or a remote node
+    jenkins.profile: CCE # CCE or SPM profile
+    jenkins.mem.max: 512 # max memory for the profile
+
+    actions:
+      download.sh:
+        description: Download jenkins.war and store it under
+        target: POSIX
+        phase: pre
+        script: > 
+          cd ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/jenkins && 
+          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant
+          download
+          -Dinstall.dir=${com.softwareag.install.root}
+          -Djenkins.profile=${jenkins.profile}
+
+      getpassword.sh:
+        target: POSIX
+        phase: post
+        script: > 
+          cd ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/jenkins && 
+          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant 
+          waitjenkins 
+          -Dinstall.dir=${com.softwareag.install.root}
+          -Djenkins.profile=${jenkins.profile}
+
+      download.bat:
+        target: WINDOWS
+        phase: pre
+        script: cd ${com.softwareag.install.root}\profiles\CCE\data/templates\composite\jenkins && ${com.softwareag.install.root}\CommandCentral\client\bin\sagccant
+
+layers:
+  jenkins:
+    templates:
+      - jenkins-webapp
+ 
+templates:
+  jenkins-webapp:
+    files:
+      profiles/${jenkins.profile}/workspace/webapps/jenkins.war: webapps/jenkins.war
+      profiles/${jenkins.profile}/workspace/webapps/ROOT/WEB-INF/resources/context-jenkins.properties: webapps/context-jenkins.properties
+    products:
+      ${profile}:
+        default:
+          configuration:
+            OSGI-CCE:              
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: 256
+                  MaxSize: ${jenkins.memory.max}
+              # COMMON-JAVASYSPROPS: 
+              #   COMMON-JAVASYSPROPS: |
+              #     jenkins.home=%OSGI_INSTALL_AREA%/data/jenkins
+
+provision:
+  default:
+    jenkins: local

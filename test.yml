@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   cc:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-internal
+    image: store/softwareag/commandcentral:10.1-server
     ports:
       - target: 8090 # CCE
       - target: 8091 # CCE
@@ -12,13 +12,13 @@ services:
     environment:
       - SAG_AQUARIUS
 
-  oracle:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
-    environment: 
-      - ORACLE_ALLOW_REMOTE=true
+  # oracle:
+  #   image: store/softwareag/ccdevops/oracle:11.1
+  #   environment: 
+  #     - ORACLE_ALLOW_REMOTE=true
 
   dev1:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-node
+    image: store/softwareag/commandcentral:10.1-node
     ports:
       - target: 5555
       - target: 9000  
@@ -28,7 +28,7 @@ services:
       - CC_AUTO_REGISTER=0
 
   dev2:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-node
+    image: store/softwareag/commandcentral:10.1-node
     ports:
       - target: 5555
       - target: 9000  
@@ -38,7 +38,7 @@ services:
       - CC_AUTO_REGISTER=0
 
   init1: # init dev env with 1 node, no db
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: store/softwareag/commandcentral:10.1-server
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
@@ -52,7 +52,7 @@ services:
       - dev1
 
   init2: # init dev env with 2 nodes, no db
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: store/softwareag/commandcentral:10.1-server
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
@@ -67,7 +67,7 @@ services:
       - dev2
 
   init2db: # init dev with 2 nodes and db 
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: store/softwareag/commandcentral:10.1-server
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
@@ -78,12 +78,12 @@ services:
       sagccant up nodes oracledb -Dnodes=dev1:sagdevopstemplates_dev1_1,dev2:sagdevopstemplates_dev2_1
     depends_on: 
       - cc
-      - oracle
+      # - oracle
       - dev1
       - dev2
 
   test:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: store/softwareag/commandcentral:10.1-server
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          

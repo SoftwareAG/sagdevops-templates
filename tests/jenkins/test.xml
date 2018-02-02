@@ -1,0 +1,8 @@
+<project name="test-jenkins" xmlns:au="antlib:org.apache.ant.antunit" >
+    <import file="../../build.xml" />
+    <target name="test-jenkins" description="Test /jenkins webapp on CCE" depends="sagccInit" >
+ 		<au:assertTrue message="Jenkins app is not available">
+            <http url="http://cc:8090/jenkins" />
+         </au:assertTrue>
+    </target>
+</project>

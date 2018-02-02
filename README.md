@@ -1,24 +1,37 @@
-# Command Central 10.x templates
+# Command Central Default Templates Library
 
-This project provides basic templates and layer definitions for
-Command Central 10.1 Stacks feature.
+This project provides a library of default templates for
+Command Central 10.2
 
-The templates are automatically imported as a library into
-[Command Central project](https://github.com/SoftwareAG/sagdevops-cc-server)
-when you start Command Central server from it.
+The templates can be used as standalone composite templates as well as
+micro templates for Command Stack Layer definitions.
 
-You can also import them into any Command Central instance by running:
+See README.md for each template in the [templates/](templates/) folder
+for specific details.
+
+The library is included as a git submodule into
+[Command Central automation project](https://github.com/SoftwareAG/sagdevops-cc-server)
+If you use this project to setup your Command Central you will get it automatically.
+
+## Importing the template library
+
+You can import the library into any Command Central server by running this command:
 
 ```bash
+git clone --recusrive https://github.com/SoftwareAG/sagdevops-templates
+cd sagdevops-templates
 sagccant up
 ```
 
-To use templates, open [Command Central Stacks UI](https://0.0.0.0:8091/cce/web/?entry=stacks#stacks:)
-and click + icon to create your first stack.
+## Provisioning new stacks using Command Central Web UI
 
-## How to add new layer templates
+You can provision new stacks using Command Central Web UI.
 
-Please see [how to add new templates](CONTRIBUTE.md)
+The stacks are built interactively, layer by layer. The layer definitions
+use templates from the template library.
+
+Open [Command Central Stacks UI](https://0.0.0.0:8091/cce/web/?entry=stacks#stacks:)
+and click `+` icon to create your first stack.
 
 ______________________
 These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
