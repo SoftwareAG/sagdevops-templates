@@ -4,8 +4,7 @@ services:
   - docker
 
 env:
-  - COMPOSE_FILE=test.yml
-  - TEMPLATE=jenkins
+  - COMPOSE_FILE=test.yml TEMPLATE=jenkins
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
@@ -13,7 +12,7 @@ before_install:
 
 script:
   - docker-compose run --rm init1
-#  - docker-compose run --rm test
+  - docker-compose run --rm test
 
 # after_success:
 #   - if [ "$TRAVIS_BRANCH" == "master" ]; then
