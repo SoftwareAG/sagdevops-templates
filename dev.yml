@@ -92,4 +92,4 @@ services:
       - CC_ENV=dev
       - CC_TEMPLATE
     command: 
-      sagccant test
+      sagccant waitccinit test

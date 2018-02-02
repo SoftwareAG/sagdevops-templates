@@ -20,7 +20,7 @@
 		</antcall>
 	</target>	
 
-	<target name="test" depends="waitccinit,sagenvInit2" description="Apply $CC_TEMPLATE">
+	<target name="test" depends="sagenvInit2" description="Apply $CC_TEMPLATE">
 		<antcall target="apply">
 			<param name="t" value="templates/${env.CC_TEMPLATE}"/>
 		</antcall>
