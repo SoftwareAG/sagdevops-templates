@@ -1,0 +1,15 @@
+alias: init
+
+repositories:
+  product:
+    products:
+      host: aquarius-dae.eur.ad.sag
+      name: 101oct2017_SIC      
+      username: latest
+      password: latest
+  fix:
+    fixes:
+      host: aquarius-dae.eur.ad.sag
+      name: GA_Fix_Repo
+      username: sum
+      password: sum 

@@ -4,7 +4,10 @@ services:
   - docker
 
 env:
-  - COMPOSE_FILE=test.yml CC_TEMPLATE=jenkins
+  global:
+    - COMPOSE_FILE=test.yml
+  matrix:
+    - CC_TEMPLATE=jenkins
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
