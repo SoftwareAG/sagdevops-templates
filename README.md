@@ -1,26 +1,35 @@
-# Command Central 10.x templates
+# Command Central Default Template Library
 
-This project provides basic templates and layer definitions for
-Command Central 10.1 Stacks feature.
+This project provides default templates for Software AG Digital Business Platform products.
 
-The templates are automatically imported as a library into
-[Command Central project](https://github.com/SoftwareAG/sagdevops-cc-server)
-when you start Command Central server from it.
+* The templates require Command Central 10.x. They do not work with Command Central 9.x
+* The templates support provisioning of 9.8+ SAG products. See each template README.md for details
 
-You can also import them into any Command Central instance by running:
+## Importing templates
+
+If you use [automated Command Central setup project](https://github.com/SoftwareAG/sagdevops-cc-server)
+the templates get imported automatically.
+
+You can also import the templates into your local or remote Command Central instance by running:
 
 ```bash
 sagccant up
 ```
 
-To use templates, open [Command Central Stacks UI](https://0.0.0.0:8091/cce/web/?entry=stacks#stacks:)
+## Using templates from Command Central Web UI
+
+The templates can be used from the Web UI Stacks feature.
+
+* Open [Command Central Stacks UI](https://0.0.0.0:8091/cce/web/?entry=stacks#stacks:)
 and click + icon to create your first stack.
+* Add infrastructure layer with new or existing nodes
+* Add a runtime layer by selecting one of the supported layer types. Later type identifies the template to apply
 
-## How to add new layer templates
+## Using templates from Command Central CLI
 
-Please see [how to add new templates](CONTRIBUTE.md)
+The templates can also be used from the CLI
 
 ______________________
-These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
+Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
 _____________
 Contact us at [TECHcommunity](mailto:technologycommunity@softwareag.com?subject=Github/SoftwareAG) if you have any questions.
