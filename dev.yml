@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   cc:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-internal
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
     ports:
       - target: 8090 # CCE
       - target: 8091 # CCE
@@ -18,7 +18,7 @@ services:
       - ORACLE_ALLOW_REMOTE=true
 
   dev1:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
     ports:
       - target: 5555
       - target: 9000  
