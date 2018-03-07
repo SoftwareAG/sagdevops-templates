@@ -16,6 +16,7 @@ templates:
   abe:
     fixes: ${abe.fixes}
     products:
+      CLI:
       acdl:
 
 provision:
