@@ -4,7 +4,8 @@ description: Universal Messaging Realm server
 environments:
   default:
     um.numrealmserver.license.key: "*_NUMWF_10.*_*_${os.platform}" # UM license key
-    um.instance.name:    default            # realm server instance name
+    um.instance.name:    default            # server instance name
+    um.realm:            default            # realm name
     um.instance.port:    9000               # primary port
     um.jmx.port:         9988               # jmx port
     um.memory.init:      64                 # memory configuration
@@ -43,7 +44,7 @@ templates:
                        $: ${um.memory.direct}
               COMMON-JAVASYSPROPS: 
                 COMMON-JAVASYSPROPS: | 
-                   REALM=${node.host}                             # IMPORTANT: this can only be set before first startup
+                   REALM=${um.realm}                              # IMPORTANT: this can only be set before first startup
                    com.sun.management.jmxremote.port=${um.jmx.port}
                    com.sun.management.jmxremote.authenticate=false
                    com.sun.management.jmxremote.ssl=false

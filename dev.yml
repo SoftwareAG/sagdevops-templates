@@ -28,7 +28,7 @@ services:
       - CC_AUTO_REGISTER=0
 
   dev2:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
     ports:
       - target: 5555
       - target: 9000  
@@ -52,7 +52,7 @@ services:
       - dev1
 
   init2: # init dev env with 2 nodes, no db
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-client
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
@@ -67,7 +67,7 @@ services:
       - dev2
 
   init2db: # init dev with 2 nodes and db 
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-client
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          
@@ -83,7 +83,7 @@ services:
       - dev2
 
   test:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.1-client
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-client
     volumes: 
       - ./:/src 
       - ./clients/docker/cc.properties:/root/.sag/cc.properties          

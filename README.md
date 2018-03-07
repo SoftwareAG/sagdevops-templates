@@ -18,7 +18,7 @@ If you use this project to setup your Command Central you will get it automatica
 You can import the library into any Command Central server by running this command:
 
 ```bash
-git clone --recusrive https://github.com/SoftwareAG/sagdevops-templates
+git clone --recursive https://github.com/SoftwareAG/sagdevops-templates
 cd sagdevops-templates
 sagccant up
 ```
@@ -35,5 +35,5 @@ and click `+` icon to create your first stack.
 
 ______________________
 These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
-_____________
+______________________
 Contact us at [TECHcommunity](mailto:technologycommunity@softwareag.com?subject=Github/SoftwareAG) if you have any questions.
