@@ -1,0 +1,18 @@
+version: "3.0"
+
+services:
+  um:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: daerepository03.eur.ad.sag:4443/ccdevops/um:10.2
+    ports:
+      - "9000:9000"
+    environment:
+      - CC_SERVER=cc
+      - CC_AUTO_REGISTER=1
+
+networks: 
+  default:
+    external:
+      name: sagdevopstemplates_default
