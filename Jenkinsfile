@@ -27,6 +27,7 @@ pipeline {
         stage('Init') {
             steps {
                 stash 'scripts'
+                sh 'docker-compose pull'
                 sh 'docker-compose run --rm init1'
                 sh 'docker-compose logs'
             }
