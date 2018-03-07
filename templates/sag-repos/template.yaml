@@ -1,0 +1,34 @@
+alias: sag-repos
+description: Default master repositories registration
+version: 10.2
+
+repositories:
+  product:                      # all supported releases
+    # webMethods-10.2:           
+    #   location: http://sdc.softwareag.com/dataservewebM102/repository/
+    #   credentials: EMPOWER
+    #   description: Latest GA 
+    webMethods-10.1:           
+      location: http://sdc.softwareag.com/dataservewebM101/repository/
+      credentials: EMPOWER
+      description: Latest GA 
+    # webMethods-10.0:           
+    #   location: http://sdc.softwareag.com/dataservewebM100/repository/
+    #   credentials: EMPOWER
+    #   description: Innovation release
+    webMethods-9.12:           
+      location: http://sdc.softwareag.com/dataservewebM912/repository/
+      credentials: EMPOWER
+    webMethods-9.10:
+      location: http://sdc.softwareag.com/dataservewebM910/repository/
+      credentials: EMPOWER
+    webMethods-9.9:
+      location: http://sdc.softwareag.com/dataservewebM99/repository/
+      credentials: EMPOWER
+    webMethods-9.8:
+      location: http://sdc.softwareag.com/dataservewebM98/repository/
+      credentials: EMPOWER
+ 
+  fix:                          # public fix repository for all versions
+    Empower:
+      credentials: EMPOWER

@@ -1,0 +1,46 @@
+alias: sag-cc-proxy
+description: Proxy configuration for SPMs
+
+environments:
+  default:
+    nodes: local
+    
+    # HTTP proxy configuration
+    proxy.http.host: ${}
+    proxy.http.port: ${}
+    proxy.http.nonproxyhosts: "localhost|.local"
+
+    # HTTPS proxy configuration
+    proxy.https.host: ${proxy.http.host}
+    proxy.https.port: ${proxy.http.port}
+    proxy.https.nonproxyhosts: ${proxy.http.nonproxyhosts}
+
+layers:
+  spm:
+    templates:
+      - spm-proxy
+
+templates:
+  spm-proxy:
+    products:
+      SPM:
+        default:
+          configuration:
+            OSGI-SPM: 
+              COMMON-PROXY:
+                COMMON-PROXY-HTTP:
+                  "@alias": HTTP
+                  Protocol: HTTP
+                  Host: ${proxy.http.host}
+                  Port: ${proxy.http.port}
+                  NonProxyHosts: ${proxy.http.nonproxyhosts}
+                COMMON-PROXY-HTTPS:
+                  "@alias": HTTPS
+                  Protocol: HTTPS
+                  Host: ${proxy.https.host}
+                  Port: ${proxy.https.port}
+                  NonProxyHosts: ${proxy.https.nonproxyhosts}
+                    
+provision:
+  default:
+    spm: ${nodes}

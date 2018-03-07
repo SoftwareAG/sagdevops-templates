@@ -1,0 +1,20 @@
+alias: sag-mirrors
+description: Default registration for remote mirrors
+version: 10.2
+
+environments:
+  default:
+     release: "10.2"                                  # mirror products/fixes release
+     mirror.spm: http://localhost:8092                # mirror hosting SPM address. HTTPS is not yet supported!
+     mirror.credentials.key: DEFAULT_ADMINISTRATOR    # mirror hosting SPM credentials
+     mirror.name.suffix: "_ext"                       # optional extension, can be empty
+
+repositories:
+  product:
+    products-${release}${mirror.name.suffix}:
+      location: ${mirror.spm}/products-${release}/repository/
+      credentials: ${mirror.credentials.key}
+  fix:
+    fixes-${release}${mirror.name.suffix}:
+      location: ${mirror.spm}/fix-fixes-${release}/repository/
+      credentials: ${mirror.credentials.key}
