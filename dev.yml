@@ -49,7 +49,7 @@ services:
     #   antcc nodes -Dnodes=dev1:sagdevopstemplates_dev1_1
     command: >
       bash -c "sagcc list repository products -e 10.2 -w 600 --wait-for-cc 300 &&
-      sagcc list repository fixes -e GA_Fix_Repo -w 120 &&
+      sagcc list repository fixes -e GA_Fix_Repo -w 600 &&
       antcc nodes -Dnodes=dev1:sagdevopstemplates_dev1_1"
     depends_on: 
       - cc

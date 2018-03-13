@@ -39,11 +39,11 @@ pipeline {
         stage("Test") {
             steps {
                 sh "docker-compose run --rm -e TEMPLATE=jenkins test"    
-                // testTemplates(['jenkins'])
+                //testTemplates(['jenkins'])
             }
             post {
                 always {
-                    sh 'docker-compose logs'
+                    sh 'docker-compose logs cc'
                     sh 'docker-compose down'
                 }
             }
