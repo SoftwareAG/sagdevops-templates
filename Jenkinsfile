@@ -28,16 +28,22 @@ pipeline {
             steps {
                 stash 'scripts'
                 sh 'docker-compose pull'
+                sh 'docker-compose up -d cc'
+                sh 'docker-compose logs cc'
+                sleep(60)
+                sh 'docker-compose exec cc antcc waitContainerInit'                
                 sh 'docker-compose run --rm init1'
                 sh 'docker-compose logs'
             }
         }
         stage("Test") {
             steps {
-                testTemplates(['jenkins'])
+                sh "docker-compose run --rm -e TEMPLATE=jenkins test"    
+                // testTemplates(['jenkins'])
             }
             post {
                 always {
+                    sh 'docker-compose logs'
                     sh 'docker-compose down'
                 }
             }

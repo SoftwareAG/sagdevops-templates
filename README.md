@@ -13,16 +13,6 @@ The library is included as a git submodule into
 [Command Central automation project](https://github.com/SoftwareAG/sagdevops-cc-server)
 If you use this project to setup your Command Central you will get it automatically.
 
-## Importing the template library
-
-You can import the library into any Command Central server by running this command:
-
-```bash
-git clone --recursive https://github.com/SoftwareAG/sagdevops-templates
-cd sagdevops-templates
-sagccant up
-```
-
 ## Provisioning new stacks using Command Central Web UI
 
 You can provision new stacks using Command Central Web UI.

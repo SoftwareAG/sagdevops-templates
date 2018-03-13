@@ -1,26 +1,13 @@
 <?xml version="1.0"?>
-<project xmlns="antlib:org.apache.tools.ant" basedir="." default="up" >
-	<import file="antcc/main.xml" />
+<project xmlns="antlib:org.apache.tools.ant" basedir="." default="test" >
+	<!-- standard include -->
+	<property environment="env" />
+	<condition property="antcc.home" value="${env.ANTCC_HOME}" else="antcc">
+		<isset property="env.ANTCC_HOME"/>
+	</condition>
+	<import file="${antcc.home}/build.xml" />
 
-	<target name="waitccinit" depends="sagenvInit2,waitcc">
-		<cc command="list repository fixes" expectedvalues="GA_Fix_Repo" wait="300" format="tsv" />
-	</target>
-
-	<target name="up" depends="sagenvInit2,waitcc,templates">
-		<antcall target="apply">
-			<param name="t" value="templates/sag-layer-defs" />
-		</antcall>
-		<cc command="list inventory components local refresh=true" format="tsv" />
-		<cc command="list configuration instances nodeAlias=local runtimeComponentId=OSGI-CCE-ENGINE configurationTypeId=CCE-LAYER-TYPES refresh=true" format="tsv" />
-	</target>
-
-	<target name="oracledb" depends="waitccinit">
-		<antcall target="apply">
-			<param name="alias" value="sag-db-oracle"/>
-		</antcall>
-	</target>	
-
-	<target name="test" depends="sagenvInit2" description="Apply $CC_TEMPLATE">
+	<target name="test" depends="sagenvInit2" description="Apply $CC_TEMPLATE" if="env.CC_TEMPLATE">
 		<antcall target="apply">
 			<param name="t" value="templates/${env.CC_TEMPLATE}"/>
 		</antcall>

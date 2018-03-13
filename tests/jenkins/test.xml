@@ -1,9 +1,8 @@
 <project name="jenkins" xmlns:au="antlib:org.apache.ant.antunit" >
-    <import file="../../antcc/main.xml" />
-
-    <target name="test-jenkins" description="Test /jenkins webapp on CCE" depends="sagccInit" >
+    <import file="../../build.xml" />
+    <target name="test-jenkins" description="Test /jenkins webapp on CCE" depends="sagccInit">
  		<au:assertTrue message="Jenkins app is not available">
-            <http url="http://cc:8090/jenkins" />
+            <http url="http://cc:8090/jenkins/login?from=%2Fjenkins%2F" />
          </au:assertTrue>
     </target>
 </project>
