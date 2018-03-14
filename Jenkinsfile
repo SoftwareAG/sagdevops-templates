@@ -5,8 +5,8 @@ def testTemplates(templates) {
         def template = x // Need to bind the label variable before the closure - can't do 'for (label in labels)'
         builders[template] = {
             sh "docker-compose run --rm -e CC_TEMPLATE=$template test"
-            // junit "build/tests/$CC_ENV/"
-            // archive "templates/${template}/build/.zip"
+            junit "build/tests/**/*.xml"
+            archive "templates/${template}.zip"
         }                        
     }
     parallel builders // kick off parallel provisioning    
@@ -22,7 +22,7 @@ pipeline {
     // }
     environment {
         SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
-        EMPOWER = credentials('EMPOWER')
+        EMPOWER = credentials('empower')
     }
     stages {
         stage('Init') {
