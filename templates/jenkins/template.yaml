@@ -14,7 +14,7 @@ environments:
         phase: pre
         script: > 
           cd ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/jenkins && 
-          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant
+          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant -f provision.xml
           download
           -Dinstall.dir=${com.softwareag.install.root}
           -Djenkins.profile=${jenkins.profile}
@@ -24,15 +24,31 @@ environments:
         phase: post
         script: > 
           cd ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/jenkins && 
-          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant 
+          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant -f provision.xml
           waitjenkins 
           -Dinstall.dir=${com.softwareag.install.root}
           -Djenkins.profile=${jenkins.profile}
 
       download.bat:
+        description: Download jenkins.war and store it under
         target: WINDOWS
         phase: pre
-        script: cd ${com.softwareag.install.root}\profiles\CCE\data/templates\composite\jenkins && ${com.softwareag.install.root}\CommandCentral\client\bin\sagccant
+        script: > 
+          cd ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/jenkins && 
+          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant -f provision.xml
+          download
+          -Dinstall.dir=${com.softwareag.install.root}
+          -Djenkins.profile=${jenkins.profile}
+
+      getpassword.bat:
+        target: WINDOWS
+        phase: post
+        script: > 
+          cd ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/jenkins && 
+          ${com.softwareag.install.root}/CommandCentral/client/bin/sagccant -f provision.xml
+          waitjenkins 
+          -Dinstall.dir=${com.softwareag.install.root}
+          -Djenkins.profile=${jenkins.profile}
 
 layers:
   jenkins:

@@ -1,18 +1,31 @@
 <?xml version="1.0"?>
-<project xmlns="antlib:org.apache.tools.ant" basedir="." default="test" >
-	<!-- standard include -->
+<project name="main" xmlns="antlib:org.apache.tools.ant" basedir="." default="apply" >
+	
+	<!-- standard header start -->
+
+	<dirname file="${ant.file.main}" property="project.dir" />
+	<property name="build.dir" location="${project.dir}/build" />
+
 	<property environment="env" />
 	<condition property="antcc.home" value="${env.ANTCC_HOME}" else="antcc">
 		<isset property="env.ANTCC_HOME"/>
 	</condition>
 	<import file="${antcc.home}/build.xml" />
 
-	<target name="test" depends="sagenvInit2" description="Apply $CC_TEMPLATE" if="env.CC_TEMPLATE">
-		<antcall target="apply">
+	<!-- standard header end -->
+
+	<target name="apply" description="Apply $CC_TEMPLATE" >
+		<antcall target="sagenv.apply">
 			<param name="t" value="templates/${env.CC_TEMPLATE}"/>
+			<param name="env.properties" value="templates/${env.CC_TEMPLATE}/env.properties"/>
 		</antcall>
+	</target>	
+
+	<target name="test" description="Test $CC_TEMPLATE" if="env.CC_TEMPLATE">
 		<antcall target="sagtest.test">
-			<param name="suite" value="${env.CC_TEMPLATE}"/>
+			<param name="fileset.dir" value="templates/${env.CC_TEMPLATE}"/>
+			<param name="env.properties" location="templates/${env.CC_TEMPLATE}/env.properties"/>	
+			<param name="env.properties.full.path" location="templates/${env.CC_TEMPLATE}/env.properties"/>	
 		</antcall>
 	</target>	
 
