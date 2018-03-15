@@ -1,6 +1,6 @@
 
 // export JENKINS_URL=http://ccbvtauto.eur.ad.sag:8080
-// curl -X POST -F "jenkinsfile=<Jenkinsfile.generic" $JENKINS_URL/pipeline-model-converter/validate
+// curl -X POST -F "jenkinsfile=<Jenkinsfile" $JENKINS_URL/pipeline-model-converter/validate
 
 def testTemplates(templates) {
     for (t in templates) {
@@ -43,13 +43,13 @@ pipeline {
                 }
             }
         }
-        post {
-            failure {
-                sh 'docker-compose logs cc'
-            }
-            always {
-                sh 'docker-compose down'
-            }
-        }    
     }
+    post {
+        failure {
+            sh 'docker-compose logs cc'
+        }
+        always {
+            sh 'docker-compose down'
+        }
+    }    
 }
