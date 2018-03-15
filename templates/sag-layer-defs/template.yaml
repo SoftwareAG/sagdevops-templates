@@ -34,14 +34,23 @@ templates:
                       Template:
                         "@alias": sag-spm-connect
 
-                CCE-LAYER-TYPES-INFRA-REMOTE:
-                  "@name": INFRA-REMOTE
-                  Description: Create installations on remote machines using SSH
+                CCE-LAYER-TYPES-INFRA-REMOTE-UNIX:
+                  "@name": INFRA-REMOTE-UNIX
+                  Description: Create installations on remote UNIX machines using SSH
                   Type: INFRASTRUCTURE
                   Scalable: 'true'
                   Templates:
-                      Template:
-                        "@alias": sag-spm-boot
+                    Template:
+                      "@alias": sag-spm-boot-ssh
+
+                CCE-LAYER-TYPES-INFRA-REMOTE-WINDOWS:
+                  "@name": INFRA-REMOTE-WINDOWS
+                  Description: Create installations on remote Windows machines using WinRM
+                  Type: INFRASTRUCTURE
+                  Scalable: 'true'
+                  Templates:
+                    Template:
+                      "@alias": sag-spm-boot-winrm                                                
                       
                 CCE-LAYER-TYPES-UM-SERVER:
                   "@name": UM-SERVER

@@ -1,4 +1,4 @@
-alias: sag-spm-boot
+alias: sag-spm-boot-ssh
 description: SSH-enabled remote installation using CC bootstrap installer
 
 environments:

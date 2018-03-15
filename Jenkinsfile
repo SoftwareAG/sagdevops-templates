@@ -3,13 +3,13 @@ def testTemplates(templates) {
     def builders = [:]
     for (x in templates) {
         def template = x // Need to bind the label variable before the closure - can't do 'for (label in labels)'
-        builders[template] = {
+        //builders[template] = {
             sh "docker-compose run --rm -e CC_TEMPLATE=$template test"
             junit "build/tests/**/*.xml"
-            archive "templates/${template}.zip"
-        }                        
+            archive "build/templates/${template}.zip"
+        //}                        
     }
-    parallel builders // kick off parallel provisioning    
+    //parallel builders // kick off parallel provisioning    
 }
 
 pipeline {
@@ -36,8 +36,7 @@ pipeline {
             }
         }
         stage("Test") {
-            steps {
-                // sh "docker-compose run --rm -e CC_TEMPLATE=jenkins test"    
+            steps {   
                 testTemplates(['jenkins', 'sag-creds', 'sag-repos'])
             }
             post {
