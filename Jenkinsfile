@@ -5,7 +5,7 @@
 def testTemplates(templates) {
     for (t in templates) {
         // do we have custom docker-componse.yml ?
-        boolean customEnv = new File("templates/$t/docker-compose.yml").exists()
+        boolean customEnv = fileExists("templates/$t/docker-compose.yml")
         
         // init the env
         if (customEnv) {
