@@ -10,7 +10,7 @@ def testTemplates(templates) {
         // init the env
         if (customEnv) {
             dir("templates/$t") {
-                sh "docker-compose run --name $t-env --rm -e CC_TEMPLATE=$t init"
+                sh "docker-compose -p $t run --name $t-env --rm -e CC_TEMPLATE=$t init"
             }
         }
         
@@ -38,6 +38,7 @@ pipeline {
     environment {
         SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
         EMPOWER = credentials('empower')
+        COMPONE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage('Init') {
