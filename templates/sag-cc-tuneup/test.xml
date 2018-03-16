@@ -1,0 +1,17 @@
+<project xmlns:au="antlib:org.apache.ant.antunit" >
+  <import file="../../build.xml" />
+
+  <target name="suiteSetUp" depends="sagenvInit2">
+  </target>
+    
+	<target name="test-tuneup-cce" >
+		<cc command="get configuration data local OSGI-CCE COMMON-SYSPROPS refresh=true" 
+			expectedvalues="com.softwareag.platform.management.client.template.composite.restart.online.status.poll.timeout.miliseconds" format="json" />
+	</target>
+    
+	<target name="test-tuneup-spm">
+		<cc command="get configuration data local OSGI-SPM COMMON-SYSPROPS refresh=true" 
+			expectedvalues="com.softwareag.plm.sum.cc.override.resolve.validation" format="json" />
+	</target>
+
+</project>

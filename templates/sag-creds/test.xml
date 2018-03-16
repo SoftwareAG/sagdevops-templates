@@ -1,8 +1,7 @@
-<project name="jenkins" xmlns:au="antlib:org.apache.ant.antunit" >
+<project xmlns:au="antlib:org.apache.ant.antunit" >
     <import file="../../build.xml" />
 
     <target name="suiteSetUp" depends="sagenvInit2">
-        <property file="${env.properties}" />
         <echo>${empower.username}</echo>
 		<cc command="list configuration instances local OSGI-CCE-ENGINE refresh=true" format="csv" />
     </target>

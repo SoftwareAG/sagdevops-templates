@@ -14,18 +14,27 @@
 
 	<!-- standard header end -->
 
-	<target name="apply" description="Apply $CC_TEMPLATE" >
+	<target name="templateInit">
+		<fail unless="env.CC_TEMPLATE">
+			MUST provide $CC_TEMPLATE envrionment variable to run 'apply' and 'test' targets
+		</fail>
+		<condition property="env.properties" value="${project.dir}/templates/${env.CC_TEMPLATE}/env.properties" else="${project.dir}/environments/dev/env.properties">
+			<available file="${project.dir}/templates/${env.CC_TEMPLATE}/env.properties"/>
+		</condition>		
+	</target>
+
+	<target name="apply" description="Apply $CC_TEMPLATE" depends="templateInit" >
 		<antcall target="sagenv.apply">
 			<param name="t" value="templates/${env.CC_TEMPLATE}"/>
-			<param name="env.properties" value="templates/${env.CC_TEMPLATE}/env.properties"/>
+			<param name="env.properties" value="${env.properties}"/>
 		</antcall>
-	</target>	
+	</target>
 
-	<target name="test" description="Test $CC_TEMPLATE" if="env.CC_TEMPLATE">
+	<target name="test" description="Test $CC_TEMPLATE" if="env.CC_TEMPLATE" depends="templateInit">
 		<antcall target="sagtest.test">
 			<param name="fileset.dir" value="templates/${env.CC_TEMPLATE}"/>
-			<param name="env.properties" location="templates/${env.CC_TEMPLATE}/env.properties"/>	
-			<param name="env.properties.full.path" location="templates/${env.CC_TEMPLATE}/env.properties"/>	
+			<param name="env.properties" value="${env.properties}"/>
+			<param name="env.properties.full.path" location="${env.properties}"/>	
 		</antcall>
 	</target>	
 

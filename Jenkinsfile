@@ -33,7 +33,7 @@ pipeline {
             parallel {
                 stage('Command Central') {
                     steps {
-                        testTemplates(['sag-creds', 'sag-repos'])
+                        testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
                     }
                 }
                 stage('Jenkins') {
