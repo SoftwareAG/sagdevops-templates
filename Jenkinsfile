@@ -57,6 +57,7 @@ pipeline {
             steps {
                 sh 'docker-compose pull'
                 sh 'docker-compose run --rm initcc'
+                sh 'docker-compose port cc 8091'
             }
         }
         stage("Test") {
