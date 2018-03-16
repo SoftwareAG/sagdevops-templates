@@ -34,7 +34,7 @@ def testTemplates(templates) {
             }        
 
             // cleanup build/ files
-            sh "docker-compose run --name $t --rm -e CC_TEMPLATE=$t test antc clean"
+            sh "docker-compose run --name $t --rm -e CC_TEMPLATE=$t test antcc clean"
         }       
     }   
 }
