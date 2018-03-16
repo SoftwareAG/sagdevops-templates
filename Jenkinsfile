@@ -38,7 +38,7 @@ pipeline {
     environment {
         SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
         EMPOWER = credentials('empower')
-        COMPONE_PROJECT_NAME = 'sagdevops-templates'
+        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage('Init') {

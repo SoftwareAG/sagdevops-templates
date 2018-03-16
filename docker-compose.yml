@@ -111,4 +111,4 @@ services:
       - SAG_AQUARIUS
       - EMPOWER_USR
       - EMPOWER_PSW
-    command: antcc clean apply test
+    command: antcc apply test
