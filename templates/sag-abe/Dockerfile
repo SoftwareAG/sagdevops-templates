@@ -1,4 +1,4 @@
-FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-builder as builder
+FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal as builder
 
 FROM daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
 

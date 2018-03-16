@@ -1,0 +1,32 @@
+#!/usr/bin/env groovy
+// curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+
+def testTemplates(templates) {
+    for (t in templates) {
+        dir("templates/$t") {
+            sh "docker build -t $t ."
+        }
+    }   
+}
+
+pipeline {
+    agent {
+        label 'docker'
+    }
+    environment {
+        SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
+        EMPOWER = credentials('empower')
+        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+    }
+    stages {
+        stage("Build") {
+            parallel {
+                stage('Universal Messaging') {
+                    steps {
+                        buildImages(['sag-um-server'])
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,15 +1,23 @@
 # MUST start with builder image to run provisioning using template.yaml
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-builder
-#ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
+FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal as builder
 
 ARG RELEASE=10.2
 ARG VERSION=10.2.0.0
+ARG SAG_AQUARIUS=aquarius-bg.eur.ad.sag
 
-FROM ${BUILDER_IMAGE} as builder
+WORKDIR /usr/share/sagcc/init
+
+# add all files
+ADD . .
+
+RUN rm -f /root/.sag/cc.properties 
+
+RUN antcc startcc waitcc -Dinstall.dir=$SAG_HOME && \
+    antcc library templates licenses repos devrepos && \
+    antcc apply -Denv.properties=build.properties
 
 # ADOPTED from docker file created by UM install
-FROM $BASE_IMAGE
+FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
 
 # ENV SAG_HOME /opt/softwareag
 ENV UM_HOME $SAG_HOME/UniversalMessaging
