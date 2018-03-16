@@ -5,8 +5,6 @@ services:
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
     ports:
       - target: 5555
-    environment:
-      - CC_AUTO_REGISTER=1
 
   init: # init container
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
@@ -17,7 +15,7 @@ services:
       - CC_SERVER=cc
       - CC_ENV   
     command:
-      antcc nodes -Dnodes=msc_1:sagmscserver_msc_1
+      antcc waitnodes -Dnodes=msc_1:sagmscserver_msc_1
     depends_on: 
       - msc
 
