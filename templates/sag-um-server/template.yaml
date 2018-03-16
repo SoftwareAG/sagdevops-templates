@@ -3,7 +3,7 @@ description: Universal Messaging Realm server
 
 environments:
   default:
-    um.numrealmserver.license.key: "*_NUMWF_10.*_*_${os.platform}" # UM license key
+    um.numrealmserver.license.key: "*_NUMWF_10.*_*_*" # UM license key
     um.instance.name:    default            # server instance name
     um.realm:            default            # realm name
     um.instance.port:    9000               # primary port

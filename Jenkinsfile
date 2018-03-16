@@ -4,9 +4,26 @@
 
 def testTemplates(templates) {
     for (t in templates) {
+        // do we have custom docker-componse.yml ?
+        boolean customEnv = new File("templates/$t/docker-compose.yml").exists()
+        
+        // init the env
+        if (customEnv) {
+            dir("templates/$t") {
+                sh "docker-compose run --name $t-env --rm -e CC_TEMPLATE=$t init"
+            }
+        }
+        
         sh "docker-compose run --name $t --rm -e CC_TEMPLATE=$t test"
         junit "build/tests/**/*.xml"
         archive "build/templates/${t}.zip"
+        
+        // down the env
+        if (customEnv) {
+            dir("templates/$t") {
+                sh "docker-compose down"
+            }
+        }        
     }   
 }
 
@@ -41,6 +58,21 @@ pipeline {
                         testTemplates(['jenkins'])
                     }
                 }
+                stage('Universal Messaging') {
+                    steps {
+                        testTemplates(['sag-um-server'])
+                    }
+                }
+                stage('Terracotta') {
+                    steps {
+                        testTemplates([])
+                    }
+                }
+                stage('Integration Server') {
+                    steps {
+                        testTemplates([])
+                    }
+                }                                                
             }
         }
     }

@@ -23,7 +23,7 @@ layers:
 templates:
   msc-server:
     licenses:
-      "IntegrationServer/config/licenseKey.xml": ${is.msc.license.key} 
+      "IntegrationServer/config/licenseKey.xml": "${is.msc.license.key}" 
     fixes: ${is.fixes}
     products:
       MSC:
