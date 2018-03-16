@@ -84,7 +84,7 @@ pipeline {
                 }
                 stage('Integration Server') {
                     steps {
-                        testTemplates(['sag-msc-server'])
+                        testTemplates(['sag-is-server'])
                     }
                 }                                                
             }
