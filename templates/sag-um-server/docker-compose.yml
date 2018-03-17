@@ -5,7 +5,9 @@ services:
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
     ports:
       - target: 9000
-
+    environment:
+      - CC_AUTO_REGISTER=0
+      
   init: # init container
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
     volumes: 

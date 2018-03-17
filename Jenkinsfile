@@ -77,16 +77,16 @@ pipeline {
                         testTemplates(['sag-um-server'])
                     }
                 }
-                stage('Terracotta') {
-                    steps {
-                        testTemplates([])
-                    }
-                }
-                stage('Integration Server') {
-                    steps {
-                        testTemplates(['sag-is-server'])
-                    }
-                }                                                
+                // stage('Terracotta') {
+                //     steps {
+                //         testTemplates([])
+                //     }
+                // }
+                // stage('Integration Server') {
+                //     steps {
+                //         testTemplates(['sag-is-server'])
+                //     }
+                // }                                                
             }
         }
     }
