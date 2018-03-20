@@ -5,13 +5,13 @@ def buildImages(templates) {
     for (t in templates) {
         dir("templates/$t") {
             docker.withRegistry("${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_REGISTRY_CREDS}") {
-                def customImage = docker.build("ccdevops/${t}:${env.VERSION}.${env.BUILD_ID}", 
+                def customImage = docker.build("ccdevops/${t}:${env.VERSION}.${env.BUILD_NUMBER}", 
                     "--pull \
                     --build-arg RELEASE=${env.RELEASE} \
                     --build-arg VERSION=${env.VERSION} \
-                    --build-arg REPO_PRODUCTS_URL=${env.REPO_PRODUCTS_URL} \
-                    --build-arg REPO_FIXES_URL=${env.REPO_FIXES_URL} \
-                    --build-arg LICENSES_URL=${env.LICENSES_URL} \
+                    --build-arg REPO_PRODUCTS_URL='${env.REPO_PRODUCTS_URL}' \
+                    --build-arg REPO_FIXES_URL='${env.REPO_FIXES_URL}' \
+                    --build-arg LICENSES_URL='${env.LICENSES_URL}' \
                     ")
                 customImage.push()
             }
