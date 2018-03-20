@@ -43,6 +43,9 @@
 		</antcall>
 	</target>
 
+	<target name="builderBuild" depends="builderStart,builderInit,validate,apply,log,logs,builderStop,builderCleanup">
+	</target>
+
 	<target name="validate" description="Validate template without applying" depends="import" >
 		<fail unless="alias">
             Neither template '${alias}' nor template source '${t}' are specified!
