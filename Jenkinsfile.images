@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 // curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def testTemplates(templates) {
+def buildImages(templates) {
     for (t in templates) {
         dir("templates/$t") {
             sh "docker build -t $t ."
