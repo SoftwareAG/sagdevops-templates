@@ -30,17 +30,25 @@
 
 	<target name="builderInit" description="" depends="sagenvInit2" >
 		<echo>
-			Validating template '${alias}' with '${env.properties}' ${apply.params} ...
+			Initializing builder ...
 		</echo>
 
-		<cc command="add repository products master name=products location=${env.REPO_PRODUCTS_URL} username=${env.REPO_PRODUCTS_USERNAME} password=${env.REPO_PRODUCTS_PASSWORD}" 
+		<!-- defaults -->
+		<property name="env.SAG_AQUARIUS" value="aquarius-bg.eur.ad.sag" />
+		<property name="repo.product.url" value="http://${env.SAG_AQUARIUS}/dataserveSuiteInt/repository" />
+		<property name="repo.product.username" value="latest" />
+		<property name="repo.product.password" value="latest" />
+		<property name="repo.fix.url" value="http://${env.SAG_AQUARIUS}/updates/GA_Fix_Repo" />
+		<property name="repo.fix.username" value="sum" />
+		<property name="repo.fix.password" value="sum" />
+		<property name="licenses.zip.url" value="http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Frelease%2F101oct2017" />
+
+		<cc command="add repository products master name=products location=${repo.product.url} username=${repo.product.username} password=${repo.product.password}" 
 			syncjob="true" waitforcc="300" format="tsv" wait="12" checkevery="2" expectedvalues="DONE" />
-		<cc command="add repository fixes master name=fixes location=${env.REPO_FIXES_URL} username=${env.REPO_FIXES_USERNAME} password=${env.REPO_FIXES_PASSWORD}" 
+		<cc command="add repository fixes master name=fixes location=${repo.fix.url} username=${repo.fix.username} password=${repo.fix.password}" 
 			syncjob="true" waitforcc="300" format="tsv" wait="12" checkevery="2" expectedvalues="DONE" />
 
-		<antcall target="licenses">
-			<param name="licenses.zip.url" value="${env.LICENSES_URL}" />
-		</antcall>
+		<antcall target="licenses" />
 	</target>
 
 	<target name="builderBuild" depends="builderStart,builderInit,validate,apply,log,logs,builderStop,builderCleanup">
