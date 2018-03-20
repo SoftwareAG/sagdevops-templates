@@ -4,7 +4,17 @@
 def buildImages(templates) {
     for (t in templates) {
         dir("templates/$t") {
-            sh "docker build -t $t ."
+            docker.withRegistry("${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_REGISTRY_CREDS}") {
+                def customImage = docker.build("ccdevops/${t}:${env.VERSION}.${env.BUILD_ID}", 
+                    "--pull \
+                    --build-arg RELEASE=${env.RELEASE} \
+                    --build-arg VERSION=${env.VERSION} \
+                    --build-arg REPO_PRODUCTS_URL=${env.REPO_PRODUCTS_URL} \
+                    --build-arg REPO_FIXES_URL=${env.REPO_FIXES_URL} \
+                    --build-arg LICENSES_URL=${env.LICENSES_URL} \
+                    ")
+                customImage.push()
+            }
         }
     }   
 }
@@ -14,12 +24,15 @@ pipeline {
         label 'docker'
     }
     environment {
-        SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
-        EMPOWER = credentials('empower')
-        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-
+        DOCKER_REGISTRY_URL = 'daerepository03.eur.ad.sag:4443'
+        DOCKER_REGISTRY_CREDS = 'docker-registry'
+ 
         RELEASE='10.2'
         VERSION='10.2.0.0'
+
+        SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
+        EMPOWER = credentials('empower')
+
         REPO_PRODUCTS_URL="http://aquarius-bg.eur.ad.sag/dataserveSuiteInt/repository"
         REPO_PRODUCTS_USERNAME='latest'
         REPO_PRODUCTS_PASSWORD='latest'
@@ -27,6 +40,8 @@ pipeline {
         REPO_FIXES_USERNAME='sum'
         REPO_FIXES_PASSWORD='sum'
         LICENSES_URL="http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-all-licenses.zip?at=refs%2Fheads%2Frelease%2F101oct2017"
+
+        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage("Build") {
