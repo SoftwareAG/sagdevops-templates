@@ -3,7 +3,13 @@ FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal as bu
 
 ARG RELEASE=10.2
 ARG VERSION=10.2.0.0
-ARG SAG_AQUARIUS=aquarius-bg.eur.ad.sag
+ARG REPO_PRODUCTS_URL=http://daeaquarius01.eur.ad.sag/dataserveSuiteInt/repository
+ARG REPO_PRODUCTS_USERNAME=latest
+ARG REPO_PRODUCTS_PASSWORD=latest
+ARG REPO_FIXES_URL=http://aquarius-va.ame.ad.sag/updates/GA_Fix_Repo
+ARG REPO_FIXES_USERNAME=sum
+ARG REPO_FIXES_PASSWORD=sum
+ARG LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-all-licenses.zip?at=refs%2Fheads%2Frelease%2F101oct2017
 
 WORKDIR /usr/share/sagcc/init
 
@@ -12,9 +18,7 @@ ADD . .
 
 RUN rm -f /root/.sag/cc.properties 
 
-RUN antcc startcc waitcc -Dinstall.dir=$SAG_HOME && \
-    antcc library templates licenses repos devrepos && \
-    antcc apply -Denv.properties=build.properties
+RUN antcc builderStart builderInit apply -Denv.properties=build.properties
 
 # ADOPTED from docker file created by UM install
 FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node

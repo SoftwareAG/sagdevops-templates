@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project name="main" xmlns="antlib:org.apache.tools.ant" basedir="." default="apply" >
+	
+	<!-- standard header start -->
+
+	<property environment="env" />
+	<condition property="antcc.home" value="${env.ANTCC_HOME}" else="antcc">
+		<isset property="env.ANTCC_HOME"/>
+	</condition>
+	<import file="${antcc.home}/build.xml" />
+
+	<!-- standard header end -->
+
+	<target name="builderStart" description="">
+		<antcall target="startcc">
+			<param name="install.dir" value="${env.SAG_HOME}"/>
+		</antcall>
+		<antcall target="waitcc" />
+	</target>
+
+	<target name="builderStop" description="">
+		<antcall target="stopcc">
+			<param name="install.dir" value="${env.SAG_HOME}"/>
+		</antcall>
+	</target>
+
+	<target name="builderCleanup" description="">
+		<echo>Delete stuff</echo>
+	</target>	
+
+	<target name="builderInit" description="" depends="sagenvInit2" >
+		<echo>
+			Validating template '${alias}' with '${env.properties}' ${apply.params} ...
+		</echo>
+
+		<cc command="add repository products master name=products location=${env.REPO_PRODUCTS_URL} username=${env.REPO_PRODUCTS_USERNAME} password=${env.REPO_PRODUCTS_PASSWORD}" 
+			syncjob="true" waitforcc="300" format="tsv" wait="12" checkevery="2" expectedvalues="DONE" />
+		<cc command="add repository fixes master name=fixes location=${env.REPO_FIXES_URL} username=${env.REPO_FIXES_USERNAME} password=${env.REPO_FIXES_PASSWORD}" 
+			syncjob="true" waitforcc="300" format="tsv" wait="12" checkevery="2" expectedvalues="DONE" />
+
+		<antcall target="licenses">
+			<param name="licenses.zip.url" value="${env.LICENSES_URL}" />
+		</antcall>
+	</target>
+
+	<target name="validate" description="Validate template without applying" depends="import" >
+		<fail unless="alias">
+            Neither template '${alias}' nor template source '${t}' are specified!
+        </fail>
+
+		<echo>
+			Validating template '${alias}' with '${env.properties}' ${apply.params} ...
+		</echo>
+
+		<cc command="exec templates composite validate ${alias} ${apply.params} properties=id includeHeaders=false" waitforcc="300" format="tsv" wait="${w}" checkevery="15" input="${env.properties}" outputproperty="jobid" />
+		<cc command="list jobmanager jobs ${jobid} properties=status,description,statusAsString,customStatus includeHeaders=false" expectedvalues="DONE|ERROR|WARNING|TIMEDOUT|ConnectException" wait="${w}" checkevery="5" error="${build.dir}/logs/waiting" format="tsv" />
+        <cc command="list jobmanager jobs ${jobid} properties=customStatus includeHeaders=false" outputproperty="job.status" format="tsv" />
+		
+		<antcall target="log" />
+
+		<fail>
+			<condition>
+				<equals arg1="${job.status}" arg2="VALIDATION FAILED" />
+			</condition>
+			Validation FAILED. See validation report details in the log above
+		</fail>
+		
+		<echo>Validation SUCCESSFUL</echo>
+	</target>
+
+</project>
