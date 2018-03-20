@@ -12,7 +12,7 @@ def buildImages(templates) {
                     --build-arg REPO_PRODUCTS_URL='${env.REPO_PRODUCTS_URL}' \
                     --build-arg REPO_FIXES_URL='${env.REPO_FIXES_URL}' \
                     --build-arg LICENSES_URL='${env.LICENSES_URL}' \
-                    ")
+                    . ")
                 customImage.push()
             }
         }
