@@ -1,4 +1,4 @@
-alias: sag-creds-dev
+alias: sag-cc-creds-dev
 description: Configure product and fix repo credentials
 version: 0.1
 changes:
