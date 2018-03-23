@@ -1,0 +1,74 @@
+alias: sag-cc-repos-ga
+description: SAG INTERNAL GA product and fix repos
+version: 10.2.0
+changes:
+  - 10.0.1 Added centralized credentials
+  - 10.1.0 Adding 10.1 GA repo
+  - 10.2.0 Adding 10.2 GA repo  
+  
+environments:
+  default:
+    aqu.host:      aquarius-bg.eur.ad.sag  # closest AQU server
+    sum.host:      aquarius-va.ame.ad.sag  # closest SUM server
+
+repositories:
+  fix: # cross-version fix repos                         
+    QARepo:
+      description: LATEST Fix MILESTONE candidates
+      host: ${sum.host}
+      credentials: REPO-FIX
+
+    intRepo:
+      description: LATEST Fix RELEASE candidates
+      host: ${sum.host}
+      credentials: REPO-FIX
+
+    GA_Fix_Repo:
+      description: LATEST Fix RELEASES
+      host: ${sum.host}
+      name: GA_Fix_Repo
+      credentials: REPO-FIX
+
+  product: # GA repos, oldest first to allow registration by older CC without failures
+
+    webMethods-9.8_GA:
+      description: 9.8 GA
+      host: ${aqu.host}
+      name: 98apr2015_SuiteProd
+      credentials: REPO-PRODUCT
+
+    webMethods-9.9_GA:
+      description: 9.9 GA
+      host: ${aqu.host}
+      name: 99oct2015_SuiteProd
+      credentials: REPO-PRODUCT
+       
+    webMethods-9.10_GA:
+      description: 9.10 GA
+      host: ${aqu.host}
+      name: 910apr2016_SIC
+      credentials: REPO-PRODUCT
+      
+    webMethods-9.12_GA:
+      description: 9.12 GA
+      host: ${aqu.host}
+      name: 912oct2016_SIC
+      credentials: REPO-PRODUCT
+    
+    webMethods-10.0_GA:
+      description: 10.0 GA
+      host: ${aqu.host}
+      name: 100apr2017_SIC
+      credentials: REPO-PRODUCT
+
+    webMethods-10.1_GA:
+      description: 10.1 GA
+      host: ${aqu.host}
+      name: 101oct2017_SIC
+      credentials: REPO-PRODUCT
+
+    webMethods-10.2_GA:
+      description: 10.2 GA
+      host: ${aqu.host}
+      name: 102apr2018_SIC
+      credentials: REPO-PRODUCT

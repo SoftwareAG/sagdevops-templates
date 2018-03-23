@@ -1,0 +1,71 @@
+alias: sag-ninja-cluster
+description: Ninja cluster with DB
+
+environments:
+  default:
+    ninja.instance.name: cluster
+    ninja.http.port: 5335
+    ninja.https.port: 5336
+    ninja.jmx.port: 5337 
+    ninja.console.port: 5338
+    ninja.memory.max: 128
+
+    db.type: sqlserver
+    db.name: NINJATOOLS
+    db.host: vmbpmsql.eur.ad.sag
+    db.port: 1433
+    db.url: jdbc:wm:${db.type}://${db.host}:${db.port};databaseName=${db.name}
+    db.username: vmtest
+    db.password: vmtest
+
+layers:
+  db:
+    databases:
+      schemas:
+        components:  [] # should be non-empty for real product
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+
+  runtime:
+    productRepo: ${repo.product} 
+    fixRepo: ${repo.fix}         
+    templates: ninja
+    
+templates:
+  ninja:
+    products:
+      NINJA:
+        ${ninja.instance.name}:
+          http.port: ${ninja.http.port}
+          https.port: ${ninja.https.port}
+          jmx.port: ${ninja.jmx.port}
+          console.port: ${ninja.console.port} 
+          db.url: ${db.url}
+          db.username: ${db.username}
+          db.password: ${db.password}
+          configuration:
+            OSGI-NINJA_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: 64
+                  MaxSize: ${ninja.memory.max}
+              COMMON-JDBC:
+                COMMON-JDBC-default:
+                  Pool:
+                    "@alias": "Default"
+                    Name: Default
+                    Description: Default database jdbc pool
+                    DatabaseServer:
+                      "@type": "SQLSERVER"
+                      URL: ${db.url}
+                      User: ${db.username}
+                      Password: ${db.password}
+
+provision:
+  default:
+    db: local # always create db schemas from local node
+    runtime: ${nodes}
