@@ -1,16 +1,12 @@
 # MUST start with builder image to run provisioning using template.yaml
 FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal as builder
 
-ARG RELEASE=10.2
-ARG VERSION=10.2.0.0
-ARG REPO_PRODUCTS_URL=http://daeaquarius01.eur.ad.sag/dataserveSuiteInt/repository
-ARG REPO_PRODUCTS_USERNAME=latest
-ARG REPO_PRODUCTS_PASSWORD=latest
-ARG REPO_FIXES_URL=http://aquarius-va.ame.ad.sag/updates/GA_Fix_Repo
-ARG REPO_FIXES_USERNAME=sum
-ARG REPO_FIXES_PASSWORD=sum
-ARG LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-all-licenses.zip?at=refs%2Fheads%2Frelease%2F101oct2017
+ARG RELEASE
+ARG SAG_AQUARIUS=aquarius-bg.eur.ad.sag
+ARG REPO_PRODUCT
+ARG REPO_FIX
 
+# fix me
 RUN rm -f /root/.sag/cc.properties
 
 WORKDIR /usr/share/sagcc/builder
@@ -18,7 +14,7 @@ ADD . .
 RUN antcc builderBuild -Denv.properties=build.properties
 
 # ADOPTED from docker file created by UM install
-FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
+FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:${RELEASE}-node
 
 # ENV SAG_HOME /opt/softwareag
 ENV UM_HOME $SAG_HOME/UniversalMessaging
@@ -66,7 +62,7 @@ RUN rm -f `find $UM_HOME/ -name *.jks`; rm -rf $UM_HOME/server/license/;rm -rf $
 # is to ask it to start it without using low-latency mode (CORE_SPIN), but this environment variable can be overridden when running the image.
 ENV SERVER_OPTS_EXTRA -DCORE_SPIN=false
 
-LABEL com.softwareag.product="UniversalMessaging" \com.softwareag.product.version="$VERSION" \com.softwareag.webmethodscloud.primaryPort="$UM_PORT"
+# LABEL com.softwareag.product="UniversalMessaging" \com.softwareag.product.version="$VERSION" \com.softwareag.webmethodscloud.primaryPort="$UM_PORT"
 
 # Expose the NSP/NHP port that the realm server starts an interface for by default
 EXPOSE $UM_PORT
