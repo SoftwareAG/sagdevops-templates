@@ -9,7 +9,7 @@ environments:
     is.diagnostic.port: 9999                # Dialgnostic port number
     is.jmx.port:        8094                # JMX port number
     is.memory.init:     64                  # Initial memory size
-    is.memory.max:      128                 # Maximum memory size
+    is.memory.max:      256                 # Maximum memory size
     is.install.service: false
     is.fixes: [wMFix.integrationServer.Core]
 
