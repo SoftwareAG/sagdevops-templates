@@ -1,0 +1,46 @@
+alias: sag-repos-dev
+description: SAG INTERNAL CD product and fix repos
+version: 10.3.0
+changes:
+  - 10.0.1 Added centralized credentials
+  - 10.1.0 Added 10.1 sandbox as trunk
+  - 10.2.0 Added 10.2 sandbox as trunk
+  - 10.3.0 Added 10.3 sandbox as trunk
+
+environments:
+  default:
+    aqu.host:      aquarius-bg.eur.ad.sag  # closest AQU server
+    sandbox:       CC_PI_103oct2018        # product trunk sandbox
+    sum.host:      aquarius-va.ame.ad.sag  # closest SUM server
+
+repositories:
+  fix: # dev and qa fix repos only                   
+    devRepo:
+      description: LATEST Fix SNAPSHOTS
+      host: ${sum.host}
+      credentials: REPO-FIX
+
+    QARepo:
+      description: LATEST Fix MILESTONE candidates
+      host: ${sum.host}
+      credentials: REPO-FIX
+
+  product: # trunk product repos
+
+    SuiteInt:
+      description: Latest MILESTONES
+      name: SuiteInt
+      host: ${aqu.host}
+      credentials: REPO-PRODUCT
+
+    SuiteTest:
+      description: Latest RELEASE candidates
+      host: ${aqu.host}
+      name: SuiteTest
+      credentials: REPO-PRODUCT
+
+    ${sandbox}:
+      description: Latest nightly SNAPSHOTS
+      host: ${aqu.host}
+      name: ${sandbox}
+      credentials: REPO-PRODUCT

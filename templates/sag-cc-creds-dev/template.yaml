@@ -1,0 +1,54 @@
+alias: sag-cc-creds-dev
+description: Configure product and fix repo credentials
+version: 0.1
+changes:
+  - 0.1 create REPO-FIX and REPO-PRODUCT credentials
+
+environments:
+  default:
+    repo.fix.username: sum
+    repo.fix.password: sum
+    repo.product.username: latest
+    repo.product.password: latest
+
+layers:
+  cce:
+    templates:
+      - cc-repo-creds
+
+templates:
+  cc-repo-creds:
+    products:
+      CCE:
+        default:
+          configuration:
+            OSGI-CCE-ENGINE:              
+              COMMON-CREDENTIALS:
+                COMMON-CREDENTIALS-REPO-FIX:
+                    "@alias": REPO-FIX
+                    AuthenticationType: BASIC
+                    UserName: "${repo.fix.username}"
+                    Password: "${repo.fix.password}"
+                    Description: SAG internal SUM creds (sum/sum)
+                COMMON-CREDENTIALS-REPO-PRODUCT:
+                    "@alias": REPO-PRODUCT
+                    AuthenticationType: BASIC
+                    UserName: "${repo.product.username}"
+                    Password: "${repo.product.password}"                    
+                    Description: SAG internal SD creds (latest/latest)
+                COMMON-CREDENTIALS-VMTEST:
+                    "@alias": VMTEST
+                    AuthenticationType: BASIC
+                    UserName: vmtest
+                    Password: vmtest                 
+                    Description: Internal (vmtest/vmtest)
+                COMMON-CREDENTIALS-SECURE_ADMINISTRATOR:
+                    "@alias": SECURE_ADMINISTRATOR
+                    AuthenticationType: BASIC
+                    UserName: Administrator
+                    Password: manage123          
+                    Description: Administrator/manage123    
+provision:
+  default:
+    cce:  
+      - local
