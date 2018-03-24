@@ -37,4 +37,4 @@ services:
       - SAG_AQUARIUS
       - EMPOWER_USR
       - EMPOWER_PSW
-    command: antcc apply test -Dbuild.dir=/tmp
+    command: antcc templateApply templateTest -Dbuild.dir=/tmp
