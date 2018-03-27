@@ -1,14 +1,14 @@
 alias: sag-cc-repos
-description: Default master repositories registration
+description: Default public SAG master repositories
 version: 10.2
 
 environments:
   default:
-    sdc.url: http://sdc.softwareag.com
-    sdc.credentials.key: EMPOWER
+    sdc.url: http://sdc.softwareag.com  # SDC url
+    sdc.credentials.key: EMPOWER        # SDC/Empower credentials key
 
 repositories:
-  product:                      # all supported releases
+  product: 
     # webMethods-10.2:           
     #   location: ${sdc.url}/dataservewebM102/repository/
     #   credentials: ${sdc.credentials.key} 
@@ -29,6 +29,6 @@ repositories:
       location: ${sdc.url}/dataservewebM98/repository/
       credentials: ${sdc.credentials.key}
  
-  fix:                          # public fix repository for all versions
+  fix:                                  # public fix repository for all versions
     Empower:
       credentials: ${sdc.credentials.key}
