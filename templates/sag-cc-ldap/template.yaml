@@ -1,5 +1,5 @@
 alias: sag-cc-ldap
-description: CC sample LDAP configuration and test users/groups
+description: Command Central sample configuration for LDAP and users, groups and roles
 version: 0.2
 changes:
   - 0.1 Initial draft

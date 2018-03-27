@@ -1,0 +1,45 @@
+alias: sag-spm-proxy
+description: Proxy configuration for SPMs
+
+environments:
+  default:
+    nodes: local                                    # by default apply to 'local' SPM
+    # HTTP proxy configuration
+    proxy.http.host: ${}                            # HTTP proxy host, e.g. proxyhost
+    proxy.http.port: ${}                            # HTTP proxy port, e.g. 8080
+    proxy.http.nonproxyhosts: "localhost|.local"    # HTTP proxy bypass, by default localhost and .local domain
+
+    # HTTPS proxy configuration, by default is the same as HTTP
+    proxy.https.host: ${proxy.http.host}            # HTTPS proxy host, e.g. proxyhost
+    proxy.https.port: ${proxy.http.port}            # HTTPS proxy port, e.g. 4443
+    proxy.https.nonproxyhosts: ${proxy.http.nonproxyhosts} # HTTPS proxy bypass
+
+layers:
+  spm:
+    templates:
+      - spm-proxy
+
+templates:
+  spm-proxy:
+    products:
+      SPM:                                          # SPM product
+        default:                                    
+          configuration:                   
+            OSGI-SPM:                               # SPM instance  
+              COMMON-PROXY:                         # Proxy configuration type
+                COMMON-PROXY-HTTP:                  # HTTP proxy configuration
+                  "@alias": HTTP
+                  Protocol: HTTP                    # Protocol MUST be HTTP
+                  Host: ${proxy.http.host}          # Proxy server host name
+                  Port: ${proxy.http.port}          # Proxy server port number
+                  NonProxyHosts: ${proxy.http.nonproxyhosts} # list of hosts to bypass
+                COMMON-PROXY-HTTPS:                 # HTTPS proxy configuration
+                  "@alias": HTTPS
+                  Protocol: HTTPS                   # Protocol MUST be HTTPS
+                  Host: ${proxy.https.host}         # Proxy server host name
+                  Port: ${proxy.https.port}         # Proxy server port name
+                  NonProxyHosts: ${proxy.https.nonproxyhosts} # list of hosts to bypas
+                    
+provision:
+  default:
+    spm: ${nodes} # apply to specified list on nodes

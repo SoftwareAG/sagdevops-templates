@@ -1,5 +1,5 @@
 alias: sag-cc-tuneup
-description: Tune up Command Central
+description: Command Central and SPM tune up configuration
 version: 10.2
 
 environments:
@@ -56,7 +56,7 @@ templates:
           configuration:
             OSGI-CCE:              
               COMMON-SYSPROPS:
-                COMMON-SYSPROPS: |  # system tuneup properties
+                COMMON-SYSPROPS: |  # CCE system tuneup properties
                   com.softwareag.platform.management.job.thread.pool.size=${pool.size.jobs}
                   com.softwareag.platform.management.job.timeout=${timeout.job.seconds}000
                   com.softwareag.platform.management.mirror.job.timeout=${timeout.job.mirror.minutes}
@@ -77,7 +77,7 @@ templates:
           configuration:
             OSGI-SPM: 
               COMMON-SYSPROPS:
-                COMMON-SYSPROPS: |  # system tuneup properties
+                COMMON-SYSPROPS: |  # SPM system tuneup properties
                   com.softwareag.platform.management.job.timeout=${timeout.job.seconds}000
                   com.softwareag.platform.management.mirror.job.timeout=${timeout.job.mirror.minutes}
                   org.eclipse.ecf.provider.filetransfer.retrieve.readTimeout=${timeout.repo.read.seconds}000
@@ -86,6 +86,5 @@ templates:
 
 provision:
   default:
-    cce:  
-      - local
-    spm: ${nodes}
+    cce: local    # apply to local CCE
+    spm: ${nodes} # apply to all SPM's identified by a list of node aliases
