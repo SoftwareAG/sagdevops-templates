@@ -1,53 +1,55 @@
 alias: sag-cc-creds-dev
-description: Configure product and fix repo credentials
-version: 0.1
-changes:
-  - 0.1 create REPO-FIX and REPO-PRODUCT credentials
+description: Examples of defining credential keys
 
 environments:
   default:
-    repo.fix.username: sum
-    repo.fix.password: sum
-    repo.product.username: latest
-    repo.product.password: latest
+    cc.password: "manage"  # Administrator's user custom password
 
 layers:
   cce:
     templates:
-      - cc-repo-creds
+      - cc-creds
 
 templates:
-  cc-repo-creds:
+  cc-creds:
     products:
       CCE:
         default:
           configuration:
-            OSGI-CCE-ENGINE:              
-              COMMON-CREDENTIALS:
-                COMMON-CREDENTIALS-REPO-FIX:
-                    "@alias": REPO-FIX
-                    AuthenticationType: BASIC
-                    UserName: "${repo.fix.username}"
-                    Password: "${repo.fix.password}"
-                    Description: SAG internal SUM creds (sum/sum)
+            OSGI-CCE-ENGINE:                       # This is Command Central engine configuration            
+              COMMON-CREDENTIALS:                  # Credentials configuration type
+                COMMON-CREDENTIALS-REPO-FIX:       # Credentials instance configuration
+                  "@alias": REPO-FIX               # Credentials key alias
+                  AuthenticationType: BASIC        # Basic username/password authentication type
+                  UserName: sum                    # The username
+                                                   # Password is encrypted using default shared secret
+                  Password: '{AES/CBC/PKCS5Padding}{TYLkdSvZqI+PlD8DdW0mtBpS7YVs0T5bnQB52TKNU5g=}{gsqMdVSKf/70j2DwM8a/9w==}4+6+m7782bBw24BiJDecdg=='
+                  Description: "SAG internal fix repos creds"
                 COMMON-CREDENTIALS-REPO-PRODUCT:
-                    "@alias": REPO-PRODUCT
-                    AuthenticationType: BASIC
-                    UserName: "${repo.product.username}"
-                    Password: "${repo.product.password}"                    
-                    Description: SAG internal SD creds (latest/latest)
+                  "@alias": REPO-PRODUCT
+                  AuthenticationType: BASIC
+                  UserName: latest
+                  Password: '{AES/CBC/PKCS5Padding}{aeNt3XOnafYN9XOX8dj97yClyyqHaNdBKqiWJUNh/6E=}{n7AT65ttc1fwViPTchd+lA==}wD8oEkCB0nNryRJJTmYwQw=='                   
+                  Description: "SAG internal product repos creds"
                 COMMON-CREDENTIALS-VMTEST:
-                    "@alias": VMTEST
-                    AuthenticationType: BASIC
-                    UserName: vmtest
-                    Password: vmtest                 
-                    Description: Internal (vmtest/vmtest)
+                  "@alias": VMTEST
+                  AuthenticationType: BASIC
+                  UserName: vmtest                 #
+                  Password: '{AES/CBC/PKCS5Padding}{MPY51jPxhvU2/hkiF9O0GspDsVJ5CRYIlrGj9/waBY0=}{jwS16ftmouyveONqU3ntuA==}JHNIxQmATDCElGGaniRrSA=='                 
+                  Description: "Internal VM access SSH user account"
+                COMMON-CREDENTIALS-SSH-PRIVATE-KEY:
+                  '@alias': SSH-PRIVATE-KEY
+                  AuthenticationType: SSH                    # Can be used for SSH protocol authentication
+                  UserName: ${user.name}                     # User account running CCE, e.g. sagadmin        
+                  PrivateKeyPath: ${user.home}/.ssh/id_rsa   # Default private key location. MUST be there!
+                  KnownHosts: ${user.home}/.ssh/known_hosts  # Default location of the known_hosts file
+                  Description: "${user.name}'s default SSH private key"
                 COMMON-CREDENTIALS-SECURE_ADMINISTRATOR:
-                    "@alias": SECURE_ADMINISTRATOR
-                    AuthenticationType: BASIC
-                    UserName: Administrator
-                    Password: manage123          
-                    Description: Administrator/manage123    
+                  "@alias": SECURE_ADMINISTRATOR
+                  AuthenticationType: BASIC                  # username/password basic authentication
+                  UserName: Administrator                    
+                  Password: "${cc.password}"                 # Password can be customized
+                  Description: "Administrator with custom password"   
 provision:
   default:
     cce:  

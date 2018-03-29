@@ -1,0 +1,29 @@
+<project xmlns:au="antlib:org.apache.ant.antunit" >
+    <import file="../../build.xml" />
+
+    <target name="suiteSetUp" depends="sagenvInit2">
+        <echo>${empower.username}</echo>
+		<cc command="list configuration instances local OSGI-CCE-ENGINE refresh=true" format="csv" />
+    </target>
+    
+	<target name="test-creds-repo-fix" >
+		<cc command="get configuration data local OSGI-CCE-ENGINE COMMON-CREDENTIALS-REPO-FIX" format="json" wait="0" />
+	</target>
+    
+	<target name="test-creds-repo-product">
+		<cc command="get configuration data local OSGI-CCE-ENGINE COMMON-CREDENTIALS-REPO-PRODUCT" format="json" wait="0" />
+	</target>
+
+	<target name="test-creds-vmtest-basic">
+		<cc command="get configuration data local OSGI-CCE-ENGINE COMMON-CREDENTIALS-VMTEST" format="json" wait="0" />
+	</target>
+
+	<target name="test-creds-vmtest-key">
+		<cc command="get configuration data local OSGI-CCE-ENGINE COMMON-CREDENTIALS-SSH-PRIVATE-KEY" format="json" wait="0" />
+	</target>	
+
+	<target name="test-creds-administrator-password">
+		<cc command="get configuration data local OSGI-CCE-ENGINE COMMON-CREDENTIALS-SECURE_ADMINISTRATOR" format="json" wait="0" />
+	</target>
+
+</project>
