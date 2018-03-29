@@ -50,23 +50,25 @@ sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] 
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
   os.username=sagadmin os.password=**** \
-  skip.runtime.validation=true
+  skip.runtime.validation=true \
+  --sync-job --wait 600
 ```
 
-> NOTE: skip.runtime.validation=true is to avoid SSH validation error
+> NOTE: SSH validation must be skipped via `skip.runtime.validation=true`
 
 ## Adding Windows Infrastructure layer to a Stack
 
-Create a new 10.2 DevWin01 stack and provision Windows infrastructure layer onto host1 and host2:
+Create a new 10.2 Dev02 stack and provision Windows infrastructure layer onto host1 and host2:
 
 ```bash
-sagcc create stacks alias=DevWin01 release=10.2
-sagcc create stacks DevWin01 layers alias=WinInfra layerType=INFRA-REMOTE-WINDOWS nodes=host1,host2 \
+sagcc create stacks alias=Dev02 release=10.2
+sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDOWS nodes=host1,host2 \
   cc.installer=cc-def-10.2-fix1-w64.zip \
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
   os.username=sagadmin os.password=**** \
-  skip.runtime.validation=true
+  skip.runtime.validation=true \
+  --sync-job --wait 600
 ```
 
 > NOTE: SSH validation must be skipped via `skip.runtime.validation=true`
@@ -78,15 +80,10 @@ sagcc create stacks DevWin01 layers alias=WinInfra layerType=INFRA-REMOTE-WINDOW
 * Add layer > New nodes
   * Select INFRA-REMOTE-WINDOWS layer definition
   * Choose Microsoft Windows x86-64 operating system and a corresponding Bootsrapper
-  * Provide required parameters such
+  * Provide required parameters such as
     * os.username - remote access account
     * os.password - the account password
     * nodes - one or more host names
+    * install.dir - remote installation directory
   * Finish the wizard
 * Wait until provision jobs completes. Use Jobs view to monitor
-
-## Local Debuging from Mac
-
-```powershell
-pwsh -f templates/sag-spm-boot-winrm/push-bootstrap.ps1 -Computername \["bgninjabvt01"\] -RemoteTempPath C:\\Windows\\Temp -LocalInstallerZip ~/sag/cc/profiles/CCE/data/installers/cc-def-10.2-milestone-w64.zip -RemoteInstallPath C:\\SoftwareAG2 -AcceptLicense -PlainCredentials vmtest:vmtest
-```

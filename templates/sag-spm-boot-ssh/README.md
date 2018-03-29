@@ -7,7 +7,7 @@ UNIX hosts using SSH protocol.
 
 ### Supported Software AG releases
 
-* Command Central 10.2 or later
+* Command Central 10.2 Fix2 or later
 * Platform Manager 9.8 or later
 
 ### Supported platforms
@@ -33,8 +33,9 @@ sagcc list provisioning bootstrap installers
 
 ## Running as a standalone Composite Template
 
-Bootstrap SPM 10.2 on a remote bgcctbp11 Linux host into `/home/vmtest/sag102`
-installation directory listening on port 8292. The remote SSH connection is authenticated with pre-configured `VMTEST` username/password credentials.
+Bootstrap SPM 10.2 into `/home/vmtest/sag102` installation directory listening on port 8292 on
+bgcctbp11 and bgcctbp12 Linux hosts. The remote SSH connection is authenticated with pre-configured
+`VMTEST` username/password credentials.
 
 ```bash
 sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 \
@@ -45,11 +46,11 @@ sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 
   --sync-job --wait 360
 ```
 
-Bootstrap remote UNIX machines on bgcctbp11 host with 10.2 version of SPM into `/home/vmtest/sag103`
-installation directory on port 8392. The remote SSH connection is done using `SSH-PRIVATE-KEY` credentials which point to `~/.ssh/id_rsa` private key on CCE host for the user account that runs CCE, e.g. sagadmin:
+Authenticate SSH connection using pre-configured `SSH-PRIVATE-KEY` credentials which point
+to `~/.ssh/id_rsa` private key on CCE host for the user account that runs CCE, e.g. sagadmin:
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11 \
+sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 \
   cc.installer=cc-def-10.2-fix1-lnxamd64.sh \
   install.dir=/home/vmtest/sag103 \
   spm.port=8392 \
@@ -57,28 +58,28 @@ sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11 \
   --sync-job --wait 360
 ```
 
-## Adding UNIX Infrastructure layer to a Stack
+## Adding UNIX Infrastructure layer to a Stack using CLI
 
-Create a new 10.2 Dev01 stack and provision LnxInfra infrastructure layer onto host1 and host2.
+Create a new 10.1 Dev01 stack and provision LinuxInfra infrastructure layer onto host1 and host2.
 The SSH connection from CCE to host1 and host2 is authenticated via the sagadmin user account private key.
 
 ```bash
-sagcc create stacks alias=Dev01 release=10.2
-sagcc create stacks DevLnx01 layers alias=LnxInfra layerType=INFRA-REMOTE-UNIX nodes=host1,host2 \
-  cc.installer=cc-def-10.2-fix1-lnxadm64.sh \
+sagcc create stacks alias=Dev01 release=10.1
+sagcc create stacks Dev01 layers alias=LinuxInfra layerType=INFRA-REMOTE-UNIX nodes=host1,host2 \
+  cc.installer=cc-def-10.1-fix8-lnxadm64.sh \
   install.dir=/opt/softwareag \
   os.credentials.key=SSH-PRIVATE-KEY \
   --sync-job --wait 360
 ```
 
-## Using from Stacks UI
+## Creating a new Stack with UNIX infrastructure layer using Web UI
 
 * Open Stacks UI
 * Add new stack
 * Add layer > New nodes
   * Select INFRA-REMOTE-UNIX layer definition
-  * Choose Microsoft Windows x86-64 operating system and a corresponding Bootsrapper
-  * Provide required parameters such
+  * Choose the operating system (except Microsoft Windows x86-64), and a corresponding Bootstrapper
+  * Provide required parameters such as
     * os.credentials.key - SSH credentials
     * nodes - one or more host names
     * install.dir - remote installation directory

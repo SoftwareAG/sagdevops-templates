@@ -5,17 +5,16 @@ version: 0.1
 
 environments:
   default:  
-    nodes: ${}                  # REQUIRED: remote hostnames to bootstrap: host1,host2
-    cc.installer: ${}           # REQUIRED: command central bootstrap installer
-    # os.credentials.key: ${}     # REQUIRED: Windows credentials for remote hosts connection
-    os.username: ${}            # TODO: need to be able to extract from os.credentials.key or not use at all
-    os.password: ${}            # TODO: need to be able to extract from os.credentials.key or not use at all
+    # REQUIRED
+    nodes: ${}                  # Remote hostnames to bootstrap, e.g ["host1","host2"]
+    cc.installer: ${}           # Command Central bootstrap installer for Windows, e.g. cc-def-10.2-fix1-w64.zip
+    os.username: ${}            # Remote connection user account username
+    os.password: ${}            # Remove connection user account password
 
-    install.dir: C:\SoftwareAG  # Remote installation dir
+    # OPTIONAL
+    install.dir: C:\SoftwareAG  # Remote installation directory
     spm.port: 8092              # SPM HTTP port
-    os.temp.dir: C:\Windows\Temp        # Can't we use %TEMP%?
-
-    # spm.credentials.key: SECURE_ADMINISTRATOR  # SPM Administrator custom credentials
+    os.temp.dir: C:\Windows\Temp # %TEMP% folder on the remote machine
 
     actions:
       bootstrap.bat:

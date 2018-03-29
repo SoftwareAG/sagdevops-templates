@@ -2,7 +2,6 @@
     <import file="../../build.xml" />
 
     <target name="suiteSetUp" depends="sagenvInit2">
-        <echo>${empower.username}</echo>
 		<cc command="list configuration instances local OSGI-CCE-ENGINE refresh=true" format="csv" />
     </target>
     
