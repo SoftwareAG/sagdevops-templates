@@ -50,11 +50,8 @@ sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] 
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
   os.username=sagadmin os.password=**** \
-  skip.runtime.validation=true \
   --sync-job --wait 600
 ```
-
-> NOTE: SSH validation must be skipped via `skip.runtime.validation=true`
 
 ## Adding Windows Infrastructure layer to a Stack
 
@@ -67,11 +64,10 @@ sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDO
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
   os.username=sagadmin os.password=**** \
-  skip.runtime.validation=true \
   --sync-job --wait 600
 ```
 
-> NOTE: SSH validation must be skipped via `skip.runtime.validation=true`
+See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for `INFRA-REMOTE-WINDOWS` layer type definition.
 
 ## Using from Stacks UI
 

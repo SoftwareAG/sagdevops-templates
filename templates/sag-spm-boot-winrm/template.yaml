@@ -50,6 +50,3 @@ nodes:
     default:
       port: ${spm.port}
       secure: false                     # always start with HTTP
-#      credentials: ${spm.credentials.key} # NOT yet supported
-      bootstrapInfo:
-        installDir: ${install.dir}      # For validation only

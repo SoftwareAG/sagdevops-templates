@@ -72,6 +72,8 @@ sagcc create stacks Dev01 layers alias=LinuxInfra layerType=INFRA-REMOTE-UNIX no
   --sync-job --wait 360
 ```
 
+See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for `INFRA-REMOTE-UNIX` layer type definition.
+
 ## Creating a new Stack with UNIX infrastructure layer using Web UI
 
 * Open Stacks UI
