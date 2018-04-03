@@ -23,7 +23,7 @@ templates:
                   Scalable: 'false'
                   Templates:
                       Template:
-                        "@alias": sag-spm-local
+                        "@alias": sag-spm-boot-local
                 
                 CCE-LAYER-TYPES-INFRA-CONNECT:
                   "@name": INFRA-CONNECT
