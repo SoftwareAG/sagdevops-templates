@@ -1,7 +1,7 @@
 # Bootstrapping Platform Manager on remote UNIX machines
 
-This template allows to install Platform Manager (SPM) on remote
-UNIX hosts using SSH protocol.
+With this template you can install Platform Manager (SPM) on remote
+UNIX hosts using the SSH protocol.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ UNIX hosts using SSH protocol.
 
 ### Supported platforms
 
-* All UNIX platforms for which Command Central bootstrap installers are available for download from Empower
+* All UNIX platforms for which you can download Command Central bootstrap installers from Empower.
 
 > NOTE: Windows platforms are NOT supported by this template. See [sag-spm-boot-winrm](../sag-spm-boot-winrm/README.md)
 
@@ -22,9 +22,9 @@ UNIX hosts using SSH protocol.
 * User account, e.g. sagadmin, with remote SSH login privileges and write access to the target installation directory
 * Credentials for the remote connection user account, e.g. sagadmin, are configured. See [sag-cc-creds-dev](../sag-cc-creds-dev/README.md).
 
-### System requirements for Command Central machine
+### System requirements for the Command Central machine
 
-* Any supported UNIX or Windows operating system
+* All supported UNIX or Windows operating systems
 * Must have Command Central bootstrap installer for the target UNIX platform (*.sh file) saved in `CC_HOME\profiles\CCE\data\installers` folder. Verify by running:
 
 ```bash
@@ -33,8 +33,8 @@ sagcc list provisioning bootstrap installers
 
 ## Running as a standalone Composite Template
 
-Bootstrap SPM 10.2 into `/home/vmtest/sag102` installation directory listening on port 8292 on
-bgcctbp11 and bgcctbp12 Linux hosts. The remote SSH connection is authenticated with pre-configured
+* Bootstraps SPM 10.2 into the `/home/vmtest/sag102` installation directory, listening on port 8292 on
+the bgcctbp11 and bgcctbp12 Linux hosts. The remote SSH connection is authenticated with the pre-configured
 `VMTEST` username/password credentials.
 
 ```bash
@@ -46,8 +46,8 @@ sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 
   --sync-job --wait 360
 ```
 
-Authenticate SSH connection using pre-configured `SSH-PRIVATE-KEY` credentials which point
-to `~/.ssh/id_rsa` private key on CCE host for the user account that runs CCE, e.g. sagadmin:
+* Authenticates the SSH connection using pre-configured `SSH-PRIVATE-KEY` credentials that point
+to the `~/.ssh/id_rsa` private key on the Command Central (CCE) host for the user account that runs CCE, e.g. sagadmin:
 
 ```bash
 sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 \
@@ -58,10 +58,10 @@ sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 
   --sync-job --wait 360
 ```
 
-## Adding UNIX Infrastructure layer to a Stack using CLI
+## Adding UNIX infrastructure layer to a stack using CLI
 
-Create a new 10.1 Dev01 stack and provision LinuxInfra infrastructure layer onto host1 and host2.
-The SSH connection from CCE to host1 and host2 is authenticated via the sagadmin user account private key.
+Creates a new 10.1 Dev01 stack and provisions the LinuxInfra infrastructure layer onto host1 and host2.
+The SSH connection from CCE to host1 and host2 is authenticated through the sagadmin user account private key.
 
 ```bash
 sagcc create stacks alias=Dev01 release=10.1
@@ -76,21 +76,21 @@ See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for `INFRA-REMOTE-UN
 
 ## Creating a new Stack with UNIX infrastructure layer using Web UI
 
-* Open Stacks UI
-* Add new stack
+* Open the Stacks UI
+* Add a new stack
 * Add layer > New nodes
   * Select INFRA-REMOTE-UNIX layer definition
-  * Choose the operating system (except Microsoft Windows x86-64), and a corresponding Bootstrapper
-  * Provide required parameters such as
+  * Choose the operating system (except Microsoft Windows x86-64), and a corresponding bootstrap installer
+  * Provide required parameters, such as
     * os.credentials.key - SSH credentials
     * nodes - one or more host names
     * install.dir - remote installation directory
   * Finish the wizard
-* Wait until provision jobs completes. Use Jobs view to monitor
+* Wait until the provisioning jobs complete. Monitor the jobs from the Jobs view.
 
 ## Local testing
 
-You can test the template against `localhost` on Linux or Mac OS machine if it has SSHD running.
+You can test the template against `localhost` on a Linux or Mac OS machine if it has SSHD running.
 For example:
 
 ```bash
