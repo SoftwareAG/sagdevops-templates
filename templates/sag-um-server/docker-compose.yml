@@ -2,11 +2,10 @@ version: "3.2"
 
 services:
   um:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/node:${RELEASE}
     ports:
       - target: 9000
-    environment:
-      - CC_AUTO_REGISTER=0
+    hostname: um
 
   init: # init container
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
@@ -23,18 +22,7 @@ services:
     depends_on: 
       - um
 
-  builder: # builder container
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
-    volumes: 
-      - ../../clients/docker.properties:/root/.sag/cc.properties
-      - ./:/usr/share/sagcc/builder
-    environment: 
-      - CC_SERVER=cc
-      - CC_ENV 
-    working_dir: /usr/share/sagcc/builder
-    command: antcc validate -Denv.properties=init.properties
-
 networks: 
   default:
     external:
-      name: sagdevopstemplates_default
+      name: sagdevops-templates_default

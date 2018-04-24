@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# if managed image (SPM is present)
 if [ -d $SAG_HOME/profiles/SPM/bin ]; then
     # self-register
     $SAG_HOME/profiles/SPM/bin/register.sh
@@ -12,16 +11,16 @@ fi
 #     The realm name which is parameterised from the environment
 #     Logging which goes to stdout in order to be captured by Docker's logging system
 #     SERVER_OPTS_EXTRA from the environment
-SERVER_OPTS="-DDATADIR=server/$INSTANCE/data
-             -DREALM=$REALM
-             -DSERVERDIR=server/$INSTANCE
-             -DADAPTER_0=nhp://0.0.0.0:$UM_PORT
+SERVER_OPTS="-DDATADIR=server/$UM_INSTANCE_NAME/data
+             -DREALM=$UM_REALM
+             -DSERVERDIR=server/$UM_INSTANCE_NAME
+             -DADAPTER_0=nhp://0.0.0.0:$UM_INSTANCE_PORT
              -DLICENCE_DIR=server/license/
              -DLICENCE_FILE=licence.xml
              -DLOGFILE=/dev/stdout
-             -Djavax.net.ssl.trustStore=server/$INSTANCE/bin/nirvanacacerts.jks
+             -Djavax.net.ssl.trustStore=server/$UM_INSTANCE_NAME/bin/nirvanacacerts.jks
              -Djavax.net.ssl.trustStorePassword=nirvana
-             -Djavax.net.ssl.keyStore=server/$INSTANCE/bin/server.jks
+             -Djavax.net.ssl.keyStore=server/$UM_INSTANCE_NAME/bin/server.jks
              -Djavax.net.ssl.keyStorePassword=nirvana
              -Djava.protocol.handler.pkgs=com.sun.net.ssl.internal.www.protocol
              -Dcom.sun.management.jmxremote
@@ -32,11 +31,11 @@ SERVER_OPTS="-DDATADIR=server/$INSTANCE/data
 
 # The first time the server is run, the data will be a total blank slate. We can live with that, except we want to restore the default *@*
 # full ACL.
-if [[ ! -e server/$INSTANCE/data ]]
+if [[ ! -e server/$UM_INSTANCE_NAME/data ]]
 then
-	echo '*@*' > server/$INSTANCE/bin/secfile.conf
-	SERVER_OPTS="$SERVER_OPTS 
-	-DSECURITYFILE=server/$INSTANCE/bin/secfile.conf"
+    mkdir server/$UM_INSTANCE_NAME/bin
+	echo '*@*' > server/$UM_INSTANCE_NAME/bin/secfile.conf
+	SERVER_OPTS="$SERVER_OPTS -DSECURITYFILE=server/$UM_INSTANCE_NAME/bin/secfile.conf"
 fi
 
 ####
@@ -46,5 +45,5 @@ java $SERVER_OPTS com.pcbsys.nirvana.server.Server $@ &
 
 # Ensure that 'docker stop' performs a clean server shutdown
 export SERVER_PID=$!
-trap "rm server/$INSTANCE/data/RealmServer.lck; wait $SERVER_PID" SIGTERM
+trap "rm server/$UM_INSTANCE_NAME/data/RealmServer.lck; wait $SERVER_PID" SIGTERM
 wait $SERVER_PID
