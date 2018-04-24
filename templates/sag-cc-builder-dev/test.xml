@@ -5,13 +5,11 @@
   </target>
     
 	<target name="test-cc-repos-product" depends="sagenvInit2">
-		<echo>${repo.product}</echo>
-		<cc command="list repository products" expectedvalues="${repo.product}" format="csv" wait="0" />
+		<cc command="list repository products" expectedvalues="products" format="csv" wait="0" />
 	</target>
 
 	<target name="test-cc-repos-fix" depends="sagenvInit2">
-		<echo>${repo.fix}</echo>
-		<cc command="list repository fixes" expectedvalues="${repo.fix}" format="csv" wait="0" />
+		<cc command="list repository fixes" expectedvalues="fixes" format="csv" wait="0" />
 	</target>
 
 </project>
