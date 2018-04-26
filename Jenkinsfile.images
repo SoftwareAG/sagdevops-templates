@@ -53,7 +53,7 @@ pipeline {
     stages {
         stage('Build Builder') {
             steps {
-                sh 'docker-compose up --build builder' // build and start the builder
+                sh 'docker-compose up -d --build builder' // build and start the builder
             }
         }
         stage("Build Images") {
