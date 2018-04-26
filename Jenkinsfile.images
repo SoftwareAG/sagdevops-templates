@@ -16,7 +16,7 @@ def buildImages(templates) {
     }   
 }
 
-def testImages2(templates) {
+def buildImages2(templates) {
     for (t in templates) {
         dir("templates/$t") {
             sh "docker-compose build"
