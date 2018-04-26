@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   um:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/node:${RELEASE}
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
     ports:
       - target: 9000
     hostname: um

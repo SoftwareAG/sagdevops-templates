@@ -1,17 +1,30 @@
 #!/usr/bin/env groovy
 // curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def buildImages(org, templates) {
+def buildImages(templates) {
     for (t in templates) {
         dir("templates/$t") {
             docker.withRegistry("${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_REGISTRY_CREDS}") {
-                def customImage = docker.build("${org}/${t}:${env.VERSION}.${env.BUILD_NUMBER}", 
+                def customImage = docker.build("${env.ORG}/${t}:${env.VERSION}.${env.BUILD_NUMBER}", 
                     "--pull \
+                    --build-arg ORG=${env.ORG} \
                     --build-arg RELEASE=${env.RELEASE} \
-                    --build-arg SAG_AQUARIUS='${env.SAG_AQUARIUS}' \
-                    --build-arg LICENSES_URL='${env.LICENSES_URL}' \
                     . ")
                 customImage.push()
+            }
+        }
+    }   
+}
+
+def testImages2(templates) {
+    for (t in templates) {
+        dir("templates/$t") {
+            sh "docker-compose build"
+            try {
+                sh "docker-compose run --name $t --rm test"
+                sh "docker-compose push"
+            } finally {
+                sh "docker-compose down"
             }
         }
     }   
@@ -22,26 +35,32 @@ pipeline {
         label 'docker'
     }
     environment {
-        RELEASE='10.2'
+        RELEASE = '10.2'   // MUST match the release
+        TAG = "${env.RELEASE}.0.0.${env.BUILD_NUMBER}"        
 
-        SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag' // internal SDC
-        CC_INSTALLER_URL = "http://aquarius-bg.eur.ad.sag/cc/installers" // internal download site
-        CC_INSTALLER = 'cc-def-10.2-milestone-lnxamd64'
-        LICENSES_URL="http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-all-licenses.zip?at=refs%2Fheads%2Frelease%2F101oct2017"
+        // REPO_PRODUCT = '102apr2018_SIC' // corresponding product repo/sandbox
+        // REPO_FIX = 'GA_Fix_Repo' // corresponding fix repo
+        // CC_INSTALLER = 'cc-def-10.2-fix1-lnxamd64' // corresponding installer
 
-        DOCKER_REGISTRY_URL = 'https://daerepository03.eur.ad.sag:4443' // internal docker registry
-        DOCKER_REGISTRY_CREDS = 'docker-registry'
+        // SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag' // internal SDC
+        // CC_INSTALLER_URL = "http://aquarius-bg.eur.ad.sag/cc/installers" // internal download site
 
-        EMPOWER = credentials('empower')
+        // DOCKER_REGISTRY_URL = 'https://daerepository03.eur.ad.sag:4443' // internal docker registry
+        // DOCKER_REGISTRY_CREDS = 'docker-registry'
 
         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
-        stage("Build") {
+        stage('Build Builder') {
+            steps {
+                sh 'docker-compose build builder'
+            }
+        }
+        stage("Build Images") {
             parallel {
-                stage('Universal Messaging') {
+                stage('Ninja') {
                     steps {
-                        buildImages('ccdevops', ['sag-um-server'])
+                        buildImages2(['sag-ninja-server'])
                     }
                 }
             }

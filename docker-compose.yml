@@ -2,28 +2,55 @@ version: "3.2"
 
 services:
   cc: # CC service for development/testing
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-server:${TAG}
     ports:
       - target: 8091 # CCE
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-
-  initcc: # initialize CC using init.sh
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}
-    volumes: 
-      - ./clients/docker.properties:/root/.sag/cc.properties
-      - ./:/src/
-      # - ./environments/:/usr/share/sagcc/init/environments/
-    environment: 
-      - CC_SERVER=cc
-      - CC_ENV
+      - ./init.sh:/opt/sagtools/init.sh
+    environment:
       - LICENSES_URL
       - REPO_HOST
       - REPO_PRODUCT
       - REPO_FIX
-    command: ./init.sh
-    depends_on: 
-      - cc
+
+  builder: # CC builder service for image builds
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+    ports:
+      - 8091 # CCE
+    build:
+      context: .
+      args:
+        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}       
+        - LICENSES_URL
+        - REPO_HOST
+        - REPO_PRODUCT
+        - REPO_FIX
+    environment:
+      - LICENSES_URL
+      - REPO_HOST
+      - REPO_PRODUCT
+      - REPO_FIX
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./init.sh:/opt/sagtools/init.sh
+
+  # initcc: # initialize CC using init.sh
+  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}
+  #   volumes: 
+  #     - ./clients/docker.properties:/root/.sag/cc.properties
+  #     - ./:/src/
+  #     # - ./environments/:/usr/share/sagcc/init/environments/
+  #   environment: 
+  #     - CC_SERVER=cc
+  #     - CC_ENV
+  #     - LICENSES_URL
+  #     - REPO_HOST
+  #     - REPO_PRODUCT
+  #     - REPO_FIX
+  #   command: ./init.sh
+  #   depends_on: 
+  #     - cc
 
   test:
     # FIXME: use client image with antcc
@@ -38,18 +65,3 @@ services:
       - EMPOWER_USR
       - EMPOWER_PSW
     command: antcc templateApply templateTest -Dbuild.dir=/tmp
-
-  builder: # CC builder service for image builds
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/builder:${RELEASE}-dev
-    build:
-      context: .
-      args:
-        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/builder:${RELEASE}       
-        - LICENSES_URL
-        - REPO_HOST
-        - REPO_PRODUCT
-        - REPO_FIX
-    # ports:
-    #   - target: 8091 # CCE
-    # volumes: 
-    #   - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
