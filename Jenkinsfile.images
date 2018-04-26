@@ -35,8 +35,8 @@ pipeline {
         label 'docker'
     }
     environment {
-        RELEASE = '10.2'   // MUST match the release
-        TAG = "${env.RELEASE}.0.0.${env.BUILD_NUMBER}"        
+        RELEASE = '10.2'    // MUST match the release
+        TAG = "10.2.0.1.31" // CC builder tag       
 
         // REPO_PRODUCT = '102apr2018_SIC' // corresponding product repo/sandbox
         // REPO_FIX = 'GA_Fix_Repo' // corresponding fix repo
@@ -57,6 +57,10 @@ pipeline {
             }
         }
         stage("Build Images") {
+            // environment { // target release
+            //     RELEASE = '10.2'   // MUST match the release
+            //     // TAG = "${env.RELEASE}.0.0.${env.BUILD_NUMBER}"
+            // }        
             parallel {
                 stage('Ninja') {
                     steps {
