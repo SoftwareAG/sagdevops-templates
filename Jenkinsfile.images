@@ -53,7 +53,7 @@ pipeline {
     stages {
         stage('Build Builder') {
             steps {
-                sh 'docker-compose build builder'
+                sh 'docker-compose up --build builder' // build and start the builder
             }
         }
         stage("Build Images") {
@@ -70,4 +70,12 @@ pipeline {
             }
         }
     }
+    post {
+        failure {
+            sh 'docker-compose logs cc'
+        }
+        always {
+            sh 'docker-compose down'
+        }
+    }    
 }
