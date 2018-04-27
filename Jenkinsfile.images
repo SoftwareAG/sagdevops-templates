@@ -1,29 +1,32 @@
 #!/usr/bin/env groovy
 // curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def buildImages(templates) {
-    for (t in templates) {
-        dir("templates/$t") {
-            docker.withRegistry("${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_REGISTRY_CREDS}") {
-                def customImage = docker.build("${env.ORG}/${t}:${env.VERSION}.${env.BUILD_NUMBER}", 
-                    "--pull \
-                    --build-arg ORG=${env.ORG} \
-                    --build-arg RELEASE=${env.RELEASE} \
-                    . ")
-                customImage.push()
-            }
-        }
-    }   
-}
+// def buildImages(templates) {
+//     for (t in templates) {
+//         dir("templates/$t") {
+//             docker.withRegistry("${env.DOCKER_REGISTRY_URL}", "${env.DOCKER_REGISTRY_CREDS}") {
+//                 def customImage = docker.build("${env.ORG}/${t}:${env.VERSION}.${env.BUILD_NUMBER}", 
+//                     "--pull \
+//                     --build-arg ORG=${env.ORG} \
+//                     --build-arg RELEASE=${env.RELEASE} \
+//                     . ")
+//                 customImage.push()
+//             }
+//         }
+//     }   
+// }
 
-def buildImages2(templates) {
+def buildAndTestImages(templates) {
     for (t in templates) {
-        dir("templates/$t") {
+        dir ("templates/$t") {
             sh "docker-compose build"
+            sh "docker-compose images"
             try {
                 sh "docker-compose run --name $t --rm test"
+                sh "docker-compose ps"
                 sh "docker-compose push"
             } finally {
+                sh "docker-compose logs"
                 sh "docker-compose down"
             }
         }
@@ -36,19 +39,14 @@ pipeline {
     }
     environment {
         RELEASE = '10.2'    // MUST match the release
-        TAG = "10.2.0.1.31" // CC builder tag       
+        TAG = "10.2.0.1.31" // All images tag      
 
         // REPO_PRODUCT = '102apr2018_SIC' // corresponding product repo/sandbox
         // REPO_FIX = 'GA_Fix_Repo' // corresponding fix repo
         // CC_INSTALLER = 'cc-def-10.2-fix1-lnxamd64' // corresponding installer
 
-        // SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag' // internal SDC
-        // CC_INSTALLER_URL = "http://aquarius-bg.eur.ad.sag/cc/installers" // internal download site
-
         // DOCKER_REGISTRY_URL = 'https://daerepository03.eur.ad.sag:4443' // internal docker registry
         // DOCKER_REGISTRY_CREDS = 'docker-registry'
-
-        //COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage('Build Builder') {
@@ -57,34 +55,31 @@ pipeline {
             }
         }
         stage("Build Images") {
-            // environment { // target release
-            //     RELEASE = '10.2'   // MUST match the release
-            //     // TAG = "${env.RELEASE}.0.0.${env.BUILD_NUMBER}"
-            // }        
             parallel {
                 stage('Ninja') {
                     steps {
-                        buildImages2(['sag-ninja-server'])
+                        buildAndTestImages(['sag-ninja-server'])
                     }
                 }
                 stage('Universal Messaging') {
                     steps {
-                        buildImages2(['sag-um-server'])
+                        buildAndTestImages(['sag-um-server'])
                     }
                 }
                 stage('Intgration Server') {
                     steps {
-                        buildImages2(['sag-msc-server'])
+                        buildAndTestImages(['sag-msc-server'])
                     }
                 }
             }
         }
     }
     post {
-        failure {
-            sh 'docker-compose logs cc'
-        }
+        // failure {
+        //     sh 'docker-compose logs'
+        // }
         always {
+            sh 'docker-compose logs'
             sh 'docker-compose down'
         }
     }    
