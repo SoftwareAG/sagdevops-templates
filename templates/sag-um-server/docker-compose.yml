@@ -2,27 +2,33 @@ version: "3.2"
 
 services:
   um:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
-    ports:
-      - target: 9000
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/universal-messaging:${TAG}
+    build:
+      context: .
+      args:
+        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
     hostname: um
+    ports:
+      - "9000"
+    environment:
+      - CC_SERVER=builder
 
-  init: # init container
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
-    volumes: 
-      - ../../clients/docker.properties:/root/.sag/cc.properties
-      - ../../environments/:/usr/share/sagcc/init/environments/
-      - ../../templates/:/usr/share/sagcc/init/templates/
-    environment: 
-      - CC_SERVER=cc
-      - CC_ENV
-      - SAG_AQUARIUS
-    command:
-      antcc templates sagenv.up waitnodes -Dnodes=um
-    depends_on: 
+  test:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    environment:
+      - CC_SERVER=builder    
+    links:
       - um
+    command: >
+      bash -c '
+      echo "Checking managed container status ..." &&
+      sagcc list monitoring state um -e ONLINE -w 600 --wait-for-cc
+      '
 
 networks: 
   default:
     external:
-      name: sagdevops-templates_default
+      #name: sagdevops-templates_default
+      name: sagdevopstemplates_default
+

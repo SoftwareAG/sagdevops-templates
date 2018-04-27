@@ -67,6 +67,11 @@ pipeline {
                         buildImages2(['sag-ninja-server'])
                     }
                 }
+                stage('Universal Messaging') {
+                    steps {
+                        buildImages2(['sag-um-server'])
+                    }
+                }
             }
         }
     }
