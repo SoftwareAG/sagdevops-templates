@@ -33,9 +33,13 @@ services:
       - ninja
     command: >
       bash -c '
+      echo "Checking managed container status ..." &&
+      sagcc list monitoring state ninja -e ONLINE -w 600 --wait-for-cc &&
+      echo "Verifying NINJA Web UI ..." &&
       curl http://ninja:4444 | grep "Welcome to Software AG Spring Board" &&
       echo "SUCCESSFULL"
       '
+      
   # test2:
   #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
   #   links:
@@ -51,4 +55,4 @@ networks:
     external:
       #name: sagdevops-templates_default
       name: sagdevopstemplates_default
-      
+
