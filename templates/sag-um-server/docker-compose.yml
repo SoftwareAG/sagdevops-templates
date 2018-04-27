@@ -60,8 +60,8 @@ services:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
     environment:
       - CC_SERVER   
-    # links:
-    #   - um
+    links:
+      - um
     command: >
       bash -c '
       echo "Checking managed container status ..." &&
