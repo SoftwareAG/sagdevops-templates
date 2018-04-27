@@ -58,6 +58,9 @@ pipeline {
         label 'docker'
     }
     environment {
+        RELEASE = '10.2'    // MUST match the release
+        TAG = "10.2.0.1.31" // All images tag      
+        
         SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
         EMPOWER = credentials('empower')
     }
