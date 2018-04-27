@@ -46,7 +46,7 @@ services:
     command: > 
       bash -c '
       echo "Register the node and wait until ready ..." &&
-      sagcc add landscape nodes alias=um url="sag-um-server_node_1" -e OK --wait-for-cc &&
+      sagcc add landscape nodes alias=um url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
       sagcc list landscape nodes um -e ONLINE &&
       echo "Apply the template ..." &&
       sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=um repo.product=products repo.fix=fixes &&
