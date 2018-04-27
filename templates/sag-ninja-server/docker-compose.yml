@@ -8,6 +8,7 @@ services:
       args:
         - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
         - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    hostname: ninja
     ports:
       - "4444"
     environment:
@@ -39,7 +40,7 @@ services:
       curl http://ninja:4444 | grep "Welcome to Software AG Spring Board" &&
       echo "SUCCESSFULL"
       '
-      
+
   # test2:
   #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
   #   links:
