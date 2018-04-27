@@ -1,11 +1,6 @@
 #!/bin/sh
 
-if [ -d $SAG_HOME/profiles/SPM/bin ]; then
-    # self-register
-    $SAG_HOME/profiles/SPM/bin/register.sh
-    # start SPM in background
-    $SAG_HOME/profiles/SPM/bin/startup.sh
-fi
+$SAG_HOME/register.sh
 
 # Define all of the usual realm server options, except:
 #     The realm name which is parameterised from the environment
