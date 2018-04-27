@@ -2,6 +2,10 @@
 
 $SAG_HOME/register.sh
 
+UM_INSTANCE_NAME=${UM_INSTANCE_NAME:-default}
+UM_REALM=${UM_REALM:-default}
+UM_INSTANCE_PORT=${UM_INSTANCE_PORT:-9000}
+
 # Define all of the usual realm server options, except:
 #     The realm name which is parameterised from the environment
 #     Logging which goes to stdout in order to be captured by Docker's logging system

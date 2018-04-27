@@ -1,5 +1,10 @@
 version: "3.2"
 
+networks: 
+  default:
+    external:
+      name: sagdevopstemplates_default
+
 services:
   ninja:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}
@@ -50,10 +55,4 @@ services:
   #     curl http://ninja-alpine:4444 | grep "Welcome to Software AG Spring Board" &&
   #     echo "SUCCESSFULL"
   #     '
-
-networks: 
-  default:
-    external:
-      #name: sagdevops-templates_default
-      name: sagdevopstemplates_default
 

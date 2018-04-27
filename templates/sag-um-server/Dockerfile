@@ -15,6 +15,8 @@ ENV JRE_HOME=$SAG_HOME/jvm/jvm/jre/
 
 ENV UM_HOME $SAG_HOME/UniversalMessaging
 
+ENV UM_INSTANCE_NAME=$UM_INSTANCE_NAME
+
 # Default realm name, can be customised by changing this line, or overriding this variable when running the image for the first time. After
 # the image has been run once it is too late to change the realm name in subsequent derived images, as it gets baked into persistent
 # configuration.

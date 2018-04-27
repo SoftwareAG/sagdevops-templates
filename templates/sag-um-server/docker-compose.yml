@@ -1,5 +1,10 @@
 version: "3.2"
 
+networks: 
+  default:
+    external:
+      name: sagdevopstemplates_default
+
 services:
   um:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/universal-messaging:${TAG}
@@ -13,6 +18,10 @@ services:
       - "9000"
     environment:
       - CC_SERVER=builder
+    volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
+      - ../../build/run/data/um1:/opt/softwareag/UniversalMessaging/server/default/data/
+      # JUST for debugging
+      # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
 
   test:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
@@ -25,10 +34,4 @@ services:
       echo "Checking managed container status ..." &&
       sagcc list monitoring state um -e ONLINE -w 600 --wait-for-cc
       '
-
-networks: 
-  default:
-    external:
-      #name: sagdevops-templates_default
-      name: sagdevopstemplates_default
 

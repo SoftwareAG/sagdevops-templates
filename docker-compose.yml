@@ -4,9 +4,11 @@ services:
   cc: # CC service for development/testing
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-server:${TAG}
     ports:
-      - target: 8091 # CCE
+      - 8091 # CCE
     volumes: 
+      # live templates updates
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      # custom init
       - ./init.sh:/opt/sagtools/init.sh
     environment:
       - LICENSES_URL
@@ -51,6 +53,19 @@ services:
   #   command: ./init.sh
   #   depends_on: 
   #     - cc
+
+  client:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    volumes: 
+#      - ./clients/docker.properties:/root/.sag/cc.properties
+      - ./:/src/
+    environment: 
+      - CC_SERVER=builder
+      - CC_TEMPLATE
+      - SAG_AQUARIUS
+      - EMPOWER_USR
+      - EMPOWER_PSW
+    command: sagcc exec composite templates apply $CC_TEMPLATE --sync-job --wait 600
 
   test:
     # FIXME: use client image with antcc

@@ -48,7 +48,7 @@ pipeline {
         // DOCKER_REGISTRY_URL = 'https://daerepository03.eur.ad.sag:4443' // internal docker registry
         // DOCKER_REGISTRY_CREDS = 'docker-registry'
 
-        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+        //COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage('Build Builder') {
