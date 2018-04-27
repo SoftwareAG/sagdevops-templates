@@ -94,11 +94,11 @@ pipeline {
                 //         testTemplates([])
                 //     }
                 // }
-                // stage('Integration Server') {
-                //     steps {
-                //         testTemplates2(['sag-msc-server'])
-                //     }
-                // }                                                
+                stage('Integration Server') {
+                    steps {
+                        testTemplates2(['sag-msc-server'])
+                    }
+                }                                                
             }
         }
     }
