@@ -49,4 +49,6 @@ services:
 networks: 
   default:
     external:
-      name: sagdevops-templates_default
+      #name: sagdevops-templates_default
+      name: sagdevopstemplates_default
+      
