@@ -4,9 +4,6 @@ ARG BUILDER_IMAGE
 ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
-
-# add custom YAML template(s), build properties and entrypoint script
-ADD template.yaml build.properties entrypoint.sh ./
 RUN $CC_HOME/provision.sh
 
 FROM $BASE_IMAGE

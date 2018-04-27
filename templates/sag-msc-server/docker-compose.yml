@@ -1,27 +1,57 @@
 version: "3.2"
 
-services:
-  msc:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
-    ports:
-      - target: 5555
-    environment:
-      - CC_AUTO_REGISTER=0
-      
-  init: # init container
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
-    volumes: 
-      - ../../clients/docker.properties:/root/.sag/cc.properties
-      - ../../environments/:/usr/share/sagcc/init/environments/
-    environment: 
-      - CC_SERVER=cc
-      - CC_ENV   
-    command:
-      antcc waitnodes -Dnodes=msc_1:sagmscserver_msc_1
-    depends_on: 
-      - msc
-
 networks: 
   default:
     external:
       name: sagdevopstemplates_default
+
+services:
+  msr:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/microservices-runtime:${TAG}
+    build:
+      context: .
+      args:
+        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    hostname: msr
+    ports:
+      - "5555"
+    environment:
+      - CC_SERVER=builder
+#    volumes:
+      # JUST for debugging
+      # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
+
+  test:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    environment:
+      - CC_SERVER=builder    
+    links:
+      - msr
+    command: >
+      bash -c '
+      echo "Checking managed container status ..." &&
+      sleep 30 &&
+      sagcc list monitoring state msr -e ONLINE -w 600 --wait-for-cc
+      '
+
+# services:
+#   msc:
+#     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
+#     ports:
+#       - target: 5555
+#     environment:
+#       - CC_AUTO_REGISTER=0
+      
+#   init: # init container
+#     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
+#     volumes: 
+#       - ../../clients/docker.properties:/root/.sag/cc.properties
+#       - ../../environments/:/usr/share/sagcc/init/environments/
+#     environment: 
+#       - CC_SERVER=cc
+#       - CC_ENV   
+#     command:
+#       antcc waitnodes -Dnodes=msc_1:sagmscserver_msc_1
+#     depends_on: 
+#       - msc

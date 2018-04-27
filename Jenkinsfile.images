@@ -72,6 +72,11 @@ pipeline {
                         buildImages2(['sag-um-server'])
                     }
                 }
+                stage('Intgration Server') {
+                    steps {
+                        buildImages2(['sag-msc-server'])
+                    }
+                }
             }
         }
     }
