@@ -6,7 +6,17 @@ networks:
       name: sagdevopstemplates_default
 
 services:
-  um:
+  node: # empty managed node to provision to for dev/test
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    ports:
+      - "9000"
+    # environment:
+    #   - CC_SERVER=cc # auto register with CC server
+    #   - CC_AUTO_REGISTER=0
+    volumes: # TODO?: to have a volume, otherwise UM fails to start!
+      - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
+
+  um: # built UM image with the tested template
     image: ${DOCKER_REGISTRY_URL}/${ORG}/universal-messaging:${TAG}
     build:
       context: .
@@ -17,21 +27,43 @@ services:
     ports:
       - "9000"
     environment:
-      - CC_SERVER=builder
+      - CC_SERVER=builder # auto register with Builder server
     volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
-      - ../../build/run/data/um1:/opt/softwareag/UniversalMessaging/server/default/data/
+      - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
       # JUST for debugging
       # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
 
-  test:
+  provision: # perform provision and smoke test
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER=cc
+      - CC_WAIT=1200
+      - CC_CHECK_EVERY=10
+    depends_on:
+      - node # starts an empty node
+    command: > 
+      bash -c '
+      echo "Register the node and wait until ready ..." &&
+      sagcc add landscape nodes alias=um url="sag-um-server_node_1" -e OK --wait-for-cc &&
+      sagcc list landscape nodes um -e ONLINE &&
+      echo "Apply the template ..." &&
+      sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=um repo.product=products repo.fix=fixes &&
+      echo "Start the instance ..." &&
+      sagcc exec lifecycle start um Universal-Messaging-default -e DONE --sync-job &&
+      echo "Check managed container status ..." &&
+      sagcc list monitoring state um Universal-Messaging-default -e ONLINE
+      '
+
+  test: # 
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
     environment:
       - CC_SERVER=builder    
-    links:
-      - um
+    # links:
+    #   - um
     command: >
       bash -c '
       echo "Checking managed container status ..." &&
       sagcc list monitoring state um -e ONLINE -w 600 --wait-for-cc
       '
-

@@ -39,42 +39,50 @@ def testTemplates(templates) {
     }   
 }
 
+def testTemplates2(templates) {
+    for (t in templates) {
+        dir ("templates/$t") {
+            try {
+                sh "docker-compose run --name $t --rm provision"
+                sh "docker-compose ps"
+            } finally {
+                sh "docker-compose logs"
+                sh "docker-compose down"
+            }
+        }
+    }   
+}
+
 pipeline {
     agent {
         label 'docker'
     }
-    // options {
-    //     buildDiscarder(logRotator(numToKeepStr:'10'))
-    //     disableConcurrentBuilds()
-    // }
     environment {
         SAG_AQUARIUS = 'aquarius-bg.eur.ad.sag'
         EMPOWER = credentials('empower')
-        //COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage('Init') {
             steps {
-                sh 'docker-compose pull'
-                sh 'docker-compose run --rm initcc'
+                sh 'docker-compose up -d cc'
                 sh 'docker-compose port cc 8091'
             }
         }
         stage("Test") {
             parallel {
-                stage('Command Central') {
-                    steps {
-                        testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
-                    }
-                }
-                stage('Jenkins') {
-                    steps {
-                        testTemplates(['jenkins'])
-                    }
-                }
+                // stage('Command Central') {
+                //     steps {
+                //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
+                //     }
+                // }
+                // stage('Jenkins') {
+                //     steps {
+                //         testTemplates(['jenkins'])
+                //     }
+                // }
                 stage('Universal Messaging') {
                     steps {
-                        testTemplates(['sag-um-server'])
+                        testTemplates2(['sag-um-server'])
                     }
                 }
                 // stage('Terracotta') {

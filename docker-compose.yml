@@ -37,46 +37,43 @@ services:
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./init.sh:/opt/sagtools/init.sh
 
-  # initcc: # initialize CC using init.sh
-  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}
-  #   volumes: 
-  #     - ./clients/docker.properties:/root/.sag/cc.properties
-  #     - ./:/src/
-  #     # - ./environments/:/usr/share/sagcc/init/environments/
-  #   environment: 
-  #     - CC_SERVER=cc
-  #     - CC_ENV
-  #     - LICENSES_URL
-  #     - REPO_HOST
-  #     - REPO_PRODUCT
-  #     - REPO_FIX
-  #   command: ./init.sh
-  #   depends_on: 
-  #     - cc
-
-  client:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+  sagcc:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
     volumes: 
-#      - ./clients/docker.properties:/root/.sag/cc.properties
       - ./:/src/
     environment: 
-      - CC_SERVER=builder
-      - CC_TEMPLATE
-      - SAG_AQUARIUS
-      - EMPOWER_USR
-      - EMPOWER_PSW
-    command: sagcc exec composite templates apply $CC_TEMPLATE --sync-job --wait 600
+      - CC_SERVER=cc
+    entrypoint: sagcc
+    command: --help
 
-  test:
-    # FIXME: use client image with antcc
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}-internal
+  sagccant:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
     volumes: 
-      - ./clients/docker.properties:/root/.sag/cc.properties
-      - ./:/usr/share/sagcc/init/
+      - ./:/src/
     environment: 
       - CC_SERVER=cc
-      - CC_TEMPLATE
-      - SAG_AQUARIUS
-      - EMPOWER_USR
-      - EMPOWER_PSW
-    command: antcc templateApply templateTest -Dbuild.dir=/tmp
+    entrypoint: sagccant
+    command: -p
+
+  apply:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER=cc
+    entrypoint: sagcc exec templates composite apply --sync-job --wait 3600 -c 10
+    command: --help
+
+  # test:
+  #   # FIXME: use client image with antcc
+  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}-internal
+  #   volumes: 
+  #     - ./clients/docker.properties:/root/.sag/cc.properties
+  #     - ./:/usr/share/sagcc/init/
+  #   environment: 
+  #     - CC_SERVER=cc
+  #     - CC_TEMPLATE
+  #     - SAG_AQUARIUS
+  #     - EMPOWER_USR
+  #     - EMPOWER_PSW
+  #   command: antcc templateApply templateTest -Dbuild.dir=/tmp
