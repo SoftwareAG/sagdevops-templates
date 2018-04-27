@@ -6,6 +6,34 @@ networks:
       name: sagdevopstemplates_default
 
 services:
+  node: # empty managed node to provision to for dev/test
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    ports:
+      - "5555"
+
+  provision: # perform provision and smoke test
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER=cc
+      - CC_WAIT=1200
+      - CC_CHECK_EVERY=10
+    depends_on:
+      - node # starts an empty node
+    command: > 
+      bash -c '
+      echo "Register the node and wait until ready ..." &&
+      sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
+      sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
+      echo "Apply the template ..." &&
+      sagcc exec templates composite apply sag-msc-server -e DONE --sync-job -i env.properties nodes=${COMPOSE_PROJECT_NAME} repo.product=products repo.fix=fixes &&
+      echo "Start the instance ..." &&
+      sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} OSGI-IS_msc -e DONE --sync-job &&
+      echo "Check managed container status ..." &&
+      sagcc list monitoring state ${COMPOSE_PROJECT_NAME} integrationServer-msc -e ONLINE
+      '
+
   msr:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/microservices-runtime:${TAG}
     build:

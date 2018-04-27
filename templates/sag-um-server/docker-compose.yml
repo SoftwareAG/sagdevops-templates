@@ -16,23 +16,6 @@ services:
     volumes: # TODO?: to have a volume, otherwise UM fails to start!
       - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
 
-  um: # built UM image with the tested template
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/universal-messaging:${TAG}
-    build:
-      context: .
-      args:
-        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
-        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
-    hostname: um
-    ports:
-      - "9000"
-    environment:
-      - CC_SERVER=builder # auto register with Builder server
-    volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
-      - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
-      # JUST for debugging
-      # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
-
   provision: # perform provision and smoke test
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
     volumes: 
@@ -55,6 +38,24 @@ services:
       echo "Check managed container status ..." &&
       sagcc list monitoring state um Universal-Messaging-default -e ONLINE
       '
+
+
+  um: # built UM image with the tested template
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/universal-messaging:${TAG}
+    build:
+      context: .
+      args:
+        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    hostname: um
+    ports:
+      - "9000"
+    environment:
+      - CC_SERVER=builder # auto register with Builder server
+    volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
+      - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
+      # JUST for debugging
+      # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
 
   test: # 
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
