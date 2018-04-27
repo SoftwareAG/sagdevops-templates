@@ -10,13 +10,15 @@ services:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
     ports:
       - "5555"
+    environment:
+      - CC_AUTO_REGISTER=0
 
   provision: # perform provision and smoke test
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
+      - CC_SERVER
       - CC_WAIT=1200
       - CC_CHECK_EVERY=10
     depends_on:
@@ -45,7 +47,7 @@ services:
     ports:
       - "5555"
     environment:
-      - CC_SERVER=builder
+      - CC_SERVER
 #    volumes:
       # JUST for debugging
       # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
@@ -53,33 +55,12 @@ services:
   test:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
     environment:
-      - CC_SERVER=builder    
+      - CC_SERVER
     links:
       - msr
     command: >
       bash -c '
       echo "Checking managed container status ..." &&
       sleep 30 &&
-      sagcc list monitoring state msr -e ONLINE -w 600 --wait-for-cc
+      sagcc list monitoring state msr integrationServer-msc -e ONLINE --wait-for-cc
       '
-
-# services:
-#   msc:
-#     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
-#     ports:
-#       - target: 5555
-#     environment:
-#       - CC_AUTO_REGISTER=0
-      
-#   init: # init container
-#     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
-#     volumes: 
-#       - ../../clients/docker.properties:/root/.sag/cc.properties
-#       - ../../environments/:/usr/share/sagcc/init/environments/
-#     environment: 
-#       - CC_SERVER=cc
-#       - CC_ENV   
-#     command:
-#       antcc waitnodes -Dnodes=msc_1:sagmscserver_msc_1
-#     depends_on: 
-#       - msc

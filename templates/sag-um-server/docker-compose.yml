@@ -10,9 +10,8 @@ services:
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
     ports:
       - "9000"
-    # environment:
-    #   - CC_SERVER=cc # auto register with CC server
-    #   - CC_AUTO_REGISTER=0
+    environment:
+      - CC_AUTO_REGISTER=0
     volumes: # TODO?: to have a volume, otherwise UM fails to start!
       - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
 
@@ -21,7 +20,7 @@ services:
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
+      - CC_SERVER
       - CC_WAIT=1200
       - CC_CHECK_EVERY=10
     depends_on:
@@ -51,7 +50,7 @@ services:
     ports:
       - "9000"
     environment:
-      - CC_SERVER=builder # auto register with Builder server
+      - CC_SERVER # auto register with Builder server
     volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
       - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
       # JUST for debugging
@@ -60,7 +59,7 @@ services:
   test: # 
     image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
     environment:
-      - CC_SERVER=builder    
+      - CC_SERVER   
     # links:
     #   - um
     command: >

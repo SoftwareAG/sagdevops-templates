@@ -67,8 +67,9 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                sh 'docker-compose up -d cc'
-                sh 'docker-compose port cc 8091'
+                sh 'docker-compose up -d --build builder' // build and start the builder
+                //sh 'docker-compose up -d cc'
+                //sh 'docker-compose port cc 8091'
             }
         }
         stage("Test") {
@@ -93,11 +94,11 @@ pipeline {
                 //         testTemplates([])
                 //     }
                 // }
-                stage('Integration Server') {
-                    steps {
-                        testTemplates(['sag-msc-server'])
-                    }
-                }                                                
+                // stage('Integration Server') {
+                //     steps {
+                //         testTemplates2(['sag-msc-server'])
+                //     }
+                // }                                                
             }
         }
     }
