@@ -56,11 +56,11 @@ pipeline {
         }
         stage("Build Images") {
             parallel {
-                stage('Ninja') {
-                    steps {
-                        buildAndTestImages(['sag-ninja-server'])
-                    }
-                }
+                // stage('Ninja') {
+                //     steps {
+                //         buildAndTestImages(['sag-ninja-server'])
+                //     }
+                // }
                 stage('Universal Messaging') {
                     steps {
                         buildAndTestImages(['sag-um-server'])
