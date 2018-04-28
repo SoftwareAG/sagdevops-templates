@@ -62,6 +62,6 @@ services:
       bash -c '
       echo "Checking managed container status ..." &&
       sleep 30 &&
-      sagcc list monitoring state msr OSGI-IS_msc -e ONLINE --wait-for-cc &&
+      sagcc list monitoring state msr OSGI-IS_msc -e ONLINE -w 240 --wait-for-cc &&
       sagcc list monitoring state msr integrationServer-msc -e ONLINE
       '
