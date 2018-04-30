@@ -1,0 +1,31 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_REGISTRY_URL=store
+    - ORG=softwareag
+    - TAG=10.2
+#    - LICENSES_URL=
+#  matrix:
+#    - CC_TEMPLATE=sag-um-server
+#    - CC_TEMPLATE=sag-msc-server
+
+before_install:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+#  - docker-compose up -d cc
+#  - docker-compose run --rm sagcc -h
+#  - docker-compose logs
+
+script:
+  - cd templates/$CC_TEMPLATE && ls
+#  - docker-compose run --rm provision
+#  - docker-compose logs
+
+#after_success:
+#   - if [ "$TRAVIS_BRANCH" == "master" ]; then
+#     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+#     docker push USER/REPO;
+#     fi

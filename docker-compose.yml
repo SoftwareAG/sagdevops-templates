@@ -43,7 +43,7 @@ services:
       - ./:/src/
     environment: 
       - CC_SERVER=cc
-    entrypoint: sagcc
+    entrypoint: sagcc --wait-for-cc
     command: --help
 
   sagccant:
