@@ -12,6 +12,8 @@ env:
   matrix:
     - CC_TEMPLATE=sag-um-server
     - CC_TEMPLATE=sag-msc-server
+    - TAG=10.2
+    - TAG=10.1
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
@@ -20,7 +22,7 @@ before_install:
 #  - docker-compose logs
 
 script:
-  - cd templates/$CC_TEMPLATE && ls
+  - cd templates/$CC_TEMPLATE && echo "Testing `pwd` with release $TAG"
 #  - docker-compose run --rm provision
 #  - docker-compose logs
 
