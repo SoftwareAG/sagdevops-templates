@@ -73,6 +73,11 @@ pipeline {
                         testTemplates2(['sag-msc-server'])
                     }
                 }                                                
+                stage('Apama') {
+                    steps {
+                        testTemplates2(['sag-apama-correlator'])
+                    }
+                }                                                
             }
         }
         stage("Build Images") {
