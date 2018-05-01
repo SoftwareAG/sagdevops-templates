@@ -18,6 +18,9 @@ pipeline {
     agent {
         label 'docker'
     }
+    environment {
+        TAG = '10.3.0.0.3'
+    }
     stages {
         stage('Init') {
             steps {
@@ -58,7 +61,7 @@ pipeline {
     }
     post {
         failure {
-            sh 'docker-compose logs cc'
+            sh 'docker-compose logs builder'
         }
         always {
             sh 'docker-compose down'
