@@ -1,6 +1,6 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def testTemplates2(templates) {
+def testTemplates(templates) {
     for (t in templates) {
         dir ("templates/$t") {
             try {
@@ -60,7 +60,7 @@ pipeline {
                 // }
                 stage('Universal Messaging') {
                     steps {
-                        testTemplates2(['sag-um-server'])
+                        testTemplates(['sag-um-server'])
                     }
                 }
                 // stage('Terracotta') {
@@ -70,12 +70,12 @@ pipeline {
                 // }
                 stage('Integration Server') {
                     steps {
-                        testTemplates2(['sag-msc-server'])
+                        testTemplates(['sag-msc-server'])
                     }
                 }                                                
                 stage('Apama') {
                     steps {
-                        testTemplates2(['sag-apama-correlator'])
+                        testTemplates(['sag-apama-correlator'])
                     }
                 }                                                
             }
