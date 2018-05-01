@@ -37,17 +37,6 @@ pipeline {
     agent {
         label 'docker'
     }
-    environment {
-        RELEASE = '10.2'    // MUST match the release
-        TAG = "10.2.0.1.31" // All images tag      
-
-        // REPO_PRODUCT = '102apr2018_SIC' // corresponding product repo/sandbox
-        // REPO_FIX = 'GA_Fix_Repo' // corresponding fix repo
-        // CC_INSTALLER = 'cc-def-10.2-fix1-lnxamd64' // corresponding installer
-
-        // DOCKER_REGISTRY_URL = 'https://daerepository03.eur.ad.sag:4443' // internal docker registry
-        // DOCKER_REGISTRY_CREDS = 'docker-registry'
-    }
     stages {
         stage('Build Builder') {
             steps {
