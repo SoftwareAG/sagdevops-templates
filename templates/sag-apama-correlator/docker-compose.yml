@@ -31,7 +31,7 @@ services:
       echo "Apply the template ..." &&
       sagcc exec templates composite apply sag-apama-correlator --sync-job nodes=${COMPOSE_PROJECT_NAME} -i env.properties repo.product=products repo.fix=fixes &&
       echo "Start the instance ..." &&
-      sagcc exec lifecycle start um Apama-correlator-default -e DONE --sync-job &&
+      sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Apama-correlator-default -e DONE --sync-job &&
       echo "Check managed container status ..." &&
-      sagcc list monitoring state um Apama-correlator-default -e ONLINE
+      sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Apama-correlator-default -e ONLINE
       '
