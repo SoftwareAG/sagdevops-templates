@@ -29,7 +29,7 @@ services:
       sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
       sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
       echo "Apply the template ..." &&
-      sagcc exec templates composite apply ${COMPOSE_PROJECT_NAME} --sync-job nodes=${COMPOSE_PROJECT_NAME} -i env.properties repo.product=products repo.fix=fixes &&
+      sagcc exec templates composite apply sag-apama-correlator --sync-job nodes=${COMPOSE_PROJECT_NAME} -i env.properties repo.product=products repo.fix=fixes &&
       echo "Start the instance ..." &&
       sagcc exec lifecycle start um Apama-correlator-default -e DONE --sync-job &&
       echo "Check managed container status ..." &&

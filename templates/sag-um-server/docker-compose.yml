@@ -28,14 +28,14 @@ services:
     command: > 
       bash -c '
       echo "Register the node and wait until ready ..." &&
-      sagcc add landscape nodes alias=um url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
-      sagcc list landscape nodes um -e ONLINE &&
+      sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
+      sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
       echo "Apply the template ..." &&
-      sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=um repo.product=products repo.fix=fixes &&
+      sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=${COMPOSE_PROJECT_NAME} repo.product=products repo.fix=fixes &&
       echo "Start the instance ..." &&
-      sagcc exec lifecycle start um Universal-Messaging-default -e DONE --sync-job &&
+      sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e DONE --sync-job &&
       echo "Check managed container status ..." &&
-      sagcc list monitoring state um Universal-Messaging-default -e ONLINE
+      sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e ONLINE
       '
 
 
