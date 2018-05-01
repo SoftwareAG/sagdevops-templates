@@ -14,6 +14,23 @@ def testTemplates2(templates) {
     }   
 }
 
+def buildAndTestImages(templates) {
+    for (t in templates) {
+        dir ("templates/$t") {
+            sh "docker-compose build"
+            sh "docker-compose images"
+            try {
+                sh "docker-compose run --name $t --rm test"
+                sh "docker-compose ps"
+                sh "docker-compose push"
+            } finally {
+                sh "docker-compose logs"
+                sh "docker-compose down"
+            }
+        }
+    }   
+}
+
 pipeline {
     agent {
         label 'docker'
@@ -54,6 +71,20 @@ pipeline {
                 stage('Integration Server') {
                     steps {
                         testTemplates2(['sag-msc-server'])
+                    }
+                }                                                
+            }
+        }
+        stage("Build Images") {
+            parallel {
+                stage('Universal Messaging') {
+                    steps {
+                        buildAndTestImages(['sag-um-server'])
+                    }
+                }
+                stage('Integration Server') {
+                    steps {
+                        buildAndTestImages(['sag-msc-server'])
                     }
                 }                                                
             }
