@@ -42,8 +42,8 @@ services:
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
-    entrypoint: sagcc --wait-for-cc
+      - CC_SERVER
+    entrypoint: sagcc
     command: --help
 
   sagccant:
@@ -51,7 +51,7 @@ services:
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
+      - CC_SERVER
     entrypoint: sagccant
     command: -p
 
@@ -60,7 +60,7 @@ services:
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
+      - CC_SERVER
     entrypoint: sagcc exec templates composite apply --sync-job --wait 3600 -c 10
     command: --help
 
