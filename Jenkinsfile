@@ -17,15 +17,15 @@ def testTemplates(templates) {
 def buildAndTestImages(templates) {
     for (t in templates) {
         dir ("templates/$t") {
-            sh "docker-compose build"
-            sh "docker-compose images"
+            sh "docker-compose -f docker-compose-build.yml build"
+            sh "docker-compose -f docker-compose-build.yml images"
             try {
-                sh "docker-compose run --name $t --rm test"
-                sh "docker-compose ps"
-                sh "docker-compose push"
+                sh "docker-compose -f docker-compose-build.yml run --name $t --rm test"
+                sh "docker-compose -f docker-compose-build.yml ps"
+                sh "docker-compose -f docker-compose-build.yml push"
             } finally {
-                sh "docker-compose logs"
-                sh "docker-compose down"
+                sh "docker-compose -f docker-compose-build.yml logs"
+                sh "docker-compose -f docker-compose-build.yml down"
             }
         }
     }   
@@ -36,7 +36,8 @@ pipeline {
         label 'docker'
     }
     environment {
-        TAG = '10.3.0.0.3'
+        CC_TAG = '10.3.0.0.3'
+        TAG = '10.3-SuiteInt'
     }
     stages {
         stage('Init') {
@@ -68,16 +69,16 @@ pipeline {
                 //         testTemplates([])
                 //     }
                 // }
-                stage('Integration Server') {
-                    steps {
-                        testTemplates(['sag-msc-server'])
-                    }
-                }                                                
-                stage('Apama') {
-                    steps {
-                        testTemplates(['sag-apama-correlator'])
-                    }
-                }                                                
+                // stage('Integration Server') {
+                //     steps {
+                //         testTemplates(['sag-msc-server'])
+                //     }
+                // }                                                
+                // stage('Apama') {
+                //     steps {
+                //         testTemplates(['sag-apama-correlator'])
+                //     }
+                // }                                                
             }
         }
         stage("Build Images") {
@@ -87,11 +88,11 @@ pipeline {
                         buildAndTestImages(['sag-um-server'])
                     }
                 }
-                stage('Integration Server') {
-                    steps {
-                        buildAndTestImages(['sag-msc-server'])
-                    }
-                }                                                
+                // stage('Integration Server') {
+                //     steps {
+                //         buildAndTestImages(['sag-msc-server'])
+                //     }
+                // }                                                
             }
         }
     }

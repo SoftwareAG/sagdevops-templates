@@ -7,7 +7,7 @@ networks:
 
 services:
   node: # empty managed node to provision to for dev/test
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    image: ${CC_NODE_IMAGE}:${CC_TAG}
     ports:
       - "9000"
     environment:
@@ -16,7 +16,7 @@ services:
       - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
 
   provision: # perform provision and smoke test
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
     volumes: 
       - ./:/src/
     environment: 
@@ -36,34 +36,4 @@ services:
       sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e DONE --sync-job &&
       echo "Check managed container status ..." &&
       sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e ONLINE
-      '
-
-
-  um: # built UM image with the tested template
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/universal-messaging:${TAG}
-    build:
-      context: .
-      args:
-        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
-        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
-    hostname: um
-    ports:
-      - "9000"
-    environment:
-      - CC_SERVER # auto register with Builder server
-    volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
-      - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
-      # JUST for debugging
-      # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
-
-  test: # 
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
-    environment:
-      - CC_SERVER   
-    links:
-      - um
-    command: >
-      bash -c '
-      echo "Checking managed container status ..." &&
-      sagcc list monitoring state um -e ONLINE -w 600 --wait-for-cc
       '

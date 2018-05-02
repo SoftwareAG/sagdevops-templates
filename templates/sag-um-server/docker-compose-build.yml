@@ -1,0 +1,36 @@
+version: "3.2"
+
+networks: 
+  default:
+    external:
+      name: sagdevopstemplates_default
+
+services:
+  um: # built UM image with the tested template
+    image: ${TARGET_IMAGE}:${TAG}
+    build:
+      context: .
+      args:
+        - BUILDER_IMAGE=${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+        - BASE_IMAGE=${CC_NODE_IMAGE}:${CC_TAG}
+    hostname: um
+    ports:
+      - "9000"
+    environment:
+      - CC_SERVER # auto register with Builder server
+    volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
+      - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
+      # JUST for debugging
+      # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
+
+  test: # 
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
+    environment:
+      - CC_SERVER   
+    links:
+      - um
+    command: >
+      bash -c '
+      echo "Checking managed container status ..." &&
+      sagcc list monitoring state um -e ONLINE -w 600 --wait-for-cc
+      '

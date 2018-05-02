@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   cc: # CC service for development/testing
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-server:${TAG}
+    image: ${CC_SERVER_IMAGE}:${CC_TAG}
     ports:
       - 8091 # CCE
     volumes: 
@@ -17,13 +17,13 @@ services:
       - REPO_FIX
 
   builder: # CC builder service for image builds
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
     ports:
       - 8091 # CCE
     build:
       context: .
       args:
-        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}       
+        - BASE_IMAGE=${CC_BUILDER_IMAGE}:${CC_TAG}       
         - LICENSES_URL
         - REPO_HOST
         - REPO_PRODUCT
@@ -38,7 +38,7 @@ services:
       - ./init.sh:/opt/sagtools/init.sh
 
   sagcc:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
     volumes: 
       - ./:/src/
     environment: 
@@ -47,7 +47,7 @@ services:
     command: --help
 
   sagccant:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
     volumes: 
       - ./:/src/
     environment: 
@@ -56,7 +56,7 @@ services:
     command: -p
 
   apply:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
     volumes: 
       - ./:/src/
     environment: 
