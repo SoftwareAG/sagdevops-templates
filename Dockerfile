@@ -15,8 +15,8 @@ WORKDIR $CC_HOME
 
 # add all templates
 ADD templates/ profiles/CCE/data/templates/composite/
-# RUN ls profiles/CCE/data/templates/composite/
-ADD init.sh ./
+# replace default scripts
+ADD scripts/*.sh ./
 # configure repos and add licenses
 RUN SAG_HOME=$CC_HOME NODES=local $CC_HOME/provision.sh && ./init.sh
 

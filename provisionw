@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TEMPLATE_ALIAS=$1
+echo "Template: $1"
+
+DIRNAME=`dirname $0`
+
+docker-compose -f $DIRNAME/docker-compose.yml up -d builder
+
+echo "******************************"
+echo "Open https://`docker-compose -f $DIRNAME/docker-compose.yml port builder 8091`"
+echo "******************************"
+
+docker-compose -f $DIRNAME/docker-compose.yml exec \
+    builder bash -c \
+    "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; /opt/sagtools/provision.sh $TEMPLATE_ALIAS"

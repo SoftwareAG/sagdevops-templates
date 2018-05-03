@@ -39,4 +39,7 @@ sagcc list license-tools keys properties="*"
 echo -e "\n### Nodes"
 sagcc list landscape nodes properties="*"
 
+echo -e "\n### Templates"
+sagcc list templates composite
+
 echo -e "\n\nCommand Central Builder is READY"
