@@ -47,7 +47,7 @@ pipeline {
     }
     environment {
         CC_TAG = '10.3.0.0.3'
-        TAG = '10.3-SuiteInt'
+        TAG = '10.3-SuiteTest'
     }
     stages {
         stage('Init') {
