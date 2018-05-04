@@ -13,13 +13,12 @@ echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose
 echo "=================================="
 echo ""
 
-# docker-compose exec \
-#     -e REPO_PRODUCT=products \
-#     builder bash -c \
-#     "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; /opt/sagtools/provision.sh $TEMPLATE_ALIAS"
-
 docker-compose exec \
-    -e REPO_PRODUCT=products \
-    -e REPO_FIX=fixes \
     builder bash -c \
     "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; /opt/sagtools/provision.sh $TEMPLATE_ALIAS"
+
+# docker-compose exec \
+#     -e REPO_PRODUCT=products \
+#     -e REPO_FIX=fixes \
+#     builder bash -c \
+#     "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; /opt/sagtools/provision.sh $TEMPLATE_ALIAS"

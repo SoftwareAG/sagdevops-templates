@@ -24,6 +24,8 @@ $CC_HOME/inventory.sh
 # globals
 MAIN_TEMPLATE_ALIAS=${1}
 NODES=${NODES:-node}
+REPO_PRODUCT=${REPO_PRODUCT:-products}
+REPO_FIX=${REPO_FIX:-fixes}
 
 propfile=/tmp/.env.properties
 rm -f $propfile
