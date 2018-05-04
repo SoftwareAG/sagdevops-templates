@@ -4,7 +4,7 @@ description: Apama correlator
 
 environments:
   default:
-    apama.pamserver.license.key:  "*_PAMCO_10.*_*_*" # Apama license key
+    apama.pamserver.license.key:  "*_PAMCO_10.*_*_${os.platform}" # Apama license key
     apama.instance.name: default  # Correlator instance name
     apama.port: 15903             # Correlator instance port
     apama.fixes: []               # Apama fixes to install
@@ -13,7 +13,6 @@ templates:
   correlator:
     licenses:
       "Apama/command-central/instances/${apama.instance.name}/ApamaCorrelatorLicense.xml": "${apama.pamserver.license.key}" # license file
-      # "apamawork_10.2/license/ApamaServerLicense.xml": "${apama.pamserver.license.key}" # license file
     fixes: ${apama.fixes}
     products:
       PAMspm:     # Apama | Platform Manager Plug-in - MUST be explicitly installed as it is not a dependency of PAMServer

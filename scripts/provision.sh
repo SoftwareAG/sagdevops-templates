@@ -1,43 +1,37 @@
 #!/bin/sh
 set -e
 
-echo "Configuring Command Central ..."
-echo com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true>>$CC_HOME/profiles/CCE/configuration/config.ini
+if ! cat $CC_HOME/profiles/CCE/configuration/config.ini | grep com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true ; then
+    echo "Configuring Command Central no restart policy ..."
+    echo com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true>>$CC_HOME/profiles/CCE/configuration/config.ini
+fi
 
-echo "Starting up Command Central ..."
+echo "Starting up Command Central (if not running) ..."
 $CC_HOME/profiles/SPM/bin/startup.sh
 $CC_HOME/profiles/CCE/bin/startup.sh
 
 # just in case
 export CC_CLI_HOME=$CC_HOME/CommandCentral/client
 export PATH=$PATH:$CC_CLI_HOME/bin
+export CC_WAIT=${CC_WAIT:-3600}
 
+echo "Waiting for Command Central ..."
 sagcc get monitoring runtimestatus local OSGI-CCE-ENGINE -e ONLINE -c 15 --wait-for-cc 300 -w 240
+echo "Command Central is READY"
 
-echo "Command Central is ONLINE"
-
-echo "List of installed products:"
-sagcc list inventory products nodeAlias=local properties=product.displayName,product.version.string
-echo "List of installed fixes:"
-sagcc list inventory fixes nodeAlias=local properties=fix.displayName,fix.version
+$CC_HOME/inventory.sh
 
 # globals
 MAIN_TEMPLATE_ALIAS=${1}
 NODES=${NODES:-node}
 
-echo "Provisioning template alias '$MAIN_TEMPLATE_ALIAS' into nodes '$NODES'"
-
-INIT_TEMPLATE_ALIAS=${INIT_TEMPLATE_ALIAS:-init}
-CC_CLEANUP=${CC_CLEANUP:-0}
-CC_WAIT=${CC_WAIT:-3600}
-
 propfile=/tmp/.env.properties
 rm -f $propfile
 
 ADD_PROPERTIES=""
-if [ -f build.properties ]; then
-    echo "Found build.properties. Resolving envrionment variables ..."
-    envsubst<build.properties>$propfile
+if [ -f env.properties ]; then
+    echo "Found env.properties. Resolving envrionment variables ..."
+    envsubst<env.properties>$propfile
     ADD_PROPERTIES=" -i $propfile "
 fi
 
@@ -63,38 +57,17 @@ if [ "$ADD_PROPERTIES" != "" ]; then
     cat $propfile
     echo "=================================="
 else
-    echo "WARNING: No .properties or environment variables are defined! Provisioning will use template defaults."
+    echo "WARNING: No .properties or environment variables are defined! Will use template defaults."
 fi
-
-tail -f $CC_HOME/profiles/CCE/logs/default.log &
-tail1PID=$!
-
-# if [ -f init.yaml ]; then
-#     echo "Found init.yaml. Importing ..."
-#     # replacing template alias as 'container'
-#     templatefile=/tmp/i.yaml
-#     templatealias=init
-#     echo alias: $INIT_TEMPLATE_ALIAS>$templatefile && tail -n +2 init.yaml>>$templatefile
-#     cat $templatefile    
-#     sagcc exec templates composite import -i $templatefile overwrite=true
-
-#     echo "Validating ..."
-#     sagcc exec templates composite validate $INIT_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -e DONE -c 3 -w 60
-#     echo "Applying init template $INIT_TEMPLATE_ALIAS..."
-#     sagcc exec templates composite apply $INIT_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -e DONE -c 3 -w 60
-#     echo "Initialization SUCCESSFULL"
-# else
-#     echo "SKIP: Initialization. No init.yaml found"
-# fi
 
 if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Found managed node in '$SAG_HOME'. SKIP: bootstrapping"
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
-    echo "Waiting for SPM to come up ..."
+    echo "Waiting for SPM ..."
     sagcc get landscape nodes $NODES -e ONLINE -w 240
 
-    echo "Infrastructure SUCCESSFULL"
+    echo "EXISITING infrastructure $NODES SUCCESSFULL"
 else
     echo "NO managed node in '$SAG_HOME' found"
 
@@ -117,13 +90,13 @@ else
         echo "Deleting '$sagcc_installer' ..."
         rm -f $CC_HOME/profiles/CCE/data/installers/$sagcc_installer
         
-        echo "Registering managed installation as '$NODES' ..."
+        echo "Registering managed installation '$NODES' ..."
         sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
 
-        echo "Waiting for SPM to come up ..."
+        echo "Waiting for SPM ..."
         sagcc get landscape nodes $NODES -e ONLINE
 
-        echo "Infrastructure SUCCESSFULL"
+        echo "NEW infrastructure $NODES SUCCESSFULL"
     fi
 fi
 
@@ -143,24 +116,29 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
     fi
 fi
 
-# additional parameters
+
 ADD_PROPERTIES="$ADD_PROPERTIES node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 "
 
-# echo "Validating template ..."
-# sagcc exec templates composite validate $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -e DONE -c 3 -w 60
+echo "=================================="
+echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
+echo "$CC_WAIT seconds timeout"
+echo "=================================="
 
-tail -f $SAG_HOME/profiles/SPM/logs/default.log &
-tail2PID=$!
+tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log &
+tailpid=$!
 
-echo "Applying template $MAIN_TEMPLATE_ALIAS and waiting up to $CC_WAIT seconds ..."
-sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -c 20 -e DONE --wait-for-cc 300 --retry 1
-echo "Provisioning SUCCESSFULL"
-
-echo "Stop tailing logs ..."
-kill -9 $tail1PID $tail2PID
-
-echo "Removing logs ..."
-rm -rf $SAG_HOME/profiles/SPM/logs/*
-rm -rf $SAG_HOME/common/conf/nodeId.txt
-
-echo "BUILD SUCCESSFULL"
+if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -c 10 -e DONE --wait-for-cc 300 --retry 1; then
+    echo ""
+    echo "PROVISION '$MAIN_TEMPLATE_ALIAS' SUCCESSFULL"
+    echo ""
+    kill $tailpid
+    sleep 3
+    echo "Cleaning up ..."
+    #rm -rf $SAG_HOME/profiles/SPM/logs/*
+    rm -rf $SAG_HOME/common/conf/nodeId.txt
+else 
+    kill $tailpid
+    echo ""
+    echo "ERROR: PROVISION '$MAIN_TEMPLATE_ALIAS' FAILED !"
+    echo ""
+fi

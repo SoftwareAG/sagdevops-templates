@@ -1,21 +1,22 @@
 version: "3.2"
 
 services:
-  node: # built UM image with the tested template
+  node: # built image with the tested template
     image: ${TARGET_IMAGE}:${TAG}
     build:
       context: .
       args:
         - BUILDER_IMAGE=${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
         - BASE_IMAGE=${CC_NODE_IMAGE}:${CC_TAG}
-#        - __um_fixes=[] # no fixes
+        # - __exx_broker_fixes=[] # control fix list
+        # - __exx_broker_tcp_port=1971
+    hostname: node
     ports:
-      - "9000"
+      - "1971"
       - "8092"
     environment:
-      - CC_AUTO_REGISTER=0
-    volumes: # IMPORTANT: to have a volume, otherwise UM fails to start!
-      - ../../build/run/data/umcontainer:/opt/softwareag/UniversalMessaging/server/default/data/
+      - CC_SERVER=0 # auto register with Builder server
+    # volumes:
       # JUST for debugging
       # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
 
@@ -28,9 +29,9 @@ services:
     command: > 
       bash -c '
       echo "Verifying container ..." &&
-      sagcc list inventory products -e NUMRealmServer --wait-for-cc &&
-      sagcc list inventory components -e Universal-Messaging-default'
+      sagcc list inventory products -e EntireXBroker --wait-for-cc &&
+      sagcc list inventory components -e ETB4711'
       # '&&
       # echo "Waiting for runtime status ..." &&
-      # sagcc list monitoring state Universal-Messaging-default -e ONLINE
+      # sagcc list monitoring state Broker??? -e ONLINE
       # '

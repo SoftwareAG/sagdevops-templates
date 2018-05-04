@@ -1,20 +1,20 @@
 version: "3.2"
 
 services:
-  cc: # CC service for development/testing
-    image: ${CC_SERVER_IMAGE}:${CC_TAG}
-    ports:
-      - 8091 # CCE
-    volumes: 
-      # live templates updates
-      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      # custom init
-      - ./init.sh:/opt/sagtools/init.sh
-    environment:
-      - LICENSES_URL
-      - REPO_HOST
-      - REPO_PRODUCT
-      - REPO_FIX
+  # cc: # CC service for development/testing
+  #   image: ${CC_SERVER_IMAGE}:${CC_TAG}
+  #   ports:
+  #     - 8091 # CCE
+  #   volumes: 
+  #     # live templates updates
+  #     - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+  #     # custom init
+  #     - ./init.sh:/opt/sagtools/init.sh
+  #   environment:
+  #     - LICENSES_URL
+  #     - REPO_HOST
+  #     - REPO_PRODUCT
+  #     - REPO_FIX
 
   builder: # CC builder service for image builds
     image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
@@ -28,14 +28,15 @@ services:
         - REPO_HOST
         - REPO_PRODUCT
         - REPO_FIX
-    # environment:
-    #   - LICENSES_URL
-    #   - REPO_HOST
-    #   - REPO_PRODUCT
-    #   - REPO_FIX
+    environment:
+      - LICENSES_URL
+      - REPO_HOST
+      - REPO_PRODUCT
+      - REPO_FIX
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/init.sh:/opt/sagtools/init.sh
+      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
       - ./scripts/provision.sh:/opt/sagtools/provision.sh
 
   sagcc:

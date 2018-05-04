@@ -1,0 +1,43 @@
+alias: sag-exx-broker
+
+environments:
+  default:
+     exx.broker.name: ETB4711
+     exx.broker.tcp.port: 1971
+     exx.broker.tcp.enable: true
+     exx.broker.ssl.port: 1972
+     exx.broker.ssl.enable: false
+     exx.broker.autostart: false
+     exx.broker.security: false
+     exx.broker.tracelevel: 0
+     exx.broker.fixes:
+      - wMFix.EntireXBroker
+                    
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:   
+      - exx-broker
+    # - exx-cli    # 10.3 only  
+
+templates:
+  exx-broker:
+    fixes: ${exx.broker.fixes}
+    products:
+      # EntireXSpmBroker: # FIXME: this should not be necessary if SPM Plugin comes as a dependency
+      EntireXBroker:
+         ${exx.broker.name}:
+           type: BROKER
+           instance.name: ${exx.broker.name}
+           autostart: ${exx.broker.autostart}
+           tcp.port: ${exx.broker.tcp.port}
+           ssl.port: ${exx.broker.ssl.port}
+           security: ${exx.broker.security}
+  exx-cli:
+    products:
+      EntireXCommandLineScripts: # CommandLineScripts starting from version 10.3
+
+provision:                                   # PROVISION layers to nodes
+  default:                                  
+    runtime: ${nodes}
