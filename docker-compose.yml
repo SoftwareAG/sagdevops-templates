@@ -23,7 +23,7 @@ services:
     build:
       context: .
       args:
-        - BASE_IMAGE=${CC_BUILDER_IMAGE}:${CC_TAG}       
+        - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG}       
         - LICENSES_URL
         - REPO_HOST
         - REPO_PRODUCT
