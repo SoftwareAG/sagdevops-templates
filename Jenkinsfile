@@ -14,6 +14,16 @@ def testTemplates(templates) {
     }   
 }
 
+def testTemplates2(templates) {
+    for (t in templates) {
+        try {
+            sh "./provisionw.sh $t"
+        } finally {
+            sh "docker-compose down"
+        }
+    }   
+}
+
 def buildAndTestImages(templates) {
     for (t in templates) {
         dir ("templates/$t") {
@@ -61,7 +71,7 @@ pipeline {
                 // }
                 stage('Universal Messaging') {
                     steps {
-                        testTemplates(['sag-um-server'])
+                        testTemplates2(['sag-um-server'])
                     }
                 }
                 // stage('Terracotta') {
@@ -97,9 +107,9 @@ pipeline {
         }
     }
     post {
-        failure {
-            sh 'docker-compose logs builder'
-        }
+        // failure {
+        //     sh 'docker-compose logs builder'
+        // }
         always {
             sh 'docker-compose down'
         }
