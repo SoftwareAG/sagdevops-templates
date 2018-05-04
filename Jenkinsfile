@@ -17,7 +17,7 @@ def testTemplates(templates) {
 def testTemplates2(templates) {
     for (t in templates) {
         try {
-            sh "./provisionw.sh $t"
+            sh "./provisionw $t"
         } finally {
             sh "docker-compose down"
         }
