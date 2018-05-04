@@ -71,7 +71,7 @@ pipeline {
                 // }
                 stage('Universal Messaging') {
                     steps {
-                        testTemplates2(['sag-um-server'])
+                        testTemplates(['sag-um-server'])
                     }
                 }
                 // stage('Terracotta') {
