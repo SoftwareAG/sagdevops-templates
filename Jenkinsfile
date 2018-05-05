@@ -46,15 +46,14 @@ pipeline {
         label 'docker'
     }
     environment {
-        CC_TAG = '10.3.0.0.3'
+        CC_TAG = '10.3.0.0.7' // fixme: use 10.3
         TAG = '10.3-SuiteTest'
     }
     stages {
         stage('Init') {
             steps {
-                sh 'docker-compose up -d --build builder' // build and start the builder
-                //sh 'docker-compose up -d cc'
-                //sh 'docker-compose port cc 8091'
+                sh 'docker-compose up -d --build cc' // build and start the builder
+                sh 'docker-compose port cc 8091'
             }
         }
         stage("Test") {
@@ -103,6 +102,11 @@ pipeline {
                 //         buildAndTestImages(['sag-msc-server'])
                 //     }
                 // }                                                
+            }
+        }
+        stage("Push Images") {
+            steps {
+                sh 'docker-compose push cc' // upload cc builder
             }
         }
     }
