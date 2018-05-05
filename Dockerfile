@@ -18,7 +18,8 @@ ADD templates/ profiles/CCE/data/templates/composite/
 # replace default scripts
 ADD scripts/*.sh ./
 # configure repos and add licenses
-RUN SAG_HOME=$CC_HOME NODES=local $CC_HOME/provision.sh && ./init.sh
+# RUN SAG_HOME=$CC_HOME NODES=local $CC_HOME/provision.sh && ./init.sh
+RUN $CC_HOME/provision.sh && ./init.sh
 
 ONBUILD ARG RELEASE=$RELEASE
 ONBUILD ARG REPO_PRODUCT=products
