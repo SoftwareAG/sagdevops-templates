@@ -42,8 +42,9 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                sh 'docker-compose up -d --build cc' // build and start the builder
-                sh 'docker-compose port cc 8091'
+                sh 'docker-compose pull cc' // build and start the builder
+                //sh 'docker-compose up -d --build cc' // build and start the builder
+                //sh 'docker-compose port cc 8091'
             }
         }
         stage("Test") {
@@ -61,6 +62,7 @@ pipeline {
                 stage('Universal Messaging') {
                     steps {
                         testTemplates(['sag-um-server'])
+                        buildAndTestImages(['sag-um-server'])
                     }
                 }
                 stage('EntireX') {
@@ -78,28 +80,14 @@ pipeline {
                 //         testTemplates([])
                 //     }
                 // }
-                // stage('Integration Server') {
-                //     steps {
-                //         testTemplates(['sag-msc-server'])
-                //     }
-                // }                                                
+                stage('Integration Server') {
+                    steps {
+                        testTemplates(['sag-msc-server'])
+                    }
+                }                                                
                 // stage('Apama') {
                 //     steps {
                 //         testTemplates(['sag-apama-correlator'])
-                //     }
-                // }                                                
-            }
-        }
-        stage("Build Images") {
-            parallel {
-                stage('Universal Messaging') {
-                    steps {
-                        buildAndTestImages(['sag-um-server'])
-                    }
-                }
-                // stage('Integration Server') {
-                //     steps {
-                //         buildAndTestImages(['sag-msc-server'])
                 //     }
                 // }                                                
             }
@@ -111,9 +99,6 @@ pipeline {
         }
     }
     post {
-        // failure {
-        //     sh 'docker-compose logs builder'
-        // }
         always {
             sh 'docker-compose down'
         }

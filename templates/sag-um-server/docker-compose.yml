@@ -1,39 +1,49 @@
 version: "3.2"
 
-networks: 
-  default:
-    external:
-      name: sagdevopstemplates_default
-
 services:
-  node: # empty managed node to provision to for dev/test
-    image: ${CC_NODE_IMAGE}:${CC_TAG}
-    ports:
-      - "9000"
-    environment:
-      - CC_AUTO_REGISTER=0
-    volumes: # TODO?: to have a volume, otherwise UM fails to start!
+  provision: # perform provision and smoke test
+    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+    entrypoint: /opt/sagtools/provision.sh
+    command: sag-um-server
+    volumes: 
+      - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      # TODO?: to have a volume, otherwise UM fails to start!
       - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
 
-  provision: # perform provision and smoke test
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
-    volumes: 
-      - ./:/src/
-    environment: 
-      - CC_SERVER
-      - CC_WAIT=1200
-      - CC_CHECK_EVERY=10
-    depends_on:
-      - node # starts an empty node
-    command: > 
-      bash -c '
-      echo "Register the node and wait until ready ..." &&
-      sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
-      sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
-      echo "Apply the template ..." &&
-      sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=${COMPOSE_PROJECT_NAME} repo.product=products repo.fix=fixes &&
-      echo "Start the instance ..." &&
-      sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e DONE --sync-job &&
-      echo "Check managed container status ..." &&
-      sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e ONLINE
-      '
+
+  # node: # empty managed node to provision to for dev/test
+  #   image: ${CC_NODE_IMAGE}:${CC_TAG}
+  #   ports:
+  #     - "9000"
+  #   environment:
+  #     - CC_AUTO_REGISTER=0
+  #   volumes: # TODO?: to have a volume, otherwise UM fails to start!
+  #     - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
+
+  # provision: # perform provision and smoke test
+  #   image: ${CC_CLIENT_IMAGE}:${CC_TAG}
+  #   volumes: 
+  #     - ./:/src/
+  #   environment: 
+  #     - CC_SERVER
+  #     - CC_WAIT=1200
+  #     - CC_CHECK_EVERY=10
+  #   depends_on:
+  #     - node # starts an empty node
+  #   command: > 
+  #     bash -c '
+  #     echo "Register the node and wait until ready ..." &&
+  #     sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
+  #     sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
+  #     echo "Apply the template ..." &&
+  #     sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=${COMPOSE_PROJECT_NAME} repo.product=products repo.fix=fixes &&
+  #     echo "Start the instance ..." &&
+  #     sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e DONE --sync-job &&
+  #     echo "Check managed container status ..." &&
+  #     sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e ONLINE
+  #     '
+
+# networks: 
+#   default:
+#     external:
+#       name: sagdevopstemplates_default
