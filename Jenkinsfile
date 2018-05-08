@@ -14,16 +14,6 @@ def testTemplates(templates) {
     }   
 }
 
-def testTemplates2(templates) {
-    for (t in templates) {
-        try {
-            sh "./provisionw $t"
-        } finally {
-            sh "docker-compose down"
-        }
-    }   
-}
-
 def buildAndTestImages(templates) {
     for (t in templates) {
         dir ("templates/$t") {
@@ -47,7 +37,7 @@ pipeline {
     }
     environment {
         CC_TAG = '10.3.0.0.7' // fixme: use 10.3
-        TAG = '10.3-SuiteTest'
+        TAG = "${env.CC_TAG}-SuiteTest"
     }
     stages {
         stage('Init') {
@@ -71,6 +61,16 @@ pipeline {
                 stage('Universal Messaging') {
                     steps {
                         testTemplates(['sag-um-server'])
+                    }
+                }
+                stage('EntireX') {
+                    steps {
+                        testTemplates(['sag-exx-broker'])
+                    }
+                }
+                stage('Designer') {
+                    steps {
+                        testTemplates(['sag-designer-services'])
                     }
                 }
                 // stage('Terracotta') {

@@ -1,0 +1,9 @@
+version: "3.2"
+
+services:
+  provision: # perform provision and smoke test
+    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+    entrypoint: /opt/sagtools/provision.sh
+    command: sag-exx-broker
+    volumes: 
+      - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/

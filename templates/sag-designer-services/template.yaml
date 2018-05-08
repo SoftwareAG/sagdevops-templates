@@ -1,0 +1,29 @@
+alias: sag-designer-services
+description: Software AG Designer > Services
+
+environments:
+  default:  
+    designer.gwmdes.license.key: "*_GWMTS_10.*_*_*" # Default license key lookup
+    designer.fixes: []
+
+templates:
+  designer-services:
+    # License needs to be configured in Designer UI > preferences
+    licenses: 
+      "Designer/WmTestSuiteLicense.xml": "${designer.gwmdes.license.key}"
+    fixes: ${designer.fixes}
+    products:
+      LDev:         # Service Development
+      vcs:          # Local Version Control Integration
+      GWMDes:       # Unit Test Framework
+      WmSAPPlugin:  # SAP Integration
+
+layers:
+  designer:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   designer-services
+
+provision:
+  default:
+    designer: ${nodes}

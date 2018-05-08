@@ -15,7 +15,7 @@ services:
       - "1971"
       - "8092"
     environment:
-      - CC_SERVER=0 # auto register with Builder server
+      - CC_AUTO_REGISTER=0 # auto register with Builder server
     # volumes:
       # JUST for debugging
       # - ./entrypoint.sh:/opt/softwareag/entrypoint.sh
