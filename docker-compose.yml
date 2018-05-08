@@ -27,11 +27,12 @@ services:
       #- ./scripts/provision.sh:/opt/sagtools/provision.sh
 
   sagcc:
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
     environment: 
       - CC_SERVER
+      - CC_PASSWORD
     entrypoint: sagcc
     command: --help
 
@@ -41,16 +42,20 @@ services:
       - ./:/src/
     environment: 
       - CC_SERVER
+      - CC_PASSWORD
     entrypoint: sagccant
     command: -p
 
   apply:
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
     environment: 
       - CC_SERVER
-    entrypoint: sagcc exec templates composite apply --sync-job --wait 3600 -c 10
+      - CC_PASSWORD
+      - CC_WAIT=3600
+      - CC_CHECK_EVERY=10
+    entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
 
   # test:

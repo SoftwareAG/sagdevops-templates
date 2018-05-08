@@ -2,15 +2,19 @@ alias: sag-exx-broker
 
 environments:
   default:
-     exx.broker.name: ETB4711
-     exx.broker.tcp.port: 1971
-     exx.broker.tcp.enable: true
-     exx.broker.ssl.port: 1972
-     exx.broker.ssl.enable: false
-     exx.broker.autostart: false
-     exx.broker.security: false
-     exx.broker.tracelevel: 0
-     exx.broker.fixes:
+    repo.product: ${}    # product repository is required
+    repo.fix:     ""     # fix repository is required for fix installation only
+    nodes:        ${}    # local or any other node alias
+  
+    exx.broker.name: ETB4711
+    exx.broker.tcp.port: 1971
+    exx.broker.tcp.enable: true
+    exx.broker.ssl.port: 1972
+    exx.broker.ssl.enable: false
+    exx.broker.autostart: false
+    exx.broker.security: false
+    exx.broker.tracelevel: 0
+    exx.broker.fixes:
       - wMFix.EntireXBroker
                     
 layers:
