@@ -1,31 +1,39 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
+def testTemplate(t) {
+    dir ("templates/$t") {
+        try {
+            sh "docker-compose run --name $t --rm provision"
+            sh "docker-compose ps"
+        } finally {
+            sh "docker-compose logs"
+            sh "docker-compose down"
+        }
+    }
+}
+
 def testTemplates(templates) {
     for (t in templates) {
-        dir ("templates/$t") {
-            try {
-                sh "docker-compose run --name $t --rm provision"
-                sh "docker-compose ps"
-            } finally {
-                sh "docker-compose logs"
-                sh "docker-compose down"
-            }
-        }
+        testTemplate(t)
     }   
 }
 
-def buildAndTestImages(templates) {
-    for (t in templates) {
-        dir ("templates/$t") {
-            sh "docker-compose -f docker-compose-build.yml build"
-            try {
-                sh "docker-compose -f docker-compose-build.yml run --name $t --rm test"
-                sh "docker-compose -f docker-compose-build.yml push"
-            } finally {
-                sh "docker-compose -f docker-compose-build.yml logs"
-                sh "docker-compose -f docker-compose-build.yml down"
-            }
+def buildImage(t) {
+    dir ("templates/$t") {
+        sh "docker-compose -f docker-compose-build.yml build"
+        try {
+            sh "docker-compose -f docker-compose-build.yml run --name $t --rm test"
+            sh "docker-compose -f docker-compose-build.yml push"
+        } finally {
+            sh "docker-compose -f docker-compose-build.yml logs"
+            sh "docker-compose -f docker-compose-build.yml down"
         }
+    }
+}
+
+def buildImages(templates) {
+    for (t in templates) {
+        buildImage(t)
     }   
 }
 
@@ -34,8 +42,8 @@ pipeline {
         label 'docker'
     }
     environment {
-        CC_TAG = '10.3.0.0.7' // fixme: use 10.3
-        TAG = "${env.CC_TAG}-SuiteTest"
+        CC_TAG = '10.3'
+        TAG = "10.3"
     }
     stages {
         stage('Init') {
@@ -60,7 +68,7 @@ pipeline {
                 stage('Universal Messaging') {
                     steps {
                         //testTemplates(['sag-um-server'])
-                        buildAndTestImages(['sag-um-server'])
+                        buildImages(['sag-um-server'])
                     }
                 }
                 stage('EntireX') {
@@ -76,7 +84,7 @@ pipeline {
                 stage('Integration Server') {
                     steps {
                         //testTemplates(['sag-msc-server'])
-                        buildAndTestImages(['sag-msc-server'])
+                        buildImages(['sag-msc-server'])
                     }
                 }                                                
                 stage('Apama') {
