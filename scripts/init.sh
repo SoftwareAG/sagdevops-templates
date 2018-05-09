@@ -6,11 +6,9 @@ if [ -d $SAG_HOME/profiles/SPM/bin ]; then
     $SAG_HOME/profiles/SPM/bin/startup.sh
 fi
 
-echo -e "\n"
-echo "####################"
+echo -e "\n####################"
 echo "# Initialization   #"
-echo "####################"
-echo -e "\n"
+echo -e "\n####################"
 
 if [ ! -z $LICENSES_URL ]; then
     # https://solutionbook.softwareag.com/sb-web/page/detail_page.xhtml?guid=1227042885&type=platforms

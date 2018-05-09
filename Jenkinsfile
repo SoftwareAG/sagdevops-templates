@@ -4,9 +4,7 @@ def testTemplate(t) {
     dir ("templates/$t") {
         try {
             sh "docker-compose run --name $t --rm provision"
-            sh "docker-compose ps"
         } finally {
-            sh "docker-compose logs"
             sh "docker-compose down"
         }
     }
@@ -48,71 +46,78 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                sh 'docker-compose pull cc' // build and start the builder
-                //sh 'docker-compose up -d --build cc' // build and start the builder
+                //sh 'docker-compose pull cc' // build and start the builder
+                sh 'docker-compose build cc'
                 //sh 'docker-compose port cc 8091'
             }
         }
-        stage("Test 1") {
-            parallel {
-                // stage('Command Central') {
-                //     steps {
-                //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
-                //     }
-                // }
-                // stage('Jenkins') {
-                //     steps {
-                //         testTemplates(['jenkins'])
-                //     }
-                // }
-                stage('Universal Messaging') {
-                    steps {
-                        //testTemplates(['sag-um-server'])
-                        buildImages(['sag-um-server'])
-                    }
-                }
-                stage('Terracotta') {
-                    steps {
-                        testTemplates(['sag-tc-server'])
-                    }
-                }
-                stage('Integration Server') {
-                    steps {
-                        //testTemplates(['sag-msc-server'])
-                        buildImages(['sag-msc-server'])
-                    }
-                }                                                
+        stage('Test HelloWorld') {
+            steps {
+                testTemplates(['helloworld'])
+                buildImages(['helloworld'])
             }
         }
-        stage("Test 2") {
-            parallel {
-                // stage('Command Central') {
-                //     steps {
-                //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
-                //     }
-                // }
-                // stage('Jenkins') {
-                //     steps {
-                //         testTemplates(['jenkins'])
-                //     }
-                // }
-                stage('EntireX') {
-                    steps {
-                        testTemplates(['sag-exx-broker'])
-                    }
-                }
-                stage('Designer') {
-                    steps {
-                        testTemplates(['sag-designer-services'])
-                    }
-                }
-                stage('Apama') {
-                    steps {
-                        testTemplates(['sag-apama-correlator'])
-                    }
-                }                                                
-            }
-        }
+        
+        // stage("Test 1") {
+        //     parallel {
+        //         // stage('Command Central') {
+        //         //     steps {
+        //         //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
+        //         //     }
+        //         // }
+        //         // stage('Jenkins') {
+        //         //     steps {
+        //         //         testTemplates(['jenkins'])
+        //         //     }
+        //         // }
+        //         stage('Universal Messaging') {
+        //             steps {
+        //                 //testTemplates(['sag-um-server'])
+        //                 buildImages(['sag-um-server'])
+        //             }
+        //         }
+        //         stage('Terracotta') {
+        //             steps {
+        //                 testTemplates(['sag-tc-server'])
+        //             }
+        //         }
+        //         stage('Integration Server') {
+        //             steps {
+        //                 //testTemplates(['sag-msc-server'])
+        //                 buildImages(['sag-msc-server'])
+        //             }
+        //         }                                                
+        //     }
+        // }
+        // stage("Test 2") {
+        //     parallel {
+        //         // stage('Command Central') {
+        //         //     steps {
+        //         //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
+        //         //     }
+        //         // }
+        //         // stage('Jenkins') {
+        //         //     steps {
+        //         //         testTemplates(['jenkins'])
+        //         //     }
+        //         // }
+        //         stage('EntireX') {
+        //             steps {
+        //                 testTemplates(['sag-exx-broker'])
+        //             }
+        //         }
+        //         stage('Designer') {
+        //             steps {
+        //                 testTemplates(['sag-designer-services'])
+        //             }
+        //         }
+        //         stage('Apama') {
+        //             steps {
+        //                 testTemplates(['sag-apama-correlator'])
+        //             }
+        //         }                                                
+        //     }
+        // }
         stage("Push Images") {
             steps {
                 sh 'docker-compose push cc' // upload cc builder

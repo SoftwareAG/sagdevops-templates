@@ -42,13 +42,10 @@ fi
 env | while IFS='=' read -r name value; do
 	if [[ $name == '__'* ]]; then
         ADD_PROPERTIES=" -i $propfile "
-		#echo "name=$name"
-		#echo "value=$value"
-		#remove "__" from the environment variable name and use the remainder as the key... 
+		# remove "__" from the environment variable name and use the remainder as the key... 
 		key=${name:2}
-        #echo "key=$key"
-        #...but only after converting the keys to the regular parameter names by replacing  the bash-acceptable "_" with "."
-        echo "${key//_/.}: ${value}" >> $propfile
+        # after converting the keys to the regular parameter names by replacing  the bash-acceptable "_" with "."
+        echo "${key//_/.}=${value}" >> $propfile
 	fi
 done
 
@@ -59,7 +56,7 @@ if [ "$ADD_PROPERTIES" != "" ]; then
     cat $propfile
     echo "=================================="
 else
-    echo "WARNING: No .properties or environment variables are defined! Will use template defaults."
+    echo "WARNING: No env.properties or environment variables are defined! Will use template defaults."
 fi
 
 if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
@@ -69,7 +66,7 @@ if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Waiting for SPM ..."
     sagcc get landscape nodes $NODES -e ONLINE -w 240
 
-    echo "EXISITING infrastructure $NODES SUCCESSFULL"
+    echo "EXISTING infrastructure $NODES SUCCESSFULL"
 else
     echo "NO managed node in '$SAG_HOME' found"
 
@@ -133,13 +130,12 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     echo ""
     echo "PROVISION '$MAIN_TEMPLATE_ALIAS' SUCCESSFULL"
     echo ""
-    kill $tailpid
+    kill $tailpid>/dev/null
     sleep 3
     echo "Cleaning up ..."
-    #rm -rf $SAG_HOME/profiles/SPM/logs/*
     rm -rf $SAG_HOME/common/conf/nodeId.txt
 else 
-    kill $tailpid
+    kill $tailpid>/dev/null
     echo ""
     echo "ERROR: PROVISION '$MAIN_TEMPLATE_ALIAS' FAILED !"
     echo ""

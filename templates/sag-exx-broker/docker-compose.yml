@@ -7,3 +7,4 @@ services:
     command: sag-exx-broker
     volumes: 
       - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./:/src/

@@ -22,10 +22,13 @@ ADD scripts/*.sh ./
 # RUN SAG_HOME=$CC_HOME NODES=local $CC_HOME/provision.sh && ./init.sh
 RUN $CC_HOME/provision.sh && ./init.sh
 
+# default parameters
 ONBUILD ARG RELEASE=$RELEASE
 ONBUILD ARG REPO_PRODUCT=products
 ONBUILD ARG REPO_FIX=fixes
 ONBUILD ARG REPO_ASSET=assets
 
 ONBUILD ADD . .
-# # ONBUILD RUN $CC_HOME/provision.sh
+# do not run by default # ONBUILD RUN $CC_HOME/provision.sh
+
+WORKDIR /src

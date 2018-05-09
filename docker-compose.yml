@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   cc: # CC builder service for image builds
-    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+    image: ${CC_BUILDER_IMAGE}:${CC_TAG}
     ports:
       - 8091 # CCE
     build:

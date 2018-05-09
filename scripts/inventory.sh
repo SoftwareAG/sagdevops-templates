@@ -6,9 +6,9 @@ echo "# Inventory Report #"
 echo "####################"
 echo -e "\n"
 
-echo "\n### Installed Command Central products:"
+echo -e "\n### Installed Command Central products:"
 sagcc list inventory products nodeAlias=local properties=product.displayName,product.version.string
-echo "\n### Installed Command Central fixes:"
+echo -e "\n### Installed Command Central fixes:"
 sagcc list inventory fixes nodeAlias=local properties=fix.displayName,fix.version
 
 echo -e "\n### Registered PRODUCT repos:"
