@@ -53,7 +53,7 @@ services:
     environment: 
       - CC_SERVER
       - CC_PASSWORD
-      - CC_WAIT=3600
+      - CC_WAIT
       - CC_CHECK_EVERY=10
     entrypoint: sagcc exec templates composite apply --sync-job
     command: --help

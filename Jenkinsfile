@@ -18,10 +18,8 @@ def buildAndTestImages(templates) {
     for (t in templates) {
         dir ("templates/$t") {
             sh "docker-compose -f docker-compose-build.yml build"
-            sh "docker-compose -f docker-compose-build.yml images"
             try {
                 sh "docker-compose -f docker-compose-build.yml run --name $t --rm test"
-                sh "docker-compose -f docker-compose-build.yml ps"
                 sh "docker-compose -f docker-compose-build.yml push"
             } finally {
                 sh "docker-compose -f docker-compose-build.yml logs"
@@ -61,7 +59,7 @@ pipeline {
                 // }
                 stage('Universal Messaging') {
                     steps {
-                        testTemplates(['sag-um-server'])
+                        //testTemplates(['sag-um-server'])
                         buildAndTestImages(['sag-um-server'])
                     }
                 }
@@ -75,21 +73,22 @@ pipeline {
                         testTemplates(['sag-designer-services'])
                     }
                 }
-                // stage('Terracotta') {
-                //     steps {
-                //         testTemplates([])
-                //     }
-                // }
                 stage('Integration Server') {
                     steps {
-                        testTemplates(['sag-msc-server'])
+                        //testTemplates(['sag-msc-server'])
+                        buildAndTestImages(['sag-msc-server'])
                     }
                 }                                                
-                // stage('Apama') {
-                //     steps {
-                //         testTemplates(['sag-apama-correlator'])
-                //     }
-                // }                                                
+                stage('Apama') {
+                    steps {
+                        testTemplates(['sag-apama-correlator'])
+                    }
+                }                                                
+                stage('Terracotta') {
+                    steps {
+                        testTemplates(['sag-tc-server'])
+                    }
+                }
             }
         }
         stage("Push Images") {

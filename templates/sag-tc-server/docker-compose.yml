@@ -1,0 +1,12 @@
+version: "3.2"
+
+services:
+  provision: # perform provision and smoke test
+    #image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3-10.3
+    entrypoint: /opt/sagtools/provision.sh
+    command: sag-tc-server
+    # environment:
+    #   - __tc_fixes=[]
+    # volumes: 
+    #   - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/

@@ -1,37 +1,9 @@
 version: "3.2"
 
-networks: 
-  default:
-    external:
-      name: sagdevopstemplates_default
-
 services:
-  node: # empty managed node to provision to for dev/test
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
-    ports:
-      - "15903"
-    environment:
-      - CC_AUTO_REGISTER=0
-
   provision: # perform provision and smoke test
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+    entrypoint: /opt/sagtools/provision.sh
+    command: sag-exx-broker
     volumes: 
-      - ./:/src/
-    environment: 
-      - CC_SERVER
-      - CC_WAIT=1200
-      - CC_CHECK_EVERY=10
-    depends_on:
-      - node # starts an empty node
-    command: > 
-      bash -c '
-      echo "Register the node and wait until ready ..." &&
-      sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
-      sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
-      echo "Apply the template ..." &&
-      sagcc exec templates composite apply sag-apama-correlator --sync-job nodes=${COMPOSE_PROJECT_NAME} -i env.properties repo.product=products repo.fix=fixes &&
-      echo "Start the instance ..." &&
-      sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Apama-correlator-default -e DONE --sync-job &&
-      echo "Check managed container status ..." &&
-      sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Apama-correlator-default -e ONLINE
-      '
+      - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
