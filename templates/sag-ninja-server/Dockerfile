@@ -1,11 +1,19 @@
-ARG BUILDER_IMAGE
-ARG BASE_IMAGE
+ARG __ninja_mem_max=256
+
+# Command Central docker builder image
+# Use $TAG to control release
+ARG TAG=latest
+# Use $BUILDER_IMAGE to control repo, e.g. private/public
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
+
+# Target image base image
+# IMPORTANT: for managed images MUST be the same as $NODE_IMAGE
+# for unmanaged images can be any supported OS
+ARG BASE_IMAGE=centos:7
 
 FROM $BUILDER_IMAGE as builder
 
-ARG NINJA_MEM_MAX=300
-
-RUN $CC_HOME/provision.sh
+RUN $CC_HOME/provision.sh && ./test.sh
 
 FROM $BASE_IMAGE
 

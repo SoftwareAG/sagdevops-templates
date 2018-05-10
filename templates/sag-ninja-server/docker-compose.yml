@@ -1,58 +1,34 @@
 version: "3.2"
 
-networks: 
-  default:
-    external:
-      name: sagdevopstemplates_default
-
 services:
-  ninja:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}
+  # provisioner
+  provision:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
+    volumes: 
+      - ./:/src/ # required
+    environment:
+      - __ninja_memory_max=256          # template test specific param
+      - REPO_HOST=aquarius-bg.eur.ad.sag
+      - REPO_PRODUCT=aquarius-bg.eur.ad.sag
+      - REPO_FIX=QARepo
+  
+  # target container
+  node:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/ninja:$TAG # target image
     build:
       context: .
+      dockerfile: Dockerfile            # instructions to build image
       args:
-        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
-        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
-    hostname: ninja
+        - TAG
+        - __ninja_memory_max=256        # template test specific param
+        - REPO_HOST=aquarius-bg.eur.ad.sag
+        - REPO_PRODUCT=aquarius-bg.eur.ad.sag
+        - REPO_FIX=QARepo
     ports:
-      - "4444"
+      - "4444"                          # container specific ports
     environment:
-      - CC_SERVER=builder
-
-  # ninja-alpine:
-  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}-alpine
-  #   build:
-  #     dockerfile: Dockerfile.alpine
-  #     context: .
-  #     args:
-  #       - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}
-  #       #- BASE_IMAGE=${DOCKER_REGISTRY_URL}/ibit/openjdk:8-jre-alpine
-  #       - BASE_IMAGE=${DOCKER_REGISTRY_URL}/ibit/java:${RELEASE}
-  #   ports:
-  #     - "4444:4444"
-
-  test:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
-    environment:
-      - CC_SERVER=builder    
-    links:
-      - ninja
-    command: >
-      bash -c '
-      echo "Checking managed container status ..." &&
-      sagcc list monitoring state ninja -e ONLINE -w 600 --wait-for-cc &&
-      echo "Verifying NINJA Web UI ..." &&
-      curl http://ninja:4444 | grep "Welcome to Software AG Spring Board" &&
-      echo "SUCCESSFULL"
-      '
-
-  # test2:
-  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
-  #   links:
-  #     - ninja-alpine
-  #   command: >
-  #     bash -c '
-  #     curl http://ninja-alpine:4444 | grep "Welcome to Software AG Spring Board" &&
-  #     echo "SUCCESSFULL"
-  #     '
-
+      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+    volumes:
+      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+      - ./test.sh:/test.sh # for dev only to avoid image rebuild
