@@ -73,7 +73,7 @@ pipeline {
                 stage('Platform Manager') {
                     steps {
                         testTemplates(['sag-spm-config', 'sag-spm-connect'])
-                        buildImages(['sag-spm-config'])
+                        buildImage2('sag-spm-config')
                     }
                 }
             }
