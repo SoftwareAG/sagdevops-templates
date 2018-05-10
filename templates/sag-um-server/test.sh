@@ -19,7 +19,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc exec lifecycle components Universal-Messaging-default start  -e DONE --sync-job &&
 
     echo "Verifying status ..."
-    sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE
+    sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE -w 60
 
     # echo "Verifying configs ..."
     # sagcc get configuration data OSGI-SPM COMMON-SYSPROPS -f text -e hello.world
