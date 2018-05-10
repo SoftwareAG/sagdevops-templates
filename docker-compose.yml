@@ -1,25 +1,27 @@
 version: "3.2"
 
 services:
-  cc: # CC builder service for image builds
-    image: ${CC_BUILDER_IMAGE}:${CC_TAG}
+  cc: # builder service
+    image: ${CC_BUILDER_IMAGE}:${TAG}
     ports:
       - 8091 # CCE
+      - 8092 # target node SPM
     build:
       context: .
       args:
-        - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG}    
-        - CC_INSTALLER
-        - CC_INSTALLER_URL
-        - LICENSES_URL
-        - REPO_HOST
-        - REPO_PRODUCT
-        - REPO_FIX
+        - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG} # base image for the builder, e.g. server-10.3
+        - NODE_IMAGE=${CC_NODE_IMAGE}             # base image for the node, e.g. node-10.2
+        - CC_INSTALLER                            # TODO: remove me?
+        - CC_INSTALLER_URL                        # TODO: remove me?
+        - LICENSES_URL                            # licenses .zip, e.g. 10.x
+        - REPO_HOST                               # default AQU host
+        - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
+        - REPO_FIX                                # fix release repo, e.g. GA_Fix_Repo
     # environment:
-    #   - LICENSES_URL
-    #   - REPO_HOST
-      # - REPO_PRODUCT
-      # - REPO_FIX
+    #   - REPO_HOST                                 # alternative, closest AQU host
+    #   - REPO_PRODUCT                              # alternative, product repo within the same release
+    #   - REPO_FIX                                  # alternative, fix repo
+    #   - LICENSES_URL                              # additional licenses
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/init.sh:/opt/sagtools/init.sh
@@ -27,7 +29,7 @@ services:
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
       - ./scripts/provision.sh:/opt/sagtools/provision.sh
 
-  sagcc:
+  sagcc: # sagcc wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
@@ -37,7 +39,7 @@ services:
     entrypoint: sagcc
     command: --help
 
-  sagccant:
+  sagccant: # sagccant wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}
     volumes: 
       - ./:/src/
@@ -47,7 +49,7 @@ services:
     entrypoint: sagccant
     command: -p
 
-  apply:
+  apply: # remote apply wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
@@ -58,6 +60,23 @@ services:
       - CC_CHECK_EVERY=10
     entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
+
+  provision: # default provisioner
+    image: ${CC_BUILDER_IMAGE}:${TAG}
+    entrypoint: /opt/sagtools/provision.sh
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+
+  # # default builder
+  # node:
+  #   # image: annonymous
+  #   build:
+  #     context: .
+  #   environment:
+  #     - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+
 
   # test:
   #   # FIXME: use client image with antcc
@@ -72,20 +91,3 @@ services:
   #     - EMPOWER_USR
   #     - EMPOWER_PSW
   #   command: antcc templateApply templateTest -Dbuild.dir=/tmp
-
-  # default provisioner
-  provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
-    entrypoint: /opt/sagtools/provision.sh
-    volumes: 
-      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-      - ./scripts/provision.sh:/opt/sagtools/provision.sh
-
-  # # default builder
-  # node:
-  #   # image: annonymous
-  #   build:
-  #     context: .
-  #   environment:
-  #     - CC_AUTO_REGISTER=0              # No auto register as we don't have a server

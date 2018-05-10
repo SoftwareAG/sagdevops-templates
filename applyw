@@ -21,4 +21,5 @@ else
     echo "ERROR: PROVISION '$TEMPLATE_ALIAS' FAILED !"
     echo ""
     ./sagccw get diagnostics logs local OSGI-CCE default.log tail lines=200
+    exit 100
 fi

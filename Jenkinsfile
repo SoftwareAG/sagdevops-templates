@@ -1,45 +1,21 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def testTemplate(t) {
+def testTemplate(t, testProvision, buildImage, pushImage) {
     dir ("templates/$t") {
         try {
-            sh "docker-compose run --name $t --rm provision"
+            if (testProvision) {
+                sh "docker-compose run --name $t --rm provision"
+            }
+            if (buildImage) {
+                sh "docker-compose build"
+                if (pushImage) {
+                    sh "docker-compose push"
+                }
+            }
         } finally {
             sh "docker-compose down"
         }
     }
-}
-
-def testTemplates(templates) {
-    for (t in templates) {
-        testTemplate(t)
-    }   
-}
-
-def buildImage(t) {
-    dir ("templates/$t") {
-        sh "docker-compose -f docker-compose-build.yml build"
-        try {
-            sh "docker-compose -f docker-compose-build.yml run --name $t --rm test"
-            sh "docker-compose -f docker-compose-build.yml push"
-        } finally {
-            sh "docker-compose -f docker-compose-build.yml logs"
-            sh "docker-compose -f docker-compose-build.yml down"
-        }
-    }
-}
-
-def buildImage2(t) {
-    dir ("templates/$t") {
-        sh "docker-compose build"
-        sh "docker-compose push"
-    }
-}
-
-def buildImages(templates) {
-    for (t in templates) {
-        buildImage(t)
-    }   
 }
 
 pipeline {
@@ -47,55 +23,29 @@ pipeline {
         label 'docker'
     }
     environment {
-        CC_TAG = '10.3'
         TAG = "10.3"
     }
     stages {
-        stage('Build Builder') {
+        stage('Init') {
             steps {
-                //sh 'docker-compose pull cc' // build and start the builder
-                sh 'docker-compose build cc'
-                //sh 'docker-compose port cc 8091'
+                sh "source ${env.TAG}.env; docker-compose pull cc"
             }
         }
-        stage("Test Infrastructure") {
-            parallel {
-                // stage('Command Central') {
-                //     steps {
-                //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
-                //     }
-                // }
-                // stage('Jenkins') {
-                //     steps {
-                //         testTemplates(['jenkins'])
-                //     }
-                // }
-                stage('Platform Manager') {
-                    steps {
-                        testTemplates(['sag-spm-config', 'sag-spm-connect'])
-                        buildImage2('sag-spm-config')
-                    }
-                }
-            }
-        }
-
         stage("Level 1") {
             parallel {
                 stage('Universal Messaging') {
                     steps {
-                        testTemplates(['sag-um-server'])
-                        buildImage2('sag-um-server')
+                        testTemplate('sag-um-server', false, true, true)
                     }
                 }
                 stage('Terracotta') {
                     steps {
-                        testTemplates(['sag-tc-server'])
+                        testTemplate('sag-tc-server', true, false, false)
                     }
                 }
                 stage('Integration Server') {
                     steps {
-                        testTemplate('sag-msc-server')
-                        buildImage2('sag-msc-server')
+                        testTemplate('sag-msc-server', false, true, true)
                     }
                 }                                                
             }
@@ -104,24 +54,19 @@ pipeline {
             parallel {
                 stage('EntireX') {
                     steps {
-                        testTemplates(['sag-exx-broker'])
+                        testTemplate('sag-exx-broker', true, true, false)
                     }
                 }
                 stage('Designer') {
                     steps {
-                        testTemplates(['sag-designer-services'])
+                        testTemplate('sag-designer-services', true, false, false)
                     }
                 }
                 stage('Apama') {
                     steps {
-                        testTemplates(['sag-apama-correlator'])
+                        testTemplate('sag-apama-correlator', true, false, false)
                     }
                 }                                                
-            }
-        }
-        stage("Push Builder") {
-            steps {
-                sh 'docker-compose push cc' // upload cc builder
             }
         }
     }

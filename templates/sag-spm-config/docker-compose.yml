@@ -3,7 +3,7 @@ version: "3.2"
 services:
   # provisioner
   provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
     entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
     volumes: 
       - ./:/src/ # required
@@ -16,7 +16,7 @@ services:
 
   # target container
   node:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3-custom # target image
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:$TAG # target image
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
