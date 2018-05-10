@@ -14,9 +14,6 @@ ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builde
 # for unmanaged images can be any supported OS
 ARG BASE_IMAGE=centos:7
 
-# Get access to the node image
-FROM $NODE_IMAGE as node
-
 # Get access to the builder image
 FROM $BUILDER_IMAGE as builder
 

@@ -29,7 +29,6 @@ templates:
   exx-broker:
     fixes: ${exx.broker.fixes}
     products:
-      # EntireXSpmBroker: # FIXME: this should not be necessary if SPM Plugin comes as a dependency
       EntireXBroker:
          ${exx.broker.name}:
            type: BROKER

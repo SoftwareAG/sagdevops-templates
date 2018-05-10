@@ -1,14 +1,20 @@
-ARG BUILDER_IMAGE
-ARG BASE_IMAGE
+# Command Central docker builder image
+# Use $TAG to control release
+ARG TAG=latest
+# Use $BUILDER_IMAGE to control repo, e.g. private/public
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
-FROM $BUILDER_IMAGE as builder
-
-RUN $CC_HOME/provision.sh
+# Target image base image
+# IMPORTANT: for managed images MUST be the same as $NODE_IMAGE
+# for unmanaged images can be any supported OS
+ARG BASE_IMAGE=centos:7
 
 FROM $BASE_IMAGE
 
 #RUN groupadd sag && useradd sag -g sag -d /opt/softwareag -s /bin/bash -M
 #USER sag
+
+RUN $CC_HOME/provision.sh
 
 ENV EXXDIR=$SAG_HOME/EntireX
 
@@ -16,6 +22,6 @@ ENV EXXDIR=$SAG_HOME/EntireX
 EXPOSE 1971
 
 # entrypoint scripts
-ADD entrypoint.sh $EXXDIR/bin/
+ADD entrypoint.sh $SAG_HOME/
 
-ENTRYPOINT $EXXDIR/entrypoint.sh
+ENTRYPOINT $SAG_HOME/entrypoint.sh

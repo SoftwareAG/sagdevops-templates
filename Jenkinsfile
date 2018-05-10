@@ -55,7 +55,7 @@ pipeline {
             parallel {
                 stage('EntireX') {
                     steps {
-                        testTemplate('sag-exx-broker', true, true, false)
+                        testTemplate('sag-exx-broker', true, false, false)
                     }
                 }
                 stage('Designer') {
