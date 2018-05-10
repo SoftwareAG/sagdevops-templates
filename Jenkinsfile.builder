@@ -30,17 +30,17 @@ pipeline {
             parallel {
                 stage('10.3') {
                     steps {
-                        sh 'source 10.3.env; docker-compose build cc'
+                        sh '. ./10.3.env; docker-compose build cc'
                     }
                 }
                 stage('10.2') {
                     steps {
-                        sh 'source 10.2.env; docker-compose build cc'
+                        sh '. ./10.2.env; docker-compose build cc'
                     }
                 }
                 stage('10.1') {
                     steps {
-                        sh 'source 10.3.env; docker-compose build cc'
+                        sh '. ./10.1.env; docker-compose build cc'
                     }
                 }                                                
             }            
