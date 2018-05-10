@@ -3,9 +3,11 @@
 TEMPLATE_ALIAS=$1
 shift
 
+echo "Apply template $TEMPLATE_ALIAS using $CC_SERVER"
+
 DIRNAME=`dirname $0`
 
-echo "Importing templates/$TEMPLATE_ALIAS/template.yaml into $CC_SERVER ..."
+echo "Importing templates/$TEMPLATE_ALIAS/template.yaml ..."
 ./sagccw exec templates composite import -i /src/templates/$TEMPLATE_ALIAS/template.yaml overwrite=true
 
 echo "Applying $TEMPLATE_ALIAS with $* ..."

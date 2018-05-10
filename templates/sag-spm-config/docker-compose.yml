@@ -7,6 +7,8 @@ services:
     entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
     volumes: 
       - ./:/src/ # required
+      - ../../scripts/inventory.sh:/opt/sagtools/inventory.sh
+      - ../../scripts/provision.sh:/opt/sagtools/provision.sh
     environment:
         # hello.name parameter is passed in as '__hello_name'
       - __hello_world=VM                # template test specific param
@@ -14,7 +16,7 @@ services:
 
   # target container
   node:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/helloworld # target image
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3-custom # target image
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
@@ -28,13 +30,4 @@ services:
       - HELLO_NAME=CONTAINER_INSTANCE   # container specific ENV var
     volumes:
       - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
-
-  # test container
-  test:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
-    environment:
-      - CC_SERVER=http://node:8092/spm # if node is a managed image, point to its SPM
-      - NODES=                         # empty because we're tring against SPM itself
-    volumes:
-      - ./:/src/                       # provide access to test.sh
-    command: /src/test.sh              # run the tests
+      - ./test.sh:/test.sh # for dev only to avoid image rebuild

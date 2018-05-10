@@ -22,8 +22,8 @@ echo "Command Central is READY"
 $CC_HOME/inventory.sh
 
 # globals
-MAIN_TEMPLATE_ALIAS=${1}
 NODES=${NODES:-node}
+MAIN_TEMPLATE_ALIAS=${1}
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
 
@@ -139,4 +139,5 @@ else
     echo ""
     echo "ERROR: PROVISION '$MAIN_TEMPLATE_ALIAS' FAILED !"
     echo ""
+    exit 100
 fi

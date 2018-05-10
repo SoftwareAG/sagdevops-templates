@@ -29,6 +29,13 @@ def buildImage(t) {
     }
 }
 
+def buildImage2(t) {
+    dir ("templates/$t") {
+        sh "docker-compose build"
+        sh "docker-compose push"
+    }
+}
+
 def buildImages(templates) {
     for (t in templates) {
         buildImage(t)
@@ -44,20 +51,34 @@ pipeline {
         TAG = "10.3"
     }
     stages {
-        stage('Init') {
+        stage('Build Builder') {
             steps {
                 //sh 'docker-compose pull cc' // build and start the builder
                 sh 'docker-compose build cc'
                 //sh 'docker-compose port cc 8091'
             }
         }
-        stage('Test HelloWorld') {
-            steps {
-                testTemplates(['helloworld'])
-                buildImages(['helloworld'])
+        stage("Test Infrastructure") {
+            parallel {
+                // stage('Command Central') {
+                //     steps {
+                //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
+                //     }
+                // }
+                // stage('Jenkins') {
+                //     steps {
+                //         testTemplates(['jenkins'])
+                //     }
+                // }
+                stage('Platform Manager') {
+                    steps {
+                        testTemplates(['sag-spm-config', 'sag-spm-connect'])
+                        buildImages(['sag-spm-config'])
+                    }
+                }
             }
         }
-        
+
         // stage("Test 1") {
         //     parallel {
         //         // stage('Command Central') {
@@ -118,7 +139,7 @@ pipeline {
         //         }                                                
         //     }
         // }
-        stage("Push Images") {
+        stage("Push Builder") {
             steps {
                 sh 'docker-compose push cc' // upload cc builder
             }

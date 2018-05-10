@@ -71,3 +71,20 @@ services:
   #     - EMPOWER_USR
   #     - EMPOWER_PSW
   #   command: antcc templateApply templateTest -Dbuild.dir=/tmp
+
+  # default provisioner
+  provision:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+    entrypoint: /opt/sagtools/provision.sh
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+
+  # # default builder
+  # node:
+  #   # image: annonymous
+  #   build:
+  #     context: .
+  #   environment:
+  #     - CC_AUTO_REGISTER=0              # No auto register as we don't have a server

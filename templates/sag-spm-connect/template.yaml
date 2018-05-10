@@ -1,9 +1,10 @@
 alias: sag-spm-connect
-description: Connect running SPM nodes 
+description: Connect running SPM nodes
+dslVersion: "1.1"
 
 environments:
   default:  
-    nodes: ${}                              # REQUIRED: host names to connect to
+    hosts: ${}                              # REQUIRED: host names to connect to
     spm.port: 8092                          # Remote SPM HTTP/S port
     spm.secure: false                       # Use SSL?
     spm.credentials.key: DEFAULT_ADMINISTRATOR  # Remote SPM connection credentials
@@ -21,7 +22,8 @@ templates:
 
 provision:
   default:
-    infra: ${nodes}
+    infra: 
+      hosts: ${hosts}
 
 nodes:
   default:

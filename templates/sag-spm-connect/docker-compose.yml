@@ -1,0 +1,10 @@
+version: "3.2"
+
+services:
+  provision:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
+    environment: 
+      - __hosts=127.0.0.1 # required template parameter
+    volumes: 
+      - ./:/src/ # required for env.properties and test.sh

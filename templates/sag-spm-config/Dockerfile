@@ -25,7 +25,7 @@ ENV HELLO_NAME=default
 # COPY --from=node /opt/softwareag /opt/softwareag
 
 # Apply template.yaml with env.properties and run smoke tests
-RUN $CC_HOME/provision.sh && NODES=node ./test.sh
+RUN $CC_HOME/provision.sh && ./test.sh
 
 # Target image
 FROM $BASE_IMAGE as main

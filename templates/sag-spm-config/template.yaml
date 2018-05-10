@@ -1,0 +1,37 @@
+alias: sag-spm-config
+
+environments:
+  default:
+    nodes:        ${}    # target node alias(es)
+    hello.world:  ${}    # example parameter
+                    
+layers:
+  runtime:
+    templates:   
+      - spm-config
+
+templates:
+  spm-config:
+    products:
+      SPM:
+        default:
+          configuration:
+            OSGI-SPM:                         # SPM profile configuration
+              COMMON-JSW:                     # Tanuki Java Service Wrapper configuration
+                COMMON-JSW: |
+                  wrapper.logfile.maxfiles=1  # Tanuki logfile configuration
+                  wrapper.logfile.maxsize=1m  # Tanuki logfile configuration
+
+              COMMON-JAVASYSPROPS:            # Java System Properties configuration
+                COMMON-JAVASYSPROPS: |
+                  hello.world=${hello.world}  # sample static configuration
+                  hello.name=%HELLO_NAME%     # sample dynamic configuration handled by Tanuki
+            
+            OSGI-SPM-ENGINE:                  # SPM Engine configuration
+              COMMON-SYSPROPS:                # System properties
+                com.softwareag.platform.management.common.monitoring.BasicMonitoringService: | # Monitoring
+                  com.softwareag.plm.spm.monitoring.poll.interval.seconds=15 # SPM monitoring interval
+
+provision:
+  default:                                  
+    runtime: ${nodes}
