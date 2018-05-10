@@ -19,6 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile            # instructions to build image
       args:
+        - TAG
         - __um_realm=default            # container specific build ARG
     ports:
       - "9000"                          # container specific ports

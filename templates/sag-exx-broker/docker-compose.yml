@@ -13,6 +13,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
+      args:
+        - TAG
     ports:
       - "1971"                          # container specific ports
     environment:
