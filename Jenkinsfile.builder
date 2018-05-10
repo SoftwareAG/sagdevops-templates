@@ -1,21 +1,12 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile.builder" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def testTemplate(t, testProvision, buildImage, pushImage) {
-    dir ("templates/$t") {
-        try {
-            if (testProvision) {
-                sh "docker-compose run --name $t --rm provision"
-            }
-            if (buildImage) {
-                sh "docker-compose build"
-                if (pushImage) {
-                    sh "docker-compose push"
-                }
-            }
-        } finally {
-            sh "docker-compose down"
-        }
-    }
+def buildAndTest(release) {
+    sh """
+    . ./${release}.env
+    docker-compose build cc
+    cd templates/sag-spm-config; docker-compose build; cd ../..
+    docker-compose push cc
+    """
 }
 
 pipeline {
@@ -30,63 +21,20 @@ pipeline {
             parallel {
                 stage('10.3') {
                     steps {
-                        sh '. ./10.3.env; docker-compose build cc'
+                        buildAndTest('10.3')
                     }
                 }
                 stage('10.2') {
                     steps {
-                        sh '. ./10.2.env; docker-compose build cc'
+                        buildAndTest('10.2')
                     }
                 }
                 stage('10.1') {
                     steps {
-                        sh '. ./10.1.env; docker-compose build cc'
-                    }
-                }                                                
-            }            
-        }
-        stage("Test") {
-            parallel {
-                // stage('jenkins') {
-                //     steps {
-                //         testTemplate('jenkins', true)
-                //     }
-                // }
-                stage('sag-spm-connect') {
-                    steps {
-                        testTemplate('sag-spm-connect', true)
-                    }
-                }
-                stage('sag-spm-config') {
-                    steps {
-                        testTemplate('sag-spm-config', false, true, false)
-                    }
-                }
-            }
-        }
-        stage("Push") {
-            parallel {
-                stage('10.3') {
-                    steps {
-                        sh '. ./10.3.env; docker-compose push cc'
-                    }
-                }
-                stage('10.2') {
-                    steps {
-                        sh '. ./10.2.env; docker-compose push cc'
-                    }
-                }
-                stage('10.1') {
-                    steps {
-                        sh '. ./10.1.env; docker-compose push cc'
+                        buildAndTest('10.1')
                     }
                 }                                                
             }            
         }
     }
-    post {
-        always {
-            sh 'docker-compose down'
-        }
-    }    
 }
