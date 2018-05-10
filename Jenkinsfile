@@ -23,7 +23,7 @@ pipeline {
         label 'docker'
     }
     environment {
-        TAG = "10.3"
+        TAG = "10.2"
     }
     stages {
         stage('Init') {
