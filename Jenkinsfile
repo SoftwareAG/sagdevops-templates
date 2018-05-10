@@ -92,33 +92,33 @@ pipeline {
                         testTemplates(['sag-tc-server'])
                     }
                 }
-                // stage('Integration Server') {
-                //     steps {
-                //         //testTemplates(['sag-msc-server'])
-                //         buildImages(['sag-msc-server'])
-                //     }
-                // }                                                
+                stage('Integration Server') {
+                    steps {
+                        testTemplate('sag-msc-server')
+                        buildImage2('sag-msc-server')
+                    }
+                }                                                
             }
         }
-        // stage("Test 2") {
-        //     parallel {
-        //         stage('EntireX') {
-        //             steps {
-        //                 testTemplates(['sag-exx-broker'])
-        //             }
-        //         }
-        //         stage('Designer') {
-        //             steps {
-        //                 testTemplates(['sag-designer-services'])
-        //             }
-        //         }
-        //         stage('Apama') {
-        //             steps {
-        //                 testTemplates(['sag-apama-correlator'])
-        //             }
-        //         }                                                
-        //     }
-        // }
+        stage("Level 2") {
+            parallel {
+                stage('EntireX') {
+                    steps {
+                        testTemplates(['sag-exx-broker'])
+                    }
+                }
+                stage('Designer') {
+                    steps {
+                        testTemplates(['sag-designer-services'])
+                    }
+                }
+                stage('Apama') {
+                    steps {
+                        testTemplates(['sag-apama-correlator'])
+                    }
+                }                                                
+            }
+        }
         stage("Push Builder") {
             steps {
                 sh 'docker-compose push cc' // upload cc builder

@@ -2,9 +2,20 @@ version: "3.2"
 
 services:
   provision: # perform provision and smoke test
-    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
     entrypoint: /opt/sagtools/provision.sh
-    command: sag-exx-broker
     volumes: 
-      - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      - ./:/src/
+      - ./:/src/ # required
+
+  # target container
+  node:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/entirex-broker:10.3 # target image
+    build:
+      context: .
+      dockerfile: Dockerfile            # instructions to build image
+    ports:
+      - "1971"                          # container specific ports
+    environment:
+      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+    volumes:
+      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
