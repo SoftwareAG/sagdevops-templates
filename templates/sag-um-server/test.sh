@@ -16,7 +16,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc get inventory components -e Universal-Messaging-default
 
     echo "Start the instance ..."
-    sagcc exec lifecycle components Universal-Messaging-default start  -e DONE --sync-job &&
+    sagcc exec lifecycle components Universal-Messaging-default start  -e DONE --sync-job
 
     echo "Verifying status ..."
     sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE -w 60

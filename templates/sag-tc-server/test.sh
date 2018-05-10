@@ -16,7 +16,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc get inventory components -e TES-default
 
     echo "Start the instance ..."
-    sagcc exec lifecycle components TES-default start-e DONE --sync-job &&
+    sagcc exec lifecycle components TES-default start -e DONE --sync-job
 
     echo "Verifying status ..."
     sagcc get monitoring runtimestatus TES-default -e ONLINE -w 60
