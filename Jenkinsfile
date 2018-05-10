@@ -79,49 +79,29 @@ pipeline {
             }
         }
 
-        // stage("Test 1") {
-        //     parallel {
-        //         // stage('Command Central') {
-        //         //     steps {
-        //         //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
-        //         //     }
-        //         // }
-        //         // stage('Jenkins') {
-        //         //     steps {
-        //         //         testTemplates(['jenkins'])
-        //         //     }
-        //         // }
-        //         stage('Universal Messaging') {
-        //             steps {
-        //                 //testTemplates(['sag-um-server'])
-        //                 buildImages(['sag-um-server'])
-        //             }
-        //         }
-        //         stage('Terracotta') {
-        //             steps {
-        //                 testTemplates(['sag-tc-server'])
-        //             }
-        //         }
-        //         stage('Integration Server') {
-        //             steps {
-        //                 //testTemplates(['sag-msc-server'])
-        //                 buildImages(['sag-msc-server'])
-        //             }
-        //         }                                                
-        //     }
-        // }
+        stage("Level 1") {
+            parallel {
+                stage('Universal Messaging') {
+                    steps {
+                        testTemplates(['sag-um-server'])
+                        buildImage2('sag-um-server')
+                    }
+                }
+                stage('Terracotta') {
+                    steps {
+                        testTemplates(['sag-tc-server'])
+                    }
+                }
+                // stage('Integration Server') {
+                //     steps {
+                //         //testTemplates(['sag-msc-server'])
+                //         buildImages(['sag-msc-server'])
+                //     }
+                // }                                                
+            }
+        }
         // stage("Test 2") {
         //     parallel {
-        //         // stage('Command Central') {
-        //         //     steps {
-        //         //         testTemplates(['sag-creds', 'sag-repos', 'sag-cc-tuneup'])
-        //         //     }
-        //         // }
-        //         // stage('Jenkins') {
-        //         //     steps {
-        //         //         testTemplates(['jenkins'])
-        //         //     }
-        //         // }
         //         stage('EntireX') {
         //             steps {
         //                 testTemplates(['sag-exx-broker'])

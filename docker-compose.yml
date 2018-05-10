@@ -15,11 +15,11 @@ services:
         - REPO_HOST
         - REPO_PRODUCT
         - REPO_FIX
-    environment:
-      - LICENSES_URL
-      - REPO_HOST
-      - REPO_PRODUCT
-      - REPO_FIX
+    # environment:
+    #   - LICENSES_URL
+    #   - REPO_HOST
+      # - REPO_PRODUCT
+      # - REPO_FIX
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/init.sh:/opt/sagtools/init.sh

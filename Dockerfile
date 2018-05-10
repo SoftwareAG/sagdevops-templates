@@ -31,4 +31,8 @@ ONBUILD ARG REPO_ASSET=assets
 ONBUILD ADD . .
 # do not run by default # ONBUILD RUN $CC_HOME/provision.sh
 
+ENV REPO_PRODUCT=products
+ENV REPO_FIX=fixes
+ENV REPO_ASSET=assets
+
 WORKDIR /src

@@ -1,49 +1,29 @@
 version: "3.2"
 
 services:
-  provision: # perform provision and smoke test
-    image: ${CC_BUILDER_IMAGE}:${CC_TAG}-${TAG}
-    entrypoint: /opt/sagtools/provision.sh
-    command: sag-um-server
+  # provisioner
+  provision:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
     volumes: 
-      - ../../templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      # TODO?: to have a volume, otherwise UM fails to start!
+      - ./:/src/ # required
+        # TODO?: to have a volume, otherwise UM fails to start!
       - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
-
-
-  # node: # empty managed node to provision to for dev/test
-  #   image: ${CC_NODE_IMAGE}:${CC_TAG}
-  #   ports:
-  #     - "9000"
-  #   environment:
-  #     - CC_AUTO_REGISTER=0
-  #   volumes: # TODO?: to have a volume, otherwise UM fails to start!
-  #     - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
-
-  # provision: # perform provision and smoke test
-  #   image: ${CC_CLIENT_IMAGE}:${CC_TAG}
-  #   volumes: 
-  #     - ./:/src/
-  #   environment: 
-  #     - CC_SERVER
-  #     - CC_WAIT=1200
-  #     - CC_CHECK_EVERY=10
-  #   depends_on:
-  #     - node # starts an empty node
-  #   command: > 
-  #     bash -c '
-  #     echo "Register the node and wait until ready ..." &&
-  #     sagcc add landscape nodes alias=${COMPOSE_PROJECT_NAME} url="${COMPOSE_PROJECT_NAME}_node_1" -e OK --wait-for-cc &&
-  #     sagcc list landscape nodes ${COMPOSE_PROJECT_NAME} -e ONLINE &&
-  #     echo "Apply the template ..." &&
-  #     sagcc exec templates composite apply sag-um-server -e DONE --sync-job -i env.properties nodes=${COMPOSE_PROJECT_NAME} repo.product=products repo.fix=fixes &&
-  #     echo "Start the instance ..." &&
-  #     sagcc exec lifecycle start ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e DONE --sync-job &&
-  #     echo "Check managed container status ..." &&
-  #     sagcc list monitoring state ${COMPOSE_PROJECT_NAME} Universal-Messaging-default -e ONLINE
-  #     '
-
-# networks: 
-#   default:
-#     external:
-#       name: sagdevopstemplates_default
+    environment:
+      - __um_realm=default              # template test specific param
+  
+  # target container
+  node:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3 # target image
+    build:
+      context: .
+      dockerfile: Dockerfile            # instructions to build image
+      args:
+        - __um_realm=default            # container specific build ARG
+    ports:
+      - "9000"                          # container specific ports
+    environment:
+      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+    volumes:
+      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+      - ./test.sh:/test.sh # for dev only to avoid image rebuild

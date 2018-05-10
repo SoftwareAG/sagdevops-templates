@@ -1,8 +1,24 @@
-ARG BUILDER_IMAGE
-ARG BASE_IMAGE
-ARG UM_INSTANCE_NAME=default
-ARG UM_INSTANCE_PORT=9000
 
+ARG __um_instance_name=default
+ARG __um_instance_port=9000
+ARG __um_realm=default
+
+# Managed node image
+# IMPORTANT: use image tag for target release
+ARG NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3
+
+# Command Central builder image. Should be the latest available tag
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+
+# Target image base image
+# IMPORTANT: for managed images MUST be the same as $NODE_IMAGE
+# for unmanaged images can be any supported OS
+ARG BASE_IMAGE=centos:7
+
+# Get access to the node image
+FROM $NODE_IMAGE as node
+
+# Get access to the builder image
 FROM $BUILDER_IMAGE as builder
 
 RUN $CC_HOME/provision.sh
@@ -15,12 +31,12 @@ ENV JRE_HOME=$SAG_HOME/jvm/jvm/jre/
 
 ENV UM_HOME $SAG_HOME/UniversalMessaging
 
-ENV UM_INSTANCE_NAME=$UM_INSTANCE_NAME
+ENV UM_INSTANCE_NAME=$__um_instance_name
 
 # Default realm name, can be customised by changing this line, or overriding this variable when running the image for the first time. After
 # the image has been run once it is too late to change the realm name in subsequent derived images, as it gets baked into persistent
 # configuration.
-ENV UM_REALM=default  						
+ENV UM_REALM=$__um_realm  						
 
 # Extra properties to pass to the realm server, intended for settings that can only be configured at realm server startup. The default here
 # is to ask it to start it without using low-latency mode (CORE_SPIN), but this environment variable can be overridden when running the image.
@@ -30,7 +46,7 @@ ENV SERVER_OPTS_EXTRA -DCORE_SPIN=false
 ENV PATH=$PATH:$UM_HOME/:$JAVA_HOME/bin/
 ENV CLASSPATH=$UM_HOME/lib/*
 
-EXPOSE $UM_INSTANCE_PORT 8092 8093
+EXPOSE $__um_instance_port 8092 8093
 
 # copy everything from the builder stage $SAG_HOME
 COPY --from=builder $SAG_HOME/ $SAG_HOME/
