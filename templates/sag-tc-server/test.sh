@@ -8,7 +8,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     echo "Verifying managed container $CC_SERVER ..."
     sagcc get inventory products -e TES --wait-for-cc
 
-    export CC_WAIT=5
+    export CC_WAIT=60
     # echo "Verifying fixes ..."
     # sagcc get inventory fixes -e wMFix.TES
 
@@ -19,7 +19,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc exec lifecycle components TES-default start -e DONE --sync-job
 
     echo "Verifying status ..."
-    sagcc get monitoring runtimestatus TES-default -e ONLINE -w 60
+    sagcc get monitoring runtimestatus TES-default -e ONLINE
 
     # echo "Verifying configs ..."
     # sagcc get configuration data OSGI-SPM COMMON-SYSPROPS -f text -e hello.world
