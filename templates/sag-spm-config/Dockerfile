@@ -1,5 +1,7 @@
+# Command Central docker builder image
+# Use $TAG to control release
 ARG TAG=latest
-# Command Central builder image. Should be the latest available tag
+# Use $BUILDER_IMAGE to control repo, e.g. private/public
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
 # Target image base image

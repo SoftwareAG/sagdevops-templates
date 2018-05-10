@@ -28,7 +28,8 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                sh "source ${env.TAG}.env; docker-compose pull cc"
+                echo "Testing for ${env.TAG} release"
+                sh ". ./${env.TAG}.env; docker-compose pull cc"
             }
         }
         stage("Level 1") {

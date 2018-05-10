@@ -3,12 +3,11 @@ ARG __um_instance_name=default
 ARG __um_instance_port=9000
 ARG __um_realm=default
 
-# Managed node image
-# IMPORTANT: use image tag for target release
-ARG NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3
-
-# Command Central builder image. Should be the latest available tag
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+# Command Central docker builder image
+# Use $TAG to control release
+ARG TAG=latest
+# Use $BUILDER_IMAGE to control repo, e.g. private/public
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
 # Target image base image
 # IMPORTANT: for managed images MUST be the same as $NODE_IMAGE
