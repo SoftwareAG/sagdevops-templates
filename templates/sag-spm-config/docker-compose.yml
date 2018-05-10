@@ -21,6 +21,7 @@ services:
       context: .
       dockerfile: Dockerfile            # instructions to build image
       args:
+        - TAG
         # hello.name parameter is passed in as '__hello_name'
         - __hello_world=Container       # container specific build ARG
     ports:

@@ -1,9 +1,6 @@
-# Managed node image
-# IMPORTANT: use image tag for target release
-ARG NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3
-
+ARG TAG=latest
 # Command Central builder image. Should be the latest available tag
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
 # Target image base image
 # IMPORTANT: for managed images MUST be the same as $NODE_IMAGE
@@ -20,9 +17,6 @@ FROM $BUILDER_IMAGE as builder
 ARG __hello_world=default
 # runtime container init parameter
 ENV HELLO_NAME=default
-
-# Copy target node from the node image
-# COPY --from=node /opt/softwareag /opt/softwareag
 
 # Apply template.yaml with env.properties and run smoke tests
 RUN $CC_HOME/provision.sh && ./test.sh

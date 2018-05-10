@@ -4,7 +4,12 @@ def buildAndTest(release) {
     sh """
     . ./${release}.env
     docker-compose build cc
-    cd templates/sag-spm-config; docker-compose build; cd ../..
+    
+    cd templates/sag-spm-config
+    docker-compose run --rm provision
+    docker-compose build
+    cd ../..
+    
     docker-compose push cc
     """
 }
