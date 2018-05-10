@@ -78,7 +78,7 @@ pipeline {
                 }
                 stage('10.1') {
                     steps {
-                        sh '. ./10.3.env; docker-compose push cc'
+                        sh '. ./10.1.env; docker-compose push cc'
                     }
                 }                                                
             }            
