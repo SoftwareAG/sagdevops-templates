@@ -7,6 +7,8 @@ services:
     entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
     volumes: 
       - ./:/src/ # required
+    environment:
+      - __is_fixes=$FIXES               # [] or ALL, from the env
   
   # target container
   node:
@@ -16,6 +18,7 @@ services:
       dockerfile: Dockerfile            # instructions to build image
       args:
         - TAG
+        - __is_fixes=$FIXES             # [] or ALL, from the env
     ports:
       - "5555"                          # container specific ports
     environment:

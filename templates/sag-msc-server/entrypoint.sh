@@ -22,7 +22,7 @@ while [  ! -f $SAG_HOME/IntegrationServer/instances/$IS_INSTANCE_NAME/logs/serve
 done
 
 echo "IS process successfully started. Waiting for HTTP stack ..."
-until curl Administrator:manage -s http://`hostname`:5555/ 
+until curl -u Administrator:manage -s http://`hostname`:5555/ 
 do 
     sleep 5
     tail $SAG_HOME/IntegrationServer/instances/$IS_INSTANCE_NAME/logs/server.log

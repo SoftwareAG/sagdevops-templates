@@ -9,8 +9,9 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc get inventory products -e NUMRealmServer --wait-for-cc
 
     export CC_WAIT=60
-    # echo "Verifying fixes ..."
-    # sagcc get inventory fixes -e wMFix.NUMRealmServer
+    echo "Verifying fixes ..."
+    sagcc get inventory fixes 
+    # -e wMFix.NUMRealmServer
 
     echo "Verifying instances ..."
     sagcc get inventory components -e Universal-Messaging-default
@@ -19,7 +20,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc exec lifecycle components Universal-Messaging-default start  -e DONE --sync-job
 
     echo "Verifying status ..."
-    sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE -w 60
+    sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE
 
     # echo "Verifying configs ..."
     # sagcc get configuration data OSGI-SPM COMMON-SYSPROPS -f text -e hello.world

@@ -1,3 +1,5 @@
+ARG __is_fixes=[]
+
 # Command Central docker builder image
 # Use $TAG to control release
 ARG TAG=latest

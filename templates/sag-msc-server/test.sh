@@ -9,8 +9,10 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc get inventory products -e MSC --wait-for-cc
 
     export CC_WAIT=60
-    # echo "Verifying fixes ..."
-    # sagcc get inventory fixes -e wMFix.integrationServer.Core
+    
+    echo "Verifying fixes ..."
+    sagcc get inventory fixes
+    # -e wMFix.integrationServer.Core
 
     echo "Verifying instances ..."
     sagcc get inventory components -e OSGI-IS_msc
@@ -26,7 +28,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     # sagcc get configuration data OSGI-SPM COMMON-SYSPROPS -f text -e hello.world
 fi
 
-echo "TODO: Verifying product runtime ..."
-curl Administrator:manage -s http://`hostname`:5555/
+echo "Verifying product runtime ..."
+curl -u Administrator:manage -s http://`hostname`:5555/
 
 echo "DONE testing"

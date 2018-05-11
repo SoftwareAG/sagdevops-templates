@@ -11,6 +11,7 @@ services:
       - ../../build/run/data/umdev:/opt/softwareag/UniversalMessaging/server/default/data/
     environment:
       - __um_realm=default              # template test specific param
+      - __um_fixes=$FIXES               # [] or ALL from the env
   
   # target container
   node:
@@ -21,6 +22,7 @@ services:
       args:
         - TAG
         - __um_realm=default            # container specific build ARG
+        - __um_fixes=$FIXES             # [] or ALL from the env
     ports:
       - "9000"                          # container specific ports
     environment:

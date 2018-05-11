@@ -1,7 +1,7 @@
-
 ARG __um_instance_name=default
 ARG __um_instance_port=9000
 ARG __um_realm=default
+ARG __um_fixes=[]
 
 # Command Central docker builder image
 # Use $TAG to control release
@@ -17,7 +17,7 @@ ARG BASE_IMAGE=centos:7
 # Get access to the builder image
 FROM $BUILDER_IMAGE as builder
 
-RUN $CC_HOME/provision.sh & ./test.sh
+RUN $CC_HOME/provision.sh && ./test.sh
 
 FROM $BASE_IMAGE
 
