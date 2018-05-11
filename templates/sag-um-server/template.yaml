@@ -11,7 +11,9 @@ environments:
     um.memory.init:      64                 # initial memory size in MB
     um.memory.max:       128                # maximum memory size in MB
     um.memory.direct:    1G                 # direct memory size
-    um.fixes:            ALL                # fixes to apply, ALL by default
+    um.fixes:                               # minimal recommended set of fixes to apply
+      - wMFix.NUMRealmServer                # Universal Messaging Realm Server fix
+      - wMFix.NUMspmBundles                 # Universal Messaging SPM Plugin fix
 
 layers:
   runtime:

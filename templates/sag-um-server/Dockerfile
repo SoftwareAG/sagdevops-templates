@@ -17,7 +17,7 @@ ARG BASE_IMAGE=centos:7
 # Get access to the builder image
 FROM $BUILDER_IMAGE as builder
 
-RUN $CC_HOME/provision.sh
+RUN $CC_HOME/provision.sh & ./test.sh
 
 FROM $BASE_IMAGE
 
