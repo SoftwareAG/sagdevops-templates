@@ -23,7 +23,8 @@ pipeline {
         label 'docker'
     }
     environment {
-        TAG = "10.2"
+        TAG = "10.2"  // 10.3, 10.2, 10.1
+        FIXES = 'ALL' // for GA releases or '' for TRUNK
     }
     stages {
         stage('Init') {
