@@ -8,7 +8,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     echo "Verifying managed container $CC_SERVER ..."
     sagcc get inventory products -e MSC --wait-for-cc
 
-    export CC_WAIT=60
+    export CC_WAIT=180
     
     echo "Verifying fixes ..."
     sagcc get inventory fixes
