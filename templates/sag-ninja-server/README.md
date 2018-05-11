@@ -6,6 +6,7 @@ Use this template to provision and migrate Ninja demo product.
 
 ### Supported Software AG releases
 
+* SAG internal network
 * Ninja 10.1 or higher
 * Command Central 10.2 and higher
 
@@ -54,7 +55,6 @@ sagcc exec templates composite apply sag-ninja-server nodes=node \
   * Finish the wizard
 * Wait until provision jobs completes. Use Jobs view to monitor
 
-## Local development and testing
+## TODO
 
-
-
+* Fix local dev/build on Docker by providing custom repo initialization

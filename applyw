@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+TEMPLATE_ALIAS=$1
+shift
+
+echo "Apply template $TEMPLATE_ALIAS using $CC_SERVER"
+
+DIRNAME=`dirname $0`
+
+echo "Importing templates/$TEMPLATE_ALIAS/template.yaml ..."
+./sagccw exec templates composite import -i /src/templates/$TEMPLATE_ALIAS/template.yaml overwrite=true
+
+echo "Applying $TEMPLATE_ALIAS with $* ..."
+
+if docker-compose -f $DIRNAME/docker-compose.yml run --rm apply $TEMPLATE_ALIAS $* ; then
+    echo ""
+    echo "PROVISION '$TEMPLATE_ALIAS' SUCCESSFULL"
+    echo ""
+else 
+    echo ""
+    echo "ERROR: PROVISION '$TEMPLATE_ALIAS' FAILED !"
+    echo ""
+    ./sagccw get diagnostics logs local OSGI-CCE default.log tail lines=200
+    exit 100
+fi

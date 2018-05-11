@@ -1,0 +1,24 @@
+#!/bin/sh
+
+TEMPLATE_ALIAS=$1
+DIRNAME=`dirname $0`
+
+export COMPOSE_FILE=$DIRNAME/docker-compose.yml
+
+# docker-compose pull cc
+docker-compose up -d cc
+
+echo ""
+echo "===================================================================="
+echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
+echo "===================================================================="
+echo ""
+
+docker-compose exec \
+    cc bash -c \
+    "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; /opt/sagtools/provision.sh $TEMPLATE_ALIAS; if [ -f test.sh ]; then ./test.sh ; fi"
+
+echo "===================================================================="
+echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
+echo "===================================================================="
+

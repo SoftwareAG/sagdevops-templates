@@ -1,68 +1,82 @@
 version: "3.2"
 
 services:
-  cc: # CC service for development/testing
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-server:${TAG}
+  cc: # builder service
+    image: ${CC_BUILDER_IMAGE}:${TAG}
     ports:
       - 8091 # CCE
-    volumes: 
-      # live templates updates
-      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      # custom init
-      - ./init.sh:/opt/sagtools/init.sh
-    environment:
-      - LICENSES_URL
-      - REPO_HOST
-      - REPO_PRODUCT
-      - REPO_FIX
-
-  builder: # CC builder service for image builds
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
-    ports:
-      - 8091 # CCE
+      - 8092 # target node SPM
     build:
       context: .
       args:
-        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}       
-        - LICENSES_URL
-        - REPO_HOST
-        - REPO_PRODUCT
-        - REPO_FIX
-    environment:
-      - LICENSES_URL
-      - REPO_HOST
-      - REPO_PRODUCT
-      - REPO_FIX
+        - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG} # base image for the builder, e.g. server-10.3
+        - NODE_IMAGE=${CC_NODE_IMAGE}             # base image for the node, e.g. node-10.2
+        - CC_INSTALLER                            # TODO: remove me?
+        - CC_INSTALLER_URL                        # TODO: remove me?
+        - LICENSES_URL                            # licenses .zip, e.g. 10.x
+        - REPO_HOST                               # default AQU host
+        - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
+        - REPO_FIX                                # fix release repo, e.g. GA_Fix_Repo
+    # environment:
+    #   - REPO_HOST                                 # alternative, closest AQU host
+    #   - REPO_PRODUCT                              # alternative, product repo within the same release
+    #   - REPO_FIX                                  # alternative, fix repo
+    #   - LICENSES_URL                              # additional licenses
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      - ./init.sh:/opt/sagtools/init.sh
+      - ./scripts/init.sh:/opt/sagtools/init.sh
+      - ./scripts/test.sh:/opt/sagtools/test.sh
+      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh
 
-  sagcc:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+  sagcc: # sagcc wrapper
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
-    entrypoint: sagcc --wait-for-cc
+      - CC_SERVER
+      - CC_PASSWORD
+    entrypoint: sagcc
     command: --help
 
-  sagccant:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+  sagccant: # sagccant wrapper
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
+      - CC_SERVER
+      - CC_PASSWORD
     entrypoint: sagccant
     command: -p
 
-  apply:
-    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+  apply: # remote apply wrapper
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
     environment: 
-      - CC_SERVER=cc
-    entrypoint: sagcc exec templates composite apply --sync-job --wait 3600 -c 10
+      - CC_SERVER
+      - CC_PASSWORD
+      - CC_WAIT
+      - CC_CHECK_EVERY=10
+    entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
+
+  provision: # default provisioner
+    image: ${CC_BUILDER_IMAGE}:${TAG}
+    entrypoint: /opt/sagtools/provision.sh
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+
+  # # default builder
+  # node:
+  #   # image: annonymous
+  #   build:
+  #     context: .
+  #   environment:
+  #     - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+
 
   # test:
   #   # FIXME: use client image with antcc

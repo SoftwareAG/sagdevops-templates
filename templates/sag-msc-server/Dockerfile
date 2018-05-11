@@ -1,21 +1,23 @@
-# Use stock, default or custom builder image
-ARG BUILDER_IMAGE
-# Use any base image
-ARG BASE_IMAGE
+# Command Central docker builder image
+# Use $TAG to control release
+ARG TAG=latest
+# Use $BUILDER_IMAGE to control repo, e.g. private/public
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
+
+# Target image base image
+ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
 
 FROM $BUILDER_IMAGE as builder
 
-#ARG IS_INSTANCE_NAME=msc
+ARG __is_fixes=[]
 
-RUN $CC_HOME/provision.sh
+RUN $CC_HOME/provision.sh && ./test.sh
 
 FROM $BASE_IMAGE
 
 ENV SAG_HOME=/opt/softwareag
 ENV JAVA_HOME=$SAG_HOME/jvm/jvm/
 ENV JRE_HOME=$SAG_HOME/jvm/jvm/jre/
-
-#ENV IS_INSTANCE_NAME=${IS_INSTANCE_NAME}
 
 EXPOSE 5555 9999 8094 8092 8093
 

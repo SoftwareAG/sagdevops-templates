@@ -1,0 +1,4 @@
+#!/bin/sh
+
+DIRNAME=`dirname $0`
+docker-compose -f $DIRNAME/docker-compose.yml run --rm sagcc $*
