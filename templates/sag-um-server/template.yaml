@@ -3,51 +3,52 @@ description: Universal Messaging Realm server
 
 environments:
   default:
-    um.numrealmserver.license.key: "*_NUMWF_10.*_*_${os.platform}" # UM license key
-    um.instance.name:    default            # realm server instance name
-    um.instance.port:    9000               # primary port
-    um.jmx.port:         9988               # jmx port
-    um.memory.init:      64                 # memory configuration
-    um.memory.max:       128                # memory configuration
-    um.memory.direct:    1G                 # memory configuration
-    um.fixes:            ALL                # all fixes
+    um.numrealmserver.license.key: "*_NUMWF_10.*_*_*" # UM license key
+    um.instance.name:    default            # server instance name
+    um.realm:            default            # realm name
+    um.instance.port:    9000               # main listener port number
+    um.jmx.port:         9988               # jmx port number
+    um.memory.init:      64                 # initial memory size in MB
+    um.memory.max:       128                # maximum memory size in MB
+    um.memory.direct:    1G                 # direct memory size
+    um.fixes:            ALL                # fixes to apply, ALL by default
 
 layers:
   runtime:
-    productRepo: ${repo.product}
-    fixRepo:     ${repo.fix}
+    productRepo: ${repo.product}            # default repository to install products from
+    fixRepo:     ${repo.fix}                # default repository to install fixes from
     templates:
-      - um-server
+      - um-server                           # template to apply
 
 templates:
   um-server:
-    licenses:
-      "UniversalMessaging/server/templates/licence.xml": "${um.numrealmserver.license.key}"
-    fixes: ${um.fixes}
-    products:
-      NUMRealmServer:
+    licenses:                               # lisenses to copy from central license repository
+      "UniversalMessaging/server/templates/licence.xml": "${um.numrealmserver.license.key}" # license file
+    fixes: ${um.fixes}                      # fixes to install
+    products:                               # products to install
+      NUMRealmServer:                                              # Universal Messaging | Realm Server
         ${um.instance.name}:                                       # instance name is different from realm
           instance.port: ${um.instance.port}                       # instance port
           instance.ip:   ${node.host}                              # bind to node's host name
           runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
           configuration:
-            Universal-Messaging-${instance.name}: 
+            Universal-Messaging-${instance.name}:                  # configuration for UM instance
               COMMON-MEMORY: 
-                COMMON-MEMORY:                                     
-                  InitSize: ${um.memory.init}
-                  MaxSize:  ${um.memory.max}
+                COMMON-MEMORY:                                     # memory configuration
+                  InitSize: ${um.memory.init}                      # initial JVM memory size
+                  MaxSize:  ${um.memory.max}                       # maximum JVM memory size
                   ExtendedProperties:                              
                     Property: 
                       - 
                        "@name": "-XX:MaxDirectMemorySize"
-                       $: ${um.memory.direct}
+                       $: ${um.memory.direct}                     # JVM maximum direct memory size 
               COMMON-JAVASYSPROPS: 
                 COMMON-JAVASYSPROPS: | 
-                   REALM=${node.host}                             # IMPORTANT: this can only be set before first startup
-                   com.sun.management.jmxremote.port=${um.jmx.port}
-                   com.sun.management.jmxremote.authenticate=false
-                   com.sun.management.jmxremote.ssl=false
+                   REALM=${um.realm}                              # realm name IMPORTANT: this can only be set before first startup
+                   com.sun.management.jmxremote.port=${um.jmx.port} # JVM JMX port number
+                   com.sun.management.jmxremote.authenticate=false  # do not use JMX authentication
+                   com.sun.management.jmxremote.ssl=false           # do not use JMX SSL
             
 provision:
   default:
-    runtime: ${nodes}
+    runtime: ${nodes} # apply to selected nodes

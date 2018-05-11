@@ -1,0 +1,24 @@
+alias: sag-abe
+description: Software AG Asset Build Environment
+
+environments:
+  default:  
+    abe.fixes: ALL
+
+layers:
+  tools:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - abe
+
+templates:
+  abe:
+    fixes: ${abe.fixes}
+    products:
+      CLI:
+      acdl:
+
+provision:
+  default:
+    tools: ${nodes}

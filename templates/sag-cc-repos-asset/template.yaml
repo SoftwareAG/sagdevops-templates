@@ -1,0 +1,18 @@
+alias: sag-cc-repos-asset
+description: Sample assets repository
+version: 0.1
+changes:
+  - 0.1 Initial draft
+
+environments:
+  default:
+     repo.asset: assets-repo
+     repo.asset.url: http://irepo.eur.ad.sag/scm/devops/assets-repo.git
+
+repositories:
+  asset:          
+    ${repo.asset}:
+      type: git
+      description: Samples assets
+      location: ${repo.asset.url}
+      credentials: NONE

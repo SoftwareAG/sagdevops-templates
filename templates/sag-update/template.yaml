@@ -1,0 +1,21 @@
+alias: sag-update
+description: Install latest fixes
+
+environments:
+  default:                      
+    repo.fix: Empower
+    nodes: local
+
+layers:
+  runtime:
+    fixRepo: ${repo.fix}
+    templates:
+      - updates
+
+templates:
+  updates:
+    fixes: ALL
+  
+provision:
+  default:
+    runtime: ${nodes}

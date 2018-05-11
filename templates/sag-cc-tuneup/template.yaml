@@ -1,0 +1,90 @@
+alias: sag-cc-tuneup
+description: Command Central and SPM tune up configuration
+version: 10.2
+
+environments:
+  default:
+    # Connect to Platform Manager timeout (seconds)
+    timeout.spm.connect.seconds: 900
+    # Read from Platform Manager timeout (seconds) 
+    timeout.spm.read.seconds: 900
+    # Read product and fix repositories timeout (milliseconds)
+    timeout.repo.read.seconds: 5
+    
+    # Default job timeout (seconds)
+    timeout.job.seconds: 4800
+    # Create or refresh mirror repository timeout (minutes)
+    timeout.job.mirror.minutes: 720
+    # Bootstrap Platform Manager timeout (minutes)
+    timeout.job.bootstrap.minutes: 120
+    # Create bootstrap image and install Platform Manager timeout (minutes) 
+    timeout.job.bootstrap.node.minutes: 120
+    # Bootstrap one standalone installation timeout (minutes)
+    timeout.job.bootstrap.platform.manager.minutes: 120
+    # Bootstrap multiple standalone installations timeout (minutes)
+    timeout.job.environment.add.nodes.minutes: 120
+    # Apply composite templates timeout (minutes)
+    timeout.job.template.minutes: 120
+    # Maximum concurrent jobs
+    pool.size.jobs: 50
+    
+    # Wait for bootstrapped or restarted Platform Manager to come online timeout (seconds)
+    timeout.status.node.seconds: 2400
+    # Wait for restarted runtime instance to come online timeout (seconds)
+    timeout.status.runtime.seconds: 2400
+
+    # Enable or disable fix dependency validation when installing fixes (true/false)
+    fix.dependencies.validation: true
+
+    # List of SPM nodes/hosts to configure
+    nodes: [local]
+
+layers:
+  cce:
+    templates:
+      - cce-tuneup
+      - spm-tuneup
+  spm:
+    templates:
+      - spm-tuneup
+
+templates:
+  cce-tuneup:
+    products:
+      CCE:
+        default:
+          configuration:
+            OSGI-CCE:              
+              COMMON-SYSPROPS:
+                COMMON-SYSPROPS: |  # CCE system tuneup properties
+                  com.softwareag.platform.management.job.thread.pool.size=${pool.size.jobs}
+                  com.softwareag.platform.management.job.timeout=${timeout.job.seconds}000
+                  com.softwareag.platform.management.mirror.job.timeout=${timeout.job.mirror.minutes}
+                  com.softwareag.platform.management.client.provision.bootstrap.platform.manager.timeout.minutes=${timeout.job.bootstrap.minutes}
+                  com.softwareag.platform.management.client.provision.bootstrap.node.timeout.minutes=${timeout.job.bootstrap.node.minutes}
+                  com.softwareag.platform.management.client.provision.bootstrap.node.job.bootstrap.platform.manager.timeout.minutes=${timeout.job.bootstrap.platform.manager.minutes}
+                  com.softwareag.platform.management.client.provision.environment.add.nodes.job.timeout.minutes=${timeout.job.environment.add.nodes.minutes}
+                  com.softwareag.platform.management.client.template.composite.apply.job.timeout.minutes=${timeout.job.template.minutes}
+                  com.softwareag.platform.management.client.template.composite.node.check.online.poll.timeout.miliseconds=${timeout.status.node.seconds}000
+                  com.softwareag.platform.management.client.template.composite.restart.online.status.poll.timeout.miliseconds=${timeout.status.runtime.seconds}000
+                  com.softwareag.platform.management.client.remote.requests.connect.timeout=${timeout.spm.connect.seconds}000
+                  com.softwareag.platform.management.client.remote.requests.sync.read.timeout=${timeout.spm.read.seconds}000
+
+  spm-tuneup:
+    products:
+      SPM:
+        default:
+          configuration:
+            OSGI-SPM: 
+              COMMON-SYSPROPS:
+                COMMON-SYSPROPS: |  # SPM system tuneup properties
+                  com.softwareag.platform.management.job.timeout=${timeout.job.seconds}000
+                  com.softwareag.platform.management.mirror.job.timeout=${timeout.job.mirror.minutes}
+                  org.eclipse.ecf.provider.filetransfer.retrieve.readTimeout=${timeout.repo.read.seconds}000
+                  org.eclipse.ecf.provider.filetransfer.retrieve.closeTimeout=${timeout.repo.read.seconds}000
+                  com.softwareag.plm.sum.cc.override.resolve.validation=${fix.dependencies.validation}
+
+provision:
+  default:
+    cce: local    # apply to local CCE
+    spm: ${nodes} # apply to all SPM's identified by a list of node aliases

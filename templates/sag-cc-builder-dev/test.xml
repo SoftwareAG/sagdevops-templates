@@ -1,0 +1,15 @@
+<project xmlns:au="antlib:org.apache.ant.antunit" >
+    <import file="../../build.xml" />
+
+  <target name="suiteSetUp" depends="sagenvInit2">
+  </target>
+    
+	<target name="test-cc-repos-product" depends="sagenvInit2">
+		<cc command="list repository products" expectedvalues="products" format="csv" wait="0" />
+	</target>
+
+	<target name="test-cc-repos-fix" depends="sagenvInit2">
+		<cc command="list repository fixes" expectedvalues="fixes" format="csv" wait="0" />
+	</target>
+
+</project>

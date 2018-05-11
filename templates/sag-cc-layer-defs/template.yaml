@@ -1,4 +1,4 @@
-alias: sag-layer-defs
+alias: sag-cc-layer-defs
 description: Software AG base layer type definitions
 version: 0.1
 
@@ -23,7 +23,7 @@ templates:
                   Scalable: 'false'
                   Templates:
                       Template:
-                        "@alias": sag-spm-local
+                        "@alias": sag-spm-boot-local
                 
                 CCE-LAYER-TYPES-INFRA-CONNECT:
                   "@name": INFRA-CONNECT
@@ -34,14 +34,23 @@ templates:
                       Template:
                         "@alias": sag-spm-connect
 
-                CCE-LAYER-TYPES-INFRA-REMOTE:
-                  "@name": INFRA-REMOTE
-                  Description: Create installations on remote machines using SSH
+                CCE-LAYER-TYPES-INFRA-REMOTE-UNIX:
+                  "@name": INFRA-REMOTE-UNIX
+                  Description: Create installations on remote UNIX machines using SSH
                   Type: INFRASTRUCTURE
                   Scalable: 'true'
                   Templates:
-                      Template:
-                        "@alias": sag-spm-boot
+                    Template:
+                      "@alias": sag-spm-boot-ssh
+
+                CCE-LAYER-TYPES-INFRA-REMOTE-WINDOWS:
+                  "@name": INFRA-REMOTE-WINDOWS
+                  Description: Create installations on remote Windows machines using WinRM
+                  Type: INFRASTRUCTURE
+                  Scalable: 'true'
+                  Templates:
+                    Template:
+                      "@alias": sag-spm-boot-winrm                                                
                       
                 CCE-LAYER-TYPES-UM-SERVER:
                   "@name": UM-SERVER
@@ -132,6 +141,24 @@ templates:
                 #   Templates:
                 #       Template:
                 #         "@alias": sag-tdb-server 
+
+                # CCE-LAYER-TYPES-NINJA-SERVER:
+                #     "@name": NINJA-SERVER
+                #     Description: Create Ninja stateless servers
+                #     Type: RUNTIME
+                #     Scalable: 'true'
+                #     Templates:
+                #        Template:
+                #          "@alias": sag-ninja-server
+
+                # CCE-LAYER-TYPES-NINJA-CLUSTER:
+                #     "@name": NINJA-CLUSTER
+                #     Description: Create Ninja cluster (requires DB)
+                #     Type: RUNTIME
+                #     Scalable: 'true'
+                #     Templates:
+                #        Template:
+                #          "@alias": sag-ninja-cluster                 
 
 provision:
   default:

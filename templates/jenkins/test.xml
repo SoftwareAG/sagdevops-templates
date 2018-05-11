@@ -1,0 +1,11 @@
+<project name="jenkins" xmlns:au="antlib:org.apache.ant.antunit" >
+    <import file="../../build.xml" />
+    <target name="test-jenkins" description="Test /jenkins webapp on CCE" depends="sagccInit">
+		<waitfor maxwait="60" maxwaitunit="second">
+        	 <http url="http://cc:8090/jenkins/login?from=%2Fjenkins%2F" />
+		</waitfor>        
+ 		<au:assertTrue message="Jenkins app is not available">
+            <http url="http://cc:8090/jenkins/login?from=%2Fjenkins%2F" />
+         </au:assertTrue>
+    </target>
+</project>

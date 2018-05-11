@@ -1,0 +1,52 @@
+alias: sag-spm-boot-winrm
+description: WinRM-enabled remote installation using CC bootstrap installer
+#dslVersion: 1.1
+version: 0.1
+
+environments:
+  default:  
+    # REQUIRED
+    nodes: ${}                  # Remote hostnames to bootstrap, e.g ["host1","host2"]
+    cc.installer: ${}           # Command Central bootstrap installer for Windows, e.g. cc-def-10.2-fix1-w64.zip
+    os.username: ${}            # Remote connection user account username
+    os.password: ${}            # Remove connection user account password
+
+    # OPTIONAL
+    install.dir: C:\SoftwareAG  # Remote installation directory
+    spm.port: 8092              # SPM HTTP port
+    os.temp.dir: C:\Windows\Temp # %TEMP% folder on the remote machine
+
+    actions:
+      bootstrap.bat:
+        target: WINDOWS 
+        description: Bootstrap SPM on remote Windows hosts from Command Central Windows host
+        phase: pre 
+        script: |
+          powershell.exe -file ${com.softwareag.install.root}\profiles\CCE\data\templates\composite\sag-spm-boot-winrm\push-bootstrap.ps1 -Computername ${nodes} -RemoteTempPath ${os.temp.dir} -LocalInstallerZip  ${com.softwareag.install.root}\profiles\CCE\data\installers\${cc.installer} -RemoteInstallPath ${install.dir} -AcceptLicense -PlainCredentials ${os.username}:${os.password}
+      bootstrap.sh:
+        target: POSIX 
+        description: Bootstrap SPM on remote Windows hosts from Command Central Linux/Mac host
+        phase: pre 
+        script: |
+          pwsh -f ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/sag-spm-boot-winrm/push-bootstrap.ps1 -Computername ${nodes} -RemoteTempPath ${os.temp.dir} -LocalInstallerZip ${com.softwareag.install.root}/profiles/CCE/data/installers/${cc.installer} -RemoteInstallPath ${install.dir} -AcceptLicense -PlainCredentials ${os.username}:${os.password}
+
+layers:
+  infra:
+    templates:
+      - spm
+
+templates:
+  spm:
+    products:
+      SPM:
+        OSGI-SPM: # REQUIRED for registering OSGI-SPM as infrastructure layer instance
+
+provision:
+  default:
+    infra: ${nodes}
+
+nodes:
+  default:
+    default:
+      port: ${spm.port}
+      secure: false                     # always start with HTTP

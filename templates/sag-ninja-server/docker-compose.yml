@@ -1,0 +1,58 @@
+version: "3.2"
+
+networks: 
+  default:
+    external:
+      name: sagdevopstemplates_default
+
+services:
+  ninja:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}
+    build:
+      context: .
+      args:
+        - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-node:${TAG}
+    hostname: ninja
+    ports:
+      - "4444"
+    environment:
+      - CC_SERVER=builder
+
+  # ninja-alpine:
+  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}-alpine
+  #   build:
+  #     dockerfile: Dockerfile.alpine
+  #     context: .
+  #     args:
+  #       - BUILDER_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/ninja:${TAG}
+  #       #- BASE_IMAGE=${DOCKER_REGISTRY_URL}/ibit/openjdk:8-jre-alpine
+  #       - BASE_IMAGE=${DOCKER_REGISTRY_URL}/ibit/java:${RELEASE}
+  #   ports:
+  #     - "4444:4444"
+
+  test:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+    environment:
+      - CC_SERVER=builder    
+    links:
+      - ninja
+    command: >
+      bash -c '
+      echo "Checking managed container status ..." &&
+      sagcc list monitoring state ninja -e ONLINE -w 600 --wait-for-cc &&
+      echo "Verifying NINJA Web UI ..." &&
+      curl http://ninja:4444 | grep "Welcome to Software AG Spring Board" &&
+      echo "SUCCESSFULL"
+      '
+
+  # test2:
+  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}
+  #   links:
+  #     - ninja-alpine
+  #   command: >
+  #     bash -c '
+  #     curl http://ninja-alpine:4444 | grep "Welcome to Software AG Spring Board" &&
+  #     echo "SUCCESSFULL"
+  #     '
+

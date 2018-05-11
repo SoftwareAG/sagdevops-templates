@@ -1,0 +1,42 @@
+alias: sag-cc-builder-dev
+description: Product, fix and asset repos
+version: 10.2
+
+environments:
+  default:
+    repo.product:      102apr2018_SIC          # product repo
+    repo.fix:          GA_Fix_Repo             # fix repo
+    repo.asset.url:    http://irepo.eur.ad.sag/scm/devops/assets-repo.git # asset repo URL
+
+    repo.host:         aquarius-bg.eur.ad.sag  # closest AQU server mirror host
+    repo.product.host: aquarius-bg.eur.ad.sag  # closest AQU server mirror host
+    repo.fix.host:     aquarius-va.ame.ad.sag  # closest SUM server mirror host
+  
+    repo.product.username: latest
+    repo.product.password: latest
+    repo.fix.username:     sum
+    repo.fix.password:     sum
+
+repositories:
+  product:                     
+    products:
+      description: Products mirror
+      host: ${repo.product.host}        
+      name: ${repo.product}
+      username: "${repo.product.username}"
+      password: "${repo.product.password}"
+
+  fix:                        
+    fixes:
+      description: Fixes mirror
+      host: ${repo.fix.host}
+      name: ${repo.fix}
+      username: "${repo.fix.username}"
+      password: "${repo.fix.password}"
+
+  asset:          
+    assets:
+      type: git
+      description: Sample assets
+      location: ${repo.asset.url}
+      credentials: NONE

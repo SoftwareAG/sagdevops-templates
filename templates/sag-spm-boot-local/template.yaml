@@ -1,12 +1,14 @@
-alias: sag-spm-local
+alias: sag-spm-boot-local
 description: Local installation on Command Central host
 
 environments:
-  default:  
-    cc.installer: ${}    # REQUIRED: command central bootstrap installer
-    spm.port: 8192       # UNIQUE new node HTTP port, must be free
+  default: 
+    # REQUIRED 
+    cc.installer: ${}    # Command Central bootstrap installer
+    install.dir: ${}     # Installation dir, e.g. /home/user/dev${spm.port}
+
+    spm.port: 8192       # UNIQUE HTTP port, must be free
     node: dev${spm.port} # UNIQUE new node alias
-    install.dir: ${}     # REQUIRED: UNIQUE installation dir, e.g. /home/user/dev${spm.port}
 
 layers:
   infra:

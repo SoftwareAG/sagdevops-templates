@@ -1,0 +1,42 @@
+alias: sag-spm-boot-ssh
+description: SSH-enabled remote installation using CC bootstrap installer
+#dslVersion: "1.1"
+
+environments:
+  default:
+    # REQUIRED
+    nodes: ${}               # Remote hostnames to bootstrap, e.g. host1,host2
+    os.credentials.key: ${}  # SSH credentials for remote hosts connection, e.g 
+    cc.installer: ${}        # Command Central bootstrap installer, e.g. cc-def-10.2-fix1-lnxamd64.sh
+
+    # OPTIONAL
+    install.dir: /opt/softwareag  # remote installation directory
+    spm.port: 8092                # SPM HTTP port
+    # custom Administrator/password credentials key to be set at bootstrap time
+    spm.credentials.key: DEFAULT_ADMINISTRATOR # by default is Administrator/manage
+
+layers:
+  infra:                 # single infrastructure layer
+    templates:
+      - spm
+
+templates:
+  spm: 
+    products:
+      SPM:
+        OSGI-SPM: # REQUIRED for registering OSGI-SPM as infrastructure layer instance
+
+provision:
+  default:
+    infra: ${nodes}                        # bootstrap SPM's on these hosts 
+
+nodes:
+  default:
+    default:
+      port: ${spm.port}                    # SPM main port number
+      secure: false                        # Do not use SSL, use plain HTTP
+      credentials: ${spm.credentials.key}  # SPM connection credentials, the same as bootstrap credentials
+      bootstrapInfo:
+        installer: ${cc.installer}         # Use Command Central bootstrap installer
+        installDir: ${install.dir}         # Remote installation directory
+        credentials: ${os.credentials.key} # SPM Administrator password to configure

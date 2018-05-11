@@ -23,7 +23,7 @@ layers:
 templates:
   is-server:
     licenses:
-      "IntegrationServer/config/licenseKey.xml": ${is.integrationserver.license.key} 
+      "IntegrationServer/config/licenseKey.xml": "${is.integrationserver.license.key}"
     fixes: ${is.fixes}
     products:
       integrationServer:

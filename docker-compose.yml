@@ -1,0 +1,79 @@
+version: "3.2"
+
+services:
+  cc: # CC service for development/testing
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-server:${TAG}
+    ports:
+      - 8091 # CCE
+    volumes: 
+      # live templates updates
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      # custom init
+      - ./init.sh:/opt/sagtools/init.sh
+    environment:
+      - LICENSES_URL
+      - REPO_HOST
+      - REPO_PRODUCT
+      - REPO_FIX
+
+  builder: # CC builder service for image builds
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}-internal
+    ports:
+      - 8091 # CCE
+    build:
+      context: .
+      args:
+        - BASE_IMAGE=${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-builder:${TAG}       
+        - LICENSES_URL
+        - REPO_HOST
+        - REPO_PRODUCT
+        - REPO_FIX
+    environment:
+      - LICENSES_URL
+      - REPO_HOST
+      - REPO_PRODUCT
+      - REPO_FIX
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./init.sh:/opt/sagtools/init.sh
+
+  sagcc:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER=cc
+    entrypoint: sagcc --wait-for-cc
+    command: --help
+
+  sagccant:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER=cc
+    entrypoint: sagccant
+    command: -p
+
+  apply:
+    image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral-client:${TAG}-alpine
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER=cc
+    entrypoint: sagcc exec templates composite apply --sync-job --wait 3600 -c 10
+    command: --help
+
+  # test:
+  #   # FIXME: use client image with antcc
+  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}-internal
+  #   volumes: 
+  #     - ./clients/docker.properties:/root/.sag/cc.properties
+  #     - ./:/usr/share/sagcc/init/
+  #   environment: 
+  #     - CC_SERVER=cc
+  #     - CC_TEMPLATE
+  #     - SAG_AQUARIUS
+  #     - EMPOWER_USR
+  #     - EMPOWER_PSW
+  #   command: antcc templateApply templateTest -Dbuild.dir=/tmp

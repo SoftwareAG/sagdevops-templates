@@ -1,0 +1,28 @@
+<project name="jenkins" default="download" xmlns="antlib:org.apache.tools.ant" xmlns:if="ant:if" xmlns:unless="ant:unless" >
+	<property name="jenkins.profile" value="CCE" />
+
+	<target name="download" description="Download Jenkins" >
+		<property name="jenkins.download.url" value="http://mirrors.jenkins.io/war-stable/latest/jenkins.war" />
+		<echo>Downloading Jenkins from ${jenkins.download.url} ...</echo>
+		<get src="${jenkins.download.url}" dest="${basedir}/webapps/jenkins.war" usetimestamp="true" />
+	</target>
+
+	<target name="waitjenkins" description="Wait for Jenkins to init and print initial password">
+		<echo>Waiting for Jenkins intialization</echo>
+		<waitfor maxwait="60" maxwaitunit="second" timeoutproperty="jenkins.already.initialized">
+        	<available file="/root/.jenkins/secrets/initialAdminPassword" />
+		</waitfor>
+
+		<loadresource property="jenkins.admin.password" unless:set="jenkins.already.initialized">
+       		<file file="/root/.jenkins/secrets/initialAdminPassword" />
+    	</loadresource>
+		<echo unless:set="jenkins.already.initialized">Jenkins Administrator password: ${jenkins.admin.password}</echo>
+	</target>
+
+	<target name="cleanup" description="Removes Jenkins">
+		<delete file="${user.home}/.jenkins/secrets/initialAdminPassword" verbose="true"/>
+		<delete dir="${install.dir}/profiles/${jenkins.profile}/workspace/webapps/jenkins.war" verbose="true"/>
+		<delete dir="${install.dir}/profiles/${jenkins.profile}/workspace/webapps/jenkins/" verbose="true" />
+	</target>
+
+</project>

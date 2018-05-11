@@ -1,0 +1,115 @@
+alias: sag-cc-ldap
+description: Command Central sample configuration for LDAP and users, groups and roles
+version: 0.2
+changes:
+  - 0.1 Initial draft
+  - 0.2 CC LDAP 9.10+ configuration including Domain property
+
+environments:
+  default:
+    ldap.domain:       sag                              # LDAP alias to create
+    ldap.host:         sofdc02.eur.ad.sag               # LDAP host, replica of SAG corporate LDAP
+    ldap.port:         389
+    ldap.url :         "ldap://${ldap.host}:${ldap.port}"
+    ldap.principaldn:  "CN=BGQATest,OU=Generic,OU=Bulgaria,DC=eur,DC=ad,DC=sag"
+    ldap.password:     qatest123
+    
+    ldap.group.viewer:   CommandCentral-Swat
+    ldap.group.operator: RnD-wM-CommandCentralWorkgroup
+    ldap.group.admin:    RnD-wM-Eng-CC-Core
+    
+    guest.password:      welcome
+    viewer.password:     watch
+    operator.password:   do
+
+
+layers:
+  cc:
+    templates:
+      - cc-ldap
+      - cc-internal-users
+
+templates:
+  cc-ldap:
+    products:
+      CCE:
+        default:
+          runtimeComponentId: CCE
+          configuration:
+            OSGI-CCE:
+              COMMON-LDAP:
+                COMMON-LDAP-${ldap.domain}:         # LDAP users and groups
+                  "@alias": ${ldap.domain}
+                  Domain: ${ldap.domain}            # login as domain\userid
+                  URL: ${ldap.url}
+                  Enabled: true
+                  PrincipalDn: ${ldap.principaldn}
+                  Password: ${ldap.password}
+                  ConnectionTimeout: 5000
+                  PoolMinSize: 0
+                  PoolMaxSize: 10
+                  UserIdAttribute: sAMAccountName
+                  UserRootDn: "DC=eur,DC=ad,DC=sag"
+                  UserObjectClass: person
+                  GroupIdAttribute: sAMAccountName
+                  GroupRootDn: "DC=eur,DC=ad,DC=sag"
+                  GroupObjectClass: group
+                  MembershipAttribute: member
+                  MembershipType: GROUP
+                  ResolveNestedGroups: 1
+
+  cc-internal-users:
+    products:
+      CCE:
+        default:
+          runtimeComponentId: CCE
+          configuration:
+            OSGI-CCE:
+              COMMON-LOCAL-USERS:                   # internal users
+                COMMON-LOCAL-USERS-Guest:
+                  "@id": Guest
+                  Password: ${guest.password}
+                COMMON-LOCAL-USERS-Viewer:
+                  "@id": Viewer
+                  Password: ${viewer.password}
+                COMMON-LOCAL-USERS-Operator:
+                  "@id": Operator
+                  Password: ${operator.password}
+            OSGI-CCE-ENGINE:
+              SIN-INTERNAL-GROUPS:
+                SIN-INTERNAL-GROUPS-groups.txt: |  # internal groups
+                  *
+                  * CUSTOMIZED Command Central groups
+                  *
+                  version:2.0
+                  Administrators:1:Administrator
+                  Viewers:2:Viewer
+                  Operators:3:Operator
+
+              SIN-INTERNAL-ROLES:
+                SIN-INTERNAL-ROLES-roles.txt: |   # permissions and roles
+                  *
+                  * CUSTOMIZED Command Central permissions and roles
+                  *
+                  [permissions]
+                  permission:allow=canwrite,canexecute,canread
+                  [roles]
+                  role:SuperAdminRole=*
+                  role:AdminRole=canread,canwrite,canexecute
+                  role:OperatorRole=canread,canexecute
+                  role:ViewerRole=canread
+                  role:PassmanRole=jmx:com.softwareag:passman:canexecute:*
+                  [groups]
+                  group:"Administrators"=SuperAdminRole,PassmanRole
+                  group:"Operators"=OperatorRole
+                  group:"Viewers"=ViewerRole
+                  group:"${ldap.group.admin}"=SuperAdminRole,PassmanRole
+                  group:"${ldap.group.operator}"=OperatorRole
+                  group:"${ldap.group.viewer}"=ViewerRole
+            
+
+provision:
+  default:
+    cc:
+      - local
+

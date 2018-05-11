@@ -1,0 +1,37 @@
+alias: sag-ninja-server
+description: Ninja server or layer
+
+environments:
+  default:
+    ninja.instance.name: default
+    ninja.http.port:     4444
+    ninja.https.port:    4445
+    ninja.jmx.port:      4446 
+    ninja.console.port:  4447
+    ninja.memory.max:    128
+
+layers:
+  runtime:
+    productRepo: ${repo.product} 
+    fixRepo: ${repo.fix}         
+    templates: ninja
+
+templates:
+  ninja:
+    products:
+      NINJA:
+        ${ninja.instance.name}:
+          http.port: ${ninja.http.port}
+          https.port: ${ninja.https.port}
+          jmx.port: ${ninja.jmx.port}
+          console.port: ${ninja.console.port}                         
+          configuration:
+            OSGI-NINJA_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: 64
+                  MaxSize: ${ninja.memory.max}
+
+provision:
+  default:
+    runtime: ${nodes}

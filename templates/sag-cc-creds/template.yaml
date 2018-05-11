@@ -1,0 +1,39 @@
+alias: sag-cc-creds
+description: Default Command Central outbound credentials
+version: 10.2
+
+environments:
+  default:                      
+    empower.username: ${}       # REQUIRED, username on https://empower.softwareag.com/
+    empower.password: ${}       # REQUIRED, password on https://empower.softwareag.com/
+    cc.password: manage123      # Administrator password for remote SPMs
+
+layers:
+  cce:
+    templates:
+      - creds
+
+templates:
+  creds:
+    products:
+      CCE:
+        default:
+          configuration:
+            OSGI-CCE-ENGINE:              
+              COMMON-CREDENTIALS:                    # Credentials configuration type
+                COMMON-CREDENTIALS-EMPOWER:          # EMPOWER credentials
+                    "@alias": EMPOWER
+                    AuthenticationType: BASIC        # MUST be BASIC authentication
+                    UserName: "${empower.username}"  # Username
+                    Password: "${empower.password}"  # Password
+                    Description: "empower.softwareag.com Download Center"
+                COMMON-CREDENTIALS-SECURE_ADMINISTRATOR: # SECURE_ADMINISTRATOR credentials
+                    "@alias": SECURE_ADMINISTRATOR
+                    AuthenticationType: BASIC        # MUST be BASIC authentication
+                    UserName: Administrator          # MUST be Administrator user
+                    Password: ${cc.password}         # custom password for Administrator user
+                    Description: "Custom Administrator password"    
+provision:
+  default:
+    cce:  
+      - local # apply to local CCE
