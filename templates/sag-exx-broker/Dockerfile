@@ -5,9 +5,7 @@ ARG TAG=latest
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
 # Target image base image
-# IMPORTANT: for managed images MUST be the same as $NODE_IMAGE
-# for unmanaged images can be any supported OS
-ARG BASE_IMAGE=centos:7
+ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
 
 FROM $BASE_IMAGE
 
