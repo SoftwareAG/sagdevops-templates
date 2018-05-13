@@ -1,17 +1,29 @@
-FROM daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal as builder
+# Command Central docker builder image
+# Use $TAG to control release
+ARG TAG=latest
+# Use $BUILDER_IMAGE to control repo, e.g. private/public
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
-FROM daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
+# Target image base image
+ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
 
-# ENV SAG_HOME=/opt/softwareag
-# ENV JAVA_HOME $SAG_HOME/jvm/jvm/
-# ENV JRE_HOME $SAG_HOME/jvm/jvm/jre/
+# Get access to the builder image
+FROM $BUILDER_IMAGE as builder
 
-ENV PATH=$PATH:$SAG_HOME/common/AssetBuildEnvironment/bin:$SAG_HOME/CommandCentral/client/bin
+RUN $CC_HOME/provision.sh && ./test.sh
 
-COPY --from=builder $SAG_HOME/common/AssetBuildEnvironment/ $SAG_HOME/common/AssetBuildEnvironment/
-COPY --from=builder $SAG_HOME/CommandCentral/client/ $SAG_HOME/CommandCentral/client/
+FROM $BASE_IMAGE
 
-# COPY --from=builder $SAG_HOME/jvm/ $SAG_HOME/jvm/
+ENV SAG_HOME=/opt/softwareag
+ENV JAVA_HOME=$SAG_HOME/jvm/jvm/
+ENV JRE_HOME=$SAG_HOME/jvm/jvm/jre/
+ENV ABE_HOME=$SAG_HOME/common/AssetBuildEnvironment
+ENV CC_CLI_HOME=$SAG_HOME/CommandCentral/client
+ENV PATH=$PATH:$ABE_HOME/bin:$CC_CLI_HOME/bin
 
-# raw ABE
-# CMD build.sh
+# copy everything from the builder stage $SAG_HOME
+COPY --from=builder $SAG_HOME/ $SAG_HOME/
+
+WORKDIR /src
+
+CMD build.sh
