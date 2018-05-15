@@ -3,11 +3,11 @@
 def buildAndTest(release) {
     sh """
     . ./${release}.env
-    docker-compose build cc
+    docker-compose build --pull --force-rm --no-cache cc
     
     cd templates/sag-spm-config
     docker-compose run --rm provision
-    docker-compose build
+    docker-compose --pull --force-rm --no-cache build
     cd ../..
     
     docker-compose push cc
@@ -19,7 +19,7 @@ pipeline {
         label 'docker'
     }
     environment {
-        CC_TAG = '10.3.0.0.8'
+        CC_TAG = '10.3.0.0.10'
     }
     stages {
         stage('Build') {
