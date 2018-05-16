@@ -29,16 +29,16 @@ pipeline {
                         buildAndTest('10.3')
                     }
                 }
-                # stage('10.2') {
-                #     steps {
-                #         buildAndTest('10.2')
-                #     }
-                # }
-                # stage('10.1') {
-                #     steps {
-                #         buildAndTest('10.1')
-                #     }
-                # }                                                
+                // stage('10.2') {
+                //     steps {
+                //         buildAndTest('10.2')
+                //     }
+                // }
+                // stage('10.1') {
+                //     steps {
+                //         buildAndTest('10.1')
+                //     }
+                // }                                                
             }            
         }
     }
