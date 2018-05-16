@@ -13,7 +13,7 @@ requirement to have SSH access.
 
 ### System requirements for the target Windows machines
 
-* Windows 2007 or later
+* Windows 7 or later
 * Powershell version 5.0 or higher
 * DotNet 4.5 or higher ( used for unzip )
 * The connecting user account must have Administrator privileges
@@ -29,7 +29,7 @@ PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
 
 ### System requirements for Command Central machine
 
-* Windows 2007 of later
+* Windows 7 of later
 * Powershell version 5.0 or higher
 * DotNet 4.5 or higher ( used for unzip )
 * Must have Command Central bootstrap installer for Windows (.zip) saved in `CC_HOME\profiles\CCE\data\installers` folder. Verify by running:
