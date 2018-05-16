@@ -6,7 +6,8 @@ def buildAndTest(release) {
     docker-compose build --pull --force-rm --no-cache cc
     
     cd templates/sag-spm-config
-    docker-compose run --rm --name $release provision
+    docker-compose down
+    docker-compose run --rm provision
     docker-compose build --pull --force-rm --no-cache
     cd ../..
     
