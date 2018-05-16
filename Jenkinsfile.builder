@@ -6,7 +6,7 @@ def buildAndTest(release) {
     docker-compose build --pull --force-rm --no-cache cc
     
     cd templates/sag-spm-config
-    docker-compose run --rm provision
+    docker-compose run --rm --name $release provision
     docker-compose build --pull --force-rm --no-cache
     cd ../..
     
@@ -29,16 +29,16 @@ pipeline {
                         buildAndTest('10.3')
                     }
                 }
-                stage('10.2') {
-                    steps {
-                        buildAndTest('10.2')
-                    }
-                }
-                stage('10.1') {
-                    steps {
-                        buildAndTest('10.1')
-                    }
-                }                                                
+                # stage('10.2') {
+                #     steps {
+                #         buildAndTest('10.2')
+                #     }
+                # }
+                # stage('10.1') {
+                #     steps {
+                #         buildAndTest('10.1')
+                #     }
+                # }                                                
             }            
         }
     }
