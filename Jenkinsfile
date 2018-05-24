@@ -55,6 +55,11 @@ pipeline {
                         testTemplate('sag-msc-server', false, true, true)
                     }
                 }                                                
+                stage('Oracle DB') {
+                    steps {
+                        testTemplate('sag-db-oracle', true, false, false)
+                    }
+                }                                                
             }
         }
         
