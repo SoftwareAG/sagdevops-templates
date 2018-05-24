@@ -26,4 +26,4 @@ COPY --from=builder $SAG_HOME/ $SAG_HOME/
 
 WORKDIR /src
 
-CMD build.sh
+# CMD build.sh

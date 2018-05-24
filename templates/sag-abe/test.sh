@@ -13,6 +13,6 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
 fi
 
 echo "Verifying product runtime ..."
-build.sh
+# build.sh
 
 echo "DONE testing"

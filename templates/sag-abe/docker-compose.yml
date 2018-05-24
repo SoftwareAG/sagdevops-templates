@@ -18,3 +18,4 @@ services:
         - TAG
     volumes:
       - ./test.sh:/test.sh # for dev only to avoid image rebuild
+      - ./:/src/ # required
