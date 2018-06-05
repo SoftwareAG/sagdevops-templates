@@ -3,6 +3,8 @@
 def buildAndTest(release) {
     sh """
     . ./${release}.env
+    export COMPOSE_PROJECT_NAME="builder-$release"
+
     docker-compose build --pull --force-rm --no-cache cc
     
     cd templates/sag-spm-config
