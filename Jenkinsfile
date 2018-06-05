@@ -24,7 +24,6 @@ pipeline {
     }
     environment {
         TAG = "10.3"  // 10.3, 10.2, 10.1
-        // FIXES = 'ALL' // for GA releases or '' for TRUNK
     }
     stages {
         stage('Init') {
@@ -40,21 +39,21 @@ pipeline {
                         testTemplate('sag-abe', false, true, true)
                     }
                 }
-                // stage('Universal Messaging') {
-                //     steps {
-                //         testTemplate('sag-um-server', false, true, true)
-                //     }
-                // }
+                stage('Universal Messaging') {
+                    steps {
+                        testTemplate('sag-um-server', false, true, true)
+                    }
+                }
                 // stage('Terracotta') {
                 //     steps {
                 //         testTemplate('sag-tc-server', true, false, false)
                 //     }
                 // }
-                // stage('Integration Server') {
-                //     steps {
-                //         testTemplate('sag-msc-server', false, true, true)
-                //     }
-                // }                                                
+                stage('Integration Server') {
+                    steps {
+                        testTemplate('sag-msc-server', false, true, true)
+                    }
+                }                                                
                 // stage('Oracle DB') {
                 //     steps {
                 //         testTemplate('sag-db-oracle', true, false, false)
