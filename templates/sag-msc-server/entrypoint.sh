@@ -1,6 +1,8 @@
 #!/bin/sh
 
-$SAG_HOME/register.sh
+if [ -f $SAG_HOME/register.sh ]; then
+    $SAG_HOME/register.sh
+fi
 
 # you can simply run main product run in foreground
 # $SAG_HOME/profiles/IS_$INSTANCE_NAME/bin/console.sh
