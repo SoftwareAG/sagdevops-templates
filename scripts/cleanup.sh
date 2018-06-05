@@ -9,8 +9,9 @@ du -h -d 2
 echo "Remove Update Manager, fixes metadata and backups ..."
 rm -fr SAGUpdateManager/
 
-echo "Remove Installer and products metadata ..."
-rm -fr install/
+echo "Remove Installer but keep install/products metadata ..."
+rm -fr install/repo install/logs install/jars install/bpms install/etc
+
 
 echo "Remove Licenses and doc ..."
 rm -fr Licenses/
