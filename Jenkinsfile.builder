@@ -20,7 +20,7 @@ pipeline {
         label 'docker'
     }
     environment {
-        CC_TAG = '10.3.0.0.10'
+        CC_TAG = '10.3.0.0.24'
     }
     stages {
         stage('Build') {
