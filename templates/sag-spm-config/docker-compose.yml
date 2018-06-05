@@ -8,7 +8,7 @@ services:
     volumes: 
       - ./:/src/ # required
       - ../../scripts/inventory.sh:/opt/sagtools/inventory.sh
-      - ../../scripts/provision.sh:/opt/sagtools/provision.sh
+      # - ../../scripts/provision.sh:/opt/sagtools/provision.sh
     environment:
         # hello.name parameter is passed in as '__hello_name'
       - __hello_world=VM                # template test specific param
