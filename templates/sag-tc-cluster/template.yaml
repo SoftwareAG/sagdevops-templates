@@ -1,5 +1,5 @@
 alias: sag-tc-cluster
-description: Terracotta Big Memory two node cluster
+description: Terracotta Big Memory Max 4.x two-node cluster
 
 environments:
   default:
