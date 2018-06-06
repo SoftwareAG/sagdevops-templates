@@ -44,11 +44,11 @@ pipeline {
                         testTemplate('sag-um-server', false, true, true)
                     }
                 }
-                // stage('Terracotta') {
-                //     steps {
-                //         testTemplate('sag-tc-server', true, false, false)
-                //     }
-                // }
+                stage('Terracotta') {
+                    steps {
+                        testTemplate('sag-tc-server', false, true, true)
+                    }
+                }
                 stage('Integration Server') {
                     steps {
                         testTemplate('sag-msc-server', false, true, true)
