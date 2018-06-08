@@ -26,7 +26,7 @@ pipeline {
         choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
     }   
     environment {
-        TAG = params.release
+        TAG = "${params.release}"
     }
     stages {
         stage('Init') {
