@@ -36,6 +36,9 @@ pipeline {
             }
         }
         stage("Level 1") {
+            environment {
+                TAG = "${params.release}"
+            }
             parallel {
                 stage('Asset Builder') {
                     steps {
