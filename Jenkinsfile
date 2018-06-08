@@ -22,14 +22,17 @@ pipeline {
     agent {
         label 'docker'
     }
+    parameters {
+        choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
+    }   
     environment {
-        TAG = "10.3"  // 10.3, 10.2, 10.1
+        TAG = params.release
     }
     stages {
         stage('Init') {
             steps {
-                echo "Testing for ${env.TAG} release"
-                sh ". ./${env.TAG}.env; docker-compose pull cc"
+                echo "Testing for ${params.TAG} release"
+                sh ". ./${params.TAG}.env; docker-compose pull cc"
             }
         }
         stage("Level 1") {
