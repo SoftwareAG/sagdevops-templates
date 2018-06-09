@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: um
+  labels:
+    name: um
+spec:
+  containers:
+    - image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
+      name: um
