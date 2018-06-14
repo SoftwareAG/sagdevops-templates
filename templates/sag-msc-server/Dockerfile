@@ -10,8 +10,11 @@ ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
 FROM $BUILDER_IMAGE as builder
 
 ARG __is_fixes=[]
+ARG __is_instance_name=default
 
-RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
+RUN $CC_HOME/provision.sh && \
+    ./test.sh && \
+    $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE
 

@@ -8,7 +8,7 @@ fi
 # $SAG_HOME/profiles/IS_$INSTANCE_NAME/bin/console.sh
 # or do this...
 
-IS_INSTANCE_NAME=${IS_INSTANCE_NAME:-msc}
+IS_INSTANCE_NAME=${IS_INSTANCE_NAME:-default}
 
 # echo "Remove old logs"
 # rm -rf $SAG_HOME/profiles/IS_$IS_INSTANCE_NAME/logs/*.log
