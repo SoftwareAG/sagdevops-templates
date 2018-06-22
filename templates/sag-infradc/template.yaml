@@ -1,0 +1,189 @@
+alias: sag-infradc
+description: The minimal required template can be used to install o4i
+
+environments:
+
+  default:                                  
+
+    infradc.configure:       [infradc-tuneup]
+    infradc.fixes:           ALL
+    infradc.host:            ${node.host} 
+    infradc.primary.port:    6666
+    infradc.secondary.port:  15005
+    infradc.jmx.port:        6710
+    infradc.diagnostic.port: 10033
+    infradc.memory.init:     256
+    infradc.momory.max:      1024
+
+    infradc.jms.protocol: nsp
+    infradc.jms.host:     ${node.host} 
+    infradc.jms.port:     ${node.host} 
+
+    infradc.jndi.BrokerName:     ""
+    infradc.jndi.NamingFactory:  com.pcbsys.nirvana.nSpace.NirvanaContextFactory
+    infradc.jndi.UseSSL:         false
+    infradc.jndi.UseEncryption:  false
+    infradc.jndi.KeyStoreFile:   ""
+    infradc.jndi.KeyStoreType:   JKS
+    infradc.jndi.TrustStoreFile: ""
+    infradc.jndi.TrustStoreType: JKS
+    infradc.jndi.StorePassword:
+    infradc.jndi.JmsUrlOverride: ""
+
+    infradc.dcName:                    InfraDC
+    infradc.pollingInterval:           5
+    infradc.adabasLoadFlag:            false
+    infradc.adabasSOAGatewayLoadFlag:  false
+    infradc.apamaLoadFlag:             false
+    infradc.applinxLoadFlag:           false
+    infradc.brokerLoadFlag:            false
+    infradc.completeLoadFlag:          false
+    infradc.entireXLoadFlag:           false
+    infradc.eventRoutingLoadFlag:      false
+    infradc.integrationServerLoadFlag: false
+    infradc.mwsLoadFlag:               false
+    infradc.mzngLoadFlag:              false
+    infradc.naturalAjaxLoadFlag:       false
+    infradc.naturalLoadFlag:           false
+    infradc.prestoLoadFlag:            false
+    infradc.snmpLoadFlag:              false
+    infradc.tcLoadFlag:                false
+    infradc.umClusterLoadFlag:         false
+    infradc.umLoadFlag:                false
+    infradc.desLoadFlag:               false
+    infradc.jmxLoadFlag:               false
+    infradc.logLevel:                  INFO
+
+
+layers:
+  runtime:
+    description: infradc install
+    productRepo: ${repo.product}            # default repository to install products from
+    fixRepo:     ${repo.fix}                # default repository to install fixes from
+    templates:   
+      - infradc-tuneup                      # template to apply
+templates:
+ 
+  infradc-tuneup:
+    description: infradc-install
+    fixes: ${infradc.fixes}
+    products:
+      InfrastructureDC:
+        default:
+          configuration:
+            OSGI-InfraDC:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize:  256
+                  MaxSize:   1024
+              COMMON-PORTS:
+                COMMON-PORTS-defaultHttp:
+                  Port:
+                    "@alias": defaultHttp
+                    Enabled: true
+                    Type: STANDARD
+                    Number: 6666
+                    Protocol: HTTP
+                COMMON-PORTS-secondHttpInfraDC:
+                  Port:
+                    "@alias": secondHttpInfraDC
+                    Enabled: true
+                    Number: 15005
+                    Protocol: HTTP
+                    Type: STANDARD
+                    ExtendedProperties:
+                      Property:
+                        -
+                          "@name": redirectPort
+                          $: 6666
+                COMMON-PORTS-defaultJmx:
+                  Port:
+                    "@alias": defaultJmx
+                    Enabled: true
+                    Type: STANDARD
+                    Number: 6710
+                    Protocol: JMX
+                COMMON-PORTS-diagnostics:
+                  Port:
+                    "@alias": diagnostics
+                    Enabled: false
+                    Number: 10033
+                    Type: DIAGNOSTIC
+                    Protocol: JDWP
+            OSGI-InfraDC-ENGINE:
+              COMMON-COMPONENT-ENDPOINTS:
+                COMMON-COMPONENT-ENDPOINTS-JMS-Provider:
+                  "@alias":   JMS-Provider
+                  Transport:
+                    Protocol: ${infradc.jms.protocol}
+                    Host:     ${infradc.jms.host}
+                    Port:     ${infradc.jms.port}
+              COMMON-JNDI:
+                COMMON-JNDI:
+                  JNDI:
+                    "@alias": JNDIConfiguration-InfraDC
+                    ExtendedProperties:
+                      Property:
+                        -
+                          "@name": ConnectionUri
+                          $: ${infradc.jndi.BrokerName}
+                        -
+                          "@name": NamingFactoryImpl
+                          $: ${infradc.jndi.NamingFactory}
+                        -
+                          "@name": UseSSL
+                          $: ${infradc.jndi.UseSSL}
+                        -
+                          "@name": UseEncryption
+                          $: ${infradc.jndi.UseEncryption}
+                        -
+                          "@name": KeyStoreFile
+                          $: ${infradc.jndi.KeyStoreFile}
+                        -
+                          "@name": KeyStoreType
+                          $: ${infradc.jndi.KeyStoreType}
+                        -
+                          "@name": TrustStoreFile
+                          $: ${infradc.jndi.TrustStoreFile}
+                        -
+                          "@name": TrustStoreType
+                          $: ${infradc.jndi.TrustStoreType}
+                        -
+                          "@name": StorePassword
+                          $: ${infradc.jndi.StorePassword}
+                        -
+                          "@name": JmsUrlOverride
+                          $: ${infradc.jndi.JmsUrlOverride}
+              IDC-SETTING:
+                IDC-SETTING:
+                  name: Data Collector
+                  dcName: ${infradc.dcName}
+                  pollingInterval: ${infradc.pollingInterval}
+                  adabasLoadFlag: ${infradc.adabasLoadFlag}
+                  adabasSOAGatewayLoadFlag: ${infradc.adabasSOAGatewayLoadFlag}
+                  apamaLoadFlag: ${infradc.apamaLoadFlag}
+                  applinxLoadFlag: ${infradc.applinxLoadFlag}
+                  brokerLoadFlag: ${infradc.brokerLoadFlag}
+                  completeDCLoadFlag: ${infradc.completeDCLoadFlag}
+                  entireXLoadFlag: ${infradc.entireXLoadFlag}
+                  eventRoutingLoadFlag: ${infradc.eventRoutingLoadFlag}
+                  integrationServerLoadFlag: ${infradc.integrationServerLoadFlag}
+                  mwsLoadFlag: ${infradc.mwsLoadFlag}
+                  mzngLoadFlag: ${infradc.mzngLoadFlag}
+                  naturalAjaxLoadFlag: ${infradc.naturalAjaxLoadFlag}
+                  naturalLoadFlag: ${infradc.naturalLoadFlag}
+                  prestoLoadFlag: ${infradc.prestoLoadFlag}
+                  snmpLoadFlag: ${infradc.snmpLoadFlag}
+                  tcLoadFlag: ${infradc.tcLoadFlag}
+                  umClusterLoadFlag: ${infradc.umClusterLoadFlag}
+                  umLoadFlag: ${infradc.umLoadFlag}
+                  desLoadFlag: ${infradc.desLoadFlag}
+                  jmxLoadFlag: ${infradc.jmxLoadFlag}
+                  logLevel: ${infradc.logLevel}
+
+provision:
+  default:
+    runtime: ${nodes}
+ 
+
+

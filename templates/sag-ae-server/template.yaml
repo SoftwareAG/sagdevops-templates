@@ -1,0 +1,121 @@
+alias: o4i
+description: The minimal required template can be used to install Analytic Engine
+
+environments:
+
+  default:                                  # defaults
+    
+    # optimize analysis engine
+    optimize.configure:  [optimize-tuneup]
+    optimize.fixes:      ALL
+    optimize.host:  ${spm.host}
+    optimize.jms.protocol:          nsp
+    optimize.jms.host:              ${node.host} 
+    optimize.jms.port:              9000
+    optimize.config.agent.protocol: http
+    optimize.config.agent.host:     ${node.host} 
+    optimize.config.agent.port:     15000
+    optimize.mws.protocol:          http
+    optimize.mws.host:              ${node.host} 
+    optimize.mws.port:              8585
+    optimize.wsdc.protocol:         http
+    optimize.wsdc.host:             ${node.host} 
+    optimize.wsdc.port:             12503
+    optimize.db.type:               ${}    //it requires SQLSERVER, ORACLE, DB2
+    optimize.jdbc.pool.alias:       ${db.name}
+
+layers:
+  runtime:
+    description: infradc install
+    productRepo: ${repo.product}            # default repository to install products from
+    fixRepo:     ${repo.fix}                # default repository to install fixes from
+    templates:   
+      - optimize-tuneup                      # template to apply
+
+templates:
+  
+
+  optimize-tuneup:
+    descriptino: ae-install
+    fixes: ${optimize.fixes}
+    products:
+      optimizeAnalysis:
+        default:
+          configuration:
+            optimizeAnalysis-analysis:
+              COMMON-COMPONENT-ENDPOINTS:
+                COMMON-COMPONENT-ENDPOINTS-JMS-Provider:
+                  "@alias":   JMS-Provider
+                  Transport:
+                    Protocol: ${optimize.jms.protocol}
+                    Host:     ${optimize.jms.host}
+                    Port:     ${optimize.jms.port}
+                COMMON-COMPONENT-ENDPOINTS-Configuration-Agent:
+                  "@alias":   Configuration-Agent
+                  Transport:
+                    Protocol: ${optimize.config.agent.protocol}
+                    Host:     ${optimize.config.agent.host}
+                    Port:     ${optimize.config.agent.port}
+                COMMON-COMPONENT-ENDPOINTS-MWS:
+                  "@alias":   MWS
+                  Transport:
+                    Protocol: ${optimize.mws.protocol}
+                    Host:     ${optimize.mws.host}
+                    Port:     ${optimize.mws.port}
+                COMMON-COMPONENT-ENDPOINTS-WS-Registry:
+                  "@alias":   WS-Registry
+                  Transport:
+                    Protocol: ${optimize.wsdc.protocol}
+                    Host:     ${optimize.wsdc.host}
+                    Port:     ${optimize.wsdc.port}
+              COMMON-JDBC:
+                COMMON-JDBC-${optimize.jdbc.pool.alias}:
+                  Pool:
+                    "@alias": ${optimize.jdbc.pool.alias}
+                    Name: ${optimize.jdbc.pool.alias}
+                    MinSize: 8
+                    MaxSize: 36
+                    MaxIdleTime: 20
+                    RampUpDelay: 500
+                    Retries: 8
+                    RetriesBackoff: 500
+                    MaxStatementsInCache: 0
+                    DatabaseServer:
+                      "@type" : ${optimize.db.type}
+                      Host: ${db.host}
+                      PortNumber: ${db.port}
+                      URL: "${db.url}"
+                      User: ${db.username}
+                      Password: ${db.password}
+              COMMON-DBFUNCTION:
+                COMMON-DBFUNCTION-AnalysisEngine:
+                  Function:
+                    "@alias": analysis.engine
+                    Description: 'Map to Analysis database pool'
+                    PoolAlias: ${optimize.jdbc.pool.alias}
+                COMMON-DBFUNCTION-CommonDirectory:
+                  Function:
+                    "@alias": common.directory
+                    Description: 'Map to MWS database pool'
+                    PoolAlias: ${optimize.jdbc.pool.alias}
+                COMMON-DBFUNCTION-ProcessHistory:
+                  Function:
+                    "@alias": process.history
+                    Description: 'Map to Process Tracker database pool'
+                    PoolAlias: ${optimize.jdbc.pool.alias}
+                COMMON-DBFUNCTION-ProcessModel:
+                  Function:
+                    "@alias": process.model
+                    Description: 'Map to Process Audit database pool'
+                    PoolAlias: ${optimize.jdbc.pool.alias}
+                COMMON-DBFUNCTION-ProcessWork:
+                  Function:
+                    "@alias": process.work
+                    Description: 'Map to Process Tracker database pool'
+                    PoolAlias: ${optimize.jdbc.pool.alias}
+
+
+provision:
+  default:
+    runtime: ${nodes}
+    
