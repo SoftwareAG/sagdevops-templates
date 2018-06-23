@@ -3,7 +3,8 @@ description: Examples of defining credential keys
 
 environments:
   default:
-    cc.password: "manage"  # Administrator's user custom password
+    # Command Central Administrator password. Encrypted using default shared secret
+    cc.password: "{AES/CBC/PKCS5Padding}{0IDwPE50uQt+BrNz8WwkfWi4lLd+uBUEqitNTsb5pf0=}{bTGWq5f0SFZ4EQHIbfomiQ==}X+Rl+oF3oJ+EGe4a194gXw=="
 
 layers:
   cce:

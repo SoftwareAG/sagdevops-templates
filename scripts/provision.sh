@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+# configuring CC builder itself?
+if [ $CC_HOME == $SAG_HOME ]; then 
+    self_provision=1
+else
+    self_provision=0
+fi
+
 if ! cat $CC_HOME/profiles/CCE/configuration/config.ini | grep com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true ; then
     echo "Configuring Command Central no restart policy ..."
     echo com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true>>$CC_HOME/profiles/CCE/configuration/config.ini
@@ -19,6 +26,10 @@ echo "Waiting for Command Central ..."
 sagcc get monitoring runtimestatus local OSGI-CCE-ENGINE -e ONLINE -c 15 --wait-for-cc 300 -w 240
 echo "Command Central is READY"
 
+echo "Running init.sh ..."
+$CC_HOME/init.sh
+
+echo "Running inventory.sh ..."
 $CC_HOME/inventory.sh
 
 # globals
@@ -64,9 +75,11 @@ if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
 
-    echo "Registering managed installation '$NODES' ..."
-    sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
-    
+    if [ $self_provision -eq 0 ]; then
+        echo "Registering managed installation '$NODES' ..."
+        sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
+    fi
+
     echo "Waiting for SPM ..."
     sagcc get landscape nodes $NODES -e ONLINE -w 240
 
@@ -138,6 +151,19 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     sleep 3
     echo "Cleaning up ..."
     rm -rf $SAG_HOME/common/conf/nodeId.txt
+
+    # configuring target $SAG_HOME
+    if [ $self_provision -eq 0 ]; then
+        echo "Adding managed node support ..."
+        cp -v $CC_HOME/register.sh $SAG_HOME/
+        cp -v $CC_HOME/entrypoint.sh $SAG_HOME/
+        mkdir -p $SAG_HOME/CommandCentral/
+        cp -vR $CC_HOME/CommandCentral/client/ $SAG_HOME/CommandCentral/
+    fi
+
+    echo "Disk usage stats "
+    du -h -d 2 $SAG_HOME
+
 else 
     kill $tailpid>/dev/null
     echo ""
