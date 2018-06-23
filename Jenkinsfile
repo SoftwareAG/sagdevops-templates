@@ -40,11 +40,11 @@ pipeline {
                 TAG = "${params.release}"
             }
             parallel {
-                stage('Asset Builder') {
-                    steps {
-                        testTemplate('sag-abe', false, true, true)
-                    }
-                }
+                // stage('Asset Builder') {
+                //     steps {
+                //         testTemplate('sag-abe', false, true, true)
+                //     }
+                // }
                 stage('Universal Messaging') {
                     steps {
                         testTemplate('sag-um-server', false, true, true)
