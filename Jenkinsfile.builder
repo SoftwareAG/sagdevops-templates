@@ -5,6 +5,7 @@ def buildAndTest(release) {
     . ./${release}.env
     export COMPOSE_PROJECT_NAME="builder-$release"
 
+    docker-compose config
     docker-compose build --pull --force-rm --no-cache cc
     
     cd templates/sag-spm-config
@@ -21,9 +22,9 @@ pipeline {
     agent {
         label 'docker'
     }
-    environment {
-        CC_TAG = '10.3.0.0.27'
-    }
+    // environment {
+    //     CC_TAG = '10.3.0.0.27'
+    // }
     stages {
         stage('Build') {
             parallel {
