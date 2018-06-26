@@ -11,8 +11,15 @@ services:
         - __is_fixes=$FIXES             # [] or ALL, from the env
     ports:
       - "5555"                          # container specific ports
+    hostname: is01
     environment:
-      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+      - CC_AUTO_REGISTER=1              # No auto register as we don't have a server
     # volumes:
     #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
     #   - ./test.sh:/test.sh # for dev only to avoid image rebuild
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default
+  
