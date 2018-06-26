@@ -7,7 +7,7 @@ def testTemplate(t, testProvision, buildImage, pushImage) {
             //    sh "docker-compose run --name $t --rm provision"
             //}
             if (buildImage) {
-                sh "docker-compose build"
+                sh "docker-compose build --force-rm --no-cache --pull"
                 if (pushImage) {
                     sh "docker-compose push"
                 }
