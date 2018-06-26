@@ -17,6 +17,7 @@ pipeline {
         stage("Build") {
             steps {
                 dir ("templates/${params.template}") {
+                    sh "docker-compose config"
                     sh "docker-compose build --force-rm --no-cache --pull"
                 }
             }
