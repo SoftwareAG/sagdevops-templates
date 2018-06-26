@@ -1,0 +1,50 @@
+// curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+
+def testTemplate(t, testProvision, buildImage, pushImage) {
+    dir ("templates/$t") {
+        try {
+            //if (testProvision) {
+            //    sh "docker-compose run --name $t --rm provision"
+            //}
+            if (buildImage) {
+                sh "docker-compose build"
+                if (pushImage) {
+                    sh "docker-compose push"
+                }
+            }
+        } finally {
+            sh "docker-compose down"
+        }
+    }
+}
+
+pipeline {
+    agent {
+        label 'docker'
+    }
+    parameters {
+        choice(choices: 'sag-um-server\nsag-is-server\nsag-msc-server\nsag-tc-server', description: 'Template image to build', name: 'template')
+        choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
+    }
+    stages {
+        stage('Init') {
+            steps {
+                echo "Testing for ${params.release} release"
+                sh ". ./${params.release}.env; docker-compose pull cc"
+            }
+        }
+        stage("Build") {
+            environment {
+                TAG = "${params.release}"
+            }
+            steps {
+                testTemplate(params.template, false, true, true)
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker-compose down'
+        }
+    }    
+}
