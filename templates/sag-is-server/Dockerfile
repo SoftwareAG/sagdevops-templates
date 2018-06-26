@@ -7,9 +7,7 @@ FROM $BUILDER_IMAGE as builder
 ARG __is_fixes=[]
 ARG __is_instance_name=default
 
-RUN $CC_HOME/provision.sh && \
-    ./test.sh && \
-    $CC_HOME/cleanup.sh
+RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE
 
@@ -24,5 +22,6 @@ COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 ADD entrypoint.sh $SAG_HOME/
 ENTRYPOINT $SAG_HOME/entrypoint.sh
 
-# Current working directory for all commands. This is where the UM installation is copied to within the image.
 WORKDIR $SAG_HOME
+
+# HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f localhost:8092/spm/ || exit 1"
