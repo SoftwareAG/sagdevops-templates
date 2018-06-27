@@ -35,32 +35,28 @@ pipeline {
                 sh ". ./${params.release}.env; docker-compose pull cc"
             }
         }
-        stage("Level 1") {
+        stage("Build") {
             environment {
                 TAG = "${params.release}"
             }
             parallel {
-                stage('Asset Builder') {
+                stage('Lane 1') {
                     steps {
                         testTemplate('sag-abe', false, true, true)
                     }
                 }
-                stage('Universal Messaging') {
-                    steps {
-                        testTemplate('sag-um-server', false, true, true)
-                    }
-                }
-                stage('Terracotta') {
-                    steps {
-                        testTemplate('sag-tc-server', false, true, true)
-                    }
-                }
-                stage('Integration Server') {
+                stage('Lane 2') {
                     steps {
                         testTemplate('sag-msc-server', false, true, true)
                         testTemplate('sag-is-server', false, true, true)
                     }
-                }                                                
+                }
+                stage('Lane 3') {
+                    steps {
+                        testTemplate('sag-um-server', false, true, true)
+                        testTemplate('sag-tc-server', false, true, true)
+                    }
+                }
                 // stage('Oracle DB') {
                 //     steps {
                 //         testTemplate('sag-db-oracle', true, false, false)
