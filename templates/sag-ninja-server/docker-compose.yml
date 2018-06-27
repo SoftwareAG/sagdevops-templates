@@ -1,20 +1,20 @@
 version: "3.2"
 
 services:
-  # provisioner
-  provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
-    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
-    volumes: 
-      - ./:/src/ # required
-    environment:
-      - __ninja_memory_max=256          # template test specific param
-      - REPO_HOST=aquarius-bg.eur.ad.sag
-      - REPO_PRODUCT=aquarius-bg.eur.ad.sag
-      - REPO_FIX=QARepo
+  # # provisioner
+  # provision:
+  #   image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+  #   entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
+  #   volumes: 
+  #     - ./:/src/ # required
+  #   environment:
+  #     - __ninja_memory_max=256          # template test specific param
+  #     - REPO_HOST=aquarius-bg.eur.ad.sag
+  #     - REPO_PRODUCT=CC_PI_103oct2018
+  #     - REPO_FIX=QARepo
   
   # target container
-  node:
+  ninja:
     image: daerepository03.eur.ad.sag:4443/ccdevops/ninja:$TAG # target image
     build:
       context: .
@@ -23,12 +23,17 @@ services:
         - TAG
         - __ninja_memory_max=256        # template test specific param
         - REPO_HOST=aquarius-bg.eur.ad.sag
-        - REPO_PRODUCT=aquarius-bg.eur.ad.sag
+        - REPO_PRODUCT=CC_PI_103oct2018
         - REPO_FIX=QARepo
     ports:
-      - "4444"                          # container specific ports
-    environment:
-      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
-    volumes:
-      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
-      - ./test.sh:/test.sh # for dev only to avoid image rebuild
+      - 4444                            # container specific ports
+    # environment:
+    #   - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+    # volumes:
+    #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+    #   - ./test.sh:/test.sh # for dev only to avoid image rebuild
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

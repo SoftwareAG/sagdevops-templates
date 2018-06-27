@@ -27,18 +27,24 @@ sagcc get monitoring runtimestatus local OSGI-CCE-ENGINE -e ONLINE -c 15 --wait-
 echo "Command Central is READY"
 
 echo "Running init.sh ..."
-$CC_HOME/init.sh
+if ! $CC_HOME/init.sh ; then
+    echo "ERROR: Initialization failed."
+    exit 1
+fi
 
 echo "Running inventory.sh ..."
 $CC_HOME/inventory.sh
 
 # globals
 NODES=${NODES:-node}
-MAIN_TEMPLATE_ALIAS=${1}
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
 
-propfile=/tmp/.env.properties
+MAIN_TEMPLATE_ALIAS=${1}
+shift
+PARAMS=$*
+
+propfile=~/.env.properties
 rm -f $propfile
 
 ADD_PROPERTIES=""
@@ -46,6 +52,8 @@ if [ -f env.properties ]; then
     echo "Found env.properties. Resolving envrionment variables ..."
     envsubst<env.properties>$propfile
     ADD_PROPERTIES=" -i $propfile "
+else
+    echo "WARNING: No env.properties found"
 fi
 
 # Extract all environment variables those having the prefix "__" 
@@ -57,17 +65,18 @@ env | while IFS='=' read -r name value; do
 		key=${name:2}
         # after converting the keys to the regular parameter names by replacing  the bash-acceptable "_" with "."
         echo "${key//_/.}=${value}" >> $propfile
+        echo "Picked up ENV variable: ${key//_/.}=${value}"
 	fi
 done
 
-if [ "$ADD_PROPERTIES" != "" ]; then
+if [ -f $propfile ]; then
     echo "=================================="
     echo "Resolved template .properties file"
     echo "=================================="
     cat $propfile
     echo "=================================="
 else
-    echo "WARNING: No env.properties or environment variables are defined! Will use template defaults."
+    echo "WARNING: No environment variables defined! Will use template defaults."
 fi
 
 if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
@@ -133,7 +142,7 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
 fi
 
 
-ADD_PROPERTIES="$ADD_PROPERTIES node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 "
+ADD_PROPERTIES="$ADD_PROPERTIES node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 $PARAMS "
 
 echo "=================================="
 echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"

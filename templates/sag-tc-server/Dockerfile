@@ -54,11 +54,8 @@ ENV JAVA_OPTS "-Dcom.tc.productkey.path=${LICENSE_FILE} -XX:+UnlockExperimentalV
 WORKDIR $SAG_HOME
 ADD entrypoint.sh tc.custom.log4j.properties ./
 
-# copy only Terracotta folder to make it unmanaged/slim image 
-# COPY --from=builder --chown=sagadmin:sagadmin $SAG_HOME/Terracotta/server/ ./Terracotta/server/
-
 # copy everything to make it a managed images
-COPY --from=builder --chown=sagadmin:sagadmin $SAG_HOME ./
+COPY --from=builder --chown=1724:1724 $SAG_HOME ./
 
 # before starting the terracotta server, we update the tc-config.xml configuration file
 ENTRYPOINT $SAG_HOME/entrypoint.sh

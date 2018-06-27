@@ -15,17 +15,25 @@ services:
         - REPO_HOST                               # default AQU host
         - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
         - REPO_FIX                                # fix release repo, e.g. GA_Fix_Repo
-    # environment:
-    #   - REPO_HOST                                 # alternative, closest AQU host
-    #   - REPO_PRODUCT                              # alternative, product repo within the same release
-    #   - REPO_FIX                                  # alternative, fix repo
-    #   - LICENSES_URL                              # additional licenses
+    environment:
+      - REPO_HOST                                 # alternative, closest AQU host
+      - REPO_PRODUCT                              # alternative, product repo within the same release
+      - REPO_FIX                                  # alternative, fix repo
+      - LICENSES_URL                              # additional licenses
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/init.sh:/opt/sagtools/init.sh
       - ./scripts/test.sh:/opt/sagtools/test.sh
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-#      - ./scripts/provision.dev.sh:/opt/sagtools/provision.sh
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      # resources:
+      #   limits:
+      #     cpus: "1"
+      #     memory: 250M
 
   sagcc: # sagcc wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
@@ -65,7 +73,17 @@ services:
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-#      - ./scripts/provision.dev.sh:/opt/sagtools/provision.sh
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # # default builder
   # node:
