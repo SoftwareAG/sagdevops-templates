@@ -42,7 +42,9 @@ pipeline {
             parallel {
                 stage('Lane 1') {
                     steps {
+                        sh 'docker-compose up -d cc'
                         testTemplate('sag-abe', false, true, true)
+                        testTemplate('sag-db-oracle', true, false, false)
                     }
                 }
                 stage('Lane 2') {
@@ -57,11 +59,6 @@ pipeline {
                         testTemplate('sag-tc-server', false, true, true)
                     }
                 }
-                // stage('Oracle DB') {
-                //     steps {
-                //         testTemplate('sag-db-oracle', true, false, false)
-                //     }
-                // }                                                
             }
         }
         
