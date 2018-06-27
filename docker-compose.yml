@@ -84,26 +84,3 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-
-  # # default builder
-  # node:
-  #   # image: annonymous
-  #   build:
-  #     context: .
-  #   environment:
-  #     - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
-
-
-  # test:
-  #   # FIXME: use client image with antcc
-  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}-internal
-  #   volumes: 
-  #     - ./clients/docker.properties:/root/.sag/cc.properties
-  #     - ./:/usr/share/sagcc/init/
-  #   environment: 
-  #     - CC_SERVER=cc
-  #     - CC_TEMPLATE
-  #     - SAG_AQUARIUS
-  #     - EMPOWER_USR
-  #     - EMPOWER_PSW
-  #   command: antcc templateApply templateTest -Dbuild.dir=/tmp
