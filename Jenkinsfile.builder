@@ -2,15 +2,13 @@
 
 def buildAndTest(release) {
     sh """
-    # . ./${release}.env
     export COMPOSE_PROJECT_NAME="builder-$release"
 
     docker-compose config
     docker-compose build --pull --force-rm --no-cache cc
     
     cd templates/sag-spm-config
-    docker-compose down
-    docker-compose run --rm provision
+    docker-compose config
     docker-compose build --force-rm --no-cache
     cd ../..
     
