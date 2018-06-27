@@ -63,7 +63,6 @@ fi
 # and appends them to the .properties after converting _ to .
 env | while IFS='=' read -r name value; do
 	if [[ $name == '__'* ]]; then
-        ADD_PROPERTIES=" -i $propfile "
 		# remove "__" from the environment variable name and use the remainder as the key... 
 		key=${name:2}
         # after converting the keys to the regular parameter names by replacing  the bash-acceptable "_" with "."
@@ -73,6 +72,7 @@ env | while IFS='=' read -r name value; do
 done
 
 if [ -f $propfile ]; then
+    ADD_PROPERTIES=" -i $propfile "
     echo "=================================="
     echo "Resolved template .properties file"
     echo "=================================="
@@ -145,7 +145,7 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
 fi
 
 
-ADD_PROPERTIES="$ADD_PROPERTIES node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 $PARAMS "
+ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 $PARAMS "
 
 echo "=================================="
 echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
