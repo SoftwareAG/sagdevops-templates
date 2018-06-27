@@ -40,11 +40,11 @@ pipeline {
                 TAG = "${params.release}"
             }
             parallel {
-                // stage('Asset Builder') {
-                //     steps {
-                //         testTemplate('sag-abe', false, true, true)
-                //     }
-                // }
+                stage('Asset Builder') {
+                    steps {
+                        testTemplate('sag-abe', false, true, true)
+                    }
+                }
                 stage('Universal Messaging') {
                     steps {
                         testTemplate('sag-um-server', false, true, true)
@@ -58,6 +58,7 @@ pipeline {
                 stage('Integration Server') {
                     steps {
                         testTemplate('sag-msc-server', false, true, true)
+                        testTemplate('sag-is-server', false, true, true)
                     }
                 }                                                
                 // stage('Oracle DB') {

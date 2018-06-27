@@ -24,7 +24,7 @@ services:
       - 9030                            # container specific port
       - 9040                            # container specific port
       - 8092                            # if CC-managed, SPM port
-    hostname: tc01
+    hostname: tc
     environment:
       - CC_AUTO_REGISTER=1              # No auto register as we don't have a server
       - OFFHEAP_MAX_SIZE=513m           # Customized offheap size

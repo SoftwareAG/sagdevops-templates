@@ -10,7 +10,7 @@ services:
       - ORACLE_ALLOW_REMOTE=true
 
   # provisioner for webm db schemas using template.yaml
-  provision:
+  dbcreator:
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
     entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
     volumes: 
@@ -18,5 +18,11 @@ services:
     environment:
       - __release=$TAG
       - __nodes=node
+      - __db_host=oracle
     depends_on: 
       - oracle
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

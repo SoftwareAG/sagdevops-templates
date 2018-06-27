@@ -24,7 +24,7 @@ services:
         - __um_fixes=$FIXES             # [] or ALL from the env
     ports:
       - "9000"                          # container specific ports
-    hostname: um01
+    hostname: um
     environment:
       - CC_AUTO_REGISTER=1              # No auto register as we don't have a server
     # volumes:

@@ -11,8 +11,6 @@ RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE
 
-ENV SAG_HOME=/opt/softwareag
-
 EXPOSE 5555 9999 8094 8092 8093
 
 # copy everything from the builder stage $SAG_HOME
