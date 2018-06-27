@@ -40,8 +40,11 @@ NODES=${NODES:-node}
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
 
-MAIN_TEMPLATE_ALIAS=${1}
-shift
+if [ "$#" != "0" ]; then  
+    MAIN_TEMPLATE_ALIAS=${1}
+    shift
+fi
+
 PARAMS=$*
 
 propfile=~/.env.properties
