@@ -21,5 +21,5 @@ COPY --from=builder $SAG_HOME/ $SAG_HOME/
 
 WORKDIR /src
 
-ENTRYPOINT [ "build.sh", "-Dbuild.source.dir=/src/", "-Dbuild.output.dir=${BUILD_OUTPUT_DIR}", "-Dbuild.number=${BUILD_NUMBER}" ]
-
+# shell form of CMD to use env vars
+CMD build.sh -Dbuild.source.dir=/src/ -Dbuild.output.dir=${BUILD_OUTPUT_DIR} -Dbuild.number=${BUILD_NUMBER}
