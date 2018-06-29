@@ -163,8 +163,11 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     sleep 3
 
     echo "Capturing metadata ..."
-    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/product.txt
-    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt
+    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.txt -f tsv
+    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.xml -f xml
+
+    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt -f tsv
+    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.xml -f xml
 
     echo "Cleaning up ..."
     rm -rf $SAG_HOME/common/conf/nodeId.txt
