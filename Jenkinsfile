@@ -30,9 +30,13 @@ pipeline {
     // }
     stages {
         stage('Init') {
+            environment {
+                TAG = "${params.release}"
+            }
             steps {
                 echo "Testing for ${params.release} release"
-                sh ". ./${params.release}.env; docker-compose pull cc"
+                //sh ". ./${params.release}.env; docker-compose pull cc"
+                sh 'docker-compose pull cc'
             }
         }
         stage("Build") {
