@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+# configuring CC builder itself?
+if [ $CC_HOME == $SAG_HOME ]; then 
+    self_provision=1
+else
+    self_provision=0
+fi
+
 if ! cat $CC_HOME/profiles/CCE/configuration/config.ini | grep com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true ; then
     echo "Configuring Command Central no restart policy ..."
     echo com.softwareag.platform.management.client.template.composite.skip.restart.runtimes=true>>$CC_HOME/profiles/CCE/configuration/config.ini
@@ -19,15 +26,28 @@ echo "Waiting for Command Central ..."
 sagcc get monitoring runtimestatus local OSGI-CCE-ENGINE -e ONLINE -c 15 --wait-for-cc 300 -w 240
 echo "Command Central is READY"
 
+echo "Running init.sh ..."
+if ! $CC_HOME/init.sh ; then
+    echo "ERROR: Initialization failed."
+    exit 1
+fi
+
+echo "Running inventory.sh ..."
 $CC_HOME/inventory.sh
 
 # globals
 NODES=${NODES:-node}
-MAIN_TEMPLATE_ALIAS=${1}
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
 
-propfile=/tmp/.env.properties
+if [ "$#" != "0" ]; then  
+    MAIN_TEMPLATE_ALIAS=${1}
+    shift
+fi
+
+PARAMS=$*
+
+propfile=~/.env.properties
 rm -f $propfile
 
 ADD_PROPERTIES=""
@@ -35,28 +55,31 @@ if [ -f env.properties ]; then
     echo "Found env.properties. Resolving envrionment variables ..."
     envsubst<env.properties>$propfile
     ADD_PROPERTIES=" -i $propfile "
+else
+    echo "WARNING: No env.properties found"
 fi
 
 # Extract all environment variables those having the prefix "__" 
 # and appends them to the .properties after converting _ to .
 env | while IFS='=' read -r name value; do
 	if [[ $name == '__'* ]]; then
-        ADD_PROPERTIES=" -i $propfile "
 		# remove "__" from the environment variable name and use the remainder as the key... 
 		key=${name:2}
         # after converting the keys to the regular parameter names by replacing  the bash-acceptable "_" with "."
         echo "${key//_/.}=${value}" >> $propfile
+        echo "Picked up ENV variable: ${key//_/.}=${value}"
 	fi
 done
 
-if [ "$ADD_PROPERTIES" != "" ]; then
+if [ -f $propfile ]; then
+    ADD_PROPERTIES=" -i $propfile "
     echo "=================================="
     echo "Resolved template .properties file"
     echo "=================================="
     cat $propfile
     echo "=================================="
 else
-    echo "WARNING: No env.properties or environment variables are defined! Will use template defaults."
+    echo "WARNING: No environment variables defined! Will use template defaults."
 fi
 
 if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
@@ -64,9 +87,11 @@ if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
 
-    echo "Registering managed installation '$NODES' ..."
-    sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
-    
+    if [ $self_provision -eq 0 ]; then
+        echo "Registering managed installation '$NODES' ..."
+        sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
+    fi
+
     echo "Waiting for SPM ..."
     sagcc get landscape nodes $NODES -e ONLINE -w 240
 
@@ -120,7 +145,7 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
 fi
 
 
-ADD_PROPERTIES="$ADD_PROPERTIES node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 "
+ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 $PARAMS "
 
 echo "=================================="
 echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
@@ -138,6 +163,19 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     sleep 3
     echo "Cleaning up ..."
     rm -rf $SAG_HOME/common/conf/nodeId.txt
+
+    # configuring target $SAG_HOME
+    if [ $self_provision -eq 0 ]; then
+        echo "Adding managed node support ..."
+        cp -v $CC_HOME/register.sh $SAG_HOME/
+        cp -v $CC_HOME/entrypoint.sh $SAG_HOME/
+        mkdir -p $SAG_HOME/CommandCentral/
+        cp -vR $CC_HOME/CommandCentral/client/ $SAG_HOME/CommandCentral/
+    fi
+
+    echo "Disk usage stats "
+    du -h -d 2 $SAG_HOME
+
 else 
     kill $tailpid>/dev/null
     echo ""

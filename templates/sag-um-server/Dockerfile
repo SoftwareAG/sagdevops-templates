@@ -1,7 +1,6 @@
 # Command Central docker builder image
 # Use $TAG to control release
-ARG TAG=latest
-ARG RELEASE=
+ARG TAG=10.3
 # Use $BUILDER_IMAGE to control repo, e.g. private/public
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 
@@ -22,7 +21,10 @@ RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE as default
 
-ENV SAG_HOME=/opt/softwareag
+# re-declare build arguments from builder stage!
+ARG __um_instance_name=default
+ARG __um_instance_port=9000
+ARG __um_realm=default
 
 ENV UM_HOME $SAG_HOME/UniversalMessaging
 ENV UM_INSTANCE_NAME=$__um_instance_name
@@ -43,7 +45,7 @@ ENV CLASSPATH=$UM_HOME/lib/*
 EXPOSE $__um_instance_port 8082 8093
 
 # copy everything from the builder stage $SAG_HOME
-COPY --from=builder $SAG_HOME/ $SAG_HOME/
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
 # custom entry point
 ADD entrypoint.sh $SAG_HOME/
@@ -52,4 +54,4 @@ ENTRYPOINT $SAG_HOME/entrypoint.sh
 # Current working directory for all commands. This is where the UM installation is copied to within the image.
 WORKDIR $UM_HOME
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 CMD [ "curl localhost:8092/spm/" ]
+HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f localhost:8092/spm/ || exit 1"

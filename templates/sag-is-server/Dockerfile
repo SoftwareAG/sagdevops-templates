@@ -1,24 +1,25 @@
-# Use $TAG to control release
 ARG TAG=10.3
-# Use $BUILDER_IMAGE to control repo, e.g. private/public
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-
-# Target image base image
 ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
 
 FROM $BUILDER_IMAGE as builder
 
-ARG __ninja_mem_max=256
+ARG __is_fixes=[]
+ARG __is_instance_name=default
 
 RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE
 
-EXPOSE 4444 4445 4446 4447 8092 8093
+EXPOSE 5555 9999 8094 8092 8093
 
-# copy everything as is from the builder stage
-COPY --from=builder $SAG_HOME/ $SAG_HOME/
+# copy everything from the builder stage $SAG_HOME
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
-# basic entry point
+# custom entry point
 ADD entrypoint.sh $SAG_HOME/
 ENTRYPOINT $SAG_HOME/entrypoint.sh
+
+WORKDIR $SAG_HOME
+
+# HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f localhost:8092/spm/ || exit 1"

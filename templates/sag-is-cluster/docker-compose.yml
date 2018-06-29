@@ -7,31 +7,31 @@ services:
       - ORACLE_ALLOW_REMOTE=true
 
   is1:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG # target image
     ports:
-      - target: 5555
+      - 5555
 
   is2:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG # target image
     ports:
-      - target: 5555
+      - 5555
 
   init: # init container
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral:10.2-internal
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:$TAG-antcc
     volumes: 
       - ../../clients/docker.properties:/root/.sag/cc.properties
-      - ../../environments/:/usr/share/sagcc/init/environments/
+      - ../../environments/:/src/environments/
     environment: 
       - CC_SERVER=cc
       - CC_ENV=dev   
     command:
-      antcc waitnodes oracledb -Dnodes=is1:sagiscluster_is1_1,is2:sagiscluster_is2_1
+      antcc waitnodes oracledb -Dnodes=is1:sag-is-cluster_is1_1,is2:sagiscluster_is2_1
     depends_on: 
       - oracle
       - is1
       - is2
 
-networks: 
+networks:
   default:
     external:
-      name: sagdevopstemplates_default
+      name: sagdevops-templates_default

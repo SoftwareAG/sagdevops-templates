@@ -1,17 +1,17 @@
 version: "3.2"
 
 services:
-  # provisioner
-  provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
-    volumes: 
-      - ./:/src/ # required
-    environment:
-      - __tc_fixes=$FIXES     # [] or ALL from the env
+  # # provisioner
+  # provision:
+  #   image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
+  #   entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
+  #   volumes: 
+  #     - ./:/src/ # required
+  #   environment:
+  #     - __tc_fixes=$FIXES     # [] or ALL from the env
 
   # target container
-  node:
+  tc:
     image: daerepository03.eur.ad.sag:4443/ccdevops/terracotta-server:$TAG # target image
     build:
       context: .
@@ -24,11 +24,17 @@ services:
       - 9030                            # container specific port
       - 9040                            # container specific port
       - 8092                            # if CC-managed, SPM port
+    hostname: tc
     environment:
-      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
+      - CC_AUTO_REGISTER=1              # No auto register as we don't have a server
       - OFFHEAP_MAX_SIZE=513m           # Customized offheap size
-    volumes:
-      - ../../build/run/data/tc/store:/data/diskstore  # for data persistence
-      - ../../build/run/data/tc/backup:/data/backup    # for data persistence
-      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh  # for dev only to avoid image rebuild
-      - ./test.sh:/test.sh                             # for dev only to avoid image rebuild
+    # volumes:
+    #   - ../../build/run/data/tc/store:/data/diskstore  # for data persistence
+    #   - ../../build/run/data/tc/backup:/data/backup    # for data persistence
+    #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh  # for dev only to avoid image rebuild
+    #   - ./test.sh:/test.sh                             # for dev only to avoid image rebuild
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

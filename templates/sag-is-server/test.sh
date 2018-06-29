@@ -7,7 +7,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     export __is_instance_name=${__is_instance_name:-default}
 
     echo "Verifying managed container $CC_SERVER ..."
-    sagcc get inventory products -e MSC --wait-for-cc
+    sagcc get inventory products -e integrationServer --wait-for-cc
 
     export CC_WAIT=180
     

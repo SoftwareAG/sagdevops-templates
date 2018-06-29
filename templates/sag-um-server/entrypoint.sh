@@ -16,7 +16,7 @@ SERVER_OPTS="-DDATADIR=server/$UM_INSTANCE_NAME/data
              -DREALM=$UM_REALM
              -DSERVERDIR=server/$UM_INSTANCE_NAME
              -DADAPTER_0=nhp://0.0.0.0:$UM_INSTANCE_PORT
-             -DLICENCE_DIR=server/license/
+             -DLICENCE_DIR=${UM_HOME}/server/templates
              -DLICENCE_FILE=licence.xml
              -DLOGFILE=/dev/stdout
              -Djavax.net.ssl.trustStore=server/$UM_INSTANCE_NAME/bin/nirvanacacerts.jks

@@ -3,7 +3,7 @@ description: Integration Server core
 
 environments:
   default:
-    is.integrationserver.license.key: ${}   # REQUIRED: IS license key
+    is.integrationserver.license.key: "*_PIE_10.*_*_*"  # IS license key
     is.instance.name:   default             # Instance name
     is.primary.port:    5555                # Primary port number
     is.diagnostic.port: 9999                # Dialgnostic port number
@@ -11,7 +11,8 @@ environments:
     is.memory.init:     128                 # Initial memory size
     is.memory.max:      256                 # Maximum memory size
     is.install.service: false
-    is.fixes: [wMFix.integrationServer.Core,wMFix.integrationServer.ART]
+    is.fixes: 
+      - wMFix.integrationServer.Core
 
 layers:
   runtime:

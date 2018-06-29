@@ -31,7 +31,7 @@ templates:
       NUMRealmServer:                                              # Universal Messaging | Realm Server
         ${um.instance.name}:                                       # instance name is different from realm
           instance.port: ${um.instance.port}                       # instance port
-          instance.ip:   ${node.host}                              # bind to node's host name
+          # instance.ip:   ${node.host}                              # bind to node's host name
           runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
           configuration:
             Universal-Messaging-${instance.name}:                  # configuration for UM instance
