@@ -6,27 +6,25 @@ cd $SAG_HOME
 echo 'Disk usage before cleaning:'
 du -h -d 2
 
-echo "Remove Update Manager, fixes metadata and backups ..."
+echo "Removing Update Manager, fixes metadata and backups ..."
 rm -fr SAGUpdateManager/
 
-echo "Remove Installer but keep install/products metadata ..."
+echo "Removing Installer but keep install/products metadata ..."
 rm -fr install/repo install/logs install/jars install/bpms install/etc
+rm -f sagProducts.xml sagMetadata.xml p2.index
 
+echo "Removing Licenses and doc ..."
+rm -fr Licenses/ _documentation/
 
-echo "Remove Licenses and doc ..."
-rm -fr Licenses/
-rm -fr _documentation/
-
-echo "Remove log files ..."
+echo "Removing log files ..."
 rm -f `find ./ -name *.log`
 
-echo "Common ..."
-rm -rf common/src/
+echo "Removing Common ..."
 # rm -rf common/db/
 # rm -rf common/runtime/install/
 # rm -rf common/runtime/agent/
 
-echo "Remove Java ..."
+echo "Removing Java ..."
 rm -fr jvm/
 
 echo 'Disk usage after cleaning:'
