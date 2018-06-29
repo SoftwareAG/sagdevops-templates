@@ -13,7 +13,7 @@ ENV CC_CLI_HOME=$SAG_HOME/CommandCentral/client
 ENV PATH=$PATH:$ABE_HOME/bin:$CC_CLI_HOME/bin
 
 # output folder
-ENV BUILD_OUTPUT_DIR=/src/build/repo/
+ENV BUILD_OUTPUT_DIR=/src/build/assets/
 # build number for assets
 ENV BUILD_NUMBER=1
 
@@ -21,5 +21,8 @@ COPY --from=builder $SAG_HOME/ $SAG_HOME/
 
 WORKDIR /src
 
+# TODO: set global properties in $ABE_HOME/master_build/build.properties
 # shell form of CMD to use env vars
-CMD build.sh -Dbuild.source.dir=/src/ -Dbuild.output.dir=${BUILD_OUTPUT_DIR} -Dbuild.number=${BUILD_NUMBER}
+# CMD build.sh -Dbuild.source.dir=/src/ -Dbuild.output.dir=${BUILD_OUTPUT_DIR} -Dbuild.number=${BUILD_NUMBER}
+
+CMD build.sh
