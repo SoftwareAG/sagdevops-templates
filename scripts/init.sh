@@ -15,8 +15,9 @@ echo -e "\n"
 
 if [ ! -z $LICENSES_URL ]; then
     # https://solutionbook.softwareag.com/sb-web/page/detail_page.xhtml?guid=1227042885&type=platforms
+    # https://iwiki.eur.ad.sag/pages/downloadallattachments.action?pageId=517544534
     echo "Importing license keys from: $LICENSES_URL ..."
-    curl -o ~/licenses.zip $LICENSES_URL && \
+    curl -k -o ~/licenses.zip "$LICENSES_URL" && \
     sagcc add license-tools keys -i ~/licenses.zip && \
     rm ~/licenses.zip
 else
