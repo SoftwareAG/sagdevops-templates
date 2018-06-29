@@ -75,12 +75,12 @@ services:
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
       - ./scripts/provision.sh:/opt/sagtools/provision.sh
 
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+  # visualizer:
+  #   image: dockersamples/visualizer:stable
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
