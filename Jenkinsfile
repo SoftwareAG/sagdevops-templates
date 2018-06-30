@@ -32,11 +32,9 @@ pipeline {
         stage('Init') {
             environment {
                 TAG = "${params.release}"
-                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
             }
             steps {
                 echo "Testing for ${params.release} release"
-                //sh ". ./${params.release}.env; docker-compose pull cc"
                 sh 'docker-compose pull cc'
             }
         }
@@ -47,7 +45,7 @@ pipeline {
             parallel {
                 stage('Lane 1') {
                     steps {
-                        sh 'docker-compose up -d cc'
+                        sh 'docker-compose up -d -p sagdevops-templates cc'
                         testTemplate('sag-abe', false, true, true)
                         testTemplate('sag-db-oracle', true, false, false)
                     }
