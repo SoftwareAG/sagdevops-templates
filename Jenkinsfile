@@ -45,7 +45,7 @@ pipeline {
             parallel {
                 stage('Lane 1') {
                     steps {
-                        sh 'docker-compose up -d -p sagdevops-templates cc'
+                        sh 'docker-compose -p sagdevops-templates up -d cc'
                         testTemplate('sag-abe', false, true, true)
                         testTemplate('sag-db-oracle', true, false, false)
                     }
