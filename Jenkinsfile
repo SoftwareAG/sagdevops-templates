@@ -32,6 +32,7 @@ pipeline {
         stage('Init') {
             environment {
                 TAG = "${params.release}"
+                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
             }
             steps {
                 echo "Testing for ${params.release} release"
