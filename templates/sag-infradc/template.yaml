@@ -1,58 +1,60 @@
 alias: sag-infradc
-description: The minimal required template can be used to install o4i
+description: Template to install InfraDC and configure it
 
 environments:
 
   default:                                  
 
-    infradc.configure:       [infradc-tuneup]
-    infradc.fixes:           ALL
-    infradc.host:            ${node.host} 
-    infradc.primary.port:    6666
-    infradc.secondary.port:  15005
-    infradc.jmx.port:        6710
-    infradc.diagnostic.port: 10033
-    infradc.memory.init:     256
-    infradc.momory.max:      1024
+    infradc.fixes:           ALL        #Specifies the list of fixes to be installed
+    infradc.host:            ${}        #Specifies target host where infradc will be installed
+    infradc.primary.port:    6666       #Primary port for infradc, by default it is 6666
+    infradc.secondary.port:  15005      #Secondary port for infradc, by default it is 15005
+    infradc.jmx.port:        6710       #JMX port for infradc, by default it is 6666
+    infradc.diagnostic.port: 10033      #Diagnostic port for infradc, by default it is 6666
+    infradc.memory.init:     256        #Initial memory size
+    infradc.momory.max:      1024       #Maximum memory size
+    jmx.port.status: true               #Specifies whether JMX port should be enabled or not
+    diagnostic.port.status: false       #Specifies whether Diagnostic port should be enabled or not
+    
 
-    infradc.jms.protocol: nsp
-    infradc.jms.host:     ${node.host} 
-    infradc.jms.port:     ${node.host} 
+    infradc.jms.protocol: nsp           #Specifies the protocol of target JMS with which InfraDC sould be configured
+    infradc.jms.host:     ${}           #Specifies the host name of target JMS with which InfraDC sould be configured
+    infradc.jms.port:     ${}           #Specifies the port number of target JMS with which InfraDC sould be configured
 
-    infradc.jndi.BrokerName:     ""
-    infradc.jndi.NamingFactory:  com.pcbsys.nirvana.nSpace.NirvanaContextFactory
-    infradc.jndi.UseSSL:         false
-    infradc.jndi.UseEncryption:  false
-    infradc.jndi.KeyStoreFile:   ""
-    infradc.jndi.KeyStoreType:   JKS
-    infradc.jndi.TrustStoreFile: ""
-    infradc.jndi.TrustStoreType: JKS
-    infradc.jndi.StorePassword:
-    infradc.jndi.JmsUrlOverride: ""
+    infradc.jndi.BrokerName:     ""         #In case the target JMS is Broker, it specifies the Broker connection name
+    infradc.jndi.NamingFactory:  com.pcbsys.nirvana.nSpace.NirvanaContextFactory     #Specifies the default naming factory of the JMS Connection
+    infradc.jndi.UseSSL:         false      #Specifies whether the target JNDI connection is SSL enabled or not  
+    infradc.jndi.UseEncryption:  false      #Specifies whether to use encryption for the connection or not
+    infradc.jndi.KeyStoreFile:   ""         #Specifies the keystore file path, it is required when we enable SSL or discover specific SSL assets
+    infradc.jndi.KeyStoreType:   JKS        #Specifies the type of the keystore file
+    infradc.jndi.TrustStoreFile: ""         #Specifies the truststore file path, it is required when we enable SSL or discover specific SSL assets
+    infradc.jndi.TrustStoreType: JKS        #Specifies the type of the truststore file
+    infradc.jndi.StorePassword:  ${}        #Specifies the password of the keystore/truststore file
+    infradc.jndi.JmsUrlOverride: ""         #Specifies the cluster JMS URL
 
-    infradc.dcName:                    InfraDC
-    infradc.pollingInterval:           5
-    infradc.adabasLoadFlag:            false
-    infradc.adabasSOAGatewayLoadFlag:  false
-    infradc.apamaLoadFlag:             false
-    infradc.applinxLoadFlag:           false
-    infradc.brokerLoadFlag:            false
-    infradc.completeLoadFlag:          false
-    infradc.entireXLoadFlag:           false
-    infradc.eventRoutingLoadFlag:      false
-    infradc.integrationServerLoadFlag: false
-    infradc.mwsLoadFlag:               false
-    infradc.mzngLoadFlag:              false
-    infradc.naturalAjaxLoadFlag:       false
-    infradc.naturalLoadFlag:           false
-    infradc.prestoLoadFlag:            false
-    infradc.snmpLoadFlag:              false
-    infradc.tcLoadFlag:                false
-    infradc.umClusterLoadFlag:         false
-    infradc.umLoadFlag:                false
-    infradc.desLoadFlag:               false
-    infradc.jmxLoadFlag:               false
-    infradc.logLevel:                  INFO
+    infradc.dcName:                    InfraDC  #Specifies the collector name of InfraDC
+    infradc.pollingInterval:           5        #Specifies the polling interval
+    infradc.adabasLoadFlag:            false    #Specified whether to load metadata for Adabas
+    infradc.adabasSOAGatewayLoadFlag:  false    #Specified whether to load metadata for AdabasSOAGateway
+    infradc.apamaLoadFlag:             false    #Specified whether to load metadata for Apama
+    infradc.applinxLoadFlag:           false    #Specified whether to load metadata for Applinx
+    infradc.brokerLoadFlag:            false    #Specified whether to load metadata for Broker
+    infradc.completeLoadFlag:          false    #Specified whether to load metadata for Complete
+    infradc.entireXLoadFlag:           false    #Specified whether to load metadata for EntireX
+    infradc.eventRoutingLoadFlag:      false    #Specified whether to load metadata for Event Routing
+    infradc.integrationServerLoadFlag: false    #Specified whether to load metadata for Integration Server
+    infradc.mwsLoadFlag:               false    #Specified whether to load metadata for MWS
+    infradc.mzngLoadFlag:              false    #Specified whether to load metadata for Mashzone
+    infradc.naturalAjaxLoadFlag:       false    #Specified whether to load metadata for Natural Ajax
+    infradc.naturalLoadFlag:           false    #Specified whether to load metadata for Natural 
+    infradc.prestoLoadFlag:            false    #Specified whether to load metadata for Presto
+    infradc.snmpLoadFlag:              false    #Specified whether to load metadata for SNMP
+    infradc.tcLoadFlag:                false    #Specified whether to load metadata for Terracotta
+    infradc.umClusterLoadFlag:         false    #Specified whether to load metadata for Universal Messaging Cluster
+    infradc.umLoadFlag:                false    #Specified whether to load metadata for Universal Messaging Server
+    infradc.desLoadFlag:               false    #Specified whether to load metadata for Digital Event Service
+    infradc.jmxLoadFlag:               false    #Specified whether to load metadata for JMX
+    infradc.logLevel:                  INFO     #Specifies the log level for InfraDC 
 
 
 layers:
@@ -74,40 +76,40 @@ templates:
             OSGI-InfraDC:
               COMMON-MEMORY:
                 COMMON-MEMORY:
-                  InitSize:  256
-                  MaxSize:   1024
+                  InitSize:  ${infradc.memory.init}
+                  MaxSize:   ${infradc.momory.max}
               COMMON-PORTS:
                 COMMON-PORTS-defaultHttp:
                   Port:
                     "@alias": defaultHttp
                     Enabled: true
                     Type: STANDARD
-                    Number: 6666
+                    Number: ${infradc.primary.port}
                     Protocol: HTTP
                 COMMON-PORTS-secondHttpInfraDC:
                   Port:
                     "@alias": secondHttpInfraDC
                     Enabled: true
-                    Number: 15005
+                    Number: ${infradc.secondary.port}
                     Protocol: HTTP
                     Type: STANDARD
                     ExtendedProperties:
                       Property:
                         -
                           "@name": redirectPort
-                          $: 6666
+                          $: ${infradc.primary.port}
                 COMMON-PORTS-defaultJmx:
                   Port:
                     "@alias": defaultJmx
-                    Enabled: true
+                    Enabled: ${jmx.port.status}
                     Type: STANDARD
-                    Number: 6710
+                    Number: ${infradc.jmx.port}
                     Protocol: JMX
                 COMMON-PORTS-diagnostics:
                   Port:
                     "@alias": diagnostics
-                    Enabled: false
-                    Number: 10033
+                    Enabled: ${diagnostic.port.status}
+                    Number: ${infradc.diagnostic.port}
                     Type: DIAGNOSTIC
                     Protocol: JDWP
             OSGI-InfraDC-ENGINE:

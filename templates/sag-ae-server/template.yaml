@@ -1,36 +1,50 @@
-alias: o4i
+alias: sag-ae-server
 description: The minimal required template can be used to install Analytic Engine
 
 environments:
 
   default:                                  # defaults
     
-    # optimize analysis engine
-    optimize.configure:  [optimize-tuneup]
-    optimize.fixes:      ALL
-    optimize.host:  ${spm.host}
-    optimize.jms.protocol:          nsp
-    optimize.jms.host:              ${node.host} 
-    optimize.jms.port:              9000
-    optimize.config.agent.protocol: http
-    optimize.config.agent.host:     ${node.host} 
-    optimize.config.agent.port:     15000
-    optimize.mws.protocol:          http
-    optimize.mws.host:              ${node.host} 
-    optimize.mws.port:              8585
-    optimize.wsdc.protocol:         http
-    optimize.wsdc.host:             ${node.host} 
-    optimize.wsdc.port:             12503
-    optimize.db.type:               ${}    //it requires SQLSERVER, ORACLE, DB2
-    optimize.jdbc.pool.alias:       ${db.name}
+    
+    optimize.fixes:     ALL                 #Specifies the list of fixes to be installed
+    optimize.host:  ${}                     #Specifies target host where Analytic Engine will be installed
+    optimize.jms.protocol:          nsp     #Specifies the protocol of target JMS with which Analytic Engine sould be configured
+    optimize.jms.host:              ${}     #Specifies the host name of target JMS with which Analytic Engine sould be configured
+    optimize.jms.port:              9000    #Specifies the port number of target JMS with which Analytic Engine sould be configured
+    optimize.config.agent.protocol: http    #Specifies the protocol of Analytic Engine configuration agent
+    optimize.config.agent.host:     ${}     #Specifies the host of Analytic Engine configuration agent
+    optimize.config.agent.port:     15000   #Specifies the port of Analytic Engine configuration agent
+    optimize.mws.protocol:          http    #Specifies the protocol of MWS with which Analytic Engine sould be configured
+    optimize.mws.host:              ${}     #Specifies the host name of MWS with which Analytic Engine sould be configured
+    optimize.mws.port:              8585    #Specifies the host name of MWS with which Analytic Engine sould be configured
+    optimize.wsdc.protocol:         http    #Specifies the protocol of web service data collector with which Analytic Engine sould be configured
+    optimize.wsdc.host:             ${}     #Specifies the host of web service data collector with which Analytic Engine sould be configured
+    optimize.wsdc.port:             12503   #Specifies the port number of web service data collector with which Analytic Engine sould be configured
+    optimize.db.type:               ${}                     #it requires SQLSERVER, ORACLE, DB2
+    optimize.db.name:               ${}                     # Database name
+    optimize.jdbc.pool.alias:       ${optimize.db.name}
+    
+    db.host:             ${}                                # REQUIRED: Database server hostname
+    db.port:             ${}                                # REQUIRED: Database server port
+    
+    db.username:         ${}                                # Database username
+    db.password:         ${}                                # Database password
+    db.url:              "jdbc:wm:${db.type}://${db.host}:${db.port};databaseName=${optimize.db.name}"   //Database URL
+    jdbc.pool.minSize: 8                    #Minimum JDBC pool size       
+    jdbc.pool.maxSize: 36                   #Maximum JDBC pool size 
+    jdbc.pool.maxIdleTime: 20               #Maximum Idle time 
+    jdbc.pool.rampUpDelay: 500
+    jdbc.pool.retries: 8
+    jdbc.pool.retriesBackoff: 500
+    jdbc.pool.maxStatementsInCache: 0
 
 layers:
   runtime:
-    description: infradc install
-    productRepo: ${repo.product}            # default repository to install products from
-    fixRepo:     ${repo.fix}                # default repository to install fixes from
+    description: AE install
+    productRepo: ${repo.product}                            # default repository to install products from
+    fixRepo:     ${repo.fix}                                # default repository to install fixes from
     templates:   
-      - optimize-tuneup                      # template to apply
+      - optimize-tuneup                                     # template to apply
 
 templates:
   
@@ -73,13 +87,13 @@ templates:
                   Pool:
                     "@alias": ${optimize.jdbc.pool.alias}
                     Name: ${optimize.jdbc.pool.alias}
-                    MinSize: 8
-                    MaxSize: 36
-                    MaxIdleTime: 20
-                    RampUpDelay: 500
-                    Retries: 8
-                    RetriesBackoff: 500
-                    MaxStatementsInCache: 0
+                    MinSize: ${jdbc.pool.minSize}
+                    MaxSize: ${jdbc.pool.maxSize}
+                    MaxIdleTime: ${jdbc.pool.maxIdleTime}
+                    RampUpDelay: ${jdbc.pool.rampUpDelay}
+                    Retries: ${jdbc.pool.retries}
+                    RetriesBackoff: ${jdbc.pool.retriesBackoff}
+                    MaxStatementsInCache: ${jdbc.pool.maxStatementsInCache}
                     DatabaseServer:
                       "@type" : ${optimize.db.type}
                       Host: ${db.host}
