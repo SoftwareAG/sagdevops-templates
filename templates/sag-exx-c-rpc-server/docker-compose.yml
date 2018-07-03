@@ -10,8 +10,8 @@ services:
         - __exx_server_fixes=$FIXES
         - TAG
     ports:
-      - 7722                            # container specific ports
-      - 7723
+      - 1971                            # container specific ports
+      - 3096
     hostname: c-rpc-server
     environment:
       - CC_AUTO_REGISTER=1
