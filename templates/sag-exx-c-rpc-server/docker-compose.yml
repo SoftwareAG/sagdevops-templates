@@ -1,0 +1,19 @@
+version: "3.2"
+
+services:
+  exxbroker:
+    image: daerepository03.eur.ad.sag:4443/softwareag/entirex-c-rpc-server:$TAG # target image
+    build:
+      context: .
+      dockerfile: Dockerfile            # instructions to build image
+      args:
+        - __exx_server_fixes=$FIXES
+        - TAG
+    ports:
+      - 7722                            # container specific ports
+      - 7723
+    host: c-rpc-server
+    environment:
+      - CC_AUTO_REGISTER=1
+    volumes:
+      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
