@@ -12,7 +12,7 @@ services:
     ports:
       - 7722                            # container specific ports
       - 7723
-    host: broker
+    hostname: broker
     environment:
       - CC_AUTO_REGISTER=1
     volumes:
