@@ -1,25 +1,21 @@
-# Command Central docker builder image
-# Use $TAG to control release
-ARG TAG=latest
-# Use $BUILDER_IMAGE to control repo, e.g. private/public
+ARG TAG=10.3
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
+ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
 
-# Target image base image
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
+FROM $BUILDER_IMAGE
+
+ARG __exx_broker_instance_name=ETB002
+
+RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE
 
-#RUN groupadd sag && useradd sag -g sag -d /opt/softwareag -s /bin/bash -M
-#USER sag
+EXPOSE 7722 7723 8092
 
-RUN $CC_HOME/provision.sh
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
-ENV EXXDIR=$SAG_HOME/EntireX
-
-# expose any ports from runtimes defined in the template.yaml
-EXPOSE 1971
-
-# entrypoint scripts
+# entrypoint script
 ADD entrypoint.sh $SAG_HOME/
 
+WORKDIR $SAG_HOME
 ENTRYPOINT $SAG_HOME/entrypoint.sh
