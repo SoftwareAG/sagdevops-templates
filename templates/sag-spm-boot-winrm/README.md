@@ -74,12 +74,12 @@ See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for details about th
 1. In Command Central, open the Stacks interface.
 2. Add a new stack.
 3. In the new stack, Add layer > New nodes.
-  a. Select the INFRA-REMOTE-WINDOWS layer definition.
-  b. Select the Microsoft Windows x86-64 operating system and a corresponding bootstrap installer.
-  c. Specify the required parameters, such as:
+  * Select the INFRA-REMOTE-WINDOWS layer definition.
+  * Select the Microsoft Windows x86-64 operating system and a corresponding bootstrap installer.
+  * Specify the required parameters, such as:
     * os.username - the username of the remote connection account
     * os.password - the password of the remote connection account
     * nodes - one or more host names
     * install.dir - the remote installation directory
-  d. Finish the wizard
+  * Finish the wizard
 4. Wait until the provisioning job completes. You can monitor the job from the Jobs view.
