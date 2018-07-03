@@ -42,8 +42,8 @@ pipeline {
                 stage('10.3') {
                     environment {
                         TAG = '10.3'
-                        REPO_PRODUCT = 'SuiteInt'
-                        REPO_FIX = 'QARepo'
+                        REPO_PRODUCT = 'SuiteTest'
+                        REPO_FIX = 'GA_Fix_Repo'
                         FIXES = '[]'
                         CC_NODE_IMAGE = "daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:$CC_TAG"
                     }
