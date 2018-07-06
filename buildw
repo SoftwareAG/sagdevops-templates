@@ -1,4 +1,4 @@
 #!/bin/sh
 
 DIRNAME=`dirname $0`
-docker-compose -f $DIRNAME/tempalates/sag-abe/docker-compose.yml run --rm builder $*
+docker-compose -f $DIRNAME/templates/sag-abe/docker-compose.yml run --rm builder $*
