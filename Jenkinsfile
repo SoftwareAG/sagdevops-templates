@@ -19,71 +19,47 @@ def testTemplate(t, testProvision, buildImage, pushImage) {
 }
 
 pipeline {
-    agent {
-        label 'docker'
-    }
+    agent none
     parameters {
         choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
     }
-    // environment {
-    //     TAG = params.release
-    // }
     stages {
-        stage('Init') {
-            environment {
-                TAG = "${params.release}"
-            }
-            steps {
-                echo "Testing for ${params.release} release"
-                sh 'docker-compose pull cc'
-            }
-        }
         stage("Build") {
             environment {
                 TAG = "${params.release}"
             }
             parallel {
                 stage('Lane 1') {
+                    agent { label 'docker' }
                     steps {
+                        sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
                         testTemplate('sag-abe', false, true, true)
                         testTemplate('sag-db-oracle', true, false, false)
+                        //testTemplate('sag-mws-server', true, false, false)
                     }
                 }
                 stage('Lane 2') {
+                    agent { label 'docker' }
                     steps {
+                        sh 'docker-compose pull cc'
+                        testTemplate('sag-um-server', false, true, true)
+                        testTemplate('sag-tc-server', false, true, true)
                         testTemplate('sag-msc-server', false, true, true)
                         testTemplate('sag-is-server', false, true, true)
                     }
                 }
                 stage('Lane 3') {
+                    agent { label 'docker' }
                     steps {
-                        testTemplate('sag-um-server', false, true, true)
-                        testTemplate('sag-tc-server', false, true, true)
+                        sh 'docker-compose pull cc'
+                        testTemplate('sag-exx-broker', true, false, false)
+                        testTemplate('sag-designer-services', true, false, false)
+                        testTemplate('sag-apama-correlator', true, false, false)
                     }
                 }
             }
         }
-        
-        // stage("Level 2") {
-        //     parallel {
-        //         stage('EntireX') {
-        //             steps {
-        //                 testTemplate('sag-exx-broker', true, false, false)
-        //             }
-        //         }
-        //         stage('Designer') {
-        //             steps {
-        //                 testTemplate('sag-designer-services', true, false, false)
-        //             }
-        //         }
-        //         stage('Apama') {
-        //             steps {
-        //                 testTemplate('sag-apama-correlator', true, false, false)
-        //             }
-        //         }                                                
-        //     }
-        // }
     }
     post {
         always {
