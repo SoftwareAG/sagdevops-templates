@@ -13,7 +13,7 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - "./datasource.yaml:/etc/grafana/provisioning/datasources/prom_datasource.yaml"
+      - "./datasource.yml:/etc/grafana/provisioning/datasources/prom_datasource.yaml"
       - "./dash.json:/etc/grafana/provisioning/dashboards/dash.json"
 
 networks:

@@ -24,7 +24,7 @@ Use this template to provision containers stack with the following runtimes:
 ### Launching containers with docker-compose
 
 ```bash
-docker-compose -f templates/sag-ic-small-stack/docker-compose.yaml up -d
+docker-compose -f templates/sag-ic-small-stack/docker-compose.yml up -d
 ```
 
 ## TODO
