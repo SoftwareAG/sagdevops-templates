@@ -55,8 +55,8 @@ pipeline {
                         testTemplate('sag-abe', false, true, true)
                         testTemplate('sag-designer-services', true, false, false)
                         testTemplate('sag-apama-correlator', true, false, false)
-                        testTemplate('sag-exx-broker', false, true, false)
-                        testTemplate('sag-exx-c-rpc-server', false, true, false)
+                        // testTemplate('sag-exx-broker', false, true, false)
+                        // testTemplate('sag-exx-c-rpc-server', false, true, false)
                     }
                 }
             }
