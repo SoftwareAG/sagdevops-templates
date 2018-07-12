@@ -18,13 +18,13 @@ requirement to have SSH access.
 * DotNet 4.5 or higher (used to unzip)
 * The remote connection user account must have Administrator privileges
 * WinRM service must be running
-* The memory used by PowerShell should be at the 2GB limit or more
+* The memory used by PowerShell should be at the 4GB limit or more ( It should work with 2GB, but sometimes it fails )
 
 Run the following commands from the PowerShell window as Administrator to ensure that the WinRM service is running and the PowerShell memory is set properly:
 
 ```powershell
 PS> Enable-PSRemoting -SkipNetworkProfileCheck
-PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
+PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 4096
 ```
 
 ### System requirements for the Command Central machine
@@ -36,6 +36,11 @@ PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
 
 ```bash
 sagcc list provisioning bootstrap installers platform=w64
+```
+
+* ***Note:*** If both CCE host and target hosts are not joined in a single Windows domain a trust should be established by rinning command as administrator on CCE host:
+```bash
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value '<targetHost1>,<targetHost2>..'
 ```
 
 ## Running as a standalone Composite Template
