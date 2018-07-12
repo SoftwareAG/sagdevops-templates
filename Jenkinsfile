@@ -37,6 +37,11 @@ pipeline {
                         testTemplate('sag-db-oracle', true, false, false)
                         // testTemplate('sag-mws-server', true, false, false)
                     }
+                    post {
+                        always {
+                            sh 'docker-compose -p sagdevops-templates down'
+                        }
+                    }    
                 }
                 stage('Lane 2') {
                     agent { label 'docker' }
@@ -62,9 +67,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            sh 'docker-compose down'
-        }
-    }    
 }
