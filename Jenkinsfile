@@ -34,7 +34,6 @@ pipeline {
                     steps {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
-                        testTemplate('sag-abe', false, true, true)
                         testTemplate('sag-db-oracle', true, false, false)
                         //testTemplate('sag-mws-server', true, false, false)
                     }
@@ -53,9 +52,11 @@ pipeline {
                     agent { label 'docker' }
                     steps {
                         sh 'docker-compose pull cc'
-                        testTemplate('sag-exx-broker', true, false, false)
+                        testTemplate('sag-abe', false, true, true)
                         testTemplate('sag-designer-services', true, false, false)
                         testTemplate('sag-apama-correlator', true, false, false)
+                        testTemplate('sag-exx-broker', false, true, false)
+                        testTemplate('sag-exx-c-rpc-server', false, true, false)
                     }
                 }
             }
