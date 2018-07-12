@@ -3,7 +3,7 @@ description: My webMethods Server single instance or a cluster
 
 environments:
   default:
-    db.host:             ${}                # REQUIRED: Database server hostname
+    db.host:             oracle             # REQUIRED: Database server hostname
     db.type:             oracle             # oracle,sqlserver
     db.url:              "jdbc:wm:oracle://${db.host}:1521;SID=XE"
     db.username:         webm               # Database username
@@ -16,10 +16,10 @@ environments:
     mws.memory.init:     256
     mws.memory.max:      512
     mws.lb.protocol:     http
-    mws.lb.host:         ${}
+    mws.lb.host:         ${mws.host}
     mws.lb.http.port:    ${mws.http.port}
     mws.lb.https.port:   ${mws.https.port}
-    mws.fixes:           ALL
+    mws.fixes:           []
 
 layers:
   runtime:

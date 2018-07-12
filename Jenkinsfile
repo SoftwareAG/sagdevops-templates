@@ -35,7 +35,7 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
                         testTemplate('sag-db-oracle', true, false, false)
-                        //testTemplate('sag-mws-server', true, false, false)
+                        testTemplate('sag-mws-server', true, false, false)
                     }
                 }
                 stage('Lane 2') {
