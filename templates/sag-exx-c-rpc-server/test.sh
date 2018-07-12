@@ -19,8 +19,8 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     echo "Start the instance ..."
     sagcc exec lifecycle components EntireXBroker-${__exx_broker_instance_name} start -e DONE --sync-job
 
-    echo "Verifying status ..."
-    sagcc get monitoring runtimestatus EntireXBroker-${__exx_broker_instance_name} -e ONLINE
+    # echo "Verifying status ..."
+    # sagcc get monitoring runtimestatus EntireXBroker-${__exx_broker_instance_name} -e ONLINE
 
     # echo "Verifying configs ..."
     # sagcc get configuration data EntireXBroker-${__exx_broker_instance_name} BROKER-PORTS -f text -e 7722
