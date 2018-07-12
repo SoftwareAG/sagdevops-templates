@@ -1,20 +1,18 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
 def testTemplate(t, testProvision, buildImage, pushImage) {
-    dir ("templates/$t") {
-        try {
-            if (testProvision) {
-                sh "docker-compose run --name $t --rm provision"
-            }
-            if (buildImage) {
-                sh "docker-compose build"
-                if (pushImage) {
-                    sh "docker-compose push"
-                }
-            }
-        } finally {
-            sh "docker-compose down"
+    try {
+        if (testProvision) {
+            sh "docker-compose -f templates/$t/docker-componse.yml run --name $t --rm provision"
         }
+        if (buildImage) {
+            sh "docker-compose -f templates/$t/docker-componse.yml build"
+            if (pushImage) {
+                sh "docker-compose -f templates/$t/docker-componse.yml push"
+            }
+        }
+    } finally {
+        sh "docker-compose -f templates/$t/docker-componse.yml down"
     }
 }
 
@@ -37,11 +35,6 @@ pipeline {
                         testTemplate('sag-db-oracle', true, false, false)
                         // testTemplate('sag-mws-server', true, false, false)
                     }
-                    post {
-                        always {
-                            sh 'docker-compose -p sagdevops-templates down'
-                        }
-                    }    
                 }
                 stage('Lane 2') {
                     agent { label 'docker' }
@@ -65,6 +58,11 @@ pipeline {
                     }
                 }
             }
+            post {
+                always {
+                    sh 'docker-compose -p sagdevops-templates down'
+                }
+            }    
         }
     }
 }
