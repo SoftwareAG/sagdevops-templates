@@ -16,7 +16,7 @@ environments:
     mws.memory.init:     256
     mws.memory.max:      512
     mws.lb.protocol:     http
-    mws.lb.host:         ${mws.host}
+    mws.lb.host:         localhost
     mws.lb.http.port:    ${mws.http.port}
     mws.lb.https.port:   ${mws.https.port}
     mws.fixes:           []
