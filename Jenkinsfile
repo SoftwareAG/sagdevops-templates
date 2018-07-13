@@ -3,16 +3,16 @@
 def testTemplate(t, testProvision, buildImage, pushImage) {
     try {
         if (testProvision) {
-            sh "docker-compose -f templates/$t/docker-componse.yml run --name $t --rm provision"
+            sh "docker-compose -f templates/$t/docker-compose.yml run --name $t --rm provision"
         }
         if (buildImage) {
-            sh "docker-compose -f templates/$t/docker-componse.yml build"
+            sh "docker-compose -f templates/$t/docker-compose.yml build"
             if (pushImage) {
-                sh "docker-compose -f templates/$t/docker-componse.yml push"
+                sh "docker-compose -f templates/$t/docker-compose.yml push"
             }
         }
     } finally {
-        sh "docker-compose -f templates/$t/docker-componse.yml down"
+        sh "docker-compose -f templates/$t/docker-compose.yml down"
     }
 }
 
