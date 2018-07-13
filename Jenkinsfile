@@ -35,6 +35,11 @@ pipeline {
                         testTemplate('sag-db-oracle', true, false, false)
                         // testTemplate('sag-mws-server', true, false, false)
                     }
+                    post {
+                        always {
+                            sh 'docker-compose -p sagdevops-templates down'
+                        }
+                    }    
                 }
                 stage('Lane 2') {
                     agent { label 'docker' }
@@ -45,6 +50,11 @@ pipeline {
                         testTemplate('sag-msc-server', false, true, true)
                         testTemplate('sag-is-server', false, true, true)
                     }
+                    post {
+                        always {
+                            sh 'docker-compose -p sagdevops-templates down'
+                        }
+                    }    
                 }
                 stage('Lane 3') {
                     agent { label 'docker' }
@@ -56,13 +66,13 @@ pipeline {
                         // testTemplate('sag-exx-broker', false, true, false)
                         // testTemplate('sag-exx-c-rpc-server', false, true, false)
                     }
+                    post {
+                        always {
+                            sh 'docker-compose -p sagdevops-templates down'
+                        }
+                    }    
                 }
             }
-            post {
-                always {
-                    sh 'docker-compose -p sagdevops-templates down'
-                }
-            }    
         }
     }
 }
