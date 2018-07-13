@@ -1,16 +1,24 @@
 version: "3.2"
 
 services:
+  # # provisioner
+  # provision:
+  #   image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
+  #   entrypoint: bash -c '/opt/sagtools/provision.sh' 
+  #   # && ./test.sh'
+  #   volumes: 
+  #     - ./:/src/ # required
+  #   environment:
+  #     - __mws_fixes=$FIXES               # [] or ALL, from the env
+  
   # provisioner
   provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-    entrypoint: bash -c '/opt/sagtools/provision.sh' 
-    # && ./test.sh'
-    volumes: 
-      - ./:/src/ # required
-    environment:
-      - __mws_fixes=$FIXES               # [] or ALL, from the env
-  
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
+    command: >
+      sagcc exec templates composite apply sag-mws-server 
+        repo.product=products repo.fix=fixes
+        nodes=node --wait-for-cc --wait 600 --sync-job
+
 networks:
   default:
     external:
