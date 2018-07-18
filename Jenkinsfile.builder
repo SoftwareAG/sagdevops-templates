@@ -21,7 +21,7 @@ pipeline {
         label 'docker'
     }
     parameters {
-        choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
+        //choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
         string(defaultValue: '10.3.0.0.38', description: 'commandcentral-server image TAG to use', name: 'tag')
     }    
     environment {
