@@ -1,0 +1,59 @@
+alias: sag-db-sqlserver
+description: SQLServer database and component schemas
+
+environments:
+  default:                 
+    release:             ${}                # REQUIRED: target release, e.g. 10.2
+
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.type:             sqlserver          # This is SQLServer database
+    db.port:             1433               # Default port
+    db.admin.username:   sa                 # Admin username for db and user creation
+    db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
+
+    db.url:              "jdbc:wm:sqlserver://${db.host}:${db.port};databaseName=${db.name}"
+    db.name:             webm               # webM database name
+    db.username:         ${db.name}         # webM database username
+    db.password:         ${db.name}         # webM database password
+    db.products:         
+      - IS
+      - BPM
+      - MWS 
+    dbc.fixes:           []                 # Database component configurator fixes to install
+
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   
+      - dbc
+    databases:
+      storage:
+        components:  
+          - STR
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.admin.username: ${db.admin.username}
+        db.admin.password: ${db.admin.password}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+      schemas:
+        products:    ${db.products}
+        version:     "${release}.0.0"
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+    
+templates:
+  dbc:
+    products:
+      DatabaseComponentConfigurator:
+    fixes: ${dbc.fixes}
+
+provision:
+  default:
+    db: ${nodes}
