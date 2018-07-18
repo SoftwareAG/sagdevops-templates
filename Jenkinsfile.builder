@@ -20,9 +20,13 @@ pipeline {
     agent {
         label 'docker'
     }
+    parameters {
+        choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
+        string(defaultValue: '10.3.0.0.38', description: 'Test templates for this release', name: 'tag')
+    }    
     environment {
         // version of the Command Central docker images build/release
-        CC_TAG = '10.3.0.0.36'
+        CC_TAG = "${params.tag}"
 
         // images are from private registry
         CC_SERVER_IMAGE = 'daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server'
