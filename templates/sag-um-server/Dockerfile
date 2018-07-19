@@ -1,3 +1,6 @@
+# TODO: integrate changes from
+# http://svn.apama.com/um/branches/dev/BF-6295_Docker/prod/installation/docker/dockerfile/
+
 # Command Central docker builder image
 # Use $TAG to control release
 ARG TAG=10.3
