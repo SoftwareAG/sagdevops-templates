@@ -18,7 +18,7 @@ With this template you can create user, database, and webMethods database schema
 
 ## Running as a standalone Composite Template
 
-To install Database Component Configurator on a node with alias `local` and version 10.2 and create a webMethods database, named `webm` with credentials `webm`/`MaNaGe123` and all database schemas for version 10.2 on Microsoft SQL Server host connecting with `sa` /`MaNaGe123`: 
+To install Database Component Configurator on a node with alias `local` and version 10.2 and create a webMethods database, named `webm` with credentials `webm`/`webm` and all database schemas for version 10.2 on a Microsoft SQL Server host connecting with `sa` /`MaNaGe123`: 
 
 ```bash
 sagcc exec templates composite apply sag-db-sqlserver
