@@ -1,8 +1,8 @@
 # Platform Manager Configurations
 
-Use this template to configure Platform Managers
+Use this template to configure Platform Manager.
 
-## Requirements
+## Requirements and limitations
 
 ### Supported Software AG releases
 
@@ -19,11 +19,11 @@ All supported Windows and UNIX platforms.
   * Tanuki Java Service wrapper
   * Java System properties
   * Monitoring interval
-* Building Docker image with configured SPM
+* Building a Docker image with configured Platform Manager
 
 ## Running as a composite template
 
-Apply custom configurations to SPM's registered as node1 and node2:
+To apply custom configurations to two Platform Managers, registered as node1 and node2:
 
 ```bash
 sagcc exec templates composite apply sag-spm-config nodes=node1,node2 \
@@ -33,29 +33,29 @@ sagcc exec templates composite apply sag-spm-config nodes=node1,node2 \
 
 ## Building Docker image
 
-Build Docker image with SPM customized configuration
+You can build a Docker image with a custom Platform Manager configuration, where you can provide the configuration values by:
 
-Configuration values can be:
+* Hardcoding them in the template.
+* Defining them as parameters in an [env.properties](env.properties) file.
+* Defining them as build arguments in Dockerfile and docker-compose.yml file. See `__hello_world`.
+* Defineing them in the template as ENV variables resolved at container startup. See `%HELLO_NAME%`.
 
-* Hardcoded in the template
-* Defined as parameters in [env.properties](env.properties) file
-* Defined as build arguments in Dockerfile and docker-compose.yml file. See `__hello_world`
-* Defined in the template as ENV variables resolved at container startup. See `%HELLO_NAME%`
+To build a Docker image with custom Platform Manager configuration:
 
 ```bash
 docker-compose build
 ```
 
-Run the container
+To run the container:
 
 ```bash
 docker-compose up -d node
 ```
 
-Open SPM in the browser:
+To open Platform Manager in the browser:
 
 ```bash
 open http://`docker-compose port node 8092`/spm
 ```
 
-Login as Administrator/manage
+Login as `Administrator/manage`.
