@@ -1,0 +1,26 @@
+version: "3.2"
+
+services:
+  um:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
+    ports:
+      - 9000
+      - 8092
+    environment:
+      - CC_AUTO_REGISTER=0 # we don't need CC for pull model
+#    volumes: # TODO: map LAR configs
+
+  is:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:10.3
+    ports:
+      - 5555
+      - 8092
+    environment:
+      - CC_AUTO_REGISTER=0 # we don't need CC for pull model
+      - UM_URL=nsp://um:9000 # ACDL must have ${UM_URL} reference for um.url and is.um.url       
+#    volumes: # TODO: map LAR configs
+
+# networks:
+#   default:
+#     external:
+#       name: sagdevops-templates_default

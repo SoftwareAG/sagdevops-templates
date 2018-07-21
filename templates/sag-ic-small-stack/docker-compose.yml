@@ -8,7 +8,7 @@ services:
       - 5555
       - 8092
     environment:
-      - CC_AUTO_REGISTER=1              
+      - CC_AUTO_REGISTER=1            
   um01:
     image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
     ports:
