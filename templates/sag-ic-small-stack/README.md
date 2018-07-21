@@ -24,13 +24,11 @@ Use this template to provision containers stack with the following runtimes:
 ### Launching containers with docker-compose
 
 ```bash
-docker-compose -f templates/sag-ic-small-stack/docker-compose.yml up -d
+docker-compose -f templates/sag-ic-small-stack/docker-compose.yml run --rm init
 ```
 
 ## TODO
 
-* Wire IS to UM
 * Configuration of:
-  * Memory and CPU resorces
   * Asset repository URL
 * Asset deployment from landscape asset registry
