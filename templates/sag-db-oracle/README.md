@@ -1,6 +1,6 @@
 # Creating webMethods database on Oracle
 
-With this template you can create user, database, and webMethods database schemas on an Oracle database server.
+With this template you can create user, storage tablespaces and webMethods database components on an Oracle database server.
 
 ## Requirements
 
@@ -8,7 +8,7 @@ With this template you can create user, database, and webMethods database schema
 
 * Command Central 10.1 or higher
 * Database Component Configurator 9.10 or higher
-* webMethods database schemas, created in version 9.8 or higher
+* webMethods database components for products 9.8 or higher
 
 ### Supported platforms
 
@@ -18,13 +18,14 @@ With this template you can create user, database, and webMethods database schema
 
 ## Running as a standalone Composite Template
 
-To install Database Component Configurator on a node with alias `local` and version 10.2 and create a webMethods database, named `webm` with credentials `webm`/`webm` and all database schemas for version 10.2 on an Oracle database host connecting with `system` /`oracle`:
+To install Database Component Configurator 10.1 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database storage and database components for Integration Server 10.1 and My webMethods Server 10.1 with user `system` and password `oracle`:
 
 ```bash
 sagcc exec templates composite apply sag-db-oracle
-  release=10.2 repo.product=products-10.2 repo.fix=fixes-10.2 nodes=local \
-  db.host=oracle db.admin.username=system db.admin.password=oracle \
-  db.name=webm db.username=webm db.password=webm \
+  release=10.1 repo.product=products-10.1 repo.fix=fixes-10.1 nodes=local
+  db.host=oracle db.admin.username=system db.admin.password=oracle
+  db.name=webm db.username=webm db.password=webm
+  db.products=[IS,MWS]
   --sync-job --wait 360
 ```
 
@@ -36,7 +37,7 @@ To use this template for local development you must first launch the Command Cen
 docker-compose up -d cc
 ```
 
-To launch the [Oracle Database Express Edition 11g Release 2](https://hub.docker.com/r/wnameless/oracle-xe-11g/) container and apply the `sag-db-oracle` template to create a user, database, and IS, MWS, and BPM database schemas for the 10.3 release:
+To launch the [Oracle Database Express Edition 11g Release 2](https://hub.docker.com/r/wnameless/oracle-xe-11g/) container and apply the `sag-db-oracle` template to create a user, storage, and Integration Server, My webMethods Server and BPM database components for the 10.3 release:
 
 ```bash
 docker-compose -f templates/sag-db-oracle/docker-compose.yml run --rm provision
@@ -78,7 +79,7 @@ docker-compose -f templates/sag-db-oracle/docker-compose.yml run --rm test
 The expected values were successfully retrieved after 1 call within 5 seconds.
 ```
 
-You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server, Business Process Management) with the following database connection properties:
+You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server) with the following database connection properties:
 
 ```bash
 db.url=jdbc:wm:oracle://oracle:1521;SID=XE
