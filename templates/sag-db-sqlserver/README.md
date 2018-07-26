@@ -8,7 +8,7 @@ With this template you can create user, database, and webMethods database schema
 
 * Command Central 10.1 or higher
 * Database Component Configurator 9.10 or higher
-* webMethods database schemas 9.8 or higher
+* webMethods database schemas for products version 9.8 or higher
 
 ### Supported platforms
 
@@ -18,28 +18,26 @@ With this template you can create user, database, and webMethods database schema
 
 ## Running as a standalone Composite Template
 
-Run this command to install Database Component Configurator on `local` 10.2 managed node and create
-webMethods `webm` database, `webm` user and all schemas for 10.1 release on `sqlserver` SQL server connecting with `sa` user and `MaNaGe123` password:
+To install Database Component Configurator 10.1 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database components for Integration Server 10.1 and My webMethods Server 10.1 with user `sa` with password `MaNaGe123`:
 
 ```bash
 sagcc exec templates composite apply sag-db-sqlserver
-  release=10.2 repo.product=products-10.2 repo.fix=fixes-10.2 nodes=local \
-  db.host=sqlserver db.admin.username=sa db.admin.password=MaNaGe123 \
-  db.name=webm db.username=webm db.password=webm \
+  release=10.1 repo.product=products-10.1 repo.fix=fixes-10.1 nodes=local
+  db.host=sqlserver db.admin.username=sa db.admin.password=MaNaGe123
+  db.name=webm db.username=webm db.password=webm
+  db.products=[IS,MWS]
   --sync-job --wait 360
 ```
 
 ## Using for local development and testing on Docker platforms
 
-To use this template for local development launch Command Central container first.
-From the root of this project run:
+To use this template for local development you must first launch the Command Central container. From the root folder of this project run:
 
 ```bash
 docker-compose up -d cc
 ```
 
-Run this command to launch [Miscrosoft SQL Server on Linux for Docker Engine](https://hub.docker.com/r/microsoft/mssql-server-linux/)
-container and apply the template to create the user, database and IS, MWS, and BPM schemas for 10.3 release:
+To launch the [Miscrosoft SQL Server on Linux for Docker Engine](https://hub.docker.com/r/microsoft/mssql-server-linux/) container and apply the `sag-db-sqlserver` template to create a user, database, and Integration Server and My webMethods Server database components for the 10.3 release:
 
 ```bash
 docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm provision
@@ -47,7 +45,7 @@ docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm provisi
 17      Wed Jul 18 17:42:45 UTC 2018    DONE    DONE
 ```
 
-Run this command to verify that the schemas are created successfully:
+To verify that the database components are created successfully:
 
 ```bash
 docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm test
@@ -81,7 +79,7 @@ docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm test
 The expected values were successfully retrieved after 1 call within 4 seconds.
 ```
 
-You can now use this database for creating instances of webMethods products (IS, MWS, BPM) with the following database connection properties:
+You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server) with the following database connection properties:
 
 ```bash
 db.url=jdbc:wm:sqlserver://sqlserver:1433;databaseName=webm
