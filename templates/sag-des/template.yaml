@@ -9,7 +9,7 @@ environments:
     des.fixes:              []                                                     # Default list of DES fixes
     um.instance.port:       9000                                                   # UM primary port
     um.instance.hostname:   localhost                                              # UM server host, bind to node's host name
-    des.instance.id:        OSGI-IS_default										   # server instance name
+    des.instance.id:        OSGI-IS_default                                        # server instance name
 
 layers:
   runtime:
