@@ -37,13 +37,12 @@ scrape_configs:
     static_configs:
       - targets: 
         - cc:8090
-  - job_name: 'spm'
-    basic_auth:
-      username: Administrator
-      password: manage
-    scheme: http
-    metrics_path: /spm/monitoring/prometheus
-    static_configs:
-      - targets:
-        - cc:8092
-
+  # - job_name: 'spm'
+  #   basic_auth:
+  #     username: Administrator
+  #     password: manage
+  #   scheme: http
+  #   metrics_path: /spm/monitoring/prometheus
+  #   static_configs:
+  #     - targets:
+  #       - cc:8092
