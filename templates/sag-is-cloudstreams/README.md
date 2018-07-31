@@ -40,7 +40,7 @@ Provision CloudStreams on top of `default` Integration Server instance on the in
 with alias `dev1`:
 
 ```bash
-sagcc exec templates composite apply sag-cloudstreams nodes=dev1 \
+sagcc exec templates composite apply sag-is-cloudstreams nodes=dev1 \
   is.instance.name=default \
   repo.product=products-10.2 \
   repo.fix=fixes-10.2 \
