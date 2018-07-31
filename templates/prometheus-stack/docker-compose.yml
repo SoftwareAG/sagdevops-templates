@@ -6,6 +6,9 @@ services:
       - "9090:9090"
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - default
+
   grafana:
     image: grafana/grafana
     ports:
@@ -14,7 +17,10 @@ services:
       - prometheus
     volumes:
       - "./datasource.yml:/etc/grafana/provisioning/datasources/prom_datasource.yaml"
-      - "./dash.json:/etc/grafana/provisioning/dashboards/dash.json"
+      - "./dashboards.json:/etc/grafana/provisioning/dashboards/dashboards.json"
+      - "./prom-stack-dash.json:/var/lib/grafana/dashboards/prom-stack-dash.json"
+    networks:
+      - default
 
 networks:
   default:
