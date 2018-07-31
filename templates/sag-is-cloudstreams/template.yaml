@@ -1,0 +1,27 @@
+alias: sag-cloudstreams
+description: CloudStreams provisioning on top of IS/MSR instance
+
+environments:
+  default:
+    is.instance.name:   default             # IS instance name to provision on top
+    cst.fixes:          []                  # CloudStreams default fix list
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - cloudstreams
+
+templates:
+  cloudstreams:
+    fixes: ${cst.fixes}
+    products:
+      wst:
+      integrationServer:
+        ${is.instance.name}: 
+          package.list:    WmCloudStreams,WmCloudStreamsAnalytics
+           
+provision:
+  default:
+    runtime: ${nodes}

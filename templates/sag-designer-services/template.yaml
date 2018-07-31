@@ -20,7 +20,6 @@ templates:
       LDev:         # Service Development
       vcs:          # Local Version Control Integration
       GWMDes:       # Unit Test Framework
-      WmSAPPlugin:  # SAP Integration
 
 layers:
   designer:

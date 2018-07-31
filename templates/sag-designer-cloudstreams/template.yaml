@@ -1,0 +1,23 @@
+alias: sag-designer-cloudstreams
+description: Software AG Designer > Services
+
+environments:
+  default:
+    designer.fixes: []
+
+templates:
+  cloudstreams:
+    fixes: ${designer.fixes}
+    products:
+      LDev:                                 # Service Development 
+      wcd:                                  # CloudStreams plugin
+
+layers:
+  designer:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   cloudstreams
+
+provision:
+  default:
+    designer: ${nodes}

@@ -23,6 +23,8 @@ All supported Windows and UNIX platforms.
 
 ## Configuring Integration Server
 
+> IMPORTANT: this template must be applied on top of _existing_ Integration Server instance
+
 ### Configure Messaging connections
 
 ```bash
