@@ -19,7 +19,6 @@ services:
       - "./datasource.yml:/etc/grafana/provisioning/datasources/prom_datasource.yaml"
       - "./dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml"
       - "./prom-stack-dash.json:/var/lib/grafana/dashboards/prom-stack-dash.json"
-      - "./grafana.ini:/etc/grafana/grafana.ini"
     networks:
       - default
 
