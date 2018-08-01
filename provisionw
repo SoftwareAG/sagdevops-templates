@@ -15,6 +15,7 @@ docker-compose up -d cc
 echo ""
 echo "===================================================================="
 echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
+echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
 

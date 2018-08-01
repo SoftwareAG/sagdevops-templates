@@ -39,6 +39,7 @@ $CC_HOME/inventory.sh
 NODES=${NODES:-node}
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
+RELEASE_MAJOR=${RELEASE_MAJOR:-10}
 
 if [ "$#" != "0" ]; then  
     MAIN_TEMPLATE_ALIAS=${1}
@@ -145,7 +146,7 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
 fi
 
 
-ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 $PARAMS "
+ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE release.major=$RELEASE_MAJOR os.platform=lnxamd64 $PARAMS "
 
 echo "=================================="
 echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"

@@ -1,0 +1,40 @@
+// curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+
+def buildImage(t, pushImage) {
+    sh "docker-compose -f templates/$t/docker-compose.yml build"
+    if (pushImage) {
+        sh "docker-compose -f templates/$t/docker-compose.yml push"
+    }
+}
+
+pipeline {
+    agent none
+    parameters {
+        choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
+    }
+    stages {
+        stage("Build") {
+            environment {
+                TAG = "${params.release}"
+            }
+            parallel {
+                stage('Lane 1') {
+                    agent { label 'docker' }
+                    steps {
+                        sh 'docker-compose pull cc'
+                        testTemplate('sag-um-server',  true)
+                        testTemplate('sag-tc-server',  true)
+                        testTemplate('sag-msc-server', true)
+                        testTemplate('sag-is-server',  true)
+                        testTemplate('sag-abe',        true)
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose -p sagdevops-templates down'
+                        }
+                    }    
+                }
+            }
+        }
+    }
+}
