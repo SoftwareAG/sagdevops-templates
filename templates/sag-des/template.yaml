@@ -7,8 +7,8 @@ environments:
     os.platform:            ${}                                                    # OS platform code: w64|lnxamd64|osx
     des.license.key:        "*_DEV_${release.major}.*_*_${os.platform}"            # REQUIRED: DES license key
     des.fixes:              []                                                     # Default list of DES fixes
-    um.url:                 nsp://localhost:9000                                   # UM server or cluster url
     des.instance.id:        OSGI-IS_default                                        # server instance name
+    um.url:                 nsp://localhost:9000                                   # UM server or cluster URL
 
 layers:
   runtime:
@@ -37,10 +37,8 @@ templates:
                     Enabled: 'true'
                     Provider:
                       '@type': UM
-                      URL: {um.url}
+                      URL: ${um.url}
 
-           
 provision:
   default:
     runtime: ${nodes}
-
