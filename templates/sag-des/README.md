@@ -40,7 +40,3 @@ Provision Digital Event Services on default IS instance on Windows
   des.instance.id=OSGI-IS_default \
   um.url=nsp://localhost:9000
   ```
- 
-## Using the template to upgrade My Product|Server
- 
-Explain or show with examples how to use the template to upgrade your product.
