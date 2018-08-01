@@ -20,7 +20,6 @@ All supported Windows and UNIX platforms.
  
 * Provisioning of new 10.1 or higher environments
 * Installing latest fixes
-* In-place upgrades and new host migration to 10.2
 * Configuration of:
   * Event Types
   * Keystores
