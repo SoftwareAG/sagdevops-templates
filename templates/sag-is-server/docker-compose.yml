@@ -1,0 +1,25 @@
+version: "3.2"
+
+services:
+  is:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG # target image
+    build:
+      context: .
+      dockerfile: Dockerfile            # instructions to build image
+      args:
+        - TAG
+        - __is_fixes=$FIXES             # [] or ALL, from the env
+    ports:
+      - "5555"                          # container specific ports
+    hostname: is
+    environment:
+      - CC_AUTO_REGISTER=1              # No auto register as we don't have a server
+    # volumes:
+    #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+    #   - ./test.sh:/test.sh # for dev only to avoid image rebuild
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default
+  

@@ -1,0 +1,20 @@
+version: "3.2"
+
+services:
+  # target container
+  builder:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/asset-builder:$TAG # target image
+    build:
+      context: .
+      dockerfile: Dockerfile            # instructions to build image
+      args:
+        - TAG
+    volumes:
+      - ../../:/src/ # required
+    environment:
+      - BUILD_NUMBER
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

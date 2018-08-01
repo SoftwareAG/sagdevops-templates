@@ -3,10 +3,8 @@ description: Oracle database and component schemas
 
 environments:
   default:                 
-    release:             "10.1"
-    repo.product:        webMethods-${release}        
-    repo.fix:            Empower       
-    
+    release:             ${}                # REQUIRED: target release, e.g. 10.2
+
     db.host:             ${}                # REQUIRED: Database server hostname
     db.type:             oracle             # oracle
     db.port:             1521               # oracle default port
@@ -62,4 +60,4 @@ templates:
 
 provision:
   default:
-    db: local
+    db: ${nodes}

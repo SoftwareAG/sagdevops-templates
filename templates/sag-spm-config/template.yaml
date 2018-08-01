@@ -1,9 +1,9 @@
 alias: sag-spm-config
+description: SPM configurations
 
 environments:
   default:
-    nodes:        ${}    # target node alias(es)
-    hello.world:  ${}    # example parameter
+    hello.world: devops # example parameter
                     
 layers:
   runtime:

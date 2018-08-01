@@ -1,0 +1,26 @@
+ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3
+# Target image base image
+ARG BASE_IMAGE=centos:7
+
+FROM $BUILDER_IMAGE as builder
+
+FROM $BASE_IMAGE
+
+ENV SAG_HOME=/opt/softwareag
+ENV JAVA_HOME=$SAG_HOME/jvm/jvm/
+ENV JRE_HOME=$SAG_HOME/jvm/jvm/jre/
+ENV PATH=$PATH:$JAVA_HOME/bin
+
+# Create sagadmin a process owner and group
+RUN groupadd -g 1724 sagadmin && \
+    useradd -u 1724 -m -g 1724 -d $SAG_HOME -c "SoftwareAG Admin" sagadmin
+
+COPY --chown=1724:1724 --from=builder $SAG_HOME/jvm/ $SAG_HOME/jvm/
+
+USER 1724
+
+RUN env && java -version
+
+WORKDIR $SAG_HOME
+
+ENTRYPOINT java

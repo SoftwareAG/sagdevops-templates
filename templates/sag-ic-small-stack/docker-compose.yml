@@ -1,0 +1,40 @@
+version: "3.2"
+
+services:
+  is01:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:10.3
+    hostname: is01
+    ports:
+      - 5555
+      - 8092
+    environment:
+      - CC_AUTO_REGISTER=1            
+  um01:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
+    ports:
+      - 9000
+      - 8092
+    hostname: um01
+    environment:
+      - CC_AUTO_REGISTER=1
+
+  init:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
+    environment: 
+      - CC_SERVER
+      - CC_PASSWORD
+      - CC_CHECK_EVERY=10
+    entrypoint: >
+      bash -c '
+      sagcc list landscape nodes um01 -e ONLINE --wait 120 --wait-for-cc &&
+      sagcc list landscape nodes is01 -e ONLINE --wait 120 &&
+      sagcc exec templates composite apply sag-um-config nodes=um01 um.url=nsp://um01:9000    --sync-job && 
+      sagcc exec templates composite apply sag-is-config nodes=is01 is.um.url=nsp://um01:9000 --sync-job'
+    depends_on:
+      - um01
+      - is01
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

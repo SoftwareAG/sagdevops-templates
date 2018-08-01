@@ -12,6 +12,10 @@ ARG REPO_PRODUCT
 ARG REPO_FIX
 ARG REPO_HOST
 
+#ENV REPO_PRODUCT=$REPO_PRODUCT
+#ENV REPO_FIX=$REPO_FIX
+#ENV REPO_HOST=$REPO_HOST
+
 WORKDIR $CC_HOME
 
 # add all templates
@@ -24,20 +28,14 @@ ADD scripts/*.sh ./
 COPY --from=node /opt/softwareag/ /opt/softwareag/
 
 # configure repos and add licenses
-# RUN SAG_HOME=$CC_HOME NODES=local $CC_HOME/provision.sh && ./init.sh
-RUN $CC_HOME/provision.sh && ./init.sh
+RUN $CC_HOME/provision.sh
 
 # default parameters
 ONBUILD ARG RELEASE=$RELEASE
-ONBUILD ARG REPO_PRODUCT=products
-ONBUILD ARG REPO_FIX=fixes
-ONBUILD ARG REPO_ASSET=assets
-
+ONBUILD ARG REPO_PRODUCT=$REPO_PRODUCT
+ONBUILD ARG REPO_FIX=$REPO_FIX
+ONBUILD ARG REPO_HOST=
 ONBUILD ADD . .
-# do not run by default # ONBUILD RUN $CC_HOME/provision.sh
-
-ENV REPO_PRODUCT=products
-ENV REPO_FIX=fixes
-ENV REPO_ASSET=assets
+# do not run by default # ONBUILD RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 WORKDIR /src

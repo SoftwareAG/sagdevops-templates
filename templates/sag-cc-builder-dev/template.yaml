@@ -9,13 +9,8 @@ environments:
     repo.asset.url:    http://irepo.eur.ad.sag/scm/devops/assets-repo.git # asset repo URL
 
     repo.host:         aquarius-bg.eur.ad.sag  # closest AQU server mirror host
-    repo.product.host: aquarius-bg.eur.ad.sag  # closest AQU server mirror host
-    repo.fix.host:     aquarius-va.ame.ad.sag  # closest SUM server mirror host
-  
-    repo.product.username: latest
-    repo.product.password: latest
-    repo.fix.username:     sum
-    repo.fix.password:     sum
+    repo.product.host: ${repo.host}
+    repo.fix.host:     aquarius-va.ame.ad.sag
 
 repositories:
   product:                     
@@ -23,16 +18,14 @@ repositories:
       description: Products mirror
       host: ${repo.product.host}        
       name: ${repo.product}
-      username: "${repo.product.username}"
-      password: "${repo.product.password}"
+      credentials: REPO-PRODUCT
 
   fix:                        
     fixes:
       description: Fixes mirror
       host: ${repo.fix.host}
       name: ${repo.fix}
-      username: "${repo.fix.username}"
-      password: "${repo.fix.password}"
+      credentials: REPO-FIX
 
   asset:          
     assets:

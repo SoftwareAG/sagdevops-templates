@@ -11,8 +11,6 @@ services:
       args:
         - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG} # base image for the builder, e.g. server-10.3
         - NODE_IMAGE=${CC_NODE_IMAGE}             # base image for the node, e.g. node-10.2
-        - CC_INSTALLER                            # TODO: remove me?
-        - CC_INSTALLER_URL                        # TODO: remove me?
         - LICENSES_URL                            # licenses .zip, e.g. 10.x
         - REPO_HOST                               # default AQU host
         - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
@@ -28,6 +26,14 @@ services:
       - ./scripts/test.sh:/opt/sagtools/test.sh
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
       - ./scripts/provision.sh:/opt/sagtools/provision.sh
+    # deploy:
+    #   replicas: 1
+    #   restart_policy:
+    #     condition: on-failure
+      # resources:
+      #   limits:
+      #     cpus: "1"
+      #     memory: 250M
 
   sagcc: # sagcc wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
@@ -69,25 +75,12 @@ services:
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
       - ./scripts/provision.sh:/opt/sagtools/provision.sh
 
-  # # default builder
-  # node:
-  #   # image: annonymous
-  #   build:
-  #     context: .
-  #   environment:
-  #     - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
-
-
-  # test:
-  #   # FIXME: use client image with antcc
-  #   image: ${DOCKER_REGISTRY_URL}/${ORG}/commandcentral:${RELEASE}-internal
-  #   volumes: 
-  #     - ./clients/docker.properties:/root/.sag/cc.properties
-  #     - ./:/usr/share/sagcc/init/
-  #   environment: 
-  #     - CC_SERVER=cc
-  #     - CC_TEMPLATE
-  #     - SAG_AQUARIUS
-  #     - EMPOWER_USR
-  #     - EMPOWER_PSW
-  #   command: antcc templateApply templateTest -Dbuild.dir=/tmp
+  # visualizer:
+  #   image: dockersamples/visualizer:stable
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
