@@ -3,12 +3,13 @@ description: Digital Event Services as part of Integration Server core
 
 environments:
   default:
-    release.major:          ${}                                                    # release major version number
-    os.platform:            ${}                                                    # OS platform code: w64|lnxamd64|osx
-    des.license.key:        "*_DEV_${release.major}.*_*_${os.platform}"            # REQUIRED: DES license key
-    des.fixes:              []                                                     # Default list of DES fixes
-    des.instance.id:        OSGI-IS_default                                        # server instance name
-    um.url:                 nsp://localhost:9000                                   # UM server or cluster URL
+    release.major:          ${}                                           # REQUIRED: release major version number: 10
+    os.platform:            ${}                                           # REQUIRED: OS platform code: w64|lnxamd64|osx
+    des.license.key:        "*_DEV_${release.major}.*_*_${os.platform}"   # DES license key
+    des.fixes:              []                                            # Default list of DES fixes
+    des.instance.id:        OSGI-IS_default                               # server instance name
+    des.um.enabled:         true                                          # enable UM service: true|false
+    des.um.url:             nsp://localhost:9000                          # UM server or cluster URL
 
 layers:
   runtime:
@@ -33,11 +34,11 @@ templates:
                 UniversalMessaging:
                   Messaging:
                     '@alias': UniversalMessaging
-                    Description: The pre-installed UniversalMessaging service
-                    Enabled: 'true'
+                    Description: UniversalMessaging service
+                    Enabled: ${des.um.enabled}
                     Provider:
                       '@type': UM
-                      URL: ${um.url}
+                      URL: ${des.um.url}
 
 provision:
   default:
