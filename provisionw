@@ -19,7 +19,7 @@ echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
 
-docker-compose exec \
+docker-compose exec -T \
     cc bash -c \
     "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if /opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS; then if [ -f test.sh ]; then ./test.sh ; fi; fi"
 
