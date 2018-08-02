@@ -4,7 +4,7 @@ pipeline {
     agent none
     parameters {
         choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
-        choice(choices: '[]]\nALL', description: 'Fixes to install', name: 'fixes')
+        choice(choices: '[]\nALL', description: 'Fixes to install', name: 'fixes')
     }
     stages {
         stage("Test") {
