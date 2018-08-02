@@ -13,9 +13,12 @@ pipeline {
             parallel {
                 stage('Inclubator') {
                     agent { label 'docker' }
+                    environment {
+                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                    }
                     steps {
                         sh 'docker-compose pull cc'
-                        sh 'docker-compose -p sagdevops-templates up -d cc'
+                        sh 'docker-compose up -d cc'
 
                         // sh "./provisionw sag-msc-server"
                         // sh "./provisionw sag-abe"
@@ -27,26 +30,29 @@ pipeline {
                     }
                     post {
                         always {
-                            sh 'docker-compose -p sagdevops-templates down'
+                            sh 'docker-compose down'
                         }
                     }    
                 }
                 stage('Stable') {
                     agent { label 'docker' }
+                    environment {
+                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                    }
                     steps {
                         sh 'docker-compose pull cc'
-                        sh 'docker-compose -p sagdevops-templates up -d cc'
+                        sh 'docker-compose up -d cc'
 
                         sh "./provisionw sag-um-server"
                         // sh "./provisionw sag-tc-server"
-                        sh "./provisionw sag-is-server"
-                        sh "./provisionw sag-des"
+                        // sh "./provisionw sag-is-server"
+                        // sh "./provisionw sag-des"
                         // sh "./provisionw sag-abe"
                         // sh "./provisionw sag-designer-services"
                     }
                     post {
                         always {
-                            sh 'docker-compose -p sagdevops-templates down'
+                            sh 'docker-compose down'
                         }
                     }    
                 }
