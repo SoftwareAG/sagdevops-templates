@@ -37,11 +37,11 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
 
-                        // sh "./provisionw sag-um-server"
+                        sh "./provisionw sag-um-server"
                         // sh "./provisionw sag-tc-server"
-                        // sh "./provisionw sag-is-server"
-                        // sh "./provisionw sag-des"
-                        
+                        sh "./provisionw sag-is-server"
+                        sh "./provisionw sag-des"
+                        // sh "./provisionw sag-abe"
                         // sh "./provisionw sag-designer-services"
                     }
                     post {
