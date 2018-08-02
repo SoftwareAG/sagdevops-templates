@@ -30,7 +30,7 @@ pipeline {
 
                         sh "./provisionw sag-abe abe.fixes=${params.fixes}"
                         
-                        sh "./provisionw sag-designer-services designer.fixes ${params.fixes}"
+                        sh "./provisionw sag-designer-services designer.fixes=${params.fixes}"
                     }
                     post {
                         always {
@@ -47,12 +47,13 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -d cc'
 
-                        // sh "./provisionw sag-msc-server"
-                        // sh "./provisionw sag-designer-cloudstreams"
+                        sh "./provisionw sag-msc-server is.fixes=${params.fixes}"
+                        sh "./provisionw sag-cloudstreams cst.fixes=${params.fixes}"
+                        sh "./provisionw sag-designer-cloudstreams designer.fixes=${params.fixes}"
 
-                        // sh "./provisionw sag-apama-correlator"
-                        // sh "./provisionw sag-exx-broker"
-                        // sh "./provisionw sag-exx-c-rpc-server"
+                        sh "./provisionw sag-apama-correlator apama.fixes=${params.fixes}"
+                        sh "./provisionw sag-exx-broker exx.broker.fixes=${params.fixes}"
+                        sh "./provisionw sag-exx-c-rpc-server exx.server.fixes=${params.fixes}"
                     }
                     post {
                         always {
