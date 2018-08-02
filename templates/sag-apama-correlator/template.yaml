@@ -42,15 +42,17 @@ templates:
           instance.type: 'correlator'
           # Port that the correlator listens on
           instance.port: ${apama.port}
+          # help SPM to match existing instance and skip creation operation and perform noop update
+          runtimeComponentId: Apama-correlator-${instance.name}
 
           configuration:                                                      
-            Apama-correlator-${apama.instance.name}:
+            Apama-correlator-${instance.name}:
               APAMA-ARGS:
                 APAMA-ARGS: |
                   # Configuring the log verbosity of this correlator
                   logLevel: INFO
                   # Location of the main correlator log
-                  outputLog: correlator-${apama.instance.name}.log
+                  outputLog: correlator-${instance.name}.log
                   # Enable the Apama input log
                   inputLog: input.log
                   # Correlator persistence is enabled - this isn't something you need in most applications.

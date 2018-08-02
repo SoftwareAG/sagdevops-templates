@@ -33,9 +33,6 @@ All supported Windows and UNIX platforms.
 
 ## Running as a composite template
 
-Provisions an instance of an Apama correlator called 'default', with all the
-latest fixes.
-
 When importing the composite template to Command Central, you will have to
 attach the simple 'HelloWorld' application. Encapsulate the `template.yaml` and
 `HelloWorld.zip` into a single Zip file and import that using the `sagcc`
@@ -45,21 +42,24 @@ tooling:
 sagcc exec templates composite import -i template.zip
 ```
 
-It can then be applied as normal:
+Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
+for general information about applying templates.
+
+Provision `default` instance of an Apama 10.2 correlator with all the
+latest fixes, listening on default port 15904:
 
 ```bash
 sagcc exec templates composite apply sag-apama-correlator nodes=sag1 \
-      repo.product=webMethods-10.2 \
-      repo.fix=Empower \
-      os.platform=LNXAMD64
+  repo.product=webMethods-10.2 \
+  repo.fix=Empower \
+  os.platform=LNXAMD64 \
+  --sync-job --wait 360
 ```
-
-This example assumes that you want to provision Apama on an installation called
-'sag1', that the platform is Linux, and that your product and fix repositories
-have been given certain names. Modify as appropriate.
 
 ## Adding as a runtime layer to a stack
 
 Once imported, this template can also be used as a runtime layer for stacks,
-using either the CLI or the web UI. See the Command Central documentation for
-more information about stacks.
+using either the CLI or the web UI.
+
+Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
+for additional information about using Stacks UI.
