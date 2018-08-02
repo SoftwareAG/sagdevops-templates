@@ -25,8 +25,8 @@ pipeline {
                         sh "./provisionw sag-tc-server tc.fixes=${params.fixes}"
                         sh "./provisionw sag-is-server is.fixes=${params.fixes}"
                         sh "./provisionw sag-des       des.fixes=${params.fixes}"
-                        // sh "./provisionw sag-abe"
-                        // sh "./provisionw sag-designer-services"
+                        sh "./provisionw sag-abe"
+                        sh "./provisionw sag-designer-services"
                     }
                     post {
                         always {
