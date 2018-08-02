@@ -1,17 +1,5 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def testTemplate(t) {
-    try {
-        sh "docker-compose -f templates/$t/docker-compose.yml run --name $t --rm provision"
-    } finally {
-        sh "docker-compose -f templates/$t/docker-compose.yml down"
-    }
-}
-
-def provision(t, params) {
-    sh "./provisionw $t $params"
-}
-
 pipeline {
     agent none
     parameters {
@@ -29,13 +17,13 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
 
-                        provision('sag-msc-server')
-                        provision('sag-abe')
-                        provision('sag-designer-cloudstreams')
+                        // sh "./provisionw sag-msc-server"
+                        // sh "./provisionw sag-abe"
+                        // sh "./provisionw sag-designer-cloudstreams"
 
-                        provision('sag-apama-correlator')
-                        provision('sag-exx-broker')
-                        provision('sag-exx-c-rpc-server')
+                        // sh "./provisionw sag-apama-correlator"
+                        // sh "./provisionw sag-exx-broker"
+                        // sh "./provisionw sag-exx-c-rpc-server"
                     }
                     post {
                         always {
@@ -49,12 +37,12 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
 
-                        provision ('sag-um-server')
-                        provision ('sag-tc-server')
-                        provision ('sag-is-server')
-                        provision ('sag-des')
+                        // sh "./provisionw sag-um-server"
+                        // sh "./provisionw sag-tc-server"
+                        // sh "./provisionw sag-is-server"
+                        // sh "./provisionw sag-des"
                         
-                        provision ('sag-designer-services')
+                        // sh "./provisionw sag-designer-services"
                     }
                     post {
                         always {
