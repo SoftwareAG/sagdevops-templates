@@ -4,6 +4,7 @@ pipeline {
     agent none
     parameters {
         choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
+        choice(choices: '[]]\nALL', description: 'Fixes to install', name: 'fixes')
     }
     stages {
         stage("Test") {
@@ -11,7 +12,29 @@ pipeline {
                 TAG = "${params.release}"
             }
             parallel {
-                stage('Inclubator') {
+                stage('Stable') {
+                    agent { label 'docker' }
+                    environment {
+                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                    }
+                    steps {
+                        sh 'docker-compose pull cc'
+                        sh 'docker-compose up -d cc'
+
+                        sh "./provisionw sag-um-server um.fixes=${params.fixes}"
+                        sh "./provisionw sag-tc-server tc.fixes=${params.fixes}"
+                        sh "./provisionw sag-is-server is.fixes=${params.fixes}"
+                        sh "./provisionw sag-des       des.fixes=${params.fixes}"
+                        // sh "./provisionw sag-abe"
+                        // sh "./provisionw sag-designer-services"
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
+                stage('Incubator') {
                     agent { label 'docker' }
                     environment {
                         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
@@ -21,35 +44,11 @@ pipeline {
                         sh 'docker-compose up -d cc'
 
                         // sh "./provisionw sag-msc-server"
-                        // sh "./provisionw sag-abe"
                         // sh "./provisionw sag-designer-cloudstreams"
 
                         // sh "./provisionw sag-apama-correlator"
                         // sh "./provisionw sag-exx-broker"
                         // sh "./provisionw sag-exx-c-rpc-server"
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
-                stage('Stable') {
-                    agent { label 'docker' }
-                    environment {
-                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-                        COMPOSE_INTERACTIVE_NO_CLI=1
-                    }
-                    steps {
-                        sh 'docker-compose pull cc'
-                        sh 'docker-compose up -d cc'
-
-                        sh "./provisionw sag-um-server"
-                        // sh "./provisionw sag-tc-server"
-                        // sh "./provisionw sag-is-server"
-                        // sh "./provisionw sag-des"
-                        // sh "./provisionw sag-abe"
-                        // sh "./provisionw sag-designer-services"
                     }
                     post {
                         always {
