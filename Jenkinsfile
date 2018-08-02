@@ -22,11 +22,15 @@ pipeline {
                         sh 'docker-compose up -d cc'
 
                         sh "./provisionw sag-um-server um.fixes=${params.fixes}"
+                        sh "./provisionw sag-um-config um.url=nsp://node:9000"
                         sh "./provisionw sag-tc-server tc.fixes=${params.fixes}"
                         sh "./provisionw sag-is-server is.fixes=${params.fixes}"
-                        sh "./provisionw sag-des       des.fixes=${params.fixes}"
-                        sh "./provisionw sag-abe"
-                        sh "./provisionw sag-designer-services"
+                        sh "./provisionw sag-is-config is.um.url=nsp://node:9000"
+                        sh "./provisionw sag-des des.fixes=${params.fixes} des.um.url=nsp://node:9000"
+
+                        sh "./provisionw sag-abe abe.fixes=${params.fixes}"
+                        
+                        sh "./provisionw sag-designer-services designer.fixes ${params.fixes}"
                     }
                     post {
                         always {
