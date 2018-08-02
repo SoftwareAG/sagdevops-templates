@@ -18,7 +18,7 @@ pipeline {
         choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
     }
     stages {
-        stage("Build") {
+        stage("Test") {
             environment {
                 TAG = "${params.release}"
             }
@@ -29,13 +29,13 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
 
-                        provision 'sag-msc-server'
-                        provision 'sag-abe'
-                        provision 'sag-designer-cloudstreams'
+                        provision('sag-msc-server')
+                        provision('sag-abe')
+                        provision('sag-designer-cloudstreams')
 
-                        provision 'sag-apama-correlator'
-                        provision 'sag-exx-broker'
-                        provision 'sag-exx-c-rpc-server'
+                        provision('sag-apama-correlator')
+                        provision('sag-exx-broker')
+                        provision('sag-exx-c-rpc-server')
                     }
                     post {
                         always {
@@ -49,12 +49,12 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose -p sagdevops-templates up -d cc'
 
-                        provision 'sag-um-server'
-                        provision 'sag-tc-server'
-                        provision 'sag-is-server'
-                        provision 'sag-des'
+                        provision ('sag-um-server')
+                        provision ('sag-tc-server')
+                        provision ('sag-is-server')
+                        provision ('sag-des')
                         
-                        provision 'sag-designer-services'
+                        provision ('sag-designer-services')
                     }
                     post {
                         always {
