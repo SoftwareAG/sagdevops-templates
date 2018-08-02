@@ -26,6 +26,7 @@ services:
       - ./scripts/test.sh:/opt/sagtools/test.sh
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
       - ./scripts/provision.sh:/opt/sagtools/provision.sh
+      - ./environments/:/src/environments/
     # deploy:
     #   replicas: 1
     #   restart_policy:

@@ -16,16 +16,17 @@ pipeline {
                     agent { label 'docker' }
                     environment {
                         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                        CC_ENV = 'dev'
                     }
                     steps {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -d cc'
 
-                        sh "./provisionw sag-msc-server is.fixes=${params.fixes}"
-                        sh "./provisionw sag-cloudstreams cst.fixes=${params.fixes}"
-                        sh "./provisionw sag-apama-correlator apama.fixes=${params.fixes}"
-                        sh "./provisionw sag-exx-broker exx.broker.fixes=${params.fixes}"
-                        sh "./provisionw sag-exx-c-rpc-server exx.server.fixes=${params.fixes}"
+                        sh "./provisionw sag-apama-correlator"
+                        // sh "./provisionw sag-msc-server is.fixes=${params.fixes}"
+                        // sh "./provisionw sag-cloudstreams cst.fixes=${params.fixes}"
+                        // sh "./provisionw sag-exx-broker exx.broker.fixes=${params.fixes}"
+                        // sh "./provisionw sag-exx-c-rpc-server exx.server.fixes=${params.fixes}"
                     }
                     post {
                         always {
@@ -37,6 +38,7 @@ pipeline {
                     agent { label 'docker' }
                     environment {
                         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                        CC_ENV = 'dev'
                     }
                     steps {
                         sh 'docker-compose pull cc'
