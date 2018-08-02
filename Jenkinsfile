@@ -38,6 +38,7 @@ pipeline {
                     agent { label 'docker' }
                     environment {
                         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                        COMPOSE_INTERACTIVE_NO_CLI=1
                     }
                     steps {
                         sh 'docker-compose pull cc'
