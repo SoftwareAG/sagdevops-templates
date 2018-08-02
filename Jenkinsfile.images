@@ -22,11 +22,11 @@ pipeline {
                     agent { label 'docker' }
                     steps {
                         sh 'docker-compose pull cc'
-                        testTemplate('sag-um-server',  true)
-                        testTemplate('sag-tc-server',  true)
-                        testTemplate('sag-msc-server', true)
-                        testTemplate('sag-is-server',  true)
-                        testTemplate('sag-abe',        true)
+                        buildImage('sag-um-server',  true)
+                        buildImage('sag-tc-server',  true)
+                        buildImage('sag-msc-server', true)
+                        buildImage('sag-is-server',  true)
+                        buildImage('sag-abe',        true)
                     }
                     post {
                         always {
