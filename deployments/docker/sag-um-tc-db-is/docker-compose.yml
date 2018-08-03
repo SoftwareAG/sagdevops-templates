@@ -1,57 +1,63 @@
 version: "3.2"
 
 services:
-  # this is the oracle db itself
-  oracle02:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
-    ports: 
-      - 1521
-    environment: 
-      - ORACLE_ALLOW_REMOTE=true
+  sqlserver:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=MaNaGe123
+
   tc02:
     image: daerepository03.eur.ad.sag:4443/ccdevops/terracotta-server:10.3
     ports:
-      - 9010                            
-      - 9030                            
-      - 9040                            
-      - 8092                            
+      - 9010:9010                       
+      - 9030:9030                       
+      - 9040:9040                       
+      - 8092                       
     hostname: tc02
     environment:
       - CC_AUTO_REGISTER=1              
       - OFFHEAP_MAX_SIZE=513m
+
   um02:
     image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
     ports:
-      - 9000
+      - 9000:9000
       - 8092
     hostname: um02
     environment:
       - CC_AUTO_REGISTER=1
+
   is02:
     image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:10.3
     hostname: is02
     ports:
-      - 5555
+      - 5555:5555
       - 8092
     environment:
       - CC_AUTO_REGISTER=1     
     depends_on: 
-      - oracle02
+      - sqlserver
       - tc02
       - um02
-      - provision
-  # provisioner for webm db schemas using template.yaml
-  provision:
+      - initdb
+
+  initdb:
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
-    entrypoint: >
-      sagcc exec templates composite apply sag-db-oracle 
+    environment: 
+      - CC_SERVER=cc
+      - CC_PASSWORD
+      - CC_CHECK_EVERY=10
+    command: >
+      sagcc exec templates composite apply sag-db-sqlserver 
         repo.product=products repo.fix=fixes
-        release=10.3 nodes=node db.host=oracle02 
-        db.products=[IS] 
-        --wait-for-cc --wait 600 --sync-job
+        release=10.3 nodes=node db.host=sqlserver db.admin.password=MaNaGe123 db.products=[IS] --wait-for-cc --wait 600 --sync-job
     depends_on: 
-      - oracle02
+      - sqlserver
+
 networks:
   default:
     external:
-      name: sagdevops-templates_default
+      name: sag-cc_default

@@ -1,9 +1,0 @@
-version: "3.2"
-
-services:
-  java:
-    image: java:centos
-    build:
-      context: .
-      dockerfile: Dockerfile.centos            # instructions to build image
-  

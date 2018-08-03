@@ -1,5 +1,0 @@
-alias: sag-ic-small-stack
-description: Software AG Integration Cloud stack with IS and UM servers
-
-environments:
-  default:
