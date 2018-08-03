@@ -1,0 +1,24 @@
+version: "3.2"
+
+services:
+  base:
+    image: $ORG/base:$TAG
+    build:
+      context: base/
+
+  java:
+    image: $ORG/java:$TAG
+    build:
+      context: java/
+
+  node:
+    image: $ORG/node:$TAG
+    ports:
+      - 8092:8092
+    build:
+      context: sag
+      args:
+        - BUILDER_IMAGE=$CC_REGISTRY/$CC_ORG/commandcentral-builder:$CC_TAG
+        - BASE_IMAGE=$ORG/java:$TAG
+        - PORT=8092
+        - ENTRYPOINT=profiles/SPM/bin/console.sh
