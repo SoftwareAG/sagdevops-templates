@@ -13,7 +13,7 @@ pipeline {
                 COMPOSE_PROJECT_NAME = 'sagdevops-templates'
             }
             steps {
-                sh './buildw -Dbuild.number=10.3.0.${env.BUILD_NUMBER}'
+                sh "./buildw -Dbuild.number=10.3.0.${env.BUILD_NUMBER}"
                 stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
                     archive '**'
