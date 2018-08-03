@@ -78,7 +78,7 @@ pipeline {
             }
             steps {
                 dir ('build/repo') {
-                    git branch: 'master', credentialsId: 'sergeip', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
+                    git branch: 'master', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
                 }
                 unstash 'repo'
                 dir ('build/repo') {
