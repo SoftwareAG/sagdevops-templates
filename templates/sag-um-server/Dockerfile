@@ -57,4 +57,4 @@ ENTRYPOINT $SAG_HOME/entrypoint.sh
 # Current working directory for all commands. This is where the UM installation is copied to within the image.
 WORKDIR $UM_HOME
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f localhost:8092/spm/ || exit 1"
+# HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f http://localhost:8092/spm/ || exit 1"
