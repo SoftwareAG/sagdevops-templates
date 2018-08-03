@@ -7,6 +7,15 @@ pipeline {
         choice(choices: 'dev\nprod',        description: 'Environment', name: 'env')
     }
     stages {
+        stage('Build') {
+            agent { label 'docker' }
+            environment {
+                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+            }
+            steps {
+                sh './buildw'
+            }
+        }
         stage("Test") {
             environment {
                 TAG = "${params.release}"

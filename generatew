@@ -1,0 +1,42 @@
+#!/bin/sh -e
+if [ "$#" -lt 3 ]; then
+    echo ""
+    echo "Usage: $0 <componentId> <templateAlias> <prefix>"
+    echo ""
+    echo "Command Central generate template tool"
+    echo ""
+    echo "Parameters:"
+    echo "  componentId     Runtime Component Id to export. Speficy one of the following ids:"
+    ./sagccw list inventory components nodeAlias=node properties=runtimeComponent.id,runtimeComponent.displayName
+    echo "  templateAlias   Template alias to generate, default 'my-template'"
+    echo "  prefix          Parameters prefix, default 'my'"
+    echo ""
+    exit 1
+fi
+
+RUNTIME_COMPONENT_ID=${1:-OSGI-SPM}
+TEMPLATE_ALIAS=${2:-my-template}
+PREFIX=${3:-my}
+
+echo "Generating '$TEMPLATE_ALIAS' template ..."
+
+if ./sagccw exec templates composite generate nodeAlias=node parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml ; then
+    echo ""
+    echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFULL"
+    echo ""
+    echo "The template file: ./templates/$TEMPLATE_ALIAS/template.yaml"
+    echo ""
+    echo "Supported parameters and default values are:"
+    echo ""
+    ./sagccw list templates composite properties $TEMPLATE_ALIAS
+    echo ""
+    echo "Apply the template, optionally customizing parameter values:"
+    echo "./applyw $TEMPLATE_ALIAS nodes=node1,node2 [ <paramName>=<nonDefaultValue> ... ]"
+    echo ""
+else
+    echo ""
+    echo "ERROR: generation of '$TEMPLATE_ALIAS' FAILED !"
+    echo ""
+    ./sagccw get diagnostics logs local OSGI-CCE default.log tail lines=50
+    exit 100
+fi

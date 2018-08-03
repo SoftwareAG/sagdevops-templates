@@ -56,6 +56,16 @@ services:
     entrypoint: sagccant
     command: -p
 
+  antcc: # antcc wrapper
+    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-antcc
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER
+      - CC_PASSWORD
+    entrypoint: antcc
+    command: -p
+
   apply: # remote apply wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
     volumes: 
@@ -68,13 +78,18 @@ services:
     entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
 
-  provision: # default provisioner
-    image: ${CC_BUILDER_IMAGE}:${TAG}
-    entrypoint: /opt/sagtools/provision.sh
-    volumes: 
-      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+  build:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/asset-builder:$TAG
+    volumes:
+      - .:/src/ # required
+    environment:
+      - BUILD_NUMBER
+
+  # publish:
+  #   image: daerepository03.eur.ad.sag:4443/ccdevops/asset-builder:$TAG
+  #   volumes:
+  #     - .:/src/ # required
+  #   command: $SAG_HOME/common/ant/bin/ant -f $ABE_HOME/master_build/build.xml buildUploadAssets -DpathCWD=/src
 
   # visualizer:
   #   image: dockersamples/visualizer:stable
