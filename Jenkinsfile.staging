@@ -4,18 +4,17 @@ pipeline {
     agent { label 'docker-swarm' }
     stages {
         stage('Deploy') {
-            environment {
-                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-            }
             steps {
-                dir ('deployments/docker/sag-cc') {
-                    sh 'docker-compose up -d'
-                }
-                dir ('deployments/docker/prometheus') {
-                    sh 'docker-compose up -d'
-                }
-                dir ('deployments/docker/sag-um-is') {
-                    sh 'docker-compose up -d'
+                dir ('deployments/docker') {
+                    dir ('sag-cc') {
+                        sh 'docker-compose up -d'
+                    }
+                    dir ('prometheus') {
+                        sh 'docker-compose up -d'
+                    }
+                    dir ('sag-um-is') {
+                        sh 'docker-compose up -d'
+                    }
                 }
             }
         }
