@@ -33,3 +33,5 @@ them using Command Central templates (push model):
 ```bash
 docker-compose up -d
 ```
+
+Browse to http://localhost:5555 to open Integration Server Admin UI. Login (Administrator/manage)

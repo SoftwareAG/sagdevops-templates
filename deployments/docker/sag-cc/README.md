@@ -21,3 +21,5 @@ Launch Command Central 10.3 container
 ```bash
 docker-compose up -d
 ```
+
+Browse to https://localhost:8091 to open Command Central Web UI. Login (Administrator/manage)

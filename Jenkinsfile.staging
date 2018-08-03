@@ -1,0 +1,23 @@
+// curl -X POST -F "jenkinsfile=<Jenkinsfile.staging" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+
+pipeline {
+    agent { label 'docker' }
+    stages {
+        stage('Deploy') {
+            environment {
+                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+            }
+            steps {
+                dir ('deployments/docker/sag-cc') {
+                    sh 'docker-compose up -d'
+                }
+                dir ('deployments/docker/prometheus') {
+                    sh 'docker-compose up -d'
+                }
+                dir ('deployments/docker/sag-um-is') {
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+    }
+}
