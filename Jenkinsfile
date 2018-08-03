@@ -17,6 +17,7 @@ pipeline {
                 stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
                     archive '**'
+                    deleteDir()
                 }
             }
         }
