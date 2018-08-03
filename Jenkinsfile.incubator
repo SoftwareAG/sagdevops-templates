@@ -22,12 +22,8 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -d cc'
 
-                        sh "./provisionw sag-apama-correlator"
-                        // sh "./provisionw sag-designer-cloudstreams"
-                        // sh "./provisionw sag-msc-server"
-                        // sh "./provisionw sag-cloudstreams"
-                        // sh "./provisionw sag-exx-broker"
-                        // sh "./provisionw sag-exx-c-rpc-server"
+                        sh "./provisionw sag-msc-server"
+                        sh "./provisionw sag-cloudstreams"
                     }
                     post {
                         always {
@@ -44,7 +40,9 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -d cc'
 
-                        echo "Nothing here"
+                        sh "./provisionw sag-designer-cloudstreams"
+                        sh "./provisionw sag-exx-broker"
+                        // sh "./provisionw sag-exx-c-rpc-server"
 
                     }
                     post {
