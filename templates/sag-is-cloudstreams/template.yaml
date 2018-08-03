@@ -1,4 +1,4 @@
-alias: sag-cloudstreams
+alias: sag-is-cloudstreams
 description: CloudStreams provisioning on top of IS/MSR instance
 
 environments:

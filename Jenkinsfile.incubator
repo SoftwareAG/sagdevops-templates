@@ -23,7 +23,7 @@ pipeline {
                         sh 'docker-compose up -d cc'
 
                         sh "./provisionw sag-msc-server"
-                        sh "./provisionw sag-cloudstreams"
+                        sh "./provisionw sag-is-cloudstreams"
                     }
                     post {
                         always {
