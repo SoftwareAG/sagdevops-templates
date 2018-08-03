@@ -17,79 +17,80 @@ pipeline {
                 stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
                     archive '**'
-                    deleteDir()
+                    //deleteDir()
                 }
             }
         }
-        // stage("Test") {
-        //     environment {
-        //         TAG = "${params.release}"
-        //         CC_ENV = "${params.env}" // Use ./environments/$CC_ENV/env.properties
-        //     }
-        //     parallel {
-        //         stage('Runtimes') {
-        //             agent { label 'docker' }
-        //             environment {
-        //                 COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+        stage("Test") {
+            environment {
+                TAG = "${params.release}"
+                CC_ENV = "${params.env}" // Use ./environments/$CC_ENV/env.properties
+            }
+            parallel {
+                stage('Runtimes') {
+                    agent { label 'docker' }
+                    environment {
+                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
                         
-        //             }
-        //             steps {
-        //                 sh 'docker-compose pull cc'
-        //                 sh 'docker-compose up -V -d cc'
+                    }
+                    steps {
+                        sh 'docker-compose pull cc'
+                        sh 'docker-compose up -V -d cc'
 
-        //                 sh "./provisionw sag-um-server"
-        //                 sh "./provisionw sag-um-config"
-        //                 sh "./provisionw sag-tc-server"
-        //                 sh "./provisionw sag-is-server"
-        //                 sh "./provisionw sag-is-config"
-        //                 sh "./provisionw sag-des"
-        //                 sh "./provisionw sag-apama-correlator"
-        //             }
-        //             post {
-        //                 always {
-        //                     sh 'docker-compose down'
-        //                 }
-        //             }    
+                        sh "./provisionw sag-um-server"
+                        sh "./provisionw sag-um-config"
+                        sh "./provisionw sag-tc-server"
+                        sh "./provisionw sag-is-server"
+                        sh "./provisionw sag-is-config"
+                        sh "./provisionw sag-des"
+                        sh "./provisionw sag-apama-correlator"
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
+                stage('Designer and tools') {
+                    agent { label 'docker' }
+                    environment {
+                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+                        CC_ENV = 'dev'
+                    }
+                    steps {
+                        sh 'docker-compose pull cc'
+                        sh 'docker-compose up -V -d cc'
+
+                        sh "./provisionw sag-abe"                        
+                        sh "./provisionw sag-designer-services"
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
+            }
+        }
+
+        // stage('Publish') {
+        //     agent { label 'docker' }
+        //     environment {
+        //         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+        //     }
+        //     steps {
+        //         dir ('build/repo') {
+        //             git branch: 'master', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
         //         }
-        //         stage('Designer and tools') {
-        //             agent { label 'docker' }
-        //             environment {
-        //                 COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-        //                 CC_ENV = 'dev'
-        //             }
-        //             steps {
-        //                 sh 'docker-compose pull cc'
-        //                 sh 'docker-compose up -V -d cc'
-
-        //                 sh "./provisionw sag-abe"                        
-        //                 sh "./provisionw sag-designer-services"
-        //             }
-        //             post {
-        //                 always {
-        //                     sh 'docker-compose down'
-        //                 }
-        //             }    
+        //         unstash 'repo'
+        //         dir ('build/repo') {
+        //             sh """
+        //             git add --all
+        //             git commit -m 'Jenkins'
+        //             git push
+        //             """
         //         }
         //     }
         // }
-        stage('Publish') {
-            agent { label 'docker' }
-            environment {
-                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-            }
-            steps {
-                dir ('build/repo') {
-                    git branch: 'master', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
-                }
-                unstash 'repo'
-                dir ('build/repo') {
-                    sh """
-                    git add --all
-                    git commit -m 'Jenkins'
-                    git push
-                    """
-                }
-            }
-        }
     }
 }
