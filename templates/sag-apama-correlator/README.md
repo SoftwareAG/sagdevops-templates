@@ -46,7 +46,7 @@ Consult [Applying template using Command Central CLI](https://github.com/Softwar
 for general information about applying templates.
 
 Provision `default` instance of an Apama 10.2 correlator with all the
-latest fixes, listening on default port 15904:
+latest fixes, listening on port 15904:
 
 ```bash
 sagcc exec templates composite apply sag-apama-correlator nodes=sag1 \
