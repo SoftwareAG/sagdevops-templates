@@ -1,26 +1,30 @@
 #!/bin/sh -e
-if [ "$#" -lt 3 ]; then
+
+NODE_ALIAS=${1:-node}
+RUNTIME_COMPONENT_ID=${2:-OSGI-SPM}
+TEMPLATE_ALIAS=${3:-my-template}
+PREFIX=${4:-my}
+
+if [ "$#" -lt 2 ]; then
     echo ""
-    echo "Usage: $0 <componentId> <templateAlias> <prefix>"
+    echo "Usage: $0 <nodeAlias> <componentId> <templateAlias> <prefix>"
     echo ""
     echo "Command Central generate template tool"
     echo ""
     echo "Parameters:"
-    echo "  componentId     Runtime Component Id to export. Speficy one of the following ids:"
-    ./sagccw list inventory components nodeAlias=node properties=runtimeComponent.id,runtimeComponent.displayName
-    echo "  templateAlias   Template alias to generate, default 'my-template'"
-    echo "  prefix          Parameters prefix, default 'my'"
+    echo "  nodeAlias       Node lias to export from. Default ($NODE_ALIAS). One of these:"
+    ./sagccw list landscape nodes properties=alias includeHeaders=false
+    echo "  componentId     Runtime Component Id to export from $NODE_ALIAS. Default ($RUNTIME_COMPONENT_ID). One of these:"
+    ./sagccw list inventory components nodeAlias=$NODE_ALIAS properties=runtimeComponent.id,runtimeComponent.displayName
+    echo "  templateAlias   Template alias to generate, default ($TEMPLATE_ALIAS)"
+    echo "  prefix          Parameters prefix. Default ($PREFIX)"
     echo ""
     exit 1
 fi
 
-RUNTIME_COMPONENT_ID=${1:-OSGI-SPM}
-TEMPLATE_ALIAS=${2:-my-template}
-PREFIX=${3:-my}
-
 echo "Generating '$TEMPLATE_ALIAS' template ..."
 
-if ./sagccw exec templates composite generate nodeAlias=node parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml ; then
+if ./sagccw exec templates composite generate nodeAlias=$NODE_ALIAS parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml ; then
     echo ""
     echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFULL"
     echo ""
