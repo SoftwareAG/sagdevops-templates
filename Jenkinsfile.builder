@@ -35,6 +35,19 @@ pipeline {
     stages {
         stage('Build') {
             parallel {
+                stage('10.3 CC PI') {
+                    agent { label 'docker' } 
+                    environment {
+                        TAG = '10.3-sic' // Use cc-pi with the build #
+                        REPO_PRODUCT = 'SuiteIntCollector'
+                        REPO_FIX = 'QARepo'
+                        FIXES = '[]'
+                        CC_NODE_IMAGE = "daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3"
+                    }
+                    steps {
+                        buildAndTest()
+                    }
+                }
                 stage('10.3') {
                     agent { label 'docker' } 
                     environment {
