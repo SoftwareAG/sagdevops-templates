@@ -1,7 +1,35 @@
 #!/bin/sh
+###############################################################################
+#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 
 TEMPLATE_ALIAS=$1
 DIRNAME=`dirname $0`
+
+CC_ENV=${CC_ENV:-dev}
+echo "Environment name: $CC_ENV"
+
+shift
+PARAMS=$*
+
+PARAMS="$PARAMS -i /src/environments/$CC_ENV/env.properties"
+
+echo "Apply template $TEMPLATE_ALIAS with $PARAMS"
 
 export COMPOSE_FILE=$DIRNAME/docker-compose.yml
 
@@ -11,14 +39,14 @@ docker-compose up -d cc
 echo ""
 echo "===================================================================="
 echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
+echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
 
-docker-compose exec \
+docker-compose exec -T \
     cc bash -c \
-    "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; /opt/sagtools/provision.sh $TEMPLATE_ALIAS; if [ -f test.sh ]; then ./test.sh ; fi"
+    "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if /opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS; then if [ -f test.sh ]; then ./test.sh ; fi; fi"
 
 echo "===================================================================="
 echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
 echo "===================================================================="
-

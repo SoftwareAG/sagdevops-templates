@@ -1,0 +1,49 @@
+/*
+* Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+*
+* SPDX-License-Identifier: Apache-2.0
+*
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*       http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.                                                            
+*
+*/
+
+// curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+
+def buildImage(t, pushImage) {
+    sh "docker-compose -f templates/$t/docker-compose.yml build --pull --force-rm"
+    if (pushImage) {
+        sh "docker-compose -f templates/$t/docker-compose.yml push"
+    }
+}
+
+pipeline {
+    agent none
+    parameters {
+        choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'release')
+    }
+    stages {
+        stage("Build") {
+            environment {
+                TAG = "${params.release}"
+            }
+            agent { label 'docker' }
+            steps {
+                buildImage('sag-um-server',  true)
+                buildImage('sag-tc-server',  true)
+                buildImage('sag-msc-server', true)
+                buildImage('sag-is-server',  true)
+                buildImage('sag-abe',        true)
+            }
+        }
+    }
+}
