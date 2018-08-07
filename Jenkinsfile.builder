@@ -1,5 +1,5 @@
 /*
-* Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+* Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -54,11 +54,12 @@ pipeline {
     stages {
         stage('Build') {
             parallel {
-                stage('10.3 CC PI') {
+                stage('10.3 SuiteInt') {
                     agent { label 'docker' } 
                     environment {
-                        TAG = '10.3-sic' // Use cc-pi with the build #
-                        REPO_PRODUCT = 'SuiteIntCollector'
+                        CC_TAG = '10.3-cc_pi'
+                        TAG = '10.3-si'
+                        REPO_PRODUCT = 'SuiteInt'
                         REPO_FIX = 'QARepo'
                         FIXES = '[]'
                         CC_NODE_IMAGE = "daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3"
