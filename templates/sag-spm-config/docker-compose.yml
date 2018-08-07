@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -19,20 +19,6 @@
 version: "3.2"
 
 services:
-  # # provisioner
-  # provision:
-  #   image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-  #   entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
-  #   volumes: 
-  #     - ./:/src/ # required
-  #     - ../../scripts/inventory.sh:/opt/sagtools/inventory.sh
-  #     - ../../scripts/provision.sh:/opt/sagtools/provision.sh
-  #   environment:
-  #       # hello.name parameter is passed in as '__hello_name'
-  #     - __hello_world=VM                # template test specific param
-  #     - HELLO_NAME=VM_INSTANCE          # runtime specific ENV var
-
-  # target container
   spm:
     image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:$TAG # target image
     build:
