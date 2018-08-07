@@ -56,7 +56,13 @@ repositories:
       host: ${aqu.host}
       name: SuiteTest
       credentials: REPO-PRODUCT
-
+      
+    CC_XPC:
+      description: CC XPC testing sandbox
+      host: ${aqu.host}
+      name: CC_XPC
+      credentials: REPO-PRODUCT 
+      
     ${sandbox}:
       description: Latest nightly SNAPSHOTS
       host: ${aqu.host}

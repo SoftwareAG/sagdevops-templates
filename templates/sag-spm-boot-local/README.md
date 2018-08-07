@@ -18,67 +18,90 @@
 -->
 # Bootstrapping Platform Manager on Command Central host
 
-This template allows to install Platform Manager (SPM) on
-the same host as Command Central. Normally this is used
-for development purposes only.
+With this template you can install Platform Manager (SPM) on the same host as Command Central. This is normally used only for development purposes.
 
-## Requirements
+> IMPORTANT: Using this template with Command Central 10.1 has significant limitations. Limitation details are provided below.
+
+## Requirements and limitations
 
 ### Supported Software AG releases
 
-* Command Central 10.2 of later
-* Platform Manager 9.8 or later
+* Command Central 10.2 or higher
+* Command Central 10.1 with limitations
+* Platform Manager 9.8 or higher
 
 ### Supported platforms
 
-* All platforms for which Command Central bootstrap installers are available for download from Empower
+All supported Windows and UNIX platforms.
 
 ### System requirements for Command Central machine
 
-* Must have Command Central bootstrap installer for the target UNIX platform (*.sh file) saved in `CC_HOME\profiles\CCE\data\installers` folder. Verify by running:
+Command Central bootstrap installer for the target platform stored in `CC_HOME\profiles\CCE\data\installers`. Verify by running:
 
 ```bash
 sagcc list provisioning bootstrap installers
 ```
 
-## Running as a standalone Composite Template
+* IMPORTANT: For Command Central 10.1, the `local` SPM **must** be running on non-default HTTP(S) ports, so that you can use the default 8092/8093 ports for the new local installation. If your local SPM is configured with default ports, change them to non-default ports.
 
-Bootstrap SPM 10.2 into `/home/vmtest/dev1` installation directory listening on port 8192 on
-localhost:
+## Running as a standalone Composite Template on Windows
+
+To bootstrap an SPM 10.1 that listens on port 8192 into the `C:/SoftwareAG/dev1` installation directory, type the following in a local Command Prompt window:
 
 ```bash
 sagcc exec templates composite apply sag-spm-boot-local node=dev1 \
-  cc.installer=cc-def-10.2-fix1-lnxamd64.sh \
-  install.dir=/Users/me/softwareag/dev1 \
+  cc.installer=cc-def-10.1-fix9-w64.zip \
+  install.dir=C:/SoftwareAG/dev1 \
   spm.port=8192 \
   --sync-job --wait 360
 ```
 
-## Adding UNIX Infrastructure layer to a Stack using CLI
+> IMPORTANT: If you are using Command Central 10.1, use the default port, 8092, and specify the node alias as `%HOSTNAME%`. In addition, monitor the job completion with the following command:
 
-Create a new 10.1 Dev01 stack and provision LinuxInfra infrastructure layer onto host1 and host2.
-The SSH connection from CCE to host1 and host2 is authenticated via the sagadmin user account private key.
+```bash
+sagcc exec templates composite apply sag-spm-boot-local node=%HOSTNAME% \
+  cc.installer=cc-def-10.1-fix9-w64.zip \
+  install.dir=C:/SoftwareAG/dev1 \
+  spm.port=8092
+sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
+```
+
+## Adding Local Infrastructure layer to a Stack using CLI
+
+To create a new 10.1 Dev01 stack and provision Local infrastructure layer on Windows:
 
 ```bash
 sagcc create stacks alias=Dev01 release=10.1
 sagcc create stacks Dev01 layers alias=LocalInfra layerType=INFRA-LOCAL node=dev1 \
-  cc.installer=cc-def-10.1-fix8-lnxadm64.sh \
-  install.dir=/Users/me/softwareag/dev1
+  cc.installer=cc-def-10.1-fix8-w64.zip \
+  install.dir=C:/SoftwareAG/dev1 \
+  spm.port=8192 \
   --sync-job --wait 360
 ```
 
-See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for `INFRA-REMOTE-UNIX` layer type definition.
+> IMPORTANT: If you are using Command Central 10.1, use the default port, 8092, and specify the node alias as `%HOSTNAME%`. In addition, monitor the job completion with the following command:
 
-## Creating a new Stack with UNIX infrastructure layer using Web UI
+```bash
+sagcc create stacks alias=Dev01 release=10.1
+sagcc create stacks Dev01 layers alias=LocalInfra layerType=INFRA-LOCAL node=%HOSTNAME% \
+  cc.installer=cc-def-10.1-fix8-w64.zip \
+  install.dir=C:/SoftwareAG/dev1 \
+  spm.port=8092
+sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
+```
 
-* Open Stacks UI
-* Add new stack
-* Add layer > New nodes
-  * Select INFRA-LOCAL layer definition
-  * Choose the operating system matching your Command Central host and available bootstrap installer for it
-  * Provide required parameters such as
-    * node - node alias for the local installation
-    * install.dir - installation directory on Command Central host
-    * spm.port - SPM HTTP port number
+For more information, see [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for `INFRA-LOCAL` layer type definition.
+
+## Creating a new stack with local infrastructure layer from the Command Central Stacks user interface
+
+1. In Command Central, open the Stacks interface.
+2. Add a new stack.
+3. In the new stack, Add layer > New nodes.
+  * Select the INFRA-LOCAL layer definition
+  * Select the operating system that matches your Command Central host and a corresponding bootstrap installer.
+  * Specify the required parameters, such as:
+    * install.dir - the installation directory on the Command Central host
+    * spm.port - the SPM HTTP port number
+    * node - the node alias for the local installation
   * Finish the wizard
-* Wait until provision jobs completes. Use Jobs view to monitor
+4. Wait until provision jobs completes. Use Jobs view to monitor
