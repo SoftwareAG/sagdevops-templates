@@ -16,6 +16,7 @@
      limitations under the License.                                                  
 
 -->
+
 # Small integration stack
 
 Use this template to provision and configure containers stack with the following runtimes:
