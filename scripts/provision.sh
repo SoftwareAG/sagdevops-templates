@@ -1,6 +1,6 @@
 #!/bin/sh
 #*******************************************************************************
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -149,13 +149,19 @@ fi
 
 if [ -z $MAIN_TEMPLATE_ALIAS ] ; then 
     if [ -f template.yaml ]; then
-        echo "Found template.yaml. Importing ..."
+        echo "Found template.yaml ..."
+        # templatefile=/tmp/t.yaml
         # replacing template alias as 'container'
-        templatefile=/tmp/t.yaml
-        MAIN_TEMPLATE_ALIAS=container
-        echo alias: $MAIN_TEMPLATE_ALIAS>$templatefile && tail -n +2 template.yaml>>$templatefile
+        # sed '/^[[:blank:]]*#/d;s/#.*//' template.yaml>$templatefile
+        # replacing template alias as 'container'
+        #MAIN_TEMPLATE_ALIAS=container
+        #echo alias: $MAIN_TEMPLATE_ALIAS>$templatefile && tail -n +2 template.yaml>>$templatefile
+        # cat $templatefile
+        # get the alias: <value>
+        templatefile=template.yaml
+        MAIN_TEMPLATE_ALIAS=`awk '/^alias:/{print $NF}' $templatefile`
+        echo "Importing template ... $MAIN_TEMPLATE_ALIAS"
         cat $templatefile
-        echo "Importing template ..."
         sagcc exec templates composite import -i $templatefile overwrite=true
     else
         echo "ERROR: No template.yaml found nor template alias is provided!"
