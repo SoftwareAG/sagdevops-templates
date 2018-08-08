@@ -1,0 +1,373 @@
+alias: webM103
+description: CC Composite template for webM products
+
+environments:
+  default:
+    # product and fix repositories
+    version:                    ${version}
+    repo.product:               ${repo.product}            # source product repository name, must be pre-registered
+    repo.fix:                   ${repo.fix}                # source fix repository name, must be pre-registered
+    install.dir:                ${install.dir}             # suite installation directory
+    os.platform:                ${os.platform}             # remote machine OS platform code
+    os.username:                ${os.username}             # remote machine SSH username
+    os.auth.method:             ${os.auth.method}          # remote machine authentication method: PASSWORD,INTERACTIVE,CERTIFICATE
+    os.privateKey:              /home/webmeth/wM_DEV.pem
+    os.port:                    22                         # remote machine SSH port
+    env.password:               manage                     # IS/MWS Administrator password
+  
+    spm.host:                   ${spm.host}                #Machine name or IP on which the product has to be installed.
+    spm.port:                   ${spm.port}                #Port which is assigned to spm 
+    spm.alias:                  ${spm.alias}    #Alias for installation node in UI.
+    spm.distribution:           ALL                        # distribution, ALL, DEF, MIN
+    spm.secure:  false
+    spm.configure:              [spm-tuneup]    
+    spm.fixes:                  [wMFix.SPM]                # SPM/SUM/SD core fixes by default #[wMFix.SPM]
+    repo.fix.spm:               ${repo.fix}                # source fix repo for SPM
+
+    # Universal Messaging Server Instance Configuration
+
+    um.host:                    ${spm.host}
+    um.instance.port:           ${um.instance.port}               
+    um.memory.init:             ${um.memory.init}
+    um.memory.max:              ${um.memory.max}
+    um.memory.direct:           ${um.memory.direct}               
+    um.configure:               [um-server]
+    um.fixes:                   ALL
+    um.license.key.alias:       ${}               
+    um.jndi.cf:                 um_local
+
+    # Integration Server Instance Configuration
+
+    is.host:                                               # IS host
+    is.instance.name:           ${is.instance.name}        # Instance name
+    is.primary.port:            ${is.primary.port}
+    is.diagnostic.port:         ${is.diagnostic.port}
+    is.jmx.port:                ${is.jmx.port}
+    is.password.new:            manage                     # Administrator user password
+    is.memory.init:             ${is.memory.init}          # Initial memory size
+    is.memory.max:              ${is.memory.max}           # Maximum memory size
+    is.um.enabled:              true                       # Enable/Configure default Universal Messaging alias
+    is.um.url:                  ${is.um.url}               # if is.um.enabled=true
+
+    # Advanced
+    is.configure:               [is-server]                # List of templates to apply
+    is.fixes:                   ALL                        # fixes to install
+
+    # My webMethods Server
+    
+    mws.host:                   ${spm.host}
+    mws.instance.name:          ${mws.instance.name}
+    mws.http.port:              ${mws.http.port}
+    mws.https.port:             ${mws.https.port}
+    mws.jmx.port:               ${mws.jmx.port}
+    mws.memory.init:            ${mws.memory.init}
+    mws.memory.max:             ${mws.memory.max}
+    mws.email:                  ${mws.email}
+    mws.password:               ${mws.password}
+    mws.lb.protocol:            http
+    mws.lb.host:                ${mws.host}
+    mws.lb.http.port:           ${mws.http.port}
+    mws.lb.https.port:          ${mws.https.port}
+    mws.fixes:                  ALL
+    mws.configure:              [mws-server]
+
+    # Database server admin connection for storage/user creation
+    db.admin.username:   ${}                  # REQUIRED: for db storage only
+    db.admin.password:   ${}                  # REQUIRED: for db storage only
+    db.tablespace.dir:   ${}                  # REQUIRED: for Oracle/DB2
+    db.tablespace.data:  WEBMDATA             # for Oracle/DB2
+    db.tablespace.index: WEBMINDX             # for Oracle/DB2
+
+    # Database schemas
+    db.components:       [ACT]                # Storage and all components by default
+    db.products:         [IS,MWS]             #Installs table for IS and MWS components      
+    db.component.version: latest 
+    db.product.version:   latest    
+
+    #DataBase connection paramters.
+    db.type:     ${db.type}                   # REQUIRED: Database type: oracle,sqlserver,db2
+    db.url:      ${db.url}                    # REQUIRED: Database server hostname
+    db.username: ${db.username}               # Database Username
+    db.password: ${db.password}               # Database password
+    db.name:     ${db.name}                   # Database Name
+ 
+    #DCC:  See DBC template for parameter documentation
+    dbc.alias:           local
+    dbc.host:            localhost
+    dbc.configure:    [DBC]
+    dbc.fixes: ALL
+
+layers:
+  default:
+    productRepo: ${repo.product}            # install products from
+  spm:
+    description:                Management layer of SPM's
+    templates:                  ${spm.configure}
+    productRepo:                ${repo.product}
+  
+  DCC:
+        description: Database configuration
+        templates:   ${dbc.configure}
+        databases:
+            dbc-components:
+                components:  ${db.components}
+                version:     ${db.component.version}
+                db.type:     ${db.type}
+                db.url:      ${db.url}
+                db.username: ${db.username}
+                db.password: ${db.password}
+                db.name:     ${db.name}
+                db.admin.username: ${db.admin.username}
+                db.admin.password: ${db.admin.password}
+                db.tablespace.dir: ${db.tablespace.dir}
+                db.tablespace.data: ${db.tablespace.data}
+                db.tablespace.index: ${db.tablespace.index}
+            dbc-products:
+                products:    ${db.products}
+                version:     ${db.product.version}
+                db.type:     ${db.type}
+                db.url:      ${db.url}
+                db.username: ${db.username}
+                db.password: ${db.password}
+                db.name:     ${db.name} 
+
+  um:                                      
+    description:                Messaging Layer based on Universal Messaging cluster
+    templates:                  ${um.configure}
+    productRepo:                ${repo.product}
+
+  mws:
+    description:                My webMethods Server
+    templates:                  ${mws.configure}
+    productRepo:                ${repo.product}
+
+  is:
+    description:                General purpose IS layer
+    templates:                  ${is.configure}
+    productRepo:                ${repo.product}
+
+templates:
+  spm-tuneup:
+    description: SPM customizations
+    products:
+      MwsSpmTaskEngine:                                                  #Infrastructure | Platform Manager Plug-ins | My webMethods Server | Task Engine and UI
+      PAMspm:                                                            #Apama | Platform Manager Plug-in 9.12
+      SPM:                                                               #Infrastructure | Platform Manager
+      EDAspm:                                                            #Infrastructure | Platform Manager Plug-ins | Event Routing
+      NUMspm:                                                            #Infrastructure | Platform Manager Plug-ins | Universal Messaging
+      ISspm:                                                             #Infrastructure Integration server plugin     
+  DBC:
+     products:
+       DatabaseScripts:                                                   #Database Configuration | Database Scripts
+       DatabaseComponentConfigurator:                                     #Database Configuration | Database Component Configurator
+       embeddedDatabaseScripts:
+  um-server:                                   
+    description: First UM server instance
+    licenses:
+      "UniversalMessaging/server/templates/licence.xml": ${um.license.key.alias} 
+    products:
+      NUMInstanceManager:
+      NUMClient:
+      NUMMigration:
+      NUMTemplateApplications:
+      NUMEnterpriseManager:
+      NUMRealmServer:                                              # main UM product id
+        ${node.host}:                                              # instance realm name
+          instance.port: ${um.instance.port}                       # instance port
+          instance.ip:   ${node.host}
+          license.file:  UniversalMessaging/server/templates/licence.xml
+          runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${instance.name}: 
+              COMMON-MEMORY:                                       # make a label to re-use configuration
+                COMMON-MEMORY:                                     # customize JVM memory
+                  InitSize: ${um.memory.init}
+                  MaxSize:  ${um.memory.max}
+                  ExtendedProperties:                              # extended JVM setting
+                    Property: 
+                      - 
+                       "@name": "-XX:MaxDirectMemorySize"
+                       $: ${um.memory.direct}
+  mws-server:
+    description: MWS installation
+    products:
+      MFTTransfer:
+      MWSDiagnostics:       
+      MwsProgramFiles: # MWS core product
+        ${mws.instance.name}: # MWS instance
+          node.name:   ${node.host} # unique cluster node name
+          http.port:   ${mws.http.port}
+          https.port:  ${mws.https.port}
+          jmx.port:    ${mws.jmx.port}
+          db.type:     ${db.type}
+          db.url:      "${db.url}"
+          db.username: ${db.username}
+          db.password: ${db.password}
+          configuration:
+            OSGI-MWS_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${mws.memory.init}
+                  MaxSize:  ${mws.memory.max}
+            MwsProgramFiles-${instance.name}:
+              COMMON-CLUSTER:
+                COMMON-CLUSTER:
+                  ExtendedProperties:
+                    Property:
+                      -
+                        "@name": LoadBalancerHost
+                        $: ${mws.lb.host}
+                      -
+                        "@name": LoadBalancerHttpPort
+                        $: ${mws.lb.http.port}
+                      -
+                        "@name": LoadBalancerHttpsPort
+                        $: ${mws.lb.https.port}
+                      -
+                        "@name": jndiEnabled
+                        $: true
+                      -
+                        "@name": jndiProviderUrl
+                        $: ${um.cluster.url}
+  is-server:
+    licenses:
+      "IntegrationServer/config/licenseKey.xml": ${is.license.key.alias}
+      "IntegrationServer/instances/${is.instance.name}/config/licenseKey.xml": ${is.license.key.alias}  
+      "IntegrationServer/instances/${is.instance.name}/packages/WmMFT/config/licenseKey.xml": ${mft.license.alias}
+    products:
+      MFTSupport:
+      integrationServer:
+        ${is.instance.name}:
+          primary.port: ${is.primary.port}
+          diagnostic.port: ${is.diagnostic.port}
+          jmx.port: ${is.jmx.port}
+          license.file:    IntegrationServer/config/licenseKey.xml
+          install.service: true
+          package.list:  WmMFT
+          db.type:         ${db.type}
+          db.url:          "${db.url}"
+          db.username:     ${db.username}
+          db.password:     ${db.password}
+          db.alias:        Default
+          configuration:            
+            OSGI-IS_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${is.memory.init}
+                  MaxSize: ${is.memory.max}
+            integrationServer-${instance.name}:
+              COMMON-JDBC:              #added from bitmark template
+                COMMON-JDBC-Default:
+                  Pool: 
+                    "@alias": "Default"
+                    Name: "Default"
+                    Description: "Default DBConnection"
+                    MinSize: "0"
+                    MaxSize: "10"
+                    MaxIdleTime: "60000"
+                    DatabaseServer: 
+                      "@type": "oracle"
+                      URL: ${db.url}
+                      User: ${db.username}
+                      Password: ${db.password}
+                    ExtendedProperties:
+                      Property:
+                        - 
+                         "@name": "AvailConnWarningThreshold"
+                         $: 0
+                        - 
+                         "@name": "WaitingThreadThresholdCount"
+                         $: 0 
+                COMMON-JDBC-CentralUser:
+                  Pool: 
+                    "@alias": "CentralUser"
+                    Name: "CentralUser"
+                    Description: "CentralUser"
+                    MinSize: "0"
+                    MaxSize: "30"
+                    MaxIdleTime: "70000"
+                    DatabaseServer: 
+                      "@type": "oracle"
+                      URL: ${db.url}
+                      User: ${db.username}
+                      Password: ${db.password}
+              COMMON-DBFUNCTION:
+                COMMON-DBFUNCTION-CentralUsers:
+                  Function:
+                      "@alias": "CentralUsers"
+                      Description: "Central User Management Configuration"
+                      PoolAlias: "CentralUser"
+                COMMON-DBFUNCTION-Archiving:
+                  Function:
+                      "@alias": "Archiving"
+                      Description: "Schema for archiving data from the Process Audit and IS Core Audit schemas."
+                      PoolAlias: "Archive"
+                COMMON-DBFUNCTION-ISCoreAudit:
+                  Function:
+                      "@alias": "ISCoreAudit"
+                      Description: "IS Core Audit Log Manager Function"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-ISInternal:
+                  Function:
+                      "@alias": "ISInternal"
+                      Description: "For internal use by IS facilities"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-ProcessAudit:
+                  Function:
+                      "@alias": "ProcessAudit"
+                      Description: "Process Audit Log Manager Function"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-ProcessEngine:
+                  Function:
+                      "@alias": "ProcessEngine"
+                      Description: "Schema for Process Engine"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-Xref:
+                  Function:
+                      "@alias": "Xref"
+                      Description: "Key Cross Referencing and Echo Suppression"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-ActiveTransfer:
+                  Function:
+                      "@alias": "ActiveTransfer"
+                      Description: "ActiveTransfer Function"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-TN:
+                  Function:
+                      "@alias": "TN"
+                      Description: "Trading Networks Function"
+                      PoolAlias: "Default"
+                COMMON-DBFUNCTION-DocumentHistory:
+                  Function:
+                      "@alias": "DocumentHistory"
+                      Description: "Document History for Exactly Once Processing"
+                      PoolAlias: "Default"                #till here              
+              COMMON-LOCAL-USERS:
+                COMMON-LOCAL-USERS-Administrator:
+                  "@id": Administrator
+                  Enabled: true
+                  Password: ${is.password.new}
+
+provision:
+  default:
+    #spm:                 ["${spm.host}"]
+    DCC:                 ["${spm.host}"]
+    um:                  ["${spm.host}"]
+    is:                  ["${spm.host}"]
+    mws:                 ["${spm.host}"]
+
+nodes:
+  default:
+    default:
+      port: ${spm.port}
+      secure: ${spm.secure}
+      bootstrapInfo:
+        installDir: ${install.dir}
+        repoName: ${repo.product}
+        platform: ${os.platform}
+        credentials:
+          userName: ${os.username}
+          password: ${os.password}
+          authenticationMethod: ${os.auth.method}
+          privateKey: ${os.privateKey}
+  
