@@ -23,14 +23,14 @@ services:
     image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG
     hostname: is01
     ports:
-      - 5555
+      - 5555:5555
       - 8092
     environment:
       - CC_AUTO_REGISTER=1            
   um01:
     image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:$TAG
     ports:
-      - 9000
+      - 9000:9000
       - 8092
     hostname: um01
     environment:
