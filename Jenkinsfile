@@ -1,5 +1,5 @@
 /*
-* Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+* Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -61,6 +61,7 @@ pipeline {
                         sh "./provisionw sag-is-server"
                         sh "./provisionw sag-is-config"
                         sh "./provisionw sag-des"
+                        sh "./provisionw sag-is-cloudstreams"
                         sh "./provisionw sag-apama-correlator"
                     }
                     post {
@@ -79,8 +80,10 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d cc'
 
+                        sh "./provisionw sag-msc-server"
                         sh "./provisionw sag-abe"                        
                         sh "./provisionw sag-designer-services"
+                        sh "./provisionw sag-designer-cloudstreams"
                     }
                     post {
                         always {
