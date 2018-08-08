@@ -34,6 +34,7 @@ pipeline {
                     sh 'docker-compose -f sag-cc/docker-compose.yml up -d'
                     sh 'docker-compose -f prometheus/docker-compose.yml up -d'
                     sh 'docker-compose -f sag-um-is/docker-compose.yml up -d'
+                }
             }
         }
     }
