@@ -1,5 +1,5 @@
 /*
-* Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+* Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -21,20 +21,19 @@
 
 pipeline {
     agent { label 'docker-swarm' }
+    parameters {
+        choice(choices: '10.3-si\n10.3\n10.2\n10.1', description: 'Tag to launch', name: 'tag')
+    }
     stages {
         stage('Deploy') {
+            environment {
+                TAG = "${params.tag}"
+            }
             steps {
                 dir ('deployments/docker') {
-                    dir ('sag-cc') {
-                        sh 'docker-compose up -d'
-                    }
-                    dir ('prometheus') {
-                        sh 'docker-compose up -d'
-                    }
-                    dir ('sag-um-is') {
-                        sh 'docker-compose up -d'
-                    }
-                }
+                    sh 'docker-compose -f sag-cc/docker-compose.yml up -d'
+                    sh 'docker-compose -f prometheus/docker-compose.yml up -d'
+                    sh 'docker-compose -f sag-um-is/docker-compose.yml up -d'
             }
         }
     }

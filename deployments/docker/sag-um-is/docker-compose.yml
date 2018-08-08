@@ -37,7 +37,7 @@ services:
       - CC_AUTO_REGISTER=1
 
   init:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:$CC_TAG
     environment: 
       - CC_SERVER=cc
       - CC_PASSWORD
