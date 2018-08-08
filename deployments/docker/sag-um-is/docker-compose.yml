@@ -20,7 +20,7 @@ version: "3.2"
 
 services:
   is01:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:10.3
+    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG
     hostname: is01
     ports:
       - 5555
@@ -28,7 +28,7 @@ services:
     environment:
       - CC_AUTO_REGISTER=1            
   um01:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
+    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:$TAG
     ports:
       - 9000
       - 8092

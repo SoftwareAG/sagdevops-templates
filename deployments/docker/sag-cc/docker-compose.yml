@@ -20,7 +20,7 @@ version: "3.2"
 
 services:
   cc:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
     ports:
       - 8091:8091 # CCE
     environment:
