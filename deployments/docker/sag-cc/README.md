@@ -25,7 +25,7 @@ Launch Command Central 10.3 container
 
 ### Supported Software AG releases
 
-* Command Central 10.3
+* Command Central 10.3 or higher
 
 ### Supported platforms
 
@@ -33,7 +33,7 @@ Launch Command Central 10.3 container
 
 ### Supported use cases
 
-* Provisioning of new 10.3 stack using Docker
+* Launching Command Central 10.3 stack using Docker compose
 
 ## Launching Command Central stack using docker-compose
 
@@ -41,4 +41,4 @@ Launch Command Central 10.3 container
 CC_TAG=10.3 docker-compose up -d
 ```
 
-Browse to https://localhost:8091 to open Command Central Web UI. Login (Administrator/manage)
+Open [Command Central Web UI](https://localhost:8091) and login as Administrator/manage.

@@ -16,10 +16,10 @@
      limitations under the License.                                                  
 
 -->
+
 # Integration Server
 
 Use this template to provision and maintain Integration Server
-as well as create Docker images
 
 ## Requirements
 
