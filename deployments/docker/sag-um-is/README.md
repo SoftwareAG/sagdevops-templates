@@ -50,7 +50,7 @@ Launch Universal Messaging 10.3 and Integration Server 10.3 containers and confi
 them using Command Central templates (push model):
 
 ```bash
-docker-compose up -d
+CC_TAG=10.3 TAG=10.3 docker-compose up -d
 ```
 
 Browse to http://localhost:5555 to open Integration Server Admin UI. Login (Administrator/manage)

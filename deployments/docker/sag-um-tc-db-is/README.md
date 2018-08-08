@@ -49,6 +49,9 @@ Launch [Command Central 10.3 Stack](../sag-cc/) first.
 Launch DB and create schemas:
 
 ```bash
+export CC_TAG=10.3
+export TAG=10.3
+
 docker-compose run --rm initdb
 ```
 
