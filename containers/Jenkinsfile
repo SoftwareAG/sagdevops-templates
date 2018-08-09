@@ -19,13 +19,6 @@
 
 // curl -X POST -F "jenkinsfile=<containers/Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
-def buildImage(t, pushImage) {
-    sh "docker-compose -f templates/$t/docker-compose.yml build --pull --force-rm"
-    if (pushImage) {
-        sh "docker-compose -f templates/$t/docker-compose.yml push"
-    }
-}
-
 pipeline {
     agent none
     parameters {
@@ -36,13 +29,22 @@ pipeline {
             environment {
                 TAG = "${params.release}"
             }
-            agent { label 'docker' }
+            agent none
             steps {
-                buildImage('sag-um-server',  true)
-                buildImage('sag-tc-server',  true)
-                buildImage('sag-msc-server', true)
-                buildImage('sag-is-server',  true)
-                buildImage('sag-abe',        true)
+                script {
+                    def containers = ['sag-um-server', 'sag-is-server', 'sag-tc-server', 'sag-abe']
+                    def builders = [:]
+                    for (c in containers) {
+                        def label = c // Need to bind the label variable before the closure - can't do 'for (label in labels)'
+                        builders[label] = {
+                            node('docker') {
+                                sh "docker-compose -f templates/$c/docker-compose.yml build --pull --force-rm"
+                                sh "docker-compose -f templates/$c/docker-compose.yml push"
+                            }
+                        }                        
+                    }
+                    parallel builders // kick off parallel provisioning    
+                }
             }
         }
     }
