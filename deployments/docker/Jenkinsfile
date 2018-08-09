@@ -35,6 +35,7 @@ pipeline {
                 script {
                     def stacks = ['sag-cc', 'prometheus', 'sag-um-is']
                     for (stack in stacks) {
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml config"
                         sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml pull"
                         sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml up -d"
                     }
