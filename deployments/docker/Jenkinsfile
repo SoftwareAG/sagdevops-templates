@@ -17,7 +17,7 @@
 *
 */
 
-// curl -X POST -F "jenkinsfile=<Jenkinsfile.staging" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+// curl -X POST -F "jenkinsfile=<deployments/docker/Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
 pipeline {
     agent { label 'docker-swarm' }

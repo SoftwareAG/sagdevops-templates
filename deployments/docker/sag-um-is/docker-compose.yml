@@ -26,7 +26,8 @@ services:
       - 5555:5555
       - 8092
     environment:
-      - CC_AUTO_REGISTER=1      
+      - CC_AUTO_REGISTER=1     
+      - CC_PASSWORD 
   um01:
     image: ${REG:-store/softwareag}/universal-messaging:${TAG:-10.3}
     ports:
@@ -35,6 +36,7 @@ services:
     hostname: um01
     environment:
       - CC_AUTO_REGISTER=1
+      - CC_PASSWORD 
 
   init:
     image: ${REG:-store/softwareag}/commandcentral-client:${TAG:-10.3}

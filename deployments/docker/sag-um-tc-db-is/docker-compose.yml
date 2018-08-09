@@ -38,6 +38,7 @@ services:
     hostname: tc02
     environment:
       - CC_AUTO_REGISTER=1              
+      - CC_PASSWORD 
       - OFFHEAP_MAX_SIZE=513m
 
   um02:
@@ -48,6 +49,7 @@ services:
     hostname: um02
     environment:
       - CC_AUTO_REGISTER=1
+      - CC_PASSWORD 
 
   is02:
     image: ${REG:-store/softwareag}/integration-server:${TAG:-10.3}
@@ -57,6 +59,7 @@ services:
       - 8092
     environment:
       - CC_AUTO_REGISTER=1     
+      - CC_PASSWORD 
     depends_on: 
       - sqlserver
       - tc02
