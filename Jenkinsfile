@@ -84,6 +84,8 @@ pipeline {
                         sh "./provisionw sag-abe"                        
                         sh "./provisionw sag-designer-services"
                         sh "./provisionw sag-designer-cloudstreams"
+                        sh "./provisionw sag-exx-broker"
+                        sh "./provisionw sag-exx-c-rpc-server"
                     }
                     post {
                         always {
