@@ -17,7 +17,7 @@
 *
 */
 
-// curl -X POST -F "jenkinsfile=<Jenkinsfile.images" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+// curl -X POST -F "jenkinsfile=<containers/Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
 def buildImage(t, pushImage) {
     sh "docker-compose -f templates/$t/docker-compose.yml build --pull --force-rm"
