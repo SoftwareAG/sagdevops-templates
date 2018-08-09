@@ -24,35 +24,48 @@ services:
     hostname: is01
     ports:
       - 5555:5555
-      - 8092
+      - 8192:8092
     environment:
       - CC_AUTO_REGISTER=1     
-      - CC_PASSWORD 
+      - CC_PASSWORD
+      - LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo.git
+      - LAR_REPO_BRANCH=master
+    volumes:
+      - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+      - ./com.softwareag.registry.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+      - ./com.softwareag.repository.git.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+
   um01:
     image: ${REG:-store/softwareag}/universal-messaging:${TAG:-10.3}
     ports:
       - 9000:9000
-      - 8092
+      - 8292:8092
     hostname: um01
     environment:
       - CC_AUTO_REGISTER=1
-      - CC_PASSWORD 
-
-  init:
-    image: ${REG:-store/softwareag}/commandcentral-client:${TAG:-10.3}
-    environment: 
-      - CC_SERVER=cc
       - CC_PASSWORD
-      - CC_CHECK_EVERY=10
-    entrypoint: >
-      bash -c '
-      sagcc list landscape nodes um01 -e ONLINE --wait 240 --wait-for-cc &&
-      sagcc exec templates composite apply sag-um-config nodes=um01 um.url=nsp://um01:9000 --sync-job && 
-      sagcc list landscape nodes is01 -e ONLINE --wait 240 &&
-      sagcc exec templates composite apply sag-is-config nodes=is01 is.um.url=nsp://um01:9000 --sync-job'
-    depends_on:
-      - um01
-      - is01
+      - LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo.git
+      - LAR_REPO_BRANCH=master
+    volumes:
+      - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+      - ./com.softwareag.registry.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+      - ./com.softwareag.repository.git.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+
+  # init:
+  #   image: ${REG:-store/softwareag}/commandcentral-client:${TAG:-10.3}
+  #   environment: 
+  #     - CC_SERVER=cc
+  #     - CC_PASSWORD
+  #     - CC_CHECK_EVERY=10
+  #   entrypoint: >
+  #     bash -c '
+  #     sagcc list landscape nodes um01 -e ONLINE --wait 240 --wait-for-cc &&
+  #     sagcc exec templates composite apply sag-um-config nodes=um01 um.url=nsp://um01:9000 --sync-job && 
+  #     sagcc list landscape nodes is01 -e ONLINE --wait 240 &&
+  #     sagcc exec templates composite apply sag-is-config nodes=is01 is.um.url=nsp://um01:9000 --sync-job'
+  #   depends_on:
+  #     - um01
+  #     - is01
 
 networks:
   default:
