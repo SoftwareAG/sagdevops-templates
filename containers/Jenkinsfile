@@ -35,11 +35,11 @@ pipeline {
                     def containers = ['sag-um-server', 'sag-is-server', 'sag-tc-server', 'sag-abe']
                     def builders = [:]
                     for (c in containers) {
-                        def label = c // Need to bind the label variable before the closure - can't do 'for (label in labels)'
-                        builders[label] = {
+                        def image = c // Need to bind the label variable before the closure - can't do 'for (label in labels)'
+                        builders[image] = {
                             node('docker') {
-                                sh "docker-compose -f templates/$c/docker-compose.yml build --pull --force-rm"
-                                sh "docker-compose -f templates/$c/docker-compose.yml push"
+                                sh "docker-compose -f templates/$image/docker-compose.yml build --pull --force-rm"
+                                sh "docker-compose -f templates/$image/docker-compose.yml push"
                             }
                         }                        
                     }
