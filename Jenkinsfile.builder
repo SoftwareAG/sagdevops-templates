@@ -54,11 +54,11 @@ pipeline {
     stages {
         stage('Build') {
             parallel {
-                stage('10.3 SuiteInt') {
+                stage('10.3 SuiteIntCollector') {
                     agent { label 'docker' } 
                     environment {
-                        TAG = '10.3-si'
-                        REPO_PRODUCT = 'SuiteInt'
+                        TAG = '10.3-sic'
+                        REPO_PRODUCT = '103oct2018_SIC'
                         REPO_FIX = 'QARepo'
                         FIXES = '[]'
                         CC_NODE_IMAGE = "daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3"

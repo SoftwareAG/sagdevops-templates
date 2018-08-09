@@ -29,7 +29,7 @@ def buildImage(t, pushImage) {
 pipeline {
     agent none
     parameters {
-        choice(choices: '10.3-si\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'release')
+        choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'release')
     }
     stages {
         stage("Build") {
