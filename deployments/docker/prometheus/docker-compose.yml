@@ -22,6 +22,8 @@ services:
     image: prom/prometheus
     ports:
       - 9090:9090
+    environment:
+      - CC_PASSWORD
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
     networks:

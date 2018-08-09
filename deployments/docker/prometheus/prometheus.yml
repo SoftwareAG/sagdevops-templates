@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -50,7 +50,7 @@ scrape_configs:
   - job_name: 'cce'
     basic_auth:
       username: Administrator
-      password: manage
+      password: manage # ??? ${CC_PASSWORD}
     scheme: http
     metrics_path: /cce/monitoring/prometheus
     static_configs:
