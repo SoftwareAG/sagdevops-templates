@@ -22,7 +22,7 @@
 pipeline {
     agent { label 'docker-swarm' }
     parameters {
-        choice(choices: '10.3-si\n10.3\n10.2\n10.1', description: 'Tag to launch', name: 'tag')
+        choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Tag to launch', name: 'tag')
     }
     stages {
         stage('Deploy') {
