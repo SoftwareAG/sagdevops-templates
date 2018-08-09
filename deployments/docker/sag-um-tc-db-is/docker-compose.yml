@@ -29,7 +29,7 @@ services:
       - SA_PASSWORD=MaNaGe123
 
   tc02:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/terracotta-server:$TAG
+    image: ${REG:-store/softwareag}/terracotta-server:${TAG:-10.3}
     ports:
       - 9010:9010                       
       - 9030:9030                       
@@ -41,7 +41,7 @@ services:
       - OFFHEAP_MAX_SIZE=513m
 
   um02:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:$TAG
+    image: ${REG:-store/softwareag}/universal-messaging:${TAG:-10.3}
     ports:
       - 9000:9000
       - 8092
@@ -50,7 +50,7 @@ services:
       - CC_AUTO_REGISTER=1
 
   is02:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG
+    image: ${REG:-store/softwareag}/integration-server:${TAG:-10.3}
     hostname: is02
     ports:
       - 5555:5555
@@ -64,7 +64,7 @@ services:
       - initdb
 
   initdb:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:$CC_TAG
+    image: ${REG:-store/softwareag/}commandcentral-client:${CC_TAG:-10.3}
     environment: 
       - CC_SERVER=cc
       - CC_PASSWORD
@@ -79,4 +79,4 @@ services:
 networks:
   default:
     external:
-      name: sag-cc_default
+      name: ${NET:-sag-cc_default}

@@ -20,15 +20,15 @@ version: "3.2"
 
 services:
   is01:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/integration-server:$TAG
+    image: ${REG:-store/softwareag}/integration-server:${TAG:-10.3}
     hostname: is01
     ports:
       - 5555:5555
       - 8092
     environment:
-      - CC_AUTO_REGISTER=1            
+      - CC_AUTO_REGISTER=1      
   um01:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:$TAG
+    image: ${REG:-store/softwareag}/universal-messaging:${TAG:-10.3}
     ports:
       - 9000:9000
       - 8092
@@ -37,7 +37,7 @@ services:
       - CC_AUTO_REGISTER=1
 
   init:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:$CC_TAG
+    image: ${REG:-store/softwareag}/commandcentral-client:${TAG:-10.3}
     environment: 
       - CC_SERVER=cc
       - CC_PASSWORD
@@ -55,4 +55,4 @@ services:
 networks:
   default:
     external:
-      name: sag-cc_default
+      name: ${NET:-sag-cc_default}

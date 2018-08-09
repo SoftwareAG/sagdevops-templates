@@ -104,12 +104,6 @@ services:
     environment:
       - BUILD_NUMBER
 
-  # publish:
-  #   image: daerepository03.eur.ad.sag:4443/ccdevops/asset-builder:$TAG
-  #   volumes:
-  #     - .:/src/ # required
-  #   command: $SAG_HOME/common/ant/bin/ant -f $ABE_HOME/master_build/build.xml buildUploadAssets -DpathCWD=/src
-
   # visualizer:
   #   image: dockersamples/visualizer:stable
   #   ports:

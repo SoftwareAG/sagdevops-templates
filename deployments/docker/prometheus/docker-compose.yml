@@ -43,4 +43,4 @@ services:
 networks:
   default:
     external:
-      name: sag-cc_default
+      name: ${NET:-sag-cc_default}

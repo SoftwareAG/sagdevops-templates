@@ -28,13 +28,13 @@ pipeline {
         stage('Deploy') {
             environment {
                 TAG = "${params.tag}"
+                CC_TAG = '10.3'
+                REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
             }
             steps {
-                dir ('deployments/docker') {
-                    sh 'docker-compose -f sag-cc/docker-compose.yml up -d'
-                    sh 'docker-compose -f prometheus/docker-compose.yml up -d'
-                    sh 'docker-compose -f sag-um-is/docker-compose.yml up -d'
-                }
+                sh 'docker-compose -f deployments/docker/sag-cc/docker-compose.yml up -d'
+                sh 'docker-compose -f deployments/docker/prometheus/docker-compose.yml up -d'
+                sh 'docker-compose -f deployments/docker/sag-um-is/docker-compose.yml up -d'
             }
         }
     }
