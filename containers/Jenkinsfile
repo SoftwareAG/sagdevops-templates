@@ -22,13 +22,10 @@
 pipeline {
     agent none
     parameters {
-        choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'release')
+        choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'TAG')
     }
     stages {
         stage("Build") {
-            environment {
-                TAG = "${params.release}"
-            }
             agent none
             steps {
                 script {
@@ -48,4 +45,11 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+			script { 
+	            build job: 'cc-docker-staging', parameters: [string(name: 'TAG', value: "${env.TAG}")], propagate: false, wait: false
+	        }
+        }
+    }    
 }

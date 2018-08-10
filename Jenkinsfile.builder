@@ -103,6 +103,13 @@ pipeline {
                     }
                 }                                                
             }            
-        }
+        } 
     }
+    post {
+        success {
+			script { 
+	            build job: 'cc-docker-images', parameters: [string(name: 'TAG', value: "10.3-sic")], propagate: false, wait: false
+	        }
+        }
+    }    
 }

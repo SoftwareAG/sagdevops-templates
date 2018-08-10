@@ -21,8 +21,8 @@
 pipeline {
     agent none
     parameters {
-        choice(choices: '10.3\n10.2\n10.1', description: 'Release', name: 'release')
-        choice(choices: 'dev\nprod',        description: 'Environment', name: 'env')
+        choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
+        choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
     }
     stages {
         stage('Build') {
@@ -40,10 +40,6 @@ pipeline {
             }
         }
         stage("Test") {
-            environment {
-                TAG = "${params.release}"
-                CC_ENV = "${params.env}" // Use ./environments/$CC_ENV/env.properties
-            }
             parallel {
                 stage('Runtimes') {
                     agent { label 'docker' }
