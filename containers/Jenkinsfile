@@ -35,12 +35,14 @@ pipeline {
                         def image = c // Need to bind the label variable before the closure - can't do 'for (label in labels)'
                         builders[image] = {
                             node('docker') {
+                                checkout scm
+                                sh "docker-compose -f templates/$image/docker-compose.yml config"
                                 sh "docker-compose -f templates/$image/docker-compose.yml build --pull --force-rm"
                                 sh "docker-compose -f templates/$image/docker-compose.yml push"
                             }
                         }                        
                     }
-                    parallel builders // kick off parallel provisioning    
+                    parallel builders // kick off parallel builds    
                 }
             }
         }
