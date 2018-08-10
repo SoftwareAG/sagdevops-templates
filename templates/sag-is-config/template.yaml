@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -31,12 +31,13 @@ environments:
     is.um.jms.alias:     DEFAULT_IS_JMS_CONNECTION # JMS connection alias to configure
     is.um.jms.enabled:   true              # Enable JMS connection to UM: true/false
     is.um.jms.cf.name:   cf                # JMS connection factory name
+    is.configs:                            # Configurations to apply
+      - messaging                          # IS to UM messaging alias
+      - jndi-jms                           # IS to UM JMS and JNDI aliases
 
 layers:
   runtime:
-    templates:
-      - messaging  # IS to UM connection configurations
-      - jndi-jms
+    templates: ${is.configs}
 
 templates:
   messaging:
