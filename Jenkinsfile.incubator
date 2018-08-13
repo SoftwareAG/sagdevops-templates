@@ -41,7 +41,7 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -d cc'
 
-                        // sh "./provisionw sag-exx-broker"
+                        sh "./provisionw sag-onedata"
                         // sh "./provisionw sag-exx-c-rpc-server"
                        
                     }
