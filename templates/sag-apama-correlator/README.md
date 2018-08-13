@@ -19,13 +19,9 @@
 
 # Apama Correlator
 
-This template can install Apama, create an Apama correlator instance and deploy
-a simple Apama application.
+The current template provisions an Apama installation, creates an Apama correlator instance and deploys a simple Apama application.
 
-This is a reference template that comprehensively demonstrates all possible
-correlator configuration that can be applied using a composite template. It
-exists for informational purposes only; it is not a well-rounded sample
-application that you should build upon.
+This template demonstrates in detail all possible Apama correlator configurations that can be applied using a product template. Use this template as a reference when provisioning Apama correlator instances.
 
 ## Requirements
 
@@ -40,9 +36,9 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new environments at 10.2 or higher
+* Provisioning new environments of version 10.2 and higher
 * Installing latest fixes
-* Creating a correlator instance and deploying a simple EPL application to it
+* Creating an Apama correlator instance and deploying a simple EPL application to it
 * Configuration of:
   * License
   * Ports
@@ -53,18 +49,16 @@ All supported Windows and UNIX platforms.
 ## Running as a composite template
 
 When importing the composite template to Command Central, you will have to
-attach the simple 'HelloWorld' application. Encapsulate the `template.yaml` and
-`HelloWorld.zip` into a single Zip file and import that using the `sagcc`
-tooling:
+attach the simple 'HelloWorld' application. Add the `template.yaml` and
+`HelloWorld.zip` into a single zip file and import that file using the Command Central CLI with the following command:
 
 ```bash
 sagcc exec templates composite import -i template.zip
 ```
 
-Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
-for general information about applying templates.
+For more information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-Provision `default` instance of an Apama 10.2 correlator with all the
+To provision a `default` instance of an Apama 10.2 correlator with all the
 latest fixes, listening on port 15904:
 
 ```bash
@@ -78,7 +72,6 @@ sagcc exec templates composite apply sag-apama-correlator nodes=sag1 \
 ## Adding as a runtime layer to a stack
 
 Once imported, this template can also be used as a runtime layer for stacks,
-using either the CLI or the web UI.
+using either the Command Central CLI, or the Command Central web user interface.
 
-Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
-for additional information about using Stacks UI.
+For more information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
