@@ -1,46 +1,139 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
 alias: sag-exx-broker
+description: Create and configure EntireX Broker
+version: 2.0
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
 
 environments:
   default:
-    repo.product: ${}    # product repository is required
-    repo.fix:     ""     # fix repository is required for fix installation only
-    nodes:        ${}    # local or any other node alias
-  
-    exx.broker.name: ETB4711
-    exx.broker.tcp.port: 1971
-    exx.broker.tcp.enable: true
-    exx.broker.ssl.port: 1972
-    exx.broker.ssl.enable: false
-    exx.broker.autostart: false
-    exx.broker.security: false
-    exx.broker.tracelevel: 0
-    exx.broker.fixes:
-      - wMFix.EntireXBroker
-                    
+    # Broker
+    exx.entirexbroker.license.key: "*_EXX_10.*_*_*"            # license key alias name                                                             
+    exx.broker.instance.name: ETB002                           # Broker ID
+    exx.broker.tcp.port: 7722                                  # TCP PORT
+    exx.broker.tcp.enable: true                                # TCP enabled
+    exx.broker.ssl.port: 7723                                  # SSL PORT
+    exx.broker.ssl.enable: false                               # SSL enabled
+    exx.broker.autostart: false                                # Autostart true/false
+    exx.broker.tracelevel: 0                                   # trace level
+    exx.broker.security: true                                  # Security true/false
+    exx.broker.security.authtype: OS                           # Security Type OS/LDAP
+    exx.broker.security.ldapurl: "ldap://ldaphost:389"         # LDAP URL
+    exx.broker.security.ldapdn: "cn=users,dc=mydomain,dc=de"   # LDAP Domain
+    exx.broker.pstore: true                                    # PStore true/false
+    exx.broker.pstore.pstore: COLD                             # PStore COLD/HOT
+    exx.broker.pstore.type: CTREE                              # PStore type CTREE/ADABAS
+    exx.broker.pstore.adabas.dbid: 24                          # PStore ADABAS DBID
+    exx.broker.pstore.adabas.fnr: 52                           # PStore ADABAS FileNr
+    exx.broker.appmon: false                                   # Application Monitoring true/false
+    exx.broker.appmon.collector.host: collector_host           # Application Monitoring Host
+    exx.broker.appmon.collector.port: 55432                    # Application Monitoring Port
+    exx.broker.fixes: []
+       
+templates:
+    
+  sag-exx-broker:                                               # template for definition of broker
+    licenses:
+      "EntireX/config/license.xml": "${exx.entirexbroker.license.key}"
+    fixes: ${exx.broker.fixes}                                  # fixes to install
+    products:
+      EntireXBroker:                    
+        ${exx.broker.instance.name}:
+          type: BROKER
+          runtimeComponentId: EntireXBroker-${instance.name}
+          autostart: ${exx.broker.autostart}   
+          tcp.port: ${exx.broker.tcp.port}
+          ssl.port: ${exx.broker.ssl.port}              
+          security: ${exx.broker.security}                
+
+          configuration:
+            EntireXBroker-${instance.name}:   
+              BROKER-PORTS:  
+                TCP:         
+                  Enabled: ${exx.broker.tcp.enable}
+                  Port: ${exx.broker.tcp.port}    
+                SSL:         
+                  Enabled: ${exx.broker.ssl.enable} 
+                  Port: ${exx.broker.ssl.port}
+              BROKER-AUTOSTART:     
+                BROKER-AUTOSTART:
+                  Enabled: ${exx.broker.autostart}
+
+              BROKER-TRACELEVEL:
+                BROKER-TRACELEVEL:
+                  Tracelevel: ${exx.broker.tracelevel}
+
+              BROKER-SECURITY:
+                BROKER-SECURITY:
+                  Enabled: ${exx.broker.security}
+                  AuthType: ${exx.broker.security.authtype}
+                  LdapUrl: ${exx.broker.security.ldapurl}
+                  LdapDn: ${exx.broker.security.ldapdn}
+                                 
+              BROKER-PSTORE:
+                BROKER-PSTORE:
+                  Enabled: ${exx.broker.pstore}  
+                  PStore: ${exx.broker.pstore.pstore}
+                  PStoreType: ${exx.broker.pstore.type}
+                  PStoreAdabasDBID: ${exx.broker.pstore.adabas.dbid}
+                  PStoreAdabasFNR: ${exx.broker.pstore.adabas.fnr}                      
+
+              APPLICATION-MONITORING:
+                APPLICATION-MONITORING:
+                  Enabled: ${exx.broker.appmon}
+                  CollectorHost: ${exx.broker.appmon.collector.host}
+                  CollectorPort: ${exx.broker.appmon.collector.port}
+                                    
+              MONITORING-KPI:
+                MONITORING-KPI: >
+                  entirex.broker.kpi.1.critical=0.95
+                  entirex.broker.kpi.1.id=\#1
+                  entirex.broker.kpi.1.marginal=0.80
+                  entirex.broker.kpi.1.max=200
+                  entirex.broker.kpi.1.name=Clients
+                  entirex.broker.kpi.1.unit=
+                  entirex.broker.kpi.1.value=0
+                  entirex.broker.kpi.2.critical=0.95
+                  entirex.broker.kpi.2.id=\#2
+                  entirex.broker.kpi.2.marginal=0.80
+                  entirex.broker.kpi.2.max=50
+                  entirex.broker.kpi.2.name=Servers
+                  entirex.broker.kpi.2.unit=
+                  entirex.broker.kpi.2.value=0
+                  entirex.broker.kpi.3.critical=0.95
+                  entirex.broker.kpi.3.id=\#3
+                  entirex.broker.kpi.3.marginal=0.80
+                  entirex.broker.kpi.3.max=1000
+                  entirex.broker.kpi.3.name=Conversations
+                  entirex.broker.kpi.3.unit=
+                  entirex.broker.kpi.3.value=0
+
 layers:
   runtime:
-    productRepo: ${repo.product}
-    fixRepo:     ${repo.fix}
-    templates:   
-      - exx-broker
-    # - exx-cli    # 10.3 only  
+    productRepo: ${repo.product}    # default repository to install products from
+    fixRepo: ${repo.fix}            # default repository to install fixes from
+    templates:
+      - sag-exx-broker              # template to apply
 
-templates:
-  exx-broker:
-    fixes: ${exx.broker.fixes}
-    products:
-      EntireXBroker:
-         ${exx.broker.name}:
-           type: BROKER
-           instance.name: ${exx.broker.name}
-           autostart: ${exx.broker.autostart}
-           tcp.port: ${exx.broker.tcp.port}
-           ssl.port: ${exx.broker.ssl.port}
-           security: ${exx.broker.security}
-  exx-cli:
-    products:
-      EntireXCommandLineScripts: # CommandLineScripts starting from version 10.3
-
-provision:                                   # PROVISION layers to nodes
-  default:                                  
+provision:                          # PROVISION layers to nodes
+  default:                          # default environment type
     runtime: ${nodes}

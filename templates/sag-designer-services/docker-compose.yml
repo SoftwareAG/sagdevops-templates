@@ -1,8 +1,0 @@
-version: "3.2"
-
-services:
-  provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-    entrypoint: /opt/sagtools/provision.sh
-    volumes: 
-      - ./:/src/ # required

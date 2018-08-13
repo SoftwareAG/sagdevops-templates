@@ -1,20 +1,38 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 version: "3.2"
 
 services:
-  # provisioner
-  provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
-    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
-    volumes: 
-      - ./:/src/ # required
-    environment:
-      - __ninja_memory_max=256          # template test specific param
-      - REPO_HOST=aquarius-bg.eur.ad.sag
-      - REPO_PRODUCT=aquarius-bg.eur.ad.sag
-      - REPO_FIX=QARepo
+  # # provisioner
+  # provision:
+  #   image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+  #   entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
+  #   volumes: 
+  #     - ./:/src/ # required
+  #   environment:
+  #     - __ninja_memory_max=256          # template test specific param
+  #     - REPO_HOST=aquarius-bg.eur.ad.sag
+  #     - REPO_PRODUCT=CC_PI_103oct2018
+  #     - REPO_FIX=QARepo
   
   # target container
-  node:
+  ninja:
     image: daerepository03.eur.ad.sag:4443/ccdevops/ninja:$TAG # target image
     build:
       context: .
@@ -23,12 +41,18 @@ services:
         - TAG
         - __ninja_memory_max=256        # template test specific param
         - REPO_HOST=aquarius-bg.eur.ad.sag
-        - REPO_PRODUCT=aquarius-bg.eur.ad.sag
+        - REPO_PRODUCT=CC_PI_103oct2018
         - REPO_FIX=QARepo
     ports:
-      - "4444"                          # container specific ports
+      - 4444                            # container specific ports
+    hostname: ninja
     environment:
-      - CC_AUTO_REGISTER=0              # No auto register as we don't have a server
-    volumes:
-      - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
-      - ./test.sh:/test.sh # for dev only to avoid image rebuild
+      - CC_AUTO_REGISTER=1              # No auto register as we don't have a server
+    # volumes:
+    #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+    #   - ./test.sh:/test.sh # for dev only to avoid image rebuild
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default
