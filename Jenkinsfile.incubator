@@ -22,28 +22,23 @@
 pipeline {
     agent none
     parameters {
-        choice(choices: '10.3\n10.2\n10.1', description: 'Release', name: 'release')
-        choice(choices: 'dev\nprod',        description: 'Environment', name: 'env')
+        choice(choices: '10.3\n10.2\n10.1', description: 'Release', name: 'TAG')
+        choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
     }
     stages {
         stage("Test") {
-            environment {
-                TAG = "${params.release}"
-                CC_ENV = "${params.env}" // Use ./environments/$CC_ENV/env.properties
-            }
             parallel {
-                stage('Runtimes') {
+                stage('Templates') {
                     agent { label 'docker' }
                     environment {
                         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
                     }
                     steps {
+                        sh 'docker-compose config'
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -d cc'
 
                         sh "./provisionw sag-onedata"
-                        // sh "./provisionw sag-exx-c-rpc-server"
-                       
                     }
                     post {
                         always {
@@ -51,20 +46,15 @@ pipeline {
                         }
                     }    
                 }
-                stage('Designer and Tools') {
+                stage('Containers') {
                     agent { label 'docker' }
                     environment {
                         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
                     }
                     steps {
-                        sh 'docker-compose pull cc'
-                        sh 'docker-compose up -d cc'
+                        sh 'docker-compose -f containers/docker-compose.yml config'
+                        sh "docker-compose -f containers/docker-compose.yml build cloudstreams"
                     }
-                    post {
-                        always {
-                            sh 'docker-compose down'
-                        }
-                    }    
                 }
             }
         }

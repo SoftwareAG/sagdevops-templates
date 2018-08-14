@@ -20,23 +20,28 @@ version: "3.2"
 
 services:
   base:
-    image: $ORG/base:$TAG
+    image: ${REG:-softwareag}/base:${TAG:-10.3}
     build:
       context: base/
 
   java:
-    image: $ORG/java:$TAG
+    image: ${REG:-softwareag}/java:${TAG:-10.3}
     build:
       context: java/
 
   node:
-    image: $ORG/node:$TAG
+    image: ${REG:-softwareag}/node:${TAG:-10.3}
     ports:
       - 8092:8092
     build:
       context: sag
       args:
-        - BUILDER_IMAGE=$CC_REGISTRY/$CC_ORG/commandcentral-builder:$CC_TAG
-        - BASE_IMAGE=$ORG/java:$TAG
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
         - PORT=8092
         - ENTRYPOINT=profiles/SPM/bin/console.sh
+
+  cloudstreams:
+    image: ${REG:-softwareag}/cloud-streams:${TAG:-10.3}
+    build:
+      context: cloudstreams/
