@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,10 +16,23 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-# Empower username (email) comes from EMPOWER_USR environment variable
-empower.username=${env.EMPOWER_USR}
-# Empower password comes from EMPOWER_PSW environment variable
-empower.password=${env.EMPOWER_PSW}
+alias: sag-cc-builder-repos
+description: Product, fix and asset repos
 
-# Administrator password comes from CC_PASSWORD environment variable
-cc.password=${env.CC_PASSWORD}
+environments:
+  default:
+    repo.product.url:             ${} # e.g. http://sdc.softwareag.com/dataservewebM102/repository
+    repo.product.credentials.key: EMPOWER
+    repo.fix.url:                 http://sdc.softwareag.com/updates/prodRepo
+    repo.fix.credentials.key:     EMPOWER
+
+repositories:
+  product:                     
+    products:
+      location: ${repo.product.url}        
+      credentials: ${repo.product.credentials.key}
+
+  fix:                        
+    fixes:
+      location: ${repo.fix.url}
+      credentials: ${repo.fix.credentials.key}
