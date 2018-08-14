@@ -19,21 +19,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cc-deployment
-  namespace: cc-namespace
+  name: is-deployment
+  namespace: is-namespace
 spec:
   selector:
     matchLabels:
-      app: cc
+      app: is
   replicas: 1
   template:
     metadata:
       labels:
-        app: cc
+        app: is
     spec:
       containers:
       - name: cc
-        image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+        image: store/softwareag/integration-server:10.3
         ports:
-        - containerPort: 8091
+        - containerPort: 8092
+        - containerPort: 8093
+        - containerPort: 5555
+        env:
+        - name: CC_AUTO_REGISTER
+          value: 1
+        - name: CC_PASSWORD
+          value: manage
+        - name: LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo.git
+          value: <lar-repo-url>
+        - name: LAR_REPO_BRANCH
+          value: master
+      imagePullSecrets:
+      - name: is-registrypullsecret
+          
+
+
 

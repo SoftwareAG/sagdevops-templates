@@ -16,29 +16,13 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: cc-deployment
-  namespace: cc-namespace
+  name: is-service
+  namespace: is-namespace
 spec:
+  externalTrafficPolicy: Cluster
   selector:
-    matchLabels:
-      app: cc
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: cc
-    spec:
-      containers:
-      - name: cc
-        image: store/softwareag/commandcentral:10.2-server
-        ports:
-        - containerPort: 8091
-        env:
-        - name: CC_PASSWORD
-          value: manage
-      imagePullSecrets:
-      - name: cc-registrypullsecret
-          
+    app: "is"
+ 
