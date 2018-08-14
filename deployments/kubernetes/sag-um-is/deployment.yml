@@ -43,7 +43,7 @@ spec:
           value: 1
         - name: CC_PASSWORD
           value: manage
-        - name: LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo.git
+        - name: LAR_REPO_URL
           value: <lar-repo-url>
         - name: LAR_REPO_BRANCH
           value: master
