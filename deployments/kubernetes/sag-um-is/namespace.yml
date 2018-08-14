@@ -16,24 +16,7 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Namespace
 metadata:
-  name: cc-deployment
-  namespace: cc-namespace
-spec:
-  selector:
-    matchLabels:
-      app: cc
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: cc
-    spec:
-      containers:
-      - name: cc
-        image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
-        ports:
-        - containerPort: 8091
-
+   name: cc-namespace
