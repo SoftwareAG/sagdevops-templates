@@ -33,7 +33,12 @@ spec:
     spec:
       containers:
       - name: cc
-        image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:10.3
+        image: store/softwareag/commandcentral:10.2-server
         ports:
         - containerPort: 8091
-
+        env:
+        - name: CC_PASSWORD
+          value: manage
+      imagePullSecrets:
+      - name: regcred
+          
