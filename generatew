@@ -19,8 +19,6 @@
 #
 ###############################################################################
 
-if [ "$#" -lt 3 ]; then
-
 NODE_ALIAS=${1:-node}
 RUNTIME_COMPONENT_ID=${2:-OSGI-SPM}
 TEMPLATE_ALIAS=${3:-my-template}
@@ -46,11 +44,11 @@ fi
 
 echo "Generating '$TEMPLATE_ALIAS' template ..."
 
-if ./sagccw exec templates composite generate nodeAlias=$NODE_ALIAS parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml ; then
+if ./sagccw exec templates composite generate nodeAlias=$NODE_ALIAS parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml -o /src/build/templates/$TEMPLATE_ALIAS/template.yaml ; then
     echo ""
     echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFULL"
     echo ""
-    echo "The template file: ./templates/$TEMPLATE_ALIAS/template.yaml"
+    echo "The template file: /src/build/templates/$TEMPLATE_ALIAS/template.yaml"
     echo ""
     echo "Supported parameters and default values are:"
     echo ""
