@@ -1,6 +1,6 @@
 # Configuring Digital Event Services
 
-Use this template to provision Digital Event Services 10.1 and higher.
+Use this template to configure Digital Event Services 10.1 and higher.
 
 ## Requirements
 
@@ -17,8 +17,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.1 or higher environments
-* Configuration of:
+	* Configuration of:
   * Truststores
   * Keystores
   * Messaging Services
