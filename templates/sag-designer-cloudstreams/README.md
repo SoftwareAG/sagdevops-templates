@@ -19,9 +19,10 @@
 
 # CloudStreams Designer
 
-Use this template to provision CloudStreams Designer
+Use this template to provision CloudStreams Designer.
 
 ## Requirements
+None
 
 ### Supported Software AG releases
 
@@ -34,13 +35,15 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.2 or higher CloudStreams Designer
+Provisioning of a new instance of CloudStreams Designer 10.2 or higher 
 
-## Provisioning of new CloudStreams server instance
+## Running as a composite template
 
-Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
+1. To import the sag-designer-cloudstreams/template.yaml file in Command Central, use one of the methods described in [Importing templates library](https://github.com/SoftwareAG/sagdevops-templates/wiki/Importing-templates-library)
+2. To apply the template, follow the instructions in [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
 
-Provision CloudStreams Designer on the installation with alias `dev1`:
+### Example
+To provision CloudStreams Designer on the installation with alias `dev1`:
 
 ```bash
 sagcc exec templates composite apply sag-designer-cloudstreams nodes=dev1 \
