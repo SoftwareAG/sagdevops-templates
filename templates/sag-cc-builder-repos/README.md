@@ -81,13 +81,14 @@ sagcc exec templates composite apply sag-cc-creds \
     --sync-job
 ```
 
-List available mirror product repositories managed through another Command Central:
+List available mirror product repositories managed through unstream Command Central
+listening at https://upstreamCC:8091/cce :
 
 ```bash
-sagcc list repository products properties=type,version,location -s UPSTREAMCCHOST:CCPORT | grep MIRROR
+sagcc list repository products properties=type,version,location -s upstreamCC | grep MIRROR
 MIRROR	10.2   	https://MIRRORSPMHOST:8093/products-10.2/repository
 
-sagcc list repository fixes properties=type,version,location -s UPSTREAMCCHOST:CCPORT | grep MIRROR
+sagcc list repository fixes properties=type,version,location -s upstreamCC | grep MIRROR
 MIRROR	10.2   	http://MIRRORSPMHOST:8092/fix-fixes-10.2/repository
 ```
 
