@@ -17,7 +17,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-	* Configuration of:
+* Configuration of:
   * Truststores
   * Keystores
   * Messaging Services
