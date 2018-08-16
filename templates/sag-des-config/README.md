@@ -1,6 +1,6 @@
 # Configuring Digital Event Services
 
-Use this template to configure Digital Event Services 10.1 and higher.
+Use this template to configure Digital Event Services 10.2 and higher.
 
 ## Requirements
 
@@ -8,8 +8,8 @@ Use this template to configure Digital Event Services 10.1 and higher.
 
 List the releases for which the template is tested and supported.
 
-* Command Central 10.1 and higher
-* Digital Event Services 10.1 and higher
+* Command Central 10.2 and higher
+* Digital Event Services 10.2 and higher
 
 ### Supported platforms
 
