@@ -35,7 +35,7 @@ templates:
        DEVRuntime:
         default:
           configuration:
-            OSGI-IS_default-DigitalEventServices:
+            ${des.instance.id}-DigitalEventServices:
               COMMON-KEYSTORES-DES:
                 ${des.keystore.name}:
                   Keystore:
