@@ -14,11 +14,11 @@ environments:
     des.eventtypes:         des.task.TaskChanged                          # Event Type added to this service
     
     des.truststore.name:     truststore                                                                                                                 
-    des.truststore.location: C:\SoftwareAG\UniversalMessaging\server\umserver\bin\nirvanacacerts.jks    # Location of the truststore 
+    des.truststore.location: C:\SoftwareAG\UniversalMessaging\server\default\bin\nirvanacacerts.jks    # Location of the truststore 
                                                                                                         # Password is encrypted using default shared secret
     des.truststore.password: '{AES/CBC/PKCS5Padding}{fKpfz0BX6XJNLKacYNbyRLTwzOKIIgbJbJNbN46mdjc=}{XJyLSfw3MbsxFs8HZkvRvw==}5ubFIE+j78Nz+d3TIj+Dtw=='
     des.keystore.name:       keystore                                                                   # Keystore name 
-    des.keystore.location:   C:\SoftwareAG\UniversalMessaging\server\umserver\bin\server.jks            # Location of the keystore 
+    des.keystore.location:   C:\SoftwareAG\UniversalMessaging\server\default\bin\server.jks            # Location of the keystore 
                                                                                                         # Password is encrypted using default shared secret
     des.keystore.password:   '{AES/CBC/PKCS5Padding}{/e723CB1JgamVr+ReMNYB1YHuu9FtO3KsfnD+KXbt7M=}{ncbV+wM4UdOZBw7PLuZTpg==}bI420v2lGsRfK68zdP/EtA=='
     des.um.user:             nirvana
