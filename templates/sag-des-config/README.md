@@ -52,7 +52,7 @@ to a Service Group and configure that group to work with the messaging service:
 
  ```bash
  sagcc exec templates composite apply sag-des-config nodes=dev1 \
-    des.instance.id=OSGI-IS_default \ 
+    des.instance.id=ApamaSubcomponent-default \ 
 	des.um.url=nsp://umhost:9000 \
 	des.truststore.location=C:\SoftwareAG\UniversalMessaging\server\default\bin\nirvanacacerts.jks \
 	des.keystore.location=C:\SoftwareAG\UniversalMessaging\server\default\bin\server.jks \
