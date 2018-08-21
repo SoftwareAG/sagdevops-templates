@@ -1,5 +1,0 @@
-alias: sag-ic-large-stack
-description: Software AG Integration Cloud stack with IS, UM, TC clusters
-
-environments:
-  default:

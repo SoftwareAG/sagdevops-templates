@@ -1,3 +1,25 @@
+###############################################################################
+#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+# TODO: integrate changes from
+# http://svn.apama.com/um/branches/dev/BF-6295_Docker/prod/installation/docker/dockerfile/
+
 # Command Central docker builder image
 # Use $TAG to control release
 ARG TAG=10.3
@@ -54,4 +76,4 @@ ENTRYPOINT $SAG_HOME/entrypoint.sh
 # Current working directory for all commands. This is where the UM installation is copied to within the image.
 WORKDIR $UM_HOME
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f localhost:8092/spm/ || exit 1"
+# HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD "curl -f http://localhost:8092/spm/ || exit 1"

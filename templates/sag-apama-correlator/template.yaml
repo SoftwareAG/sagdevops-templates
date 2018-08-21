@@ -1,56 +1,126 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+# This is a reference template that comprehensively demonstrates all possible correlator configuration that can be applied
+# using a composite template. It exists for informational purposes only; it is not a well-rounded sample application that
+# you should build upon
+
 alias: sag-apama-correlator
 description: Apama correlator
-#dslVersion: "1.1"
+
+dslVersion: "1.1"
+version: "1.0"
 
 environments:
   default:
-    apama.pamserver.license.key:  "*_PAMCO_10.*_*_${os.platform}" # Apama license key
-    apama.instance.name: default  # Correlator instance name
-    apama.port: 15903             # Correlator instance port
-    apama.fixes: []               # Apama fixes to install
+    # First digit of the release version being used
+    release.major: 10
+    # Correlator instance name
+    apama.instance.name: default  
+    # Correlator instance port
+    apama.port: 15904                
+    # Apama license key
+    apama.pamserver.license.key: "*_PAM*_${release.major}.*_*_${os.platform}"
+    # Fixes to install. ALL by default
+    apama.fixes: ALL
 
-templates:
-  correlator:
+templates:                                                                      
+  apama-correlator:
+    description: |
+      Install and patch Apama, then configure and start a correlator with an application running in it
+    files:
+      # Make an application available to the correlator instance that is going to run it. The zip should be attached to the
+      # template at import time. 'HelloWorld.zip' is a dummy application, but you can create your own using 'engine_deploy'.
+      "Apama/command-central/instances/correlator/${apama.instance.name}/HelloWorld.zip": "HelloWorld.zip"      
     licenses:
-      "Apama/command-central/instances/${apama.instance.name}/ApamaCorrelatorLicense.xml": "${apama.pamserver.license.key}" # license file
+      # Make the license key available to the correlator instance
+      "Apama/command-central/instances/correlator/${apama.instance.name}/ApamaCorrelatorLicense.xml": "${apama.pamserver.license.key}" 
+    # Install Apama fixes
     fixes: ${apama.fixes}
     products:
-      PAMspm:     # Apama | Platform Manager Plug-in - MUST be explicitly installed as it is not a dependency of PAMServer
-      PAMServer:  # Apama | Server
-        ${apama.instance.name}: # Name of the correlator instance that will be created under Command Central
+      # Install Apama | Server
+      PAMServer:
+        # Creating/reconfiguring a correlator instance with a given name
+        ${apama.instance.name}:
           instance.type: 'correlator'
-          # Port that the correlator listens on, sourced from template.properties
+          # Port that the correlator listens on
           instance.port: ${apama.port}
-          # must be included here to allow instance updates
+          # help SPM to match existing instance and skip creation operation and perform noop update
           runtimeComponentId: Apama-correlator-${instance.name}
+
           configuration:                                                      
             Apama-correlator-${instance.name}:
               APAMA-ARGS:
                 APAMA-ARGS: |
                   # Configuring the log verbosity of this correlator
                   logLevel: INFO
-                  # And the location of the main correlator log. See our documentation for information about naming conventions.
-                  outputLog: correlator-${START_TIME}.log
-                  # Persistence is enabled
+                  # Location of the main correlator log
+                  outputLog: correlator-${instance.name}.log
+                  # Enable the Apama input log
+                  inputLog: input.log
+                  # Correlator persistence is enabled - this isn't something you need in most applications.
                   enableCorrelatorPersistence: true
-                  # We do _not_ reset the persistent state each time we start up. You might want to change this to true to create a "clean slate"
-                  clearPersistentStateOnStartup: false
-                  # Location of our persistence store, relative to the instance directory. In a real production system, you probably want to put this somewhere more resilient, like a shared drive.
-                  persistentDatastorePath: persistence.db
-  # app:
-  #   files:
-  #     # Copies our deployed application to the correlator instance that is going to run it ('Persistent')
-  #     "${correlator-instances}/${apama.instance.name}/PersistentApplication.zip": "PersistentApplication.zip"
+                  # Location of the persistence store (for enableCorrelatorPersistence)
+                  persistentDatastorePath: persistence_store.db
+                  # Arbitrary extra command line arguments to the correlator
+                  extraArgs: -j
+                  
+              # Define arbitrary environment variables to launch the correlator with. There is not usually much need for this.
+              APAMA-ENVVAR:
+                APAMA-ENVVAR: |
+                  APAMA_DUMMY_VARIABLE=foobar
+              
+              # Connects to another correlator with a supplied host, port and channel
+              APAMA-ENGINE-CONNECT:
+                APAMA-ENGINE-CONNECT-localhost-15905:
+                  Transport:
+                    Host: localhost
+                    Port: '15905'
+                  ExtendedProperties:
+                    Property:
+                    - '@name': channels
+                      $: c1
+                    - '@name': mode
+                      $: parallel
+                    - '@name': disconnectOnSlow
+                      $: 'false'
+
+              # Used to override the properties that are set in any configuration file in your application, such as YAML/.properties
+              # for connectivity plug-ins, or JMS configuration or distributed store configuration. For example, you might override
+              # a connection URL that is different between your development and production environment.
+              APAMA-PROP-OVERRIDES:
+                APAMA-PROP-OVERRIDES: |
+                  prop1: value1
+                  prop2: value2
+                  someHostname: remote.example.com
+      # Install Apama | Platform Manager Plug-in
+      PAMspm:
 
 layers:                                                                         
   runtime:
-    productRepo: ${repo.product}            # default repository to install products from
-    fixRepo:     ${repo.fix}                # default repository to install fixes from
-    templates: 
-      - correlator
-#      - app
+    # Product repository to install from
+    productRepo: ${repo.product}
+    # Fix repository to install from
+    fixRepo: ${repo.fix}
+    templates:
+        - apama-correlator
 
 provision:
   default:
     runtime: ${nodes}
-#      aliases: ${nodes}

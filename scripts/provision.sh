@@ -1,4 +1,22 @@
 #!/bin/sh
+#*******************************************************************************
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+#*******************************************************************************
 set -e
 
 # configuring CC builder itself?
@@ -39,6 +57,7 @@ $CC_HOME/inventory.sh
 NODES=${NODES:-node}
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
+RELEASE_MAJOR=${RELEASE_MAJOR:-10}
 
 if [ "$#" != "0" ]; then  
     MAIN_TEMPLATE_ALIAS=${1}
@@ -130,13 +149,19 @@ fi
 
 if [ -z $MAIN_TEMPLATE_ALIAS ] ; then 
     if [ -f template.yaml ]; then
-        echo "Found template.yaml. Importing ..."
+        echo "Found template.yaml ..."
+        # templatefile=/tmp/t.yaml
         # replacing template alias as 'container'
-        templatefile=/tmp/t.yaml
-        MAIN_TEMPLATE_ALIAS=container
-        echo alias: $MAIN_TEMPLATE_ALIAS>$templatefile && tail -n +2 template.yaml>>$templatefile
+        # sed '/^[[:blank:]]*#/d;s/#.*//' template.yaml>$templatefile
+        # replacing template alias as 'container'
+        #MAIN_TEMPLATE_ALIAS=container
+        #echo alias: $MAIN_TEMPLATE_ALIAS>$templatefile && tail -n +2 template.yaml>>$templatefile
+        # cat $templatefile
+        # get the alias: <value>
+        templatefile=template.yaml
+        MAIN_TEMPLATE_ALIAS=`awk '/^alias:/{print $NF}' $templatefile`
+        echo "Importing template ... $MAIN_TEMPLATE_ALIAS"
         cat $templatefile
-        echo "Importing template ..."
         sagcc exec templates composite import -i $templatefile overwrite=true
     else
         echo "ERROR: No template.yaml found nor template alias is provided!"
@@ -145,7 +170,7 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
 fi
 
 
-ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE os.platform=lnxamd64 $PARAMS "
+ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE release.major=$RELEASE_MAJOR os.platform=lnxamd64 $PARAMS "
 
 echo "=================================="
 echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
@@ -161,6 +186,14 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     echo ""
     kill $tailpid>/dev/null
     sleep 3
+
+    echo "Capturing metadata ..."
+    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.txt -f tsv
+    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.xml -f xml
+
+    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt -f tsv
+    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.xml -f xml
+
     echo "Cleaning up ..."
     rm -rf $SAG_HOME/common/conf/nodeId.txt
 

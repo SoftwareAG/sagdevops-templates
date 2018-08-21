@@ -1,5 +1,0 @@
-alias: prometheus-stack
-description: Prometheus and Graphana containers Stack
-
-environments:
-  default:

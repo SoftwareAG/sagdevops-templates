@@ -1,0 +1,85 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+version: "3.2"
+
+services:
+  sqlserver:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=MaNaGe123
+
+  tc02:
+    image: ${REG:-store/softwareag}/terracotta-server:${TAG:-10.3}
+    ports:
+      - 9010:9010                       
+      - 9030:9030                       
+      - 9040:9040                       
+      - 8092                       
+    hostname: tc02
+    environment:
+      - CC_AUTO_REGISTER=1              
+      - CC_PASSWORD 
+      - OFFHEAP_MAX_SIZE=513m
+
+  um02:
+    image: ${REG:-store/softwareag}/universal-messaging:${TAG:-10.3}
+    ports:
+      - 9000:9000
+      - 8092
+    hostname: um02
+    environment:
+      - CC_AUTO_REGISTER=1
+      - CC_PASSWORD 
+
+  is02:
+    image: ${REG:-store/softwareag}/integration-server:${TAG:-10.3}
+    hostname: is02
+    ports:
+      - 5555:5555
+      - 8092
+    environment:
+      - CC_AUTO_REGISTER=1     
+      - CC_PASSWORD 
+    depends_on: 
+      - sqlserver
+      - tc02
+      - um02
+      - initdb
+
+  initdb:
+    image: ${REG:-store/softwareag/}commandcentral-client:${CC_TAG:-10.3}
+    environment: 
+      - CC_SERVER=cc
+      - CC_PASSWORD
+      - CC_CHECK_EVERY=10
+    command: >
+      sagcc exec templates composite apply sag-db-sqlserver 
+        repo.product=products repo.fix=fixes
+        release=10.3 nodes=node db.host=sqlserver db.admin.password=MaNaGe123 db.products=[IS] --wait-for-cc --wait 600 --sync-job
+    depends_on: 
+      - sqlserver
+
+networks:
+  default:
+    external:
+      name: ${NET:-sag-cc_default}

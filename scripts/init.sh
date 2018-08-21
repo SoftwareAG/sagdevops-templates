@@ -1,4 +1,22 @@
 #!/bin/sh
+#*******************************************************************************
+#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+#*******************************************************************************
 set -e
 
 sagcc list inventory products --wait-for-cc
@@ -15,8 +33,9 @@ echo -e "\n"
 
 if [ ! -z $LICENSES_URL ]; then
     # https://solutionbook.softwareag.com/sb-web/page/detail_page.xhtml?guid=1227042885&type=platforms
+    # https://iwiki.eur.ad.sag/pages/downloadallattachments.action?pageId=517544534
     echo "Importing license keys from: $LICENSES_URL ..."
-    curl -o ~/licenses.zip $LICENSES_URL && \
+    curl -k -o ~/licenses.zip "$LICENSES_URL" && \
     sagcc add license-tools keys -i ~/licenses.zip && \
     rm ~/licenses.zip
 else

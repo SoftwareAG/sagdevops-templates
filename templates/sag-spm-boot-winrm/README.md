@@ -1,3 +1,21 @@
+<!-- Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+
+   SPDX-License-Identifier: Apache-2.0
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+
+     limitations under the License.                                                  
+
+-->
 # Bootstrapping Platform Manager on remote Windows machines
 
 With this template you can install Platform Manager (SPM) on remote
@@ -18,13 +36,15 @@ requirement to have SSH access.
 * DotNet 4.5 or higher (used to unzip)
 * The remote connection user account must have Administrator privileges
 * WinRM service must be running
-* The memory used by PowerShell should be at the 4GB limit or more ( It should work with 2GB, but sometimes it fails )
+* The memory used by PowerShell should be at the 2GB or more
 
 Run the following commands from the PowerShell window as Administrator to ensure that the WinRM service is running and the PowerShell memory is set properly:
 
 ```powershell
 PS> Enable-PSRemoting -SkipNetworkProfileCheck
-PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 4096
+PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
+PS> Set-Item WSMan:\localhost\Plugin\Microsoft.PowerShell\Quotas\MaxMemoryPerShellMB 2048
+PS> Restart-Service winrm
 ```
 
 ### System requirements for the Command Central machine
