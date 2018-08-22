@@ -1,6 +1,6 @@
 #!/bin/sh
 #*******************************************************************************
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -34,19 +34,53 @@ echo -e "\n"
 if [ ! -z $LICENSES_URL ]; then
     # https://solutionbook.softwareag.com/sb-web/page/detail_page.xhtml?guid=1227042885&type=platforms
     # https://iwiki.eur.ad.sag/pages/downloadallattachments.action?pageId=517544534
-    echo "Importing license keys from: $LICENSES_URL ..."
+    echo "Importing license keys from: '$LICENSES_URL' ..."
     curl -k -o ~/licenses.zip "$LICENSES_URL" && \
     sagcc add license-tools keys -i ~/licenses.zip && \
     rm ~/licenses.zip
 else
-    echo "SKIP: LICENSES_URL env var is not set. No license keys are imported"    
+    echo "SKIP: LICENSES_URL env var is not set. No new license keys are imported"    
 fi
 
-if [ ! -z $REPO_HOST ]; then
-    echo "Registering $REPO_PRODUCT and $REPO_FIX repositories on $REPO_HOST ..."
-    sagcc exec templates composite apply sag-cc-creds-dev --sync-job -c 2 -e DONE
-    sagcc exec templates composite apply sag-cc-builder-dev --sync-job -c 5 \
-        repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX repo.host=$REPO_HOST --sync-job -e DONE
+# default credentials
+REPO_CREDS=${REPO_CREDS:-REPO}
+
+if [ ! -z $REPO_USERNAME ] && [ ! -z $REPO_PASSWORD ] ; then
+    echo "Registering credentials '$REPO_CREDS' for '$REPO_USERNAME/******' ..."
+
+    sagcc exec templates composite apply sag-cc-creds --sync-job -c 5 -e DONE \
+        credentials.username=$REPO_USERNAME \
+        credentials.password=$REPO_PASSWORD \
+        credentials.key=$REPO_CREDS
 else
-    echo "SKIP: REPO_HOST env var is not set. No repositories are registered"
+    echo "SKIP: REPO_USERNAME and REPO_PASSWORD env vars are not set. No new credentials are registered"
+fi
+
+if [ ! -z $REPO_PRODUCT_URL ]; then
+    if [ ! -z $REPO_FIX_URL ]; then
+        echo "Registering private MIRROR repositories $REPO_CREDS ..."
+        echo "products: $REPO_PRODUCT_URL"
+        echo "fixes:    $REPO_FIX_URL"
+
+        sagcc exec templates composite apply sag-cc-builder-repos --sync-job -c 5 -e DONE \
+            repo.product.credentials.key=$REPO_CREDS \
+            repo.product.url=$REPO_PRODUCT_URL \
+            repo.fix.url=$REPO_FIX_URL
+    else
+        echo "Registering public MASTER repositories with $REPO_CREDS ..."
+        echo "products: $REPO_PRODUCT_URL"
+        
+        sagcc exec templates composite apply sag-cc-builder-repos --sync-job -c 5 -e DONE \
+            repo.product.credentials.key=$REPO_CREDS \
+            repo.product.url=$REPO_PRODUCT_URL
+    fi
+else
+    if [ ! -z $REPO_HOST ]; then
+        echo "Registering internal MIRROR '$REPO_PRODUCT' and '$REPO_FIX' repositories on '$REPO_HOST' ..."
+        sagcc exec templates composite apply sag-cc-creds-dev --sync-job -c 2 -e DONE
+        sagcc exec templates composite apply sag-cc-builder-dev --sync-job -c 5 --sync-job -e DONE \
+            repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX repo.host=$REPO_HOST 
+    else
+        echo "SKIP: REPO_HOST env var is not set. No repositories are registered"
+    fi
 fi
