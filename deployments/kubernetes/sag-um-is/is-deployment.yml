@@ -16,7 +16,33 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-apiVersion: v1
-kind: Namespace
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-   name: um-is-namespace
+  name: is-deployment
+  namespace: um-is-namespace
+spec:
+  selector:
+    matchLabels:
+      app: is
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: is
+    spec:
+      containers:
+      - name: is01
+        image:  daerepository03.eur.ad.sag:4443/ccdevops/integration-server:10.3
+        ports:
+        - containerPort: 5555
+        - containerPort: 8092
+        envFrom:
+        - configMapRef:
+            name: is-env-variables
+#      imagePullSecrets:
+#      - name: is-registrypullsecret
+          
+
+
+

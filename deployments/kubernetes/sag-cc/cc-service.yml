@@ -17,6 +17,14 @@
 #
 ###############################################################################
 apiVersion: v1
-kind: Namespace
+kind: Service
 metadata:
-   name: um-is-namespace
+  name: cc
+  namespace: cc-namespace
+spec:
+  selector:
+    app: "cc"
+  ports:
+  - protocol: TCP
+    port: 8091
+ 

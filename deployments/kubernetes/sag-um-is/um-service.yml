@@ -17,6 +17,15 @@
 #
 ###############################################################################
 apiVersion: v1
-kind: Namespace
+kind: Service
 metadata:
-   name: um-is-namespace
+  name: um01
+  namespace: um-is-namespace
+spec:
+  selector:
+    app: "um"
+  ports:
+  - protocol: TCP
+    port: 9000
+    port: 8092
+ 
