@@ -6,8 +6,6 @@ Use this template to configure Digital Event Services 10.2 and higher.
 
 ### Supported Software AG releases
 
-List the releases for which the template is tested and supported.
-
 * Command Central 10.2 and higher
 * Digital Event Services 10.2 and higher
 
@@ -44,7 +42,7 @@ add a predefined Event Type to a Service Group and configure that group to work 
 	des.service.name=sampleService \ 
 	des.servicegroup.name=sampleServiceGroup
 ```
-Provision Digital Event Services into the default Apama correlator instance, configure truststore and
+Provision Digital Event Services into the default [Apama correlator instance](../sag-apama-correlator), configure truststore and
 keystore locations, configure default messaging service to point to the 
 [Universal Messaging realm server](../sag-um-server/) with a username and password, listening at 
 `nsp://umhost:9000`, point it to use the configured keystore and truststore, add a predefined Event Type
@@ -52,7 +50,7 @@ to a Service Group and configure that group to work with the messaging service:
 
  ```bash
  sagcc exec templates composite apply sag-des-config nodes=dev1 \
-    des.instance.id=ApamaSubcomponent-default \ 
+    des.instance.id=Apama-Correlator-default \ 
 	des.um.url=nsp://umhost:9000 \
 	des.truststore.location=C:\SoftwareAG\UniversalMessaging\server\default\bin\nirvanacacerts.jks \
 	des.keystore.location=C:\SoftwareAG\UniversalMessaging\server\default\bin\server.jks \
