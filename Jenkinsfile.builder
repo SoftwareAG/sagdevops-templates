@@ -37,7 +37,7 @@ pipeline {
     agent none
     environment {
         // version of the Command Central docker images build/release
-        CC_TAG = '10.3'
+        CC_TAG = '10.3.0.0.77'
 
         // images are from private registry
         CC_SERVER_IMAGE = 'daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server'
