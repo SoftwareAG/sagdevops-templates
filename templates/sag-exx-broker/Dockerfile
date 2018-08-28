@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright Â© 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -20,7 +20,7 @@ ARG TAG=10.3
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
 ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
 
-FROM $BUILDER_IMAGE
+FROM $BUILDER_IMAGE  as builder
 
 ARG __exx_broker_instance_name=ETB002
 
