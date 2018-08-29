@@ -40,9 +40,30 @@ spec:
         envFrom:
         - configMapRef:
             name: is-env-variables
+        volumeMounts:
+        - name: spm-prop-1
+          mountPath: /opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+          subPath: com.softwareag.registry.handler.pid-CC.properties
+        - name: spm-prop-2
+          mountPath: /opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+          subPath: com.softwareag.registry.pid-CC.properties
+        - name: spm-prop-3
+          mountPath: /opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+          subPath: com.softwareag.repository.git.pid-CC.properties
+      volumes:
+      - name: spm-prop-1
+        configMap:
+          name: spm-prop-1
+      - name: spm-prop-2
+        configMap:
+          name: spm-prop-2
+      - name: spm-prop-3
+        configMap:
+          name: spm-prop-3
 #      imagePullSecrets:
 #      - name: is-registrypullsecret
-          
+
+   
 
 
 
