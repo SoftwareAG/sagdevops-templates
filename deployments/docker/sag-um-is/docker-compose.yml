@@ -28,7 +28,7 @@ services:
     environment:
       - CC_AUTO_REGISTER=1     
       - CC_PASSWORD
-      - LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo.git
+      - LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo-is.git
       - LAR_REPO_BRANCH=master
     volumes:
       - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
@@ -44,7 +44,7 @@ services:
     environment:
       - CC_AUTO_REGISTER=1
       - CC_PASSWORD
-      - LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo.git
+      - LAR_REPO_URL=http://irepo/scm/devops/wmic-asset-repo-um.git
       - LAR_REPO_BRANCH=master
     volumes:
       - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
