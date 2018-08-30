@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,24 +16,29 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-ARG TAG=10.3
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
-
-FROM $BUILDER_IMAGE  as builder
-
-ARG __exx_broker_instance_name=ETB002
-
-RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
-
-FROM $BASE_IMAGE
-
-EXPOSE 7722 7723 8092
-
-COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
-
-# entrypoint script
-ADD entrypoint.sh $SAG_HOME/
-
-WORKDIR $SAG_HOME
-ENTRYPOINT $SAG_HOME/entrypoint.sh
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cc-deployment
+  namespace: cc-namespace
+spec:
+  selector:
+    matchLabels:
+      app: cc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cc
+    spec:
+      containers:
+      - name: cc
+        image: store/softwareag/commandcentral:10.2-server
+        ports:
+        - containerPort: 8091
+        envFrom:
+        - configMapRef:
+            name: cc-env-variables
+      imagePullSecrets:
+      - name: cc-registrypullsecret
+          

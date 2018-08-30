@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -13,27 +13,18 @@
 #     distributed under the License is distributed on an "AS IS" BASIS,
 #     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #     See the License for the specific language governing permissions and
-#     limitations under the License.                                                            
+#     limitations under the License.
 #
 ###############################################################################
-ARG TAG=10.3
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
+apiVersion: v1
+data:
+  CC_PASSWORD: manage
+  CC_AUTO_REGISTER: "1"
+  LAR_REPO_URL: "http://irepo/scm/devops/wmic-asset-repo.git"
+  LAR_REPO_BRANCH: "master"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: um-env-variables
+  namespace: um-is-namespace
 
-FROM $BUILDER_IMAGE  as builder
-
-ARG __exx_broker_instance_name=ETB002
-
-RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
-
-FROM $BASE_IMAGE
-
-EXPOSE 7722 7723 8092
-
-COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
-
-# entrypoint script
-ADD entrypoint.sh $SAG_HOME/
-
-WORKDIR $SAG_HOME
-ENTRYPOINT $SAG_HOME/entrypoint.sh
