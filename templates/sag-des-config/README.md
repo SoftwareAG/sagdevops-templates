@@ -1,13 +1,13 @@
 # Configuring Digital Event Services
 
-Use this template to configure Digital Event Services 10.2 and higher.
+Use this template to configure Software AG Digital Event Services 10.2 and higher.
 
 ## Requirements
 
 ### Supported Software AG releases
 
-* Command Central 10.2 and higher
-* Digital Event Services 10.2 and higher
+* Command Central 10.2 or higher
+* Digital Event Services 10.2 or higher
 
 ### Supported platforms
 
@@ -23,15 +23,9 @@ All supported Windows and UNIX platforms.
 
 ## Running as a composite template
 
-Provision an instance and configuration of a Digital Event Services enabled runime,
-for example [Integration Server](../sag-is-server/) default instance
-on Windows.
+Provision an instance and a configuration of a runtime that is enabled for Digital Event Services, for example an [Integration Server](../sag-is-server/) default instance on Windows.
 
-Provision Digital Event Services into the default Integration Server
-instance, configure truststore and keystore locations, configure default messaging service to point to the
-[Universal Messaging realm server](../sag-um-server/) with a username and password, 
-listening at `nsp://umhost:9000`, point it to use the configured keystore and truststore, 
-add a predefined Event Type to a Service Group and configure that group to work with the messaging service:
+Provision Digital Event Services into the default Integration Server instance, configure truststore and keystore locations, configure the default messaging service with a username and a password for Universal Messaging, point the messaging service to the [Universal Messaging realm server](../sag-um-server/) that listens at `nsp://umhost:9000`, configure the messaging sevice to use the specified keystore and truststore, add a predefined digital event type to a service group, and configure that service group to use the messaging service:
 
  ```bash
  sagcc exec templates composite apply sag-des-config nodes=dev1 \
@@ -42,11 +36,7 @@ add a predefined Event Type to a Service Group and configure that group to work 
 	des.service.name=sampleService \ 
 	des.servicegroup.name=sampleServiceGroup
 ```
-Provision Digital Event Services into the default [Apama correlator instance](../sag-apama-correlator), configure truststore and
-keystore locations, configure default messaging service to point to the 
-[Universal Messaging realm server](../sag-um-server/) with a username and password, listening at 
-`nsp://umhost:9000`, point it to use the configured keystore and truststore, add a predefined Event Type
-to a Service Group and configure that group to work with the messaging service:
+Provision Digital Event Services into the default [Apama correlator instance](../sag-apama-correlator), configure truststore and keystore locations,  configure the default messaging service with a username and a password for Universal Messaging, point the messaging service to the [Universal Messaging realm server](../sag-um-server/) that listens at `nsp://umhost:9000`, configure the messaging service to use the specified keystore and truststore, add a predefined digital event type to a service group, and configure that service group to use the messaging service:
 
  ```bash
  sagcc exec templates composite apply sag-des-config nodes=dev1 \
