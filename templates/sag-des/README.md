@@ -18,16 +18,14 @@
 -->
 # Digital Event Services
 
-Use this template to provision Digital Event Services 10.1 and higher.
+Use this template to provision Software AG Digital Event Services 10.1 and higher.
 
 ## Requirements
 
 ### Supported Software AG releases
 
-List the releases for which the template is tested and supported.
-
-* Command Central 10.1 and higher
-* Digital Event Services 10.1 and higher
+* Command Central 10.1 or higher
+* Digital Event Services 10.1 or higher
 
 ### Supported platforms
 
@@ -35,20 +33,16 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.1 or higher environments
+* Provisioning of new environments version 10.1 or higher
 * Installing latest fixes
 * Configuration of:
   * Messaging Services
 
 ## Running as a composite template
 
-Provision an instance of a Digital Event Services enabled runime,
-for example [Integration Server](../sag-is-server/) default instance
-on Windows.
+Provision an instance of a runtime that is enabled for Digital Event Services, for example an [Integration Server](../sag-is-server/) default instance on Windows.
 
-Provision Digital Event Services into the default Integration Server
-instance and configure default messaging service to point to the
-[Universal Messaging realm server](../sag-um-server/) listening at `nsp://umhost:9000`:
+Provision Digital Event Services into the default Integration Server instance and configure the default messaging service to point to the [Universal Messaging realm server](../sag-um-server/) that listens at `nsp://umhost:9000`:
 
  ```bash
  sagcc exec templates composite apply sag-des nodes=dev1 \
