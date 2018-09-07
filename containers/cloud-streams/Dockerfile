@@ -16,9 +16,9 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-ARG TAG=10.3
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:$TAG
+
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 

@@ -1,0 +1,70 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+version: "3.2"
+
+services:
+  base:
+    image: ${REG:-softwareag}/base:${TAG:-10.3}
+    build:
+      context: base-centos/
+
+  java:
+    image: ${REG:-softwareag}/java:${TAG:-10.3}
+    build:
+      context: java-centos/
+    depends_on: 
+      - base
+
+  node:
+    image: ${REG:-softwareag}/commandcentral-node:${TAG:-10.3}
+    ports:
+      - 8092
+    build:
+      context: commandcentral-node/
+      args:
+        - CC_INSTALLER
+        - CC_INSTALLER_URL
+        - CC_SERVER_IMAGE=${CC_SERVER_IMAGE:-store/softwareag/commandcentral-server}:${CC_TAG:-10.3} # base image for the builder, e.g. server-10.3
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+    depends_on:
+      - java
+    environment:
+      - CC_AUTO_REGISTER=0
+
+  builder:
+    image: ${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+    ports:
+      - 8091 # CCE
+      - 8092 # target node SPM
+    build:
+      context: ../
+      dockerfile: infrastructure/commandcentral-builder/Dockerfile
+      args:
+        - CC_SERVER_IMAGE=${CC_SERVER_IMAGE:-store/softwareag/commandcentral-server}:${CC_TAG:-10.3} # store/softwareag/commandcentral-server
+        - CC_NODE_IMAGE=${REG:-softwareag}/commandcentral-node:${TAG:-10.3} # store/softwareag/commandcentral-node
+        - LICENSES_URL                            # licenses .zip, e.g. 10.x
+        - REPO_HOST                               # default AQU host
+        - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
+        - REPO_FIX                                # fix release repo, e.g. GA_Fix_Repo
+        - REPO_PRODUCT_URL                        # product mirror URL
+        - REPO_FIX_URL                            # fix mirror URL
+        - REPO_USERNAME                           # Empower or mirror username
+        - REPO_PASSWORD                           # Empower or user password
+    depends_on: 
+      - node

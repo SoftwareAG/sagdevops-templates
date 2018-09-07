@@ -24,8 +24,35 @@ pipeline {
     parameters {
         choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'TAG')
     }
+    environment {
+        REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
+
+        // version of the Command Central docker images build/release
+        CC_TAG = '10.3'
+
+        REPO_FIX = 'GA_Fix_Repo'
+        REPO_HOST = 'aquarius-bg.eur.ad.sag'
+        REPO_PRODUCT = '103oct2018_SIC'
+        FIXES = '[]'
+        CC_NODE_IMAGE = "daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:10.3"
+
+        // Licenses archive URL to load
+        // LICENSES_URL = "http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster"
+    }
     stages {
-        stage("Build") {
+        stage("Infra Images") {
+            agent { label: 'docker' }
+            steps {
+                script {
+                    def baseImages = 'base java node builder'
+                    checkout scm
+                    sh "docker-compose -f containers/docker-compose.yml config"
+                    sh "docker-compose -f containers/docker-compose.yml build --pull $baseImages"
+                    sh "docker-compose -f containers/docker-compose.yml push $baseImages"
+                }
+            }
+        }        
+        stage("Product Images") {
             agent none
             steps {
                 script {

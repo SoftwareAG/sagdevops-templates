@@ -19,8 +19,8 @@
 
 # Building Docker container images with Command Central
 
-## Building container images
+## Building the Command Central Docker Builder
 
 ```bash
-docker-compose build
+docker-compose build commandcentral-builder
 ```

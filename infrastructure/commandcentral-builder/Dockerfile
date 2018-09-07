@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -17,32 +17,34 @@
 #
 ###############################################################################
 
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server
-ARG NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node
+ARG CC_SERVER_IMAGE
+ARG CC_NODE_IMAGE
 
 # Get access to the node image
-FROM $NODE_IMAGE as node
+FROM $CC_NODE_IMAGE as node
 
 # Base CC server image
-FROM $BASE_IMAGE as builder
+FROM $CC_SERVER_IMAGE as builder
 
 ARG LICENSES_URL
 ARG REPO_PRODUCT
 ARG REPO_FIX
 ARG REPO_HOST
-
-#ENV REPO_PRODUCT=$REPO_PRODUCT
-#ENV REPO_FIX=$REPO_FIX
-#ENV REPO_HOST=$REPO_HOST
+ARG REPO_PRODUCT_URL
+ARG REPO_FIX_URL
+ARG REPO_CREDS
+ARG REPO_USERNAME
+ARG REPO_PASSWORD
 
 WORKDIR $CC_HOME
+
+# USER 1724
 
 # add all templates
 ADD templates/ profiles/CCE/data/templates/composite/
 # replace default scripts
 ADD scripts/*.sh ./
 
-# instead of bootstrapping node from $CC_INSTALLER
 # Copy target node from the $NODE_IMAGE
 COPY --from=node /opt/softwareag/ /opt/softwareag/
 

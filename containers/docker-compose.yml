@@ -19,29 +19,51 @@
 version: "3.2"
 
 services:
-  base:
-    image: ${REG:-softwareag}/base:${TAG:-10.3}
-    build:
-      context: base/
-
-  java:
-    image: ${REG:-softwareag}/java:${TAG:-10.3}
-    build:
-      context: java/
-
-  node:
-    image: ${REG:-softwareag}/node:${TAG:-10.3}
+  cc: # command-central
+    image: ${SAG_REG:-store/softwareag}/commandcentral-server:${CC_TAG:-10.3}
     ports:
-      - 8092:8092
+      - 8091 # CCE
+      - 8092 # target node SPM
+    # environment:
+    #   - REPO_HOST                                 # alternative, closest AQU host
+    #   - REPO_PRODUCT                              # alternative, product repo within the same release
+    #   - REPO_FIX                                  # alternative, fix repo
+    #   - LICENSES_URL                              # additional licenses
+    #   - REPO_PRODUCT_URL                        # product mirror URL
+    #   - REPO_FIX_URL                            # fix mirror URL
+    #   - REPO_USERNAME                           # Empower or mirror username
+    #   - REPO_PASSWORD                           # Empower or user password
+    # volumes: 
+    #   - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+    #   - ./scripts/init.sh:/opt/sagtools/init.sh
+    #   - ./scripts/test.sh:/opt/sagtools/test.sh
+    #   - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+    #   - ./scripts/provision.sh:/opt/sagtools/provision.sh
+    #   - ./environments/:/src/environments/
+  
+  universal-messaging:
+    image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
     build:
-      context: sag
+      context: universal-messaging/
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
-        - PORT=8092
-        - ENTRYPOINT=profiles/SPM/bin/console.sh
+        - __um_fixes=$FIXES             # [] or ALL from the env
+    ports:
+      - 9000                            # container specific ports
+    hostname: um
+    environment:
+      - CC_AUTO_REGISTER                # No auto register as we don't have a server
 
-  cloudstreams:
+  cloud-streams:
     image: ${REG:-softwareag}/cloud-streams:${TAG:-10.3}
     build:
-      context: cloudstreams/
+      context: cloud-streams/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+    ports:
+      - 5555                            # container specific ports
+    hostname: cst
+    environment:
+      - CC_AUTO_REGISTER               # No auto register as we don't have a server
