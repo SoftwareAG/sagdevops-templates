@@ -20,10 +20,8 @@
 ARG CC_SERVER_IMAGE
 ARG CC_NODE_IMAGE
 
-# Get access to the node image
 FROM $CC_NODE_IMAGE as node
 
-# Base CC server image
 FROM $CC_SERVER_IMAGE as builder
 
 ARG LICENSES_URL
@@ -38,7 +36,7 @@ ARG REPO_PASSWORD
 
 WORKDIR $CC_HOME
 
-# USER 1724
+USER 1724
 
 # add all templates
 ADD templates/ profiles/CCE/data/templates/composite/
@@ -46,17 +44,11 @@ ADD templates/ profiles/CCE/data/templates/composite/
 ADD scripts/*.sh ./
 
 # Copy target node from the $NODE_IMAGE
-COPY --from=node /opt/softwareag/ /opt/softwareag/
+COPY --from=node --chown=1724:1724 /opt/softwareag/ /opt/softwareag/
 
 # configure repos and add licenses
 RUN $CC_HOME/provision.sh
 
-# default parameters
-ONBUILD ARG RELEASE=$RELEASE
-ONBUILD ARG REPO_PRODUCT=$REPO_PRODUCT
-ONBUILD ARG REPO_FIX=$REPO_FIX
-ONBUILD ARG REPO_HOST=
 ONBUILD ADD . .
-# do not run by default # ONBUILD RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
 
 WORKDIR /src

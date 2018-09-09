@@ -19,12 +19,18 @@
 version: "3.2"
 
 services:
+  node:
+    build:
+      args:
+        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG:-10.3} # store/softwareag/commandcentral-server
+        - CC_INSTALLER=cc-def-10.3-release-lnxamd64
+        - CC_INSTALLER_URL=aquarius-bg.eur.ad.sag/cc/installers
+
   builder:
     build:
       args:
-        - CC_SERVER_IMAGE=${CC_SERVER_IMAGE:-store/softwareag/commandcentral-server}:${CC_TAG:-10.3} # store/softwareag/commandcentral-server
-        - CC_NODE_IMAGE=${REG:-softwareag}/commandcentral-node:${TAG:-10.3} # store/softwareag/commandcentral-node
-        - LICENSES_URL                            # licenses .zip, e.g. 10.x
-        - REPO_HOST                               # default AQU host
-        - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
-        - REPO_FIX                                # fix release repo, e.g. GA_Fix_Repo
+        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG:-10.3} # store/softwareag/commandcentral-server
+        - REPO_PRODUCT=CC_PI_103oct2018
+        - REPO_FIX=QARepo
+        - REPO_HOST=aquarius-bg.eur.ad.sag
+        - LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster

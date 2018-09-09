@@ -54,6 +54,8 @@ services:
     hostname: um
     environment:
       - CC_AUTO_REGISTER                # No auto register as we don't have a server
+    depends_on:
+      - cc
 
   cloud-streams:
     image: ${REG:-softwareag}/cloud-streams:${TAG:-10.3}
@@ -67,3 +69,5 @@ services:
     hostname: cst
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
+    depends_on:
+      - cc

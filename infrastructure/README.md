@@ -19,8 +19,9 @@
 
 # Building Docker container images with Command Central
 
-## Building the Command Central Docker Builder
+## Building base OS, java, Command Central node and Builder images
 
 ```bash
-docker-compose build commandcentral-builder
+export LICENSE_URL=http://url/with/sag-licenses.zip
+docker-compose build
 ```

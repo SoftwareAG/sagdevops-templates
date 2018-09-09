@@ -20,46 +20,44 @@
 ARG CC_SERVER_IMAGE
 ARG BASE_IMAGE
 
-FROM $CC_SERVER_IMAGE as builder
+FROM $CC_SERVER_IMAGE as server
 
+# bootstrap node using CC bootstrapper 
 ARG CC_INSTALLER
 ARG CC_INSTALLER_URL
 
+# TODO: is thi needed?
 WORKDIR $CC_HOME
 
-# provision managed node
-RUN $CC_HOME/provision.sh
+USER root
+RUN mkdir $SAG_HOME && chown --recursive 1724:1724 $SAG_HOME 
 
-FROM $BASE_IMAGE
+USER 1724
+# provision managed node and remove jvm/ since we base off ibit/java image
+RUN $CC_HOME/provision.sh && rm -rf $SAG_HOME/jvm/
 
-ARG RELEASE
-ENV RELEASE=$RELEASE
 
-ENV SAG_HOME=/opt/softwareag
+FROM $BASE_IMAGE as java
+
 ENV CC_SERVER=cc
 ENV CC_PASSWORD=manage
 ENV CC_CLI_HOME=$SAG_HOME/CommandCentral/client
-ENV ANT_HOME=$SAG_HOME/common/lib/ant
 ENV JAVA_HOME=$SAG_HOME/jvm/jvm
-ENV PATH=$PATH:$CC_CLI_HOME/bin:$ANT_HOME/bin:$JAVA_HOME/bin
+ENV PATH=$PATH:$CC_CLI_HOME/bin:$JAVA_HOME/bin
 ENV CC_AUTO_REGISTER=1
 
-# 3rd part tools
 USER root
-RUN yum install -y net-tools && yum clean all
+# 3rd part tools
+RUN yum install -y net-tools && \
+    yum clean all
 
 WORKDIR $SAG_HOME
-
 USER 1724
 
-COPY --from=builder $SAG_HOME/ $SAG_HOME/
-COPY --from=builder /opt/sagtools/register.sh $SAG_HOME/register.sh
-COPY --from=builder /opt/sagtools/CommandCentral/client/ $SAG_HOME/CommandCentral/client/
-COPY --from=builder /opt/sagtools/common/lib/ant/ $SAG_HOME/common/lib/ant/
+COPY --from=server --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
 EXPOSE 8092 8093
 
-ADD entrypoint.sh $SAG_HOME/
 
 # run time builder
 ENTRYPOINT $SAG_HOME/entrypoint.sh
