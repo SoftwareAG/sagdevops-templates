@@ -3,10 +3,10 @@ description: Template to install InfraDC and configure it
 
 environments:
 
-  default:                                  
+  default:
+    
 
     infradc.fixes:           ALL        #Specifies the list of fixes to be installed
-    infradc.host:            ${}        #Specifies target host where infradc will be installed
     infradc.primary.port:    6666       #Primary port for infradc, by default it is 6666
     infradc.secondary.port:  15005      #Secondary port for infradc, by default it is 15005
     infradc.jmx.port:        6710       #JMX port for infradc, by default it is 6666
@@ -19,7 +19,7 @@ environments:
 
     infradc.jms.protocol: nsp           #Specifies the protocol of target JMS with which InfraDC sould be configured
     infradc.jms.host:     ${}           #Specifies the host name of target JMS with which InfraDC sould be configured
-    infradc.jms.port:     ${}           #Specifies the port number of target JMS with which InfraDC sould be configured
+    infradc.jms.port:     9000           #Specifies the port number of target JMS with which InfraDC sould be configured
 
     infradc.jndi.BrokerName:     ""         #In case the target JMS is Broker, it specifies the Broker connection name
     infradc.jndi.NamingFactory:  com.pcbsys.nirvana.nSpace.NirvanaContextFactory     #Specifies the default naming factory of the JMS Connection
@@ -29,31 +29,31 @@ environments:
     infradc.jndi.KeyStoreType:   JKS        #Specifies the type of the keystore file
     infradc.jndi.TrustStoreFile: ""         #Specifies the truststore file path, it is required when we enable SSL or discover specific SSL assets
     infradc.jndi.TrustStoreType: JKS        #Specifies the type of the truststore file
-    infradc.jndi.StorePassword:  ${}        #Specifies the password of the keystore/truststore file
+    infradc.jndi.StorePassword:  manage        #Specifies the password of the keystore/truststore file
     infradc.jndi.JmsUrlOverride: ""         #Specifies the cluster JMS URL
 
-    infradc.dcName:                    InfraDC  #Specifies the collector name of InfraDC
-    infradc.pollingInterval:           5        #Specifies the polling interval
-    infradc.adabasLoadFlag:            false    #Specified whether to load metadata for Adabas
-    infradc.adabasSOAGatewayLoadFlag:  false    #Specified whether to load metadata for AdabasSOAGateway
-    infradc.apamaLoadFlag:             false    #Specified whether to load metadata for Apama
-    infradc.applinxLoadFlag:           false    #Specified whether to load metadata for Applinx
-    infradc.brokerLoadFlag:            false    #Specified whether to load metadata for Broker
-    infradc.completeLoadFlag:          false    #Specified whether to load metadata for Complete
-    infradc.entireXLoadFlag:           false    #Specified whether to load metadata for EntireX
-    infradc.eventRoutingLoadFlag:      false    #Specified whether to load metadata for Event Routing
-    infradc.integrationServerLoadFlag: false    #Specified whether to load metadata for Integration Server
-    infradc.mwsLoadFlag:               false    #Specified whether to load metadata for MWS
-    infradc.mzngLoadFlag:              false    #Specified whether to load metadata for Mashzone
-    infradc.naturalAjaxLoadFlag:       false    #Specified whether to load metadata for Natural Ajax
-    infradc.naturalLoadFlag:           false    #Specified whether to load metadata for Natural 
-    infradc.prestoLoadFlag:            false    #Specified whether to load metadata for Presto
-    infradc.snmpLoadFlag:              false    #Specified whether to load metadata for SNMP
-    infradc.tcLoadFlag:                false    #Specified whether to load metadata for Terracotta
-    infradc.umClusterLoadFlag:         false    #Specified whether to load metadata for Universal Messaging Cluster
-    infradc.umLoadFlag:                false    #Specified whether to load metadata for Universal Messaging Server
-    infradc.desLoadFlag:               false    #Specified whether to load metadata for Digital Event Service
-    infradc.jmxLoadFlag:               false    #Specified whether to load metadata for JMX
+    infradc.dcName:                    InfraDCo4iTemplate  #Specifies the collector name of InfraDC
+    infradc.pollingInterval:           1        #Specifies the polling interval
+    infradc.adabasLoadFlag:            true    #Specified whether to load metadata for Adabas
+    infradc.adabasSOAGatewayLoadFlag:  true    #Specified whether to load metadata for AdabasSOAGateway
+    infradc.apamaLoadFlag:             true    #Specified whether to load metadata for Apama
+    infradc.applinxLoadFlag:           true    #Specified whether to load metadata for Applinx
+    infradc.brokerLoadFlag:            true    #Specified whether to load metadata for Broker
+    infradc.completeDCLoadFlag:          true    #Specified whether to load metadata for Complete
+    infradc.entireXLoadFlag:           true    #Specified whether to load metadata for EntireX
+    infradc.eventRoutingLoadFlag:      true    #Specified whether to load metadata for Event Routing
+    infradc.integrationServerLoadFlag: true    #Specified whether to load metadata for Integration Server
+    infradc.mwsLoadFlag:               true    #Specified whether to load metadata for MWS
+    infradc.mzngLoadFlag:              true    #Specified whether to load metadata for Mashzone
+    infradc.naturalAjaxLoadFlag:       true    #Specified whether to load metadata for Natural Ajax
+    infradc.naturalLoadFlag:           true    #Specified whether to load metadata for Natural 
+    infradc.prestoLoadFlag:            true    #Specified whether to load metadata for Presto
+    infradc.snmpLoadFlag:              true    #Specified whether to load metadata for SNMP
+    infradc.tcLoadFlag:                true    #Specified whether to load metadata for Terracotta
+    infradc.umClusterLoadFlag:         true    #Specified whether to load metadata for Universal Messaging Cluster
+    infradc.umLoadFlag:                true    #Specified whether to load metadata for Universal Messaging Server
+    infradc.desLoadFlag:               true    #Specified whether to load metadata for Digital Event Service
+    infradc.jmxLoadFlag:               true    #Specified whether to load metadata for JMX
     infradc.logLevel:                  INFO     #Specifies the log level for InfraDC 
 
 
@@ -63,11 +63,11 @@ layers:
     productRepo: ${repo.product}            # default repository to install products from
     fixRepo:     ${repo.fix}                # default repository to install fixes from
     templates:   
-      - infradc-tuneup                      # template to apply
+      - infradc-install                     # template to apply
 templates:
  
-  infradc-tuneup:
-    description: infradc-install
+  infradc-install:
+    description: install infradc products
     fixes: ${infradc.fixes}
     products:
       InfrastructureDC:
@@ -185,7 +185,7 @@ templates:
 
 provision:
   default:
-    runtime: ${nodes}
+    runtime: ${node}
  
 
 
