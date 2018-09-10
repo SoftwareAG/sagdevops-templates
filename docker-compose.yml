@@ -11,8 +11,6 @@ services:
       args:
         - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG} # base image for the builder, e.g. server-10.3
         - NODE_IMAGE=${CC_NODE_IMAGE}             # base image for the node, e.g. node-10.2
-        - CC_INSTALLER                            # TODO: remove me?
-        - CC_INSTALLER_URL                        # TODO: remove me?
         - LICENSES_URL                            # licenses .zip, e.g. 10.x
         - REPO_HOST                               # default AQU host
         - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
@@ -27,7 +25,7 @@ services:
       - ./scripts/init.sh:/opt/sagtools/init.sh
       - ./scripts/test.sh:/opt/sagtools/test.sh
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+#      - ./scripts/provision.dev.sh:/opt/sagtools/provision.sh
 
   sagcc: # sagcc wrapper
     image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
@@ -67,7 +65,7 @@ services:
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-      - ./scripts/provision.sh:/opt/sagtools/provision.sh
+#      - ./scripts/provision.dev.sh:/opt/sagtools/provision.sh
 
   # # default builder
   # node:

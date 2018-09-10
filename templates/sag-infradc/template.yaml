@@ -1,0 +1,191 @@
+alias: sag-infradc
+description: Template to install InfraDC and configure it
+
+environments:
+
+  default:
+    
+
+    infradc.fixes:           ALL        #Specifies the list of fixes to be installed
+    infradc.primary.port:    6666       #Primary port for infradc, by default it is 6666
+    infradc.secondary.port:  15005      #Secondary port for infradc, by default it is 15005
+    infradc.jmx.port:        6710       #JMX port for infradc, by default it is 6666
+    infradc.diagnostic.port: 10033      #Diagnostic port for infradc, by default it is 6666
+    infradc.memory.init:     256        #Initial memory size
+    infradc.momory.max:      1024       #Maximum memory size
+    jmx.port.status: true               #Specifies whether JMX port should be enabled or not
+    diagnostic.port.status: false       #Specifies whether Diagnostic port should be enabled or not
+    
+
+    infradc.jms.protocol: nsp           #Specifies the protocol of target JMS with which InfraDC sould be configured
+    infradc.jms.host:     ${}           #Specifies the host name of target JMS with which InfraDC sould be configured
+    infradc.jms.port:     9000           #Specifies the port number of target JMS with which InfraDC sould be configured
+
+    infradc.jndi.BrokerName:     ""         #In case the target JMS is Broker, it specifies the Broker connection name
+    infradc.jndi.NamingFactory:  com.pcbsys.nirvana.nSpace.NirvanaContextFactory     #Specifies the default naming factory of the JMS Connection
+    infradc.jndi.UseSSL:         false      #Specifies whether the target JNDI connection is SSL enabled or not  
+    infradc.jndi.UseEncryption:  false      #Specifies whether to use encryption for the connection or not
+    infradc.jndi.KeyStoreFile:   ""         #Specifies the keystore file path, it is required when we enable SSL or discover specific SSL assets
+    infradc.jndi.KeyStoreType:   JKS        #Specifies the type of the keystore file
+    infradc.jndi.TrustStoreFile: ""         #Specifies the truststore file path, it is required when we enable SSL or discover specific SSL assets
+    infradc.jndi.TrustStoreType: JKS        #Specifies the type of the truststore file
+    infradc.jndi.StorePassword:  manage        #Specifies the password of the keystore/truststore file
+    infradc.jndi.JmsUrlOverride: ""         #Specifies the cluster JMS URL
+
+    infradc.dcName:                    InfraDCo4iTemplate  #Specifies the collector name of InfraDC
+    infradc.pollingInterval:           1        #Specifies the polling interval
+    infradc.adabasLoadFlag:            true    #Specified whether to load metadata for Adabas
+    infradc.adabasSOAGatewayLoadFlag:  true    #Specified whether to load metadata for AdabasSOAGateway
+    infradc.apamaLoadFlag:             true    #Specified whether to load metadata for Apama
+    infradc.applinxLoadFlag:           true    #Specified whether to load metadata for Applinx
+    infradc.brokerLoadFlag:            true    #Specified whether to load metadata for Broker
+    infradc.completeDCLoadFlag:          true    #Specified whether to load metadata for Complete
+    infradc.entireXLoadFlag:           true    #Specified whether to load metadata for EntireX
+    infradc.eventRoutingLoadFlag:      true    #Specified whether to load metadata for Event Routing
+    infradc.integrationServerLoadFlag: true    #Specified whether to load metadata for Integration Server
+    infradc.mwsLoadFlag:               true    #Specified whether to load metadata for MWS
+    infradc.mzngLoadFlag:              true    #Specified whether to load metadata for Mashzone
+    infradc.naturalAjaxLoadFlag:       true    #Specified whether to load metadata for Natural Ajax
+    infradc.naturalLoadFlag:           true    #Specified whether to load metadata for Natural 
+    infradc.prestoLoadFlag:            true    #Specified whether to load metadata for Presto
+    infradc.snmpLoadFlag:              true    #Specified whether to load metadata for SNMP
+    infradc.tcLoadFlag:                true    #Specified whether to load metadata for Terracotta
+    infradc.umClusterLoadFlag:         true    #Specified whether to load metadata for Universal Messaging Cluster
+    infradc.umLoadFlag:                true    #Specified whether to load metadata for Universal Messaging Server
+    infradc.desLoadFlag:               true    #Specified whether to load metadata for Digital Event Service
+    infradc.jmxLoadFlag:               true    #Specified whether to load metadata for JMX
+    infradc.logLevel:                  INFO     #Specifies the log level for InfraDC 
+
+
+layers:
+  runtime:
+    description: infradc install
+    productRepo: ${repo.product}            # default repository to install products from
+    fixRepo:     ${repo.fix}                # default repository to install fixes from
+    templates:   
+      - infradc-install                     # template to apply
+templates:
+ 
+  infradc-install:
+    description: install infradc products
+    fixes: ${infradc.fixes}
+    products:
+      InfrastructureDC:
+        default:
+          configuration:
+            OSGI-InfraDC:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize:  ${infradc.memory.init}
+                  MaxSize:   ${infradc.momory.max}
+              COMMON-PORTS:
+                COMMON-PORTS-defaultHttp:
+                  Port:
+                    "@alias": defaultHttp
+                    Enabled: true
+                    Type: STANDARD
+                    Number: ${infradc.primary.port}
+                    Protocol: HTTP
+                COMMON-PORTS-secondHttpInfraDC:
+                  Port:
+                    "@alias": secondHttpInfraDC
+                    Enabled: true
+                    Number: ${infradc.secondary.port}
+                    Protocol: HTTP
+                    Type: STANDARD
+                    ExtendedProperties:
+                      Property:
+                        -
+                          "@name": redirectPort
+                          $: ${infradc.primary.port}
+                COMMON-PORTS-defaultJmx:
+                  Port:
+                    "@alias": defaultJmx
+                    Enabled: ${jmx.port.status}
+                    Type: STANDARD
+                    Number: ${infradc.jmx.port}
+                    Protocol: JMX
+                COMMON-PORTS-diagnostics:
+                  Port:
+                    "@alias": diagnostics
+                    Enabled: ${diagnostic.port.status}
+                    Number: ${infradc.diagnostic.port}
+                    Type: DIAGNOSTIC
+                    Protocol: JDWP
+            OSGI-InfraDC-ENGINE:
+              COMMON-COMPONENT-ENDPOINTS:
+                COMMON-COMPONENT-ENDPOINTS-JMS-Provider:
+                  "@alias":   JMS-Provider
+                  Transport:
+                    Protocol: ${infradc.jms.protocol}
+                    Host:     ${infradc.jms.host}
+                    Port:     ${infradc.jms.port}
+              COMMON-JNDI:
+                COMMON-JNDI:
+                  JNDI:
+                    "@alias": JNDIConfiguration-InfraDC
+                    ExtendedProperties:
+                      Property:
+                        -
+                          "@name": ConnectionUri
+                          $: ${infradc.jndi.BrokerName}
+                        -
+                          "@name": NamingFactoryImpl
+                          $: ${infradc.jndi.NamingFactory}
+                        -
+                          "@name": UseSSL
+                          $: ${infradc.jndi.UseSSL}
+                        -
+                          "@name": UseEncryption
+                          $: ${infradc.jndi.UseEncryption}
+                        -
+                          "@name": KeyStoreFile
+                          $: ${infradc.jndi.KeyStoreFile}
+                        -
+                          "@name": KeyStoreType
+                          $: ${infradc.jndi.KeyStoreType}
+                        -
+                          "@name": TrustStoreFile
+                          $: ${infradc.jndi.TrustStoreFile}
+                        -
+                          "@name": TrustStoreType
+                          $: ${infradc.jndi.TrustStoreType}
+                        -
+                          "@name": StorePassword
+                          $: ${infradc.jndi.StorePassword}
+                        -
+                          "@name": JmsUrlOverride
+                          $: ${infradc.jndi.JmsUrlOverride}
+              IDC-SETTING:
+                IDC-SETTING:
+                  name: Data Collector
+                  dcName: ${infradc.dcName}
+                  pollingInterval: ${infradc.pollingInterval}
+                  adabasLoadFlag: ${infradc.adabasLoadFlag}
+                  adabasSOAGatewayLoadFlag: ${infradc.adabasSOAGatewayLoadFlag}
+                  apamaLoadFlag: ${infradc.apamaLoadFlag}
+                  applinxLoadFlag: ${infradc.applinxLoadFlag}
+                  brokerLoadFlag: ${infradc.brokerLoadFlag}
+                  completeDCLoadFlag: ${infradc.completeDCLoadFlag}
+                  entireXLoadFlag: ${infradc.entireXLoadFlag}
+                  eventRoutingLoadFlag: ${infradc.eventRoutingLoadFlag}
+                  integrationServerLoadFlag: ${infradc.integrationServerLoadFlag}
+                  mwsLoadFlag: ${infradc.mwsLoadFlag}
+                  mzngLoadFlag: ${infradc.mzngLoadFlag}
+                  naturalAjaxLoadFlag: ${infradc.naturalAjaxLoadFlag}
+                  naturalLoadFlag: ${infradc.naturalLoadFlag}
+                  prestoLoadFlag: ${infradc.prestoLoadFlag}
+                  snmpLoadFlag: ${infradc.snmpLoadFlag}
+                  tcLoadFlag: ${infradc.tcLoadFlag}
+                  umClusterLoadFlag: ${infradc.umClusterLoadFlag}
+                  umLoadFlag: ${infradc.umLoadFlag}
+                  desLoadFlag: ${infradc.desLoadFlag}
+                  jmxLoadFlag: ${infradc.jmxLoadFlag}
+                  logLevel: ${infradc.logLevel}
+
+provision:
+  default:
+    runtime: ${node}
+ 
+
+
