@@ -1,6 +1,8 @@
 #!/bin/sh
 
-$SAG_HOME/register.sh
+if [ -f $SAG_HOME/register.sh ]; then
+    $SAG_HOME/register.sh
+fi
 
 UM_INSTANCE_NAME=${UM_INSTANCE_NAME:-default}
 UM_REALM=${UM_REALM:-default}

@@ -25,7 +25,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     # sagcc get configuration data OSGI-SPM COMMON-SYSPROPS -f text -e hello.world
 fi
 
-echo "TODO: Verifying product runtime ..."
-# How?
+echo "Verifying product runtime ..."
+curl http://localhost:9010/config
 
 echo "DONE testing"

@@ -1,0 +1,22 @@
+version: "3.2"
+
+services:
+  # this is the oracle db itself
+  oracle:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
+    ports: 
+      - 1521
+    environment: 
+      - ORACLE_ALLOW_REMOTE=true
+
+  # provisioner for webm db schemas using template.yaml
+  provision:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
+    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
+    volumes: 
+      - ./:/src/ # required
+    environment:
+      - __release=$TAG
+      - __nodes=node
+    depends_on: 
+      - oracle

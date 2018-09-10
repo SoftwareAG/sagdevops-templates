@@ -22,19 +22,29 @@ pipeline {
     agent {
         label 'docker'
     }
-    environment {
-        TAG = "10.2"  // 10.3, 10.2, 10.1
-        FIXES = 'ALL' // for GA releases or '' for TRUNK
+    parameters {
+        choice(choices: '10.3\n10.2\n10.1', description: 'Test templates for this release', name: 'release')
     }
+    // environment {
+    //     TAG = params.release
+    // }
     stages {
         stage('Init') {
             steps {
-                echo "Testing for ${env.TAG} release"
-                sh ". ./${env.TAG}.env; docker-compose pull cc"
+                echo "Testing for ${params.release} release"
+                sh ". ./${params.release}.env; docker-compose pull cc"
             }
         }
         stage("Level 1") {
+            environment {
+                TAG = "${params.release}"
+            }
             parallel {
+                stage('Asset Builder') {
+                    steps {
+                        testTemplate('sag-abe', false, true, true)
+                    }
+                }
                 stage('Universal Messaging') {
                     steps {
                         testTemplate('sag-um-server', false, true, true)
@@ -42,7 +52,7 @@ pipeline {
                 }
                 stage('Terracotta') {
                     steps {
-                        testTemplate('sag-tc-server', true, false, false)
+                        testTemplate('sag-tc-server', false, true, true)
                     }
                 }
                 stage('Integration Server') {
@@ -50,27 +60,33 @@ pipeline {
                         testTemplate('sag-msc-server', false, true, true)
                     }
                 }                                                
+                // stage('Oracle DB') {
+                //     steps {
+                //         testTemplate('sag-db-oracle', true, false, false)
+                //     }
+                // }                                                
             }
         }
-        stage("Level 2") {
-            parallel {
-                stage('EntireX') {
-                    steps {
-                        testTemplate('sag-exx-broker', true, false, false)
-                    }
-                }
-                stage('Designer') {
-                    steps {
-                        testTemplate('sag-designer-services', true, false, false)
-                    }
-                }
-                stage('Apama') {
-                    steps {
-                        testTemplate('sag-apama-correlator', true, false, false)
-                    }
-                }                                                
-            }
-        }
+        
+        // stage("Level 2") {
+        //     parallel {
+        //         stage('EntireX') {
+        //             steps {
+        //                 testTemplate('sag-exx-broker', true, false, false)
+        //             }
+        //         }
+        //         stage('Designer') {
+        //             steps {
+        //                 testTemplate('sag-designer-services', true, false, false)
+        //             }
+        //         }
+        //         stage('Apama') {
+        //             steps {
+        //                 testTemplate('sag-apama-correlator', true, false, false)
+        //             }
+        //         }                                                
+        //     }
+        // }
     }
     post {
         always {
