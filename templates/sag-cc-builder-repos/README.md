@@ -19,24 +19,23 @@
 
 # Command Central builder repositories registration
 
-This template demonstrates show to configure different types
-of repositories for Command Central Builder:
+Use this template to configure the following types of repositories for Command Central Builder:
 
 * Public master repositories hosted on Empower SDC
 * Private mirror repositories hosted on Platform Managers
 * Internal mirror repositories hosted on SAG AQU servers
 
-## Requirements
+## Requirements and limitations
 
 ### Supported Software AG releases
 
-* Command Central 10.3 or later
+* Command Central 10.3 and higher
 
 ### Supported platforms
 
-* All support platforms
+All supported Windows and UNIX platforms.
 
-## Configuring Public master repositories hosted on Empower SDC
+## Configuring public master repositories hosted on Empower SDC
 
 Configure Empower SDC credentials first:
 
@@ -60,8 +59,7 @@ Version	Location
 10.2   	https://sdc.softwareag.com/dataservewebM102/repository/
 ```
 
-Configure Empower SDC `products` and `fixes` repositories pointing to
-the target release repository, for example, 10.2 release:
+Configure Empower SDC `products` and `fixes` repositories that point to the target release repository, for example, release 10.2:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
@@ -73,7 +71,7 @@ sagcc exec templates composite apply sag-cc-builder-repos \
 
 ## Configuring private mirror repositories hosted on Platform Manager
 
-Configure mirror hosting Platform Manager credentials first:
+First configure credentials for the Platform Manager that will host mirror repositories:
 
 ```bash
 sagcc exec templates composite apply sag-cc-creds \
@@ -81,8 +79,7 @@ sagcc exec templates composite apply sag-cc-creds \
     --sync-job
 ```
 
-List available mirror product repositories managed through unstream Command Central
-listening at https://upstreamCC:8091/cce :
+List the available mirror `product` and `fix` repositories that are managed through unstream Command Central listening at https://upstreamCC:8091/cce:
 
 ```bash
 sagcc list repository products properties=type,version,location -s upstreamCC | grep MIRROR
@@ -92,8 +89,7 @@ sagcc list repository fixes properties=type,version,location -s upstreamCC | gre
 MIRROR	10.2   	http://MIRRORSPMHOST:8092/fix-fixes-10.2/repository
 ```
 
-Configure `products` and `fixes` repositories pointing to
-the mirror repositories from the above locations:
+Configure `products` and `fixes` repositories that point to the mirror repositories from the above locations:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
@@ -106,7 +102,7 @@ sagcc exec templates composite apply sag-cc-builder-repos \
 
 ## Configuring internal mirror repositories hosted on SAG AQU server
 
-> IMPORTANT: you must have acesss to SAG network to access these repositories
+> IMPORTANT: You must have acesss to the Software AG network in order to access these repositories.
 
 Configure internal credentials first:
 
@@ -114,8 +110,7 @@ Configure internal credentials first:
 sagcc exec templates composite apply sag-cc-creds-dev --sync-job
 ```
 
-Configure `products` and `fixes` repositories pointing to
-the mirror repositories from the above locations:
+Configure `products` and `fixes` repositories that point to the mirror repositories from the above locations:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
