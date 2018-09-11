@@ -21,7 +21,7 @@ version: "3.2"
 
 services:
   exxbroker:
-    image: daerepository03.eur.ad.sag:4443/softwareag/entirex-broker:$TAG # target image
+    image: daerepository03.eur.ad.sag:4443/softwareag/entirex-broker:10.3.0.0.640
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
@@ -29,8 +29,8 @@ services:
         - __exx_broker_fixes=$FIXES
         - TAG
     ports:
-      - 7722                            # container specific ports
-      - 7723
+      - 1971                            # container specific ports
+      - 1958
     hostname: broker
     environment:
       - CC_AUTO_REGISTER=1
