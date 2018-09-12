@@ -18,7 +18,7 @@
 ###############################################################################
 ARG TAG=10.3
 ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
+ARG BASE_IMAGE=centos:7
 
 FROM $BUILDER_IMAGE as builder
 
