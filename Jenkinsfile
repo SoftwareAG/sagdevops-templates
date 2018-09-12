@@ -36,8 +36,8 @@ pipeline {
             steps {
                 checkout scm
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml ${TAG}.staging.yml config"
-                    sh "docker-compose -f docker-compose.yml ${TAG}.staging.yml build --pull"
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml config"
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml build --pull"
                     sh 'docker-compose push'
                 }
             }
