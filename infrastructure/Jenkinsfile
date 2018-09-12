@@ -22,20 +22,10 @@
 pipeline {
     agent none
     parameters {
-        choice(choices: '10.3-sic\n10.3\n10.2\n10.1', description: 'Build images for this release', name: 'TAG')
+        choice(choices: '10.3\n10.2\n10.1', description: 'Build images for this release', name: 'TAG')
     }
     environment {
         REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
-
-        // version of the Command Central docker images build/release
-        CC_TAG = '10.3'
-
-        REPO_FIX = 'GA_Fix_Repo'
-        REPO_HOST = 'aquarius-bg.eur.ad.sag'
-        REPO_PRODUCT = '103oct2018_SIC'
-        FIXES = '[]'
-
-        LICENSES_URL = "http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster"
     }
     stages {
         stage("Infrastructure Images") {
@@ -43,18 +33,18 @@ pipeline {
             steps {
                 checkout scm
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml staging.yml config"
-                    sh "docker-compose -f docker-compose.yml staging.yml build --pull"
+                    sh "docker-compose -f docker-compose.yml ${TAG}.staging.yml config"
+                    sh "docker-compose -f docker-compose.yml ${TAG}.staging.yml build --pull"
                     sh "docker-compose push"
                 }
             }
         }        
     }
-    post {
-        success {
-			script { 
-	            build job: 'cc-docker-staging', parameters: [string(name: 'TAG', value: "${env.TAG}")], propagate: false, wait: false
-	        }
-        }
-    }    
+    // post {
+    //     success {
+	// 		script { 
+	//             build job: 'cc-docker-staging', parameters: [string(name: 'TAG', value: "${env.TAG}")], propagate: false, wait: false
+	//         }
+    //     }
+    // }    
 }
