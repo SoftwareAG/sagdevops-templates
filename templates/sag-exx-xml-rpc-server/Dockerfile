@@ -29,56 +29,24 @@ FROM $BASE_IMAGE
 RUN groupadd -g 1724 sagadmin && useradd -r -u 1724 sagadmin -g sagadmin -d /opt/softwareag -s /bin/bash -M
 
 # setting environment variables, can be overwritten during startup
+ENV EXX_XML_SERVER_CONFIGURATION=entirex.xmlrpcserver.properties
+ENV EXX_XML_SERVER_MAPPING=entirex.xmlrpcserver.configuration.xml
 ENV EXX_LICENSE_KEY=license.xml
-ENV EXX_ATTRIBUTE=etbfile
-ENV EXX_KEY_FILE=ExxAppKey.pem
-ENV EXX_KEY_STORE=ExxAppCert.pem
-ENV EXX_TRUST_STORE=ExxCACert.pem
 
 # setting internal environment variables
 ENV SAG_HOME=/opt/softwareag
-ENV EXXDIR=/opt/softwareag/EntireX
-ENV ETBID=ETB001
-ENV TCPPORT=1971
-ENV SSLPORT=1958
+ENV EXXDIR=$SAG_HOME/EntireX
+ENV JAVA_HOME=$SAG_HOME/jvm/jvm
 
-COPY --from=builder --chown=1724:1724 $SAG_HOME/common/security/ $SAG_HOME/common/security/
-COPY --from=builder --chown=1724:1724 $SAG_HOME/common/saglic/ $SAG_HOME/common/saglic/
-COPY --from=builder --chown=1724:1724 $EXXDIR/lib/ $EXXDIR/lib/
-COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbnuc $EXXDIR/bin/etbnuc
-COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbcmd $EXXDIR/bin/etbcmd
-COPY --from=builder --chown=1724:1724 $EXXDIR/config/etb/ETB001/ $EXXDIR/config/etb/ETB001/
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
+COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/saglic.jar $SAG_HOME/common/lib/saglic.jar
+COPY --from=builder --chown=1724:1724 $SAG_HOME/jvm/ $SAG_HOME/jvm/
+COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
-ADD --chown=1724:1724 healthcheck.sh $EXXDIR/bin
-ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin
-
-EXPOSE $TCPPORT
-EXPOSE $SSLPORT
-
-# Possibility to add a valid license file already to the image instead of
-# providing it during start up
-# e.g.:
-# ADD myLicense.xml $EXXDIR/config/license.xml
-
-# Possibility to add a different attribute file already to the image instead of
-# providing it during start up
-# e.g.:
-# ADD myEtbfile $EXXDIR/config/etb/$ETBID/etbfile
-
-# Possibility to add certificates for security broker
-# e.g.:
-# ADD *.pem $EXXDIR/config/etb/$ETBID/
-
-# Set folder permissions and userswitch to be able to overwrite etbfile
-# and license.xml
-RUN chown -R sagadmin:sagadmin $EXXDIR/config
+ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 
 USER sagadmin
 
 WORKDIR $SAG_HOME
 
-HEALTHCHECK --interval=5s --timeout=15s CMD sh $EXXDIR/bin/healthcheck.sh || exit 1
-
 ENTRYPOINT $EXXDIR/bin/entrypoint.sh
-

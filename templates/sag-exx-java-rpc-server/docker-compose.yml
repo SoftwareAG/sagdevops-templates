@@ -20,16 +20,13 @@
 version: "3.2"
 
 services:
-  exxbroker:
-    image: daerepository03.eur.ad.sag:4443/softwareag/entirex-broker:10.3.0.0.640
+  exxjavaserver:
+    image: daerepository03.eur.ad.sag:4443/softwareag/entirex-java-rpc-server:10.3.0.0.640
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
       args:
-        - __exx_broker_fixes=$FIXES
+        - _fixes=$FIXES
         - TAG
-    ports:
-      - 1971                            # container specific ports
-      - 1958
     volumes:
       - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
