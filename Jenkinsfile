@@ -19,7 +19,8 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
 pipeline {
-    agent none
+    // agent none
+    agent { label 'docker' }
     // parameters {
     //     choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
     //     choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
@@ -32,18 +33,18 @@ pipeline {
     }
     stages {
         stage("Infrastructure Images") {
-            agent { label 'docker' }
+            // agent { label 'docker' }
             steps {
                 checkout scm
                 dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml config"
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml build --pull"
-                    sh 'docker-compose push'
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml build"
+                    // sh 'docker-compose push'
                 }
             }
         }        
         stage('Build Templates') {
-            agent { label 'docker' }
+            // agent { label 'docker' }
             steps {
                 checkout scm
                 sh "./buildw"
@@ -56,10 +57,10 @@ pipeline {
         stage("Test Templates") {
             parallel {
                 stage('Runtimes') {
-                    agent { label 'docker' }
+                    // agent { label 'docker' }
                     steps {
                         checkout scm
-                        sh 'docker-compose pull cc'
+                        // sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d cc'
 
                         sh './provisionw sag-um-server'
@@ -78,9 +79,9 @@ pipeline {
                     }    
                 }
                 stage('Designer and tools') {
-                    agent { label 'docker' }
+                    // agent { label 'docker' }
                     steps {
-                        sh 'docker-compose pull cc'
+                        // sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d cc'
 
                         // sh "./provisionw sag-msc-server"
@@ -99,14 +100,14 @@ pipeline {
             }
         }
         stage("Build Images") {
-            agent { label 'docker' }
+            // agent { label 'docker' }
             steps {
                 checkout scm
                 dir ('containers') {
                     sh 'docker-compose config'
-                    sh 'docker-compose pull cc'
+                    // sh 'docker-compose pull cc'
                     sh 'docker-compose build universal-messaging'
-                    sh 'docker-compose push'
+                    // sh 'docker-compose push'
                 }
             }
         }   
