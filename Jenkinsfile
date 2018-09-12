@@ -76,6 +76,11 @@ pipeline {
                         sh './provisionw sag-designer-cloudstreams'
                         sh './provisionw sag-exx-broker'
                         sh './provisionw sag-exx-c-rpc-server'
+                        sh './provisionw sag-exx-java-rpc-server'
+                        sh './provisionw sag-exx-xml-rpc-server'
+                        sh './provisionw onedata'
+                        sh './provisionw sag-des'
+                        sh './provisionw sag-tdb-server'
                     }
                     post {
                         always {
