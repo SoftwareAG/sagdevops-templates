@@ -64,13 +64,18 @@ pipeline {
                         sh 'docker-compose up -V -d cc'
 
                         sh './provisionw sag-um-server'
-                        sh "./provisionw sag-um-config"
-                        sh "./provisionw sag-tc-server"
-                        sh "./provisionw sag-is-server"
-                        sh "./provisionw sag-is-config"
-                        sh "./provisionw sag-des"
-                        sh "./provisionw sag-is-cloudstreams"
-                        sh "./provisionw sag-apama-correlator"
+                        sh './provisionw sag-um-config'
+                        sh './provisionw sag-tc-server'
+                        sh './provisionw sag-is-server'
+                        sh './provisionw sag-is-config'
+                        sh './provisionw sag-des'
+                        sh './provisionw sag-is-cloudstreams'
+                        sh './provisionw sag-apama-correlator'
+                        sh './provisionw sag-abe'                       
+                        sh './provisionw sag-designer-services'
+                        sh './provisionw sag-designer-cloudstreams'
+                        sh './provisionw sag-exx-broker'
+                        sh './provisionw sag-exx-c-rpc-server'
                     }
                     post {
                         always {
@@ -111,6 +116,19 @@ pipeline {
                 }
             }
         }   
+        stage("Publish Images") {
+            // agent { label 'docker' }
+            steps {
+                // checkout scm
+                dir ('infrastructure') {
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml push"
+                }
+                dir ('containers') {
+                    sh 'docker-compose push'
+                }
+            }
+        }        
+
         // stage("Build Images") {
         //     agent none
 
