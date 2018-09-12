@@ -47,17 +47,17 @@ pipeline {
             // agent { label 'docker' }
             steps {
                 // checkout scm
-                sh "./buildw"
-                stash includes: 'build/repo/**', name: 'repo'
+                sh './buildw'
+                // stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
-                    archive '**'
+                    archiveArtifacts '**'
                 }
             }
         }
         stage("Test Templates") {
-            parallel {
-                stage('Runtimes') {
-                    // agent { label 'docker' }
+            // parallel {
+            //     stage('Runtimes') {
+            //         // agent { label 'docker' }
                     steps {
                         // checkout scm
                         // sh 'docker-compose pull cc'
@@ -77,27 +77,27 @@ pipeline {
                             sh 'docker-compose down'
                         }
                     }    
-                }
-                stage('Designer and tools') {
-                    // agent { label 'docker' }
-                    steps {
-                        // sh 'docker-compose pull cc'
-                        sh 'docker-compose up -V -d cc'
+                // }
+                // stage('Designer and tools') {
+                //     // agent { label 'docker' }
+                //     steps {
+                //         // sh 'docker-compose pull cc'
+                //         // sh 'docker-compose up -V -d cc'
 
-                        // sh "./provisionw sag-msc-server"
-                        // sh "./provisionw sag-abe"                        
-                        // sh "./provisionw sag-designer-services"
-                        // sh "./provisionw sag-designer-cloudstreams"
-                        // sh "./provisionw sag-exx-broker"
-                        // sh "./provisionw sag-exx-c-rpc-server"
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
-            }
+                //         // sh "./provisionw sag-msc-server"
+                //         // sh "./provisionw sag-abe"                        
+                //         // sh "./provisionw sag-designer-services"
+                //         // sh "./provisionw sag-designer-cloudstreams"
+                //         // sh "./provisionw sag-exx-broker"
+                //         // sh "./provisionw sag-exx-c-rpc-server"
+                //     }
+                //     post {
+                //         always {
+                //             sh 'docker-compose down'
+                //         }
+                //     }    
+                // }
+            // }
         }
         stage("Build Images") {
             // agent { label 'docker' }
@@ -136,7 +136,7 @@ pipeline {
         // }
 
         // stage('Publish') {
-        //     agent { label 'docker' }
+        //     // agent { label 'docker' }
         //     environment {
         //         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
         //     }
@@ -144,7 +144,7 @@ pipeline {
         //         dir ('build/repo') {
         //             git branch: 'master', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
         //         }
-        //         unstash 'repo'
+        //         // unstash 'repo'
         //         dir ('build/repo') {
         //             sh """
         //             git add --all
