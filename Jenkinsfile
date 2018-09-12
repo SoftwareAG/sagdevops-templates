@@ -35,7 +35,7 @@ pipeline {
         stage("Infrastructure Images") {
             // agent { label 'docker' }
             steps {
-                checkout scm
+                // checkout scm
                 dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml config"
                     sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml build"
@@ -46,7 +46,7 @@ pipeline {
         stage('Build Templates') {
             // agent { label 'docker' }
             steps {
-                checkout scm
+                // checkout scm
                 sh "./buildw"
                 stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
@@ -59,7 +59,7 @@ pipeline {
                 stage('Runtimes') {
                     // agent { label 'docker' }
                     steps {
-                        checkout scm
+                        // checkout scm
                         // sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d cc'
 
@@ -102,7 +102,7 @@ pipeline {
         stage("Build Images") {
             // agent { label 'docker' }
             steps {
-                checkout scm
+                // checkout scm
                 dir ('containers') {
                     sh 'docker-compose config'
                     // sh 'docker-compose pull cc'
