@@ -47,7 +47,7 @@ pipeline {
             // agent { label 'docker' }
             steps {
                 // checkout scm
-                sh './buildw'
+                sh 'docker-compose run --rm build'
                 // stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
                     archiveArtifacts '**'
@@ -64,13 +64,13 @@ pipeline {
                         sh 'docker-compose up -V -d cc'
 
                         sh './provisionw sag-um-server'
-                        // sh "./provisionw sag-um-config"
-                        // sh "./provisionw sag-tc-server"
-                        // sh "./provisionw sag-is-server"
-                        // sh "./provisionw sag-is-config"
-                        // sh "./provisionw sag-des"
-                        // sh "./provisionw sag-is-cloudstreams"
-                        // sh "./provisionw sag-apama-correlator"
+                        sh "./provisionw sag-um-config"
+                        sh "./provisionw sag-tc-server"
+                        sh "./provisionw sag-is-server"
+                        sh "./provisionw sag-is-config"
+                        sh "./provisionw sag-des"
+                        sh "./provisionw sag-is-cloudstreams"
+                        sh "./provisionw sag-apama-correlator"
                     }
                     post {
                         always {
@@ -106,7 +106,7 @@ pipeline {
                 dir ('containers') {
                     sh 'docker-compose config'
                     // sh 'docker-compose pull cc'
-                    sh 'docker-compose build universal-messaging'
+                    sh 'docker-compose build'
                     // sh 'docker-compose push'
                 }
             }
