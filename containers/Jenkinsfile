@@ -40,18 +40,6 @@ pipeline {
         // LICENSES_URL = "http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster"
     }
     stages {
-        stage("Infra Images") {
-            agent { label: 'docker' }
-            steps {
-                script {
-                    def baseImages = 'base java node builder'
-                    checkout scm
-                    sh "docker-compose -f containers/docker-compose.yml config"
-                    sh "docker-compose -f containers/docker-compose.yml build --pull $baseImages"
-                    sh "docker-compose -f containers/docker-compose.yml push $baseImages"
-                }
-            }
-        }        
         stage("Product Images") {
             agent none
             steps {
