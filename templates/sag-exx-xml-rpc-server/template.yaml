@@ -1,0 +1,50 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+alias: sag-exx-xml-rpc-server
+description: Create and configure EntireX XML RPC Server
+version: 2.0
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
+
+environments:
+  default:
+    # XML RPC Server
+    exx.core.license.key: "*_EXX_10.*_*_*"            # license key alias name                                                             
+    exx.core.fixes: []
+       
+templates:
+  sag-exx-xml-rpc-server:                                               # template for definition of broker
+    licenses:
+      "EntireX/config/license.xml": "${exx.core.license.key}"
+    fixes: ${exx.core.fixes}                                  # fixes to install
+    products:
+      EntireXCore:                    
+
+layers:
+  runtime:
+    productRepo: ${repo.product}    # default repository to install products from
+    fixRepo: ${repo.fix}            # default repository to install fixes from
+    templates:
+      - sag-exx-xml-rpc-server     # template to apply
+
+provision:                          # PROVISION layers to nodes
+  default:                          # default environment type
+    runtime: ${nodes}
