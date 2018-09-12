@@ -28,104 +28,16 @@ environments:
   default:
     # Broker
     exx.entirexbroker.license.key: "*_EXX_10.*_*_*"            # license key alias name                                                             
-    exx.broker.instance.name: ETB002                           # Broker ID
-    exx.broker.tcp.port: 7722                                  # TCP PORT
-    exx.broker.tcp.enable: true                                # TCP enabled
-    exx.broker.ssl.port: 7723                                  # SSL PORT
-    exx.broker.ssl.enable: false                               # SSL enabled
-    exx.broker.autostart: false                                # Autostart true/false
-    exx.broker.tracelevel: 0                                   # trace level
-    exx.broker.security: true                                  # Security true/false
-    exx.broker.security.authtype: OS                           # Security Type OS/LDAP
-    exx.broker.security.ldapurl: "ldap://ldaphost:389"         # LDAP URL
-    exx.broker.security.ldapdn: "cn=users,dc=mydomain,dc=de"   # LDAP Domain
-    exx.broker.pstore: true                                    # PStore true/false
-    exx.broker.pstore.pstore: COLD                             # PStore COLD/HOT
-    exx.broker.pstore.type: CTREE                              # PStore type CTREE/ADABAS
-    exx.broker.pstore.adabas.dbid: 24                          # PStore ADABAS DBID
-    exx.broker.pstore.adabas.fnr: 52                           # PStore ADABAS FileNr
-    exx.broker.appmon: false                                   # Application Monitoring true/false
-    exx.broker.appmon.collector.host: collector_host           # Application Monitoring Host
-    exx.broker.appmon.collector.port: 55432                    # Application Monitoring Port
     exx.broker.fixes: []
        
 templates:
-    
   sag-exx-broker:                                               # template for definition of broker
     licenses:
       "EntireX/config/license.xml": "${exx.entirexbroker.license.key}"
     fixes: ${exx.broker.fixes}                                  # fixes to install
     products:
       EntireXBroker:                    
-        ${exx.broker.instance.name}:
-          type: BROKER
-          runtimeComponentId: EntireXBroker-${instance.name}
-          autostart: ${exx.broker.autostart}   
-          tcp.port: ${exx.broker.tcp.port}
-          ssl.port: ${exx.broker.ssl.port}              
-          security: ${exx.broker.security}                
-
-          configuration:
-            EntireXBroker-${instance.name}:   
-              BROKER-PORTS:  
-                TCP:         
-                  Enabled: ${exx.broker.tcp.enable}
-                  Port: ${exx.broker.tcp.port}    
-                SSL:         
-                  Enabled: ${exx.broker.ssl.enable} 
-                  Port: ${exx.broker.ssl.port}
-              BROKER-AUTOSTART:     
-                BROKER-AUTOSTART:
-                  Enabled: ${exx.broker.autostart}
-
-              BROKER-TRACELEVEL:
-                BROKER-TRACELEVEL:
-                  Tracelevel: ${exx.broker.tracelevel}
-
-              BROKER-SECURITY:
-                BROKER-SECURITY:
-                  Enabled: ${exx.broker.security}
-                  AuthType: ${exx.broker.security.authtype}
-                  LdapUrl: ${exx.broker.security.ldapurl}
-                  LdapDn: ${exx.broker.security.ldapdn}
-                                 
-              BROKER-PSTORE:
-                BROKER-PSTORE:
-                  Enabled: ${exx.broker.pstore}  
-                  PStore: ${exx.broker.pstore.pstore}
-                  PStoreType: ${exx.broker.pstore.type}
-                  PStoreAdabasDBID: ${exx.broker.pstore.adabas.dbid}
-                  PStoreAdabasFNR: ${exx.broker.pstore.adabas.fnr}                      
-
-              APPLICATION-MONITORING:
-                APPLICATION-MONITORING:
-                  Enabled: ${exx.broker.appmon}
-                  CollectorHost: ${exx.broker.appmon.collector.host}
-                  CollectorPort: ${exx.broker.appmon.collector.port}
-                                    
-              MONITORING-KPI:
-                MONITORING-KPI: >
-                  entirex.broker.kpi.1.critical=0.95
-                  entirex.broker.kpi.1.id=\#1
-                  entirex.broker.kpi.1.marginal=0.80
-                  entirex.broker.kpi.1.max=200
-                  entirex.broker.kpi.1.name=Clients
-                  entirex.broker.kpi.1.unit=
-                  entirex.broker.kpi.1.value=0
-                  entirex.broker.kpi.2.critical=0.95
-                  entirex.broker.kpi.2.id=\#2
-                  entirex.broker.kpi.2.marginal=0.80
-                  entirex.broker.kpi.2.max=50
-                  entirex.broker.kpi.2.name=Servers
-                  entirex.broker.kpi.2.unit=
-                  entirex.broker.kpi.2.value=0
-                  entirex.broker.kpi.3.critical=0.95
-                  entirex.broker.kpi.3.id=\#3
-                  entirex.broker.kpi.3.marginal=0.80
-                  entirex.broker.kpi.3.max=1000
-                  entirex.broker.kpi.3.name=Conversations
-                  entirex.broker.kpi.3.unit=
-                  entirex.broker.kpi.3.value=0
+      EntireXCommandLineScripts:
 
 layers:
   runtime:
