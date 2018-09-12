@@ -20,45 +20,56 @@
 
 pipeline {
     agent none
-    parameters {
-        choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
-        choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
+    // parameters {
+    //     choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
+    //     choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
+    // }
+    environment {
+        REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
+        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
+        TAG = '10.3'
+        CC_ENV = 'dev'
     }
     stages {
-        stage('Build') {
+        stage("Infrastructure Images") {
             agent { label 'docker' }
-            environment {
-                COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-            }
             steps {
+                checkout scm
+                dir ('infrastructure') {
+                    sh "docker-compose -f docker-compose.yml ${TAG}.staging.yml config"
+                    sh "docker-compose -f docker-compose.yml ${TAG}.staging.yml build --pull"
+                    sh 'docker-compose push'
+                }
+            }
+        }        
+        stage('Build Templates') {
+            agent { label 'docker' }
+            steps {
+                checkout scm
                 sh "./buildw"
                 stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
                     archive '**'
-                    //deleteDir()
                 }
             }
         }
-        stage("Test") {
+        stage("Test Templates") {
             parallel {
                 stage('Runtimes') {
                     agent { label 'docker' }
-                    environment {
-                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-                        
-                    }
                     steps {
+                        checkout scm
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d cc'
 
-                        sh "./provisionw sag-um-server"
-                        sh "./provisionw sag-um-config"
-                        sh "./provisionw sag-tc-server"
-                        sh "./provisionw sag-is-server"
-                        sh "./provisionw sag-is-config"
-                        sh "./provisionw sag-des"
-                        sh "./provisionw sag-is-cloudstreams"
-                        sh "./provisionw sag-apama-correlator"
+                        sh './provisionw sag-um-server'
+                        // sh "./provisionw sag-um-config"
+                        // sh "./provisionw sag-tc-server"
+                        // sh "./provisionw sag-is-server"
+                        // sh "./provisionw sag-is-config"
+                        // sh "./provisionw sag-des"
+                        // sh "./provisionw sag-is-cloudstreams"
+                        // sh "./provisionw sag-apama-correlator"
                     }
                     post {
                         always {
@@ -68,20 +79,16 @@ pipeline {
                 }
                 stage('Designer and tools') {
                     agent { label 'docker' }
-                    environment {
-                        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-                        CC_ENV = 'dev'
-                    }
                     steps {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d cc'
 
-                        sh "./provisionw sag-msc-server"
-                        sh "./provisionw sag-abe"                        
-                        sh "./provisionw sag-designer-services"
-                        sh "./provisionw sag-designer-cloudstreams"
-                        sh "./provisionw sag-exx-broker"
-                        sh "./provisionw sag-exx-c-rpc-server"
+                        // sh "./provisionw sag-msc-server"
+                        // sh "./provisionw sag-abe"                        
+                        // sh "./provisionw sag-designer-services"
+                        // sh "./provisionw sag-designer-cloudstreams"
+                        // sh "./provisionw sag-exx-broker"
+                        // sh "./provisionw sag-exx-c-rpc-server"
                     }
                     post {
                         always {
@@ -91,6 +98,41 @@ pipeline {
                 }
             }
         }
+        stage("Build Images") {
+            agent { label 'docker' }
+            steps {
+                checkout scm
+                dir ('containers') {
+                    sh 'docker-compose config'
+                    sh 'docker-compose pull cc'
+                    sh 'docker-compose build universal-messaging'
+                    sh 'docker-compose push'
+                }
+            }
+        }   
+        // stage("Build Images") {
+        //     agent none
+
+        //     steps {
+        //         script {
+        //             // def containers = ['sag-um-server', 'sag-is-server', 'sag-tc-server', 'sag-abe']
+        //             def containers = ['sag-um-server']
+        //             def builders = [:]
+        //             for (c in containers) {
+        //                 def image = c // Need to bind the label variable before the closure - can't do 'for (label in labels)'
+        //                 builders[image] = {
+        //                     node('docker') {
+        //                         checkout scm
+        //                         sh "docker-compose -f templates/$image/docker-compose.yml config"
+        //                         sh "docker-compose -f templates/$image/docker-compose.yml build --pull --force-rm"
+        //                         sh "docker-compose -f templates/$image/docker-compose.yml push"
+        //                     }
+        //                 }                        
+        //             }
+        //             parallel builders // kick off parallel builds    
+        //         }
+        //     }
+        // }
 
         // stage('Publish') {
         //     agent { label 'docker' }
