@@ -43,6 +43,20 @@ COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/saglic.jar $SAG_HOME/
 COPY --from=builder --chown=1724:1724 $SAG_HOME/jvm/ $SAG_HOME/jvm/
 COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
+# Possibility to add a valid license file already to the image instead of
+# providing it during start up
+# e.g.:
+# ADD myLicense.xml $EXXDIR/config/license.xml
+  
+# Possibility to add a different configuration file already to the image instead of
+# providing it during start up
+# e.g.:
+# ADD myConfiguration /configs/entirex.javarpcserver.properties
+  
+# Possibility to add server implementation to the image
+# e.g.:
+# ADD myData/. /data
+
 ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 
 USER sagadmin

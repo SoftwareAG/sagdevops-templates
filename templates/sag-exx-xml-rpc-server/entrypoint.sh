@@ -41,9 +41,9 @@ function clean_up {
 }
 
 
-
 # Trap various signals to clean up the environment
 trap clean_up EXIT SIGHUP SIGINT SIGTERM QUIT
+
 
 # Starting EntireX RPC Server for XML/SOAP and sending it into the background.
 $JAVA_HOME/bin/java -classpath "$EXXDIR/classes/entirex.jar:$EXXDIR/../common/lib/saglic.jar:$SAG_HOME/WS-Stack/lib/wsstack-client.jar" "-Dentirex.license.location=$EXXDIR/config/license.xml" com.softwareag.entirex.xml.rt.XMLRPCServer -p /configs/$EXX_XML_SERVER_CONFIGURATION -c /configs/$EXX_XML_SERVER_MAPPING $* &
@@ -51,5 +51,6 @@ $JAVA_HOME/bin/java -classpath "$EXXDIR/classes/entirex.jar:$EXXDIR/../common/li
 
 # Wait forever until container shuts down
 wait
+
 
 exit 0
