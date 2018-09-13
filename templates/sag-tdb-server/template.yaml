@@ -21,7 +21,7 @@ description: Terracotta DB server
 
 environments:
   default:
-    tdb.tdbserver.license.key: ${} # REQUIRED: license key
+    #tdb.tdbserver.license.key: ${} # REQUIRED: license key
     tdb.fixes:            ALL
     tdb.memory.init:      128                # minimil memory configuration
     tdb.memory.max:       512                # minimal memory configuration
