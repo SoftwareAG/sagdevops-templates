@@ -1,5 +1,5 @@
 # Infrastructure Data Collector
-Use this template to provision Infrastructure Data Collector(10.1 or higher)
+Use this template to provision or migrate Infrastructure Data Collector(10.1 or higher)
  
 ## Requirements and limitations 
 None
@@ -15,6 +15,7 @@ All supported Windows and UNIX platforms.
   
 ### Supported use cases
 * Provisioning of new 10.1, or 10.3 environments
+* Migrate to 10.1 or 10.3 environments
 * Installing latest fixes and support patches
 * Configuration of:
 Infrastructure Data Collector Metatdata
@@ -31,3 +32,5 @@ To apply the template, follow the instructions in "Applying template using Comma
 Example:
 To provision Infrastructure Data Collector on the installation with alias localhost:
 sagcc exec templates composite apply sag-infradc node=localhost infradc.jms.host=localhost repo.product=SuiteInt repo.fix=GA_Fix_Repo --sync-job --wait 360
+To migrate Infrastructure Data Collector on the installation with alias localhost:
+sagcc exec templates composite apply sag-infradc-migrate node=localhost src.spm.host=localhost src.spm.alias=localhost spm.port=9400 spm.alias=localhost infradc.jms.host=localhost os.username=<username> os.password=<password> repo.product=products-10.2 repo.fix=fixes-10.2 environment.mode=migration --sync-job --wait 360
