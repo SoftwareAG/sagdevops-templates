@@ -67,10 +67,12 @@ pipeline {
                         sh './provisionw sag-um-server'
                         sh './provisionw sag-um-config'
                         sh './provisionw sag-tc-server'
+                        sh './provisionw sag-tdb-server'
                         sh './provisionw sag-is-server'
                         sh './provisionw sag-is-config'
-                        sh './provisionw sag-des'
                         sh './provisionw sag-is-cloudstreams'
+                        sh './provisionw sag-des'
+                        sh './provisionw sag-des-config'
                         sh './provisionw sag-apama-correlator'
                         sh './provisionw sag-abe'                       
                         sh './provisionw sag-designer-services'
@@ -79,9 +81,7 @@ pipeline {
                         sh './provisionw sag-exx-c-rpc-server'
                         sh './provisionw sag-exx-java-rpc-server'
                         sh './provisionw sag-exx-xml-rpc-server'
-                        sh './provisionw sag-onedata'
-                        sh './provisionw sag-des'
-                        sh './provisionw sag-tdb-server'
+                        // sh './provisionw sag-onedata'
                     }
                     post {
                         always {
