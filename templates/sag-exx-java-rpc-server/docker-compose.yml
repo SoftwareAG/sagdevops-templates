@@ -21,7 +21,7 @@ version: "3.2"
 
 services:
   exxjavaserver:
-    image: daerepository03.eur.ad.sag:4443/softwareag/entirex-java-rpc-server:10.3.0.0.640
+    image: exx-java-rpc-server:10.3
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
