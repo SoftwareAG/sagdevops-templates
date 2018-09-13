@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright � 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,18 +16,21 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-# Properties for production testing for GA versions with fixes
+version: "3.2"
 
-um.fixes=ALL
-um.url=nsp://localhost:9000
-tc.fixes=ALL
-is.fixes=ALL
-is.um.url=nsp://localhost:9000
-des.fixes=ALL 
-des.um.url=nsp://localhost:9000
-apama.fixes=ALL
-abe.fixes=ALL
-designer.fixes=ALL
-cst.fixes=ALL
-exx.broker.fixes=ALL
-exx.server.fixes=ALL
+services:
+  node:
+    build:
+      args:
+        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
+        - CC_INSTALLER=cc-def-10.2-fix2-lnxamd64
+        - CC_INSTALLER_URL=http://aquarius-bg.eur.ad.sag/cc/installers
+
+  builder:
+    build:
+      args:
+        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
+        - REPO_PRODUCT=102apr2018_SIC
+        - REPO_FIX=GA_Fix_Repo
+        - REPO_HOST=aquarius-bg.eur.ad.sag
+        - LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster

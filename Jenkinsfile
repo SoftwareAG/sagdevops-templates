@@ -21,15 +21,15 @@
 pipeline {
     // agent none
     agent { label 'docker' }
-    // parameters {
-    //     choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
-    //     choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
-    // }
+    parameters {
+        choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
+        choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
+    }
     environment {
         REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-        TAG = '10.3'
-        CC_ENV = 'dev'
+        // TAG = '10.3'
+        // CC_ENV = 'dev'
     }
     stages {
         stage("Infrastructure Images") {
@@ -158,7 +158,7 @@ pipeline {
         //     }
         // }
 
-        // stage('Publish') {
+        // stage('Publish Templates') {
         //     // agent { label 'docker' }
         //     environment {
         //         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
@@ -178,4 +178,11 @@ pipeline {
         //     }
         // }
     }
+    post {
+        success {
+			script { 
+	            build job: 'cc-docker-build-images', parameters: [string(name: 'TAG', value: "10.3")], propagate: false, wait: false
+	        }
+        }
+    }    
 }
