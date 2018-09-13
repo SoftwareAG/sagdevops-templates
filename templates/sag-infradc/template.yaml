@@ -1,11 +1,20 @@
 alias: sag-infradc
-description: Template to install InfraDC and configure it
+description: The minimal required template can be used to install or migrate single instance of o4i
 
 environments:
-
-  default:
+  default:    
+    src.spm.port: 8192                  #Source SPM port
+    src.spm.host: localhost             #Source SPM host
+    src.spm.alias: localhost            #Source SPM Alias
+    src.install.dir: C:\SoftwareAG      #Source Installation Directory
+    spm.alias: localhost                      #target SPM alias
+    spm.port: ${}                       #target SPM port
+    install.dir: C:\SoftwareAG    #Target install directory
+    os.username:  username            # remote machine SSH username, default CCE process user account (as java system property)
+    os.password:  password            # remote machine SSH password
+    os.auth.method: PASSWORD          # remote machine authentication method: PASSWORD,INTERACTIVE,CERTIFICATE
+    os.port:      22                  # remote machine SSH port
     
-
     infradc.fixes:           ALL        #Specifies the list of fixes to be installed
     infradc.primary.port:    6666       #Primary port for infradc, by default it is 6666
     infradc.secondary.port:  15005      #Secondary port for infradc, by default it is 15005
@@ -39,7 +48,7 @@ environments:
     infradc.apamaLoadFlag:             true    #Specified whether to load metadata for Apama
     infradc.applinxLoadFlag:           true    #Specified whether to load metadata for Applinx
     infradc.brokerLoadFlag:            true    #Specified whether to load metadata for Broker
-    infradc.completeDCLoadFlag:          true    #Specified whether to load metadata for Complete
+    infradc.completeDCLoadFlag:        true    #Specified whether to load metadata for Complete
     infradc.entireXLoadFlag:           true    #Specified whether to load metadata for EntireX
     infradc.eventRoutingLoadFlag:      true    #Specified whether to load metadata for Event Routing
     infradc.integrationServerLoadFlag: true    #Specified whether to load metadata for Integration Server
@@ -56,6 +65,7 @@ environments:
     infradc.jmxLoadFlag:               true    #Specified whether to load metadata for JMX
     infradc.logLevel:                  INFO     #Specifies the log level for InfraDC 
 
+  
 
 layers:
   runtime:
@@ -64,10 +74,11 @@ layers:
     fixRepo:     ${repo.fix}                # default repository to install fixes from
     templates:   
       - infradc-install                     # template to apply
+
 templates:
- 
+
   infradc-install:
-    description: install infradc products
+    description: infradc-install
     fixes: ${infradc.fixes}
     products:
       InfrastructureDC:
@@ -77,7 +88,7 @@ templates:
               COMMON-MEMORY:
                 COMMON-MEMORY:
                   InitSize:  ${infradc.memory.init}
-                  MaxSize:   ${infradc.momory.max}
+                  MaxSize:   ${infradc.memory.max}
               COMMON-PORTS:
                 COMMON-PORTS-defaultHttp:
                   Port:
@@ -101,14 +112,14 @@ templates:
                 COMMON-PORTS-defaultJmx:
                   Port:
                     "@alias": defaultJmx
-                    Enabled: ${jmx.port.status}
+                    Enabled: true
                     Type: STANDARD
                     Number: ${infradc.jmx.port}
                     Protocol: JMX
                 COMMON-PORTS-diagnostics:
                   Port:
                     "@alias": diagnostics
-                    Enabled: ${diagnostic.port.status}
+                    Enabled: false
                     Number: ${infradc.diagnostic.port}
                     Type: DIAGNOSTIC
                     Protocol: JDWP
@@ -186,6 +197,44 @@ templates:
 provision:
   default:
     runtime: ${node}
- 
 
+    
+migration:
+  options:                       # OPTIONAL options to prepare source node for migration
+    snapshot:                    # OPTIONAL create snapshot template from each source node
+      execute: false             # OPTIONAL execute snapshot? true|false, defaults to true
+    pause:                       # OPTIONAL pause all source runtime components
+      execute: false             # OPTIONAL execute pause lifecycle operation? true|false, defaults to true
+    backup:                      # OPTIONAL create a backup of the source installation directory on the same host machine and transfer the backup archive to Command Central
+      execute: false             # OPTIONAL execute backup, true|false, defaults to false when doing migration on same hosts
+      excludes: ["*.log"]        #OPTIONAL backup archive excludes, defaults to ["*.log", "*.jar", "*.zip"]
 
+  source:
+    default:
+      runtime: ${node}
+  nodes:
+    default:
+      default:
+        port:   ${src.spm.port}
+        bootstrapInfo:
+          installDir:   ${src.install.dir}
+          port:         ${os.port}
+          credentials:
+            userName:   ${os.username}
+            password:   ${os.password}
+            authenticationMethod: ${os.auth.method}         
+      "${src.spm.alias}":
+         host: ${src.spm.host}
+         
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      bootstrapInfo:
+        installDir:   ${install.dir}
+        credentials:
+          userName:   ${os.username}
+          password:   ${os.password}
+          authenticationMethod: ${os.auth.method}
+    ${spm.alias}:
+      host: ${node}
