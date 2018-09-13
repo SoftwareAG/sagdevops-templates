@@ -33,13 +33,14 @@ ENV EXX_XML_SERVER_CONFIGURATION=entirex.xmlrpcserver.properties
 ENV EXX_XML_SERVER_MAPPING=entirex.xmlrpcserver.configuration.xml
 ENV EXX_LICENSE_KEY=license.xml
 
-# setting internal environment variables
+# set some environment variables
 ENV SAG_HOME=/opt/softwareag
 ENV EXXDIR=$SAG_HOME/EntireX
 ENV JAVA_HOME=$SAG_HOME/jvm/jvm
 
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
-COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/saglic.jar $SAG_HOME/common/lib/saglic.jar
+COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/ $SAG_HOME/common/lib/
+COPY --from=builder --chown=1724:1724 $SAG_HOME/WS-Stack/lib/ $SAG_HOME/WS-Stack/lib/
 COPY --from=builder --chown=1724:1724 $SAG_HOME/jvm/ $SAG_HOME/jvm/
 COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
