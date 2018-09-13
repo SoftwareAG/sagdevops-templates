@@ -128,7 +128,7 @@ else
         else
             echo "Downloading '$sagcc_installer' ..."
             mkdir -p $CC_HOME/profiles/CCE/data/installers
-            curl -o $CC_HOME/profiles/CCE/data/installers/$sagcc_installer "${CC_INSTALLER_URL}/${sagcc_installer}"
+            curl -u Administrator:manage -o $CC_HOME/profiles/CCE/data/installers/$sagcc_installer "${CC_INSTALLER_URL}/${sagcc_installer}"
             chmod +x $CC_HOME/profiles/CCE/data/installers/$sagcc_installer
         fi
         echo "Bootstrapping '$SAG_HOME' using '$sagcc_installer' ..."

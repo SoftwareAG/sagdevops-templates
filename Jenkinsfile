@@ -22,7 +22,8 @@ pipeline {
     // agent none
     agent { label 'docker' }
     parameters {
-        choice(choices: '10.3\n10.2\n10.1', description: 'Release/Tag', name: 'TAG')
+        choice(choices: '10.3\n10.2\n10.1', description: 'Release tag', name: 'TAG')
+        choice(choices: 'staging\nmaster',  description: 'Upstream repos location (AQU, EMPOWER)', name: 'STAGE')
         choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
     }
     environment {
@@ -37,8 +38,8 @@ pipeline {
             steps {
                 // checkout scm
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml config"
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml build"
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.${STAGE}.yml config"
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.${STAGE}.yml build"
                     // sh 'docker-compose push'
                 }
             }
@@ -126,7 +127,7 @@ pipeline {
             steps {
                 // checkout scm
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.staging.yml push"
+                    sh "docker-compose -f docker-compose.yml -f ${TAG}.${STAGE}.yml push"
                 }
                 dir ('containers') {
                     sh 'docker-compose push'
