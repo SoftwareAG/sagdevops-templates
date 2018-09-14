@@ -25,28 +25,15 @@ services:
     ports:
       - 8091 # CCE
       - 8092 # target node SPM
-    build:
-      context: .
-      args:
-        - BASE_IMAGE=${CC_SERVER_IMAGE}:${CC_TAG} # base image for the builder, e.g. server-10.3
-        - NODE_IMAGE=${CC_NODE_IMAGE}             # base image for the node, e.g. node-10.2
-        - LICENSES_URL                            # licenses .zip, e.g. 10.x
-        - REPO_HOST                               # default AQU host
-        - REPO_PRODUCT                            # product release repo, e.g. CC_PI_102apr2018
-        - REPO_FIX                                # fix release repo, e.g. GA_Fix_Repo
-        - REPO_PRODUCT_URL                        # product mirror URL
-        - REPO_FIX_URL                            # fix mirror URL
-        - REPO_USERNAME                           # Empower or mirror username
-        - REPO_PASSWORD                           # Empower or user password
-    # environment:
-    #   - REPO_HOST                                 # alternative, closest AQU host
-    #   - REPO_PRODUCT                              # alternative, product repo within the same release
-    #   - REPO_FIX                                  # alternative, fix repo
-    #   - LICENSES_URL                              # additional licenses
-    #   - REPO_PRODUCT_URL                        # product mirror URL
-    #   - REPO_FIX_URL                            # fix mirror URL
-    #   - REPO_USERNAME                           # Empower or mirror username
-    #   - REPO_PASSWORD                           # Empower or user password
+    environment:
+      - REPO_HOST                                 # alternative, closest AQU host
+      - REPO_PRODUCT                              # alternative, product repo within the same release
+      - REPO_FIX                                  # alternative, fix repo
+      - LICENSES_URL                              # additional licenses
+      - REPO_PRODUCT_URL                        # product mirror URL
+      - REPO_FIX_URL                            # fix mirror URL
+      - REPO_USERNAME                           # Empower or mirror username
+      - REPO_PASSWORD                           # Empower or user password
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./scripts/init.sh:/opt/sagtools/init.sh
@@ -103,13 +90,3 @@ services:
       - .:/src/ # required
     environment:
       - BUILD_NUMBER
-
-  # visualizer:
-  #   image: dockersamples/visualizer:stable
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
