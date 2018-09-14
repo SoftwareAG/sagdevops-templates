@@ -44,6 +44,21 @@ fi
 
 echo "Generating '$TEMPLATE_ALIAS' template ..."
 
+# <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+# <generateCompositeTemplate>
+#     <alias>${TEMPLATE_ALIAS}</alias>
+#     <nodeAlias>${NODE_ALIAS}</nodeAlias>
+#     <runtimeComponentId>${RUNTIME_COMPONENT_ID}</runtimeComponentId>
+#     <configurations exclude="true">
+#       <runtimeComponent id="$RUNTIME_COMPONENT_ID">
+#         <configurationTypeId>COMMON-CONFIGURATION-TYPE-METADATA</configurationTypeId>
+#       </runtimeComponent>
+#     </configurations>
+#     <parameterize>true</parameterize>
+#     <paramPrefix>${PREFIX}</paramPrefix>
+#     <overwrite>true</overwrite>
+# </generateCompositeTemplate>
+
 if ./sagccw exec templates composite generate nodeAlias=$NODE_ALIAS parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml -o /src/build/templates/$TEMPLATE_ALIAS/template.yaml ; then
     echo ""
     echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFULL"

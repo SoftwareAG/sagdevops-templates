@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,4 +16,33 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-tc.fixes=[]
+
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
+
+FROM $BUILDER_IMAGE as builder
+
+# can be sag-msc-server, sag-is-server or a custom one
+ARG TEMPLATE=sag-msc-template
+
+ARG __is_fixes=[]
+ARG __is_instance_name=default
+
+# provision and unit test
+RUN $CC_HOME/provision.sh $TEMPLATE && \
+    $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/test.sh && \
+    $CC_HOME/cleanup.sh
+
+FROM $BASE_IMAGE
+
+EXPOSE 5555 9999 8094 8092 8093
+
+# copy everything from the builder stage $SAG_HOME
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
+
+# custom entry point
+ADD entrypoint.sh $SAG_HOME/
+ENTRYPOINT $SAG_HOME/entrypoint.sh
+
+# Current working directory for all commands. This is where the UM installation is copied to within the image.
+WORKDIR $SAG_HOME

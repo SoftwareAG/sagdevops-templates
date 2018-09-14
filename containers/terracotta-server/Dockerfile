@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,11 +16,8 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-ARG TAG=latest
-# Use $BUILDER_IMAGE to control release
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-# Target image base image
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
@@ -34,8 +31,12 @@ ARG __tc_data_dir="/data/diskstore"
 ARG __tc_backup_dir="/data/backup"
 ARG __tc_logs_dir="stdout:"
 
-# provision, unit test and default cleanup
-RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
+ARG TEMPLATE=sag-msc-template
+
+# provision and unit test
+RUN $CC_HOME/provision.sh $TEMPLATE && \
+    $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/test.sh && \
+    $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE as default
 
