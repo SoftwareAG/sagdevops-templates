@@ -46,10 +46,6 @@ ARG __tc_mgt_port="9040"
 ARG __tc_data_dir="/data/diskstore"
 ARG __tc_backup_dir="/data/backup"
 
-# TODO: should be in the base image! adding the user sagadmin (1724:1724 for users convention), to not run the server as root
-RUN groupadd -g 1724 sagadmin && adduser -d $SAG_HOME -s /bin/bash -g 1724 -r sagadmin
-#USER sagadmin
-
 # /data/diskstore will persist have persistent data  (FRS persistence for example); better not be on container filesystem !
 ENV DISKSTORE_DIRECTORY "${__tc_data_dir}"
 VOLUME $DISKSTORE_DIRECTORY
