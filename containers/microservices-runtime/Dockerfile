@@ -23,7 +23,7 @@ ARG BASE_IMAGE
 FROM $BUILDER_IMAGE as builder
 
 # can be sag-msc-server, sag-is-server or a custom one
-ARG TEMPLATE=sag-msc-template
+ARG TEMPLATE=sag-msc-server
 
 ARG __is_fixes=[]
 ARG __is_instance_name=default
