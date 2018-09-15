@@ -39,10 +39,10 @@ services:
     build:
       context: commandcentral-node/
       args:
-        - CC_SERVER_IMAGE=store/softwareag/commandcentral-server:${CC_TAG} # base image for the builder, e.g. server-10.3
+        - CC_SERVER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG} # base image for the builder, e.g. server-10.3
         - BASE_IMAGE=${REG}/java:${TAG}
-        - CC_INSTALLER
-        - CC_INSTALLER_URL=http://empowersdc.softwareag.com/ccinstallers
+        - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-release-lnxamd64}
+        - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://empowersdc.softwareag.com/ccinstallers}
     depends_on:
       - java
     environment:
@@ -57,8 +57,8 @@ services:
       context: ../
       dockerfile: infrastructure/commandcentral-builder/Dockerfile
       args:
-        - CC_SERVER_IMAGE=store/softwareag/commandcentral-server:${CC_TAG}
-        - CC_NODE_IMAGE=${REG:-softwareag}/commandcentral-node:${TAG}
+        - CC_SERVER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG}
+        - CC_NODE_IMAGE=${REG}/commandcentral-node:${TAG}
         - REPO_PRODUCT_URL                        # product mirror URL
         - REPO_USERNAME                           # Empower or mirror username
         - REPO_PASSWORD                           # Empower or user password

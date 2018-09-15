@@ -17,7 +17,9 @@
 
 -->
 
-# Building Docker container images with Command Central
+# Building Infrastructure images
+
+Build these Docker images as the base images for your target product images.
 
 ## Building base OS, java, Command Central node and Builder images
 

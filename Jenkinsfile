@@ -19,7 +19,6 @@
 // curl -X POST -F "jenkinsfile=<Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
 
 pipeline {
-    // agent none
     agent { label 'docker' }
     parameters {
         choice(choices: '10.3\n10.2\n10.1', description: 'Release tag', name: 'TAG')
@@ -29,27 +28,20 @@ pipeline {
     environment {
         REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-        // TAG = '10.3'
-        // CC_ENV = 'dev'
+        REPO_HOST = 'aquarius-bg.eur.ad.sag'
     }
     stages {
         stage("Infrastructure Images") {
-            // agent { label 'docker' }
             steps {
-                // checkout scm
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.${STAGE}.yml config"
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.${STAGE}.yml build"
-                    // sh 'docker-compose push'
+                    sh "docker-compose -f docker-compose.yml -f $${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
+                    sh "docker-compose -f docker-compose.yml -f $${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
                 }
             }
         }        
         stage('Build Templates') {
-            // agent { label 'docker' }
             steps {
-                // checkout scm
                 sh 'docker-compose run --rm build'
-                // stash includes: 'build/repo/**', name: 'repo'
                 dir ('build/repo') {
                     archiveArtifacts '**'
                 }
@@ -111,23 +103,17 @@ pipeline {
         //     // }
         // }
         stage("Build Images") {
-            // agent { label 'docker' }
             steps {
-                // checkout scm
                 dir ('containers') {
                     sh 'docker-compose config'
-                    // sh 'docker-compose pull cc'
                     sh 'docker-compose build'
-                    // sh 'docker-compose push'
                 }
             }
         }   
         stage("Publish Images") {
-            // agent { label 'docker' }
             steps {
-                // checkout scm
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f ${TAG}.${STAGE}.yml push"
+                    sh "docker-compose -f docker-compose.yml -f $${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
                 }
                 dir ('containers') {
                     sh 'docker-compose push'
@@ -182,7 +168,7 @@ pipeline {
     post {
         success {
 			script { 
-	            build job: 'cc-docker-build-images', parameters: [string(name: 'TAG', value: "10.3")], propagate: false, wait: false
+	            build job: 'cc-docker-staging', parameters: [string(name: 'TAG', value: "$TAG")], propagate: false, wait: false
 	        }
         }
     }    
