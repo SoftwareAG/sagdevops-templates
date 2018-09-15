@@ -34,8 +34,8 @@ pipeline {
         stage("Infrastructure Images") {
             steps {
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f $${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
-                    sh "docker-compose -f docker-compose.yml -f $${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
+                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
+                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
                 }
             }
         }        
@@ -113,7 +113,7 @@ pipeline {
         stage("Publish Images") {
             steps {
                 dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f $${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
+                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
                 }
                 dir ('containers') {
                     sh 'docker-compose push'
