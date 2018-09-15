@@ -20,10 +20,3 @@
 # Building Infrastructure images
 
 Build these Docker images as the base images for your target product images.
-
-## Building base OS, java, Command Central node and Builder images
-
-```bash
-export LICENSE_URL=http://url/with/sag-licenses.zip
-docker-compose build
-```
