@@ -23,7 +23,7 @@ services:
     build:
       args:
         - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-        - CC_INSTALLER_URL=http://${REPO_HOST:-aquarius-dae.eur.ad.sag}/PDShare/cc
+        - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://${REPO_HOST:-aquarius-dae.eur.ad.sag}/PDShare/cc}
 
   builder:
     build:
