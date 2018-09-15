@@ -22,7 +22,7 @@ services:
   node:
     build:
       args:
-        - CC_INSTALLER=cc-def-10.3-release-lnxamd64
+        - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-release-lnxamd64}
 
   builder:
     build:

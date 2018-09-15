@@ -29,6 +29,7 @@ pipeline {
         REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
         REPO_HOST = 'aquarius-bg.eur.ad.sag'
+        CC_INSTALLER_URL = 'http://aquarius-bg.eur.ad.sag/cc/installers'
     }
     stages {
         stage("Infrastructure Images") {
