@@ -21,7 +21,7 @@ version: "3.2"
 
 services:
   cc: # builder service
-    image: ${CC_BUILDER_IMAGE}:${TAG}
+    image: ${REG}/commandcentral-builder:${TAG}
     ports:
       - 8091 # CCE
       - 8092 # target node SPM
@@ -43,7 +43,7 @@ services:
       - ./environments/:/src/environments/
 
   sagcc: # sagcc wrapper
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
     environment: 
@@ -53,7 +53,7 @@ services:
     command: --help
 
   sagccant: # sagccant wrapper
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}
     volumes: 
       - ./:/src/
     environment: 
@@ -63,7 +63,7 @@ services:
     command: -p
 
   antcc: # antcc wrapper
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-antcc
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}-antcc
     volumes: 
       - ./:/src/
     environment: 
@@ -73,7 +73,7 @@ services:
     command: -p
 
   apply: # remote apply wrapper
-    image: ${CC_CLIENT_IMAGE}:${CC_TAG}-alpine
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}-alpine
     volumes: 
       - ./:/src/
     environment: 
@@ -85,7 +85,7 @@ services:
     command: --help
 
   build:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/asset-builder:$TAG
+    image: ${CC_REG}/asset-builder:${CC_TAG}
     volumes:
       - .:/src/ # required
     environment:
