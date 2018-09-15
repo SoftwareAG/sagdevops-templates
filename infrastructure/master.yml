@@ -27,6 +27,6 @@ services:
   builder:
     build:
       args:
-        - REPO_PRODUCT_URL=http://sdc.softwareag.com/dataservewebM103/repository/
+        - REPO_PRODUCT_URL=${REPO_PRODUCT_URL:-http://sdc.softwareag.com/dataservewebM103/repository/}
         - REPO_USERNAME=${EMPOWER_USR}
         - REPO_PASSWORD=${EMPOWER_PSW}

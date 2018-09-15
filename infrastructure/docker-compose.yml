@@ -59,7 +59,7 @@ services:
       args:
         - CC_SERVER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG}
         - CC_NODE_IMAGE=${REG}/commandcentral-node:${TAG}
-        - REPO_PRODUCT_URL=${REPO_PRODUCT_URL:-http://sdc.softwareag.com/dataservewebM101/repository/}
+        - REPO_PRODUCT_URL
         - REPO_USERNAME                           # Empower or mirror username
         - REPO_PASSWORD                           # Empower or user password
         - LICENSES_URL                            # licenses .zip, e.g. 10.x
