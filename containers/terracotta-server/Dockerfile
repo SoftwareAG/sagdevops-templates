@@ -31,7 +31,7 @@ ARG __tc_data_dir="/data/diskstore"
 ARG __tc_backup_dir="/data/backup"
 ARG __tc_logs_dir="stdout:"
 
-ARG TEMPLATE=sag-msc-template
+ARG TEMPLATE=sag-tc-server
 
 # provision and unit test
 RUN $CC_HOME/provision.sh $TEMPLATE && \
