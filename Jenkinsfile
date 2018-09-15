@@ -40,14 +40,14 @@ pipeline {
                 }
             }
         }        
-        stage('Build Templates') {
-            steps {
-                sh 'docker-compose run --rm build'
-                dir ('build/repo') {
-                    archiveArtifacts '**'
-                }
-            }
-        }
+        // stage('Build Templates') {
+        //     steps {
+        //         sh 'docker-compose run --rm build'
+        //         dir ('build/repo') {
+        //             archiveArtifacts '**'
+        //         }
+        //     }
+        // }
         // stage("Test Templates") {
         //     // parallel {
         //     //     stage('Runtimes') {
