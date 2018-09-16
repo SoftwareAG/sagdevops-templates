@@ -25,22 +25,21 @@ services:
     ports:
       - 8091 # CCE
       - 8092 # target node SPM
-    environment:
-      - REPO_HOST                                 # alternative, closest AQU host
-      - REPO_PRODUCT                              # alternative, product repo within the same release
-      - REPO_FIX                                  # alternative, fix repo
-      - LICENSES_URL                              # additional licenses
-      - REPO_PRODUCT_URL                        # product mirror URL
-      - REPO_FIX_URL                            # fix mirror URL
-      - REPO_USERNAME                           # Empower or mirror username
-      - REPO_PASSWORD                           # Empower or user password
+    # environment:
+    #   - REPO_HOST                                 # alternative, closest AQU host
+    #   - REPO_PRODUCT                              # alternative, product repo within the same release
+    #   - REPO_FIX                                  # alternative, fix repo
+    #   - LICENSES_URL                              # additional licenses
+    #   - REPO_PRODUCT_URL                        # product mirror URL
+    #   - REPO_FIX_URL                            # fix mirror URL
+    #   - REPO_USERNAME                           # Empower or mirror username
+    #   - REPO_PASSWORD                           # Empower or user password
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      - ./scripts/init.sh:/opt/sagtools/init.sh
-      - ./scripts/test.sh:/opt/sagtools/test.sh
-      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-      - ./scripts/provision.sh:/opt/sagtools/provision.sh
       - ./environments/:/src/environments/
+    #   - ./scripts/init.sh:/opt/sagtools/init.sh
+    #   - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+    #   - ./scripts/provision.sh:/opt/sagtools/provision.sh
 
   sagcc: # sagcc wrapper
     image: ${CC_REG}/commandcentral-client:${CC_TAG}-alpine
