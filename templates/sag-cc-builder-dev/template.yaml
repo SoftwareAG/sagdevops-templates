@@ -18,11 +18,11 @@
 ###############################################################################
 alias: sag-cc-builder-dev
 description: Product, fix and asset repos
-version: 10.2
+version: 10.3
 
 environments:
   default:
-    repo.product:      102apr2018_SIC          # product repo
+    repo.product:      103oct2018_SIC          # product repo
     repo.fix:          GA_Fix_Repo             # fix repo
     repo.asset.url:    http://irepo.eur.ad.sag/scm/devops/assets-repo.git # asset repo URL
 
