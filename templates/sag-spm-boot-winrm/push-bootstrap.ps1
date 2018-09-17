@@ -1,4 +1,21 @@
-
+###############################################################################
+#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 param
 (
 	[Parameter(Mandatory)]
@@ -13,7 +30,7 @@ param
 	
 	[string]$RemoteInstallPath="c:\softwareag\",
 	
-	[string]$LocalInstallerZip="C:\softwareag\profiles\CCE\data\installers\cc-def-10.2-milestone-w64.zip",
+	[string]$LocalInstaller="C:\softwareag\profiles\CCE\data\installers\cc-def-10.2-milestone-w64.zip",
 	
 	[string]$AdministratorPassword="manage",
 	
@@ -57,29 +74,35 @@ foreach ($comp in $computers.Replace("[","").Replace("]","").Replace("`"","")){
 			}
 		} -ArgumentList $rtp
 		if(Invoke-Command -Session $s -ScriptBlock {param($rtp,$dsz) Test-Path -Path "$rtp\$dsz" } -ArgumentList $rtp,$srz.split("\")[-1]){
-			"Zip already exists"
+			"Installer already exists"
 		}else{
-			"Uploading zipfile $srz"
+			"Uploading installer $srz"
 			get-date | select DateTime
-			Copy-Item -Path $srz -Destination c:\temp -ToSession $s
+			Copy-Item -Path $srz -Destination $rtp -ToSession $s
 			"Upload finished"
 			get-date | select DateTime
 		}
-		"Unzipping in $rtp"
-		Invoke-Command -Session $s -ScriptBlock {param($srz,$rtp)
-#			Add-Type -AssemblyName "system.io.compression.filesystem"
-			$instzip=$srz.split("\")[-1]
-			if(Test-Path -Path $rtp\$instzip){
-#				[io.compression.zipfile]::ExtractToDirectory("$rtp\$instzip",$rtp)
-				Expand-Archive -Path "$rtp\$instzip" -DestinationPath $rtp -Force
-			}else{
-				"Installer zipfile $instzip does not exist in folder $rtp"
-			}
-		} -ArgumentList $srz,$rtp
+		if($srz.EndsWith(".zip")){
+			"Unzipping in $rtp"
+			Invoke-Command -Session $s -ScriptBlock {param($srz,$rtp)
+				$instfile=$srz.split("\")[-1]
+				if(Test-Path -Path $rtp\$instfile){
+					Expand-Archive -Path "$rtp\$instfile" -DestinationPath $rtp -Force
+				}else{
+					"Installer file $instfile does not exist in folder $rtp"
+				}
+			} -ArgumentList $srz,$rtp
+		}else{
+			"Installer is in exe format"
+		}
 		"Installing SPM"
-		Invoke-Command -Session $s -ScriptBlock {param($rtp,$iar)
+		Invoke-Command -Session $s -ScriptBlock {param($rtp,$iar,$srz)
 			set-location $rtp
-			$installer=$(Get-ChildItem cc*bat | Select-Object -Property Name).Name
+			if($srz.EndsWith(".zip")){
+				$installer=$(Get-ChildItem cc-*bat | Select-Object -Property Name).Name
+			}else{
+				$installer=$srz.split("\")[-1]
+			}
 			if ( ($installer) -and (Test-Path "$installer" )){
 				"Running installer with options: $iar"
 				Invoke-Expression "$rtp\$installer $iar"
@@ -87,9 +110,9 @@ foreach ($comp in $computers.Replace("[","").Replace("]","").Replace("`"","")){
 			else{
 				"Installer script $installer does not exist"
 			}
-		} -ArgumentList $rtp,$iar
+		} -ArgumentList $rtp,$iar,$srz
 		get-pssession | Remove-PSSession
-	} -ArgumentList $comp,$credentials,$LocalInstallerZip,$RemoteTempPath,$RemoteInstallPath,$InstallerArgs
+	} -ArgumentList $comp,$credentials,$LocalInstaller,$RemoteTempPath,$RemoteInstallPath,$InstallerArgs
 }
 get-job|wait-job
 get-job|receive-job

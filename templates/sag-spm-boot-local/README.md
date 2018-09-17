@@ -1,25 +1,43 @@
+<!-- Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+
+   SPDX-License-Identifier: Apache-2.0
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+
+     limitations under the License.                                                  
+
+-->
+
 # Bootstrapping Platform Manager on Command Central host
 
-This template allows to install Platform Manager (SPM) on
-the same host as Command Central. Normally this is used
-for development purposes only.
+With this template you can install Platform Manager (SPM) on the same host as Command Central. This is normally used only for development purposes.
 
-> IMPORTANT: Using this template with Command Central 10.1 has significant limitations. See below for details.
+> IMPORTANT: Using this template with Command Central 10.1 has significant limitations. Limitation details are provided below.
 
-## Requirements
+## Requirements and limitations
 
 ### Supported Software AG releases
 
-* Command Central 10.1 (with limitations), 10.2 or later
-* Platform Manager 9.8 or later
+* Command Central 10.2 or higher
+* Command Central 10.1 with limitations
+* Platform Manager 9.8 or higher
 
 ### Supported platforms
 
-* All platforms for which Command Central bootstrap installers are available for download from Empower
+All supported Windows and UNIX platforms.
 
 ### System requirements for Command Central machine
 
-* Must have Command Central bootstrap installer for the target platform saved in `CC_HOME\profiles\CCE\data\installers` folder. Verify by running:
+Command Central bootstrap installer for the target platform stored in `CC_HOME\profiles\CCE\data\installers`. Verify by running:
 
 ```bash
 sagcc list provisioning bootstrap installers
@@ -29,8 +47,7 @@ sagcc list provisioning bootstrap installers
 
 ## Running as a standalone Composite Template on Windows
 
-Bootstrap SPM 10.1 into `C:/SoftwareAG/dev1` installation directory listening on port 8192 on
-local Windows box:
+Bootstrap SPM 10.1 into `C:/SoftwareAG/dev1` installation directory listening on port 8192 on local Windows box:
 
 ```bash
 sagcc exec templates composite apply sag-spm-boot-local node=dev1 \
@@ -88,4 +105,4 @@ See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for `INFRA-LOCAL` la
     * spm.port - SPM HTTP port number
     * node - node alias for the local installation
   * Finish the wizard
-* Wait until provision jobs completes. Use Jobs view to monitor
+4. Wait until provision jobs completes. Use Jobs view to monitor

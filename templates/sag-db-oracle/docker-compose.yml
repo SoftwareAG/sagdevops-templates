@@ -1,3 +1,21 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 version: "3.2"
 
 services:
@@ -11,12 +29,26 @@ services:
 
   # provisioner for webm db schemas using template.yaml
   provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-    entrypoint: bash -c '/opt/sagtools/provision.sh && ./test.sh'
-    volumes: 
-      - ./:/src/ # required
-    environment:
-      - __release=$TAG
-      - __nodes=node
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
+    command: >
+      sagcc exec templates composite apply sag-db-oracle 
+        repo.product=products repo.fix=fixes
+        release=10.3 nodes=node db.host=oracle --wait-for-cc --wait 600 --sync-job
     depends_on: 
       - oracle
+
+  # tester for webm db schemas
+  test:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
+    command: >
+      sagcc list administration product node DatabaseComponentConfigurator  
+        database catalog db.type=oracle db.username=webm  
+        db.password=webm db.name=webm db.url="jdbc:wm:oracle://oracle:1521;SID=XE"
+        -e "ISI & MWS & PRE"
+    depends_on: 
+      - oracle
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

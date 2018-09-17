@@ -1,0 +1,64 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+alias: sag-des
+description: Digital Event Services as part of Integration Server core
+
+environments:
+  default:
+    release.major:          ${}                                           # REQUIRED: release major version number: 10
+    os.platform:            ${}                                           # REQUIRED: OS platform code: w64|lnxamd64|osx
+    des.license.key:        "*_DEV_${release.major}.*_*_${os.platform}"   # DES license key
+    des.fixes:              []                                            # Default list of DES fixes
+    des.instance.id:        OSGI-IS_default                               # server instance name
+    des.um.enabled:         true                                          # enable UM service: true|false
+    des.um.url:             nsp://localhost:9000                          # UM server or cluster URL
+
+layers:
+  runtime:
+    productRepo:            ${repo.product}
+    fixRepo:                ${repo.fix}
+    templates:              [DES]
+
+templates:
+  DES:
+    fixes:                  ${des.fixes}
+    licenses:
+       "common/DigitalEventServices/license/license.xml": "${des.license.key}"
+    products:
+       DEV:
+       DEVspm:
+       DEVSharedLibs:
+       DEVRuntime:
+         default:
+           configuration:
+            ${des.instance.id}-DigitalEventServices:
+              COMMON-WMMESSAGING-DES:
+                UniversalMessaging:
+                  Messaging:
+                    '@alias': UniversalMessaging
+                    Description: UniversalMessaging service
+                    Enabled: ${des.um.enabled}
+                    Provider:
+                      '@type': UM
+                      URL: ${des.um.url}
+
+provision:
+  default:
+    runtime: ${nodes}
