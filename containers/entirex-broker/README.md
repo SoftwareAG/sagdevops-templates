@@ -55,7 +55,7 @@ Provide your configuration files with the default file names, for example:
 <my-config-dir>/myExxCACert.pem		(optional)
 ```
 
-```bash
+```
 docker run -d -p 2001:1971 
 	-e "EXX_ATTRIBUTE=myEtbfile" 
 	-e "EXX_LICENSE_KEY=myLicense.xml" 
