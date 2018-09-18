@@ -24,7 +24,7 @@ FROM $BUILDER_IMAGE as builder
 
 ARG TEMPLATE=entirex-broker
 
-RUN $CC_HOME/provision.sh $TEMPLATE$
+RUN $CC_HOME/provision.sh $TEMPLATE
 
 FROM $BASE_IMAGE
 
