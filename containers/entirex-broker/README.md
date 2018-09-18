@@ -56,6 +56,13 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```bash
-docker run -d -p 2001:1971 -e "EXX_ATTRIBUTE=myEtbfile" -e "EXX_LICENSE_KEY=myLicense.xml" -e "EXX_KEY_FILE=myExxAppKey.pem" -e "EXX_KEY_STORE=myExxAppCert.pem" -e "EXX_TRUST_STORE=myExxCACert.pem" -v <my-license-dir>:/licenses -v <my-config-dir>:/configs entirex_broker
+docker run -d -p 2001:1971 
+	-e "EXX_ATTRIBUTE=myEtbfile" 
+	-e "EXX_LICENSE_KEY=myLicense.xml" 
+	-e "EXX_KEY_FILE=myExxAppKey.pem" 
+	-e "EXX_KEY_STORE=myExxAppCert.pem" 
+	-e "EXX_TRUST_STORE=myExxCACert.pem" 
+	-v <my-license-dir>:/licenses 
+	-v <my-config-dir>:/configs entirex_broker
 ```
 
