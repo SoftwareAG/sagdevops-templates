@@ -16,17 +16,17 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-ARG TAG=10.3
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-ARG BASE_IMAGE=centos:7
+
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-RUN $CC_HOME/provision.sh
+ARG TEMPLATE=entirex-broker
+
+RUN $CC_HOME/provision.sh $TEMPLATE$
 
 FROM $BASE_IMAGE
-
-RUN groupadd -g 1724 sagadmin && useradd -r -u 1724 sagadmin -g sagadmin -d /opt/softwareag -s /bin/bash -M
 
 # setting environment variables, can be overwritten during startup
 ENV EXX_LICENSE_KEY=license.xml

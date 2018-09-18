@@ -134,7 +134,7 @@ services:
       context: entirex-broker/
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
-        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - BASE_IMAGE=centos:7
         - __exx_broker_fixes=$FIXES     # [] or ALL from the env
     ports:
       - 1971                            # container specific ports
