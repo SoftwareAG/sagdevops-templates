@@ -20,7 +20,7 @@ version: "3.2"
 
 services:
   cc: # command-central
-    image: ${SAG_REG:-store/softwareag}/commandcentral-server:${CC_TAG:-10.3}
+    image: ${CC_REG:-store/softwareag}/commandcentral-server:${CC_TAG:-10.3}
     ports:
       - 8091 # CCE
       - 8092 # target node SPM
@@ -51,7 +51,7 @@ services:
         - __um_fixes=$FIXES             # [] or ALL from the env
     ports:
       - 9000                            # container specific ports
-    hostname: um
+    hostname: universal-messaging
     environment:
       - CC_AUTO_REGISTER                # No auto register as we don't have a server
     depends_on:
@@ -66,7 +66,7 @@ services:
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
     ports:
       - 5555                            # container specific ports
-    hostname: cst
+    hostname: cloud-streams
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
     depends_on:
@@ -82,7 +82,7 @@ services:
         - __is_fixes=$FIXES             # [] or ALL, from the env
     ports:
       - 5555                            # container specific ports
-    hostname: msr
+    hostname: microservices-runtime
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
 
@@ -97,7 +97,7 @@ services:
         - TEMPLATE=sag-is-server
     ports:
       - 5555                            # container specific ports
-    hostname: is
+    hostname: integration-server
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
 
@@ -113,7 +113,7 @@ services:
   #     - 9010                            # container specific port
   #     - 9030                            # container specific port
   #     - 9040                            # container specific port
-  #   hostname: tc
+  #   hostname: terracotta-server
   #   environment:
   #     - CC_AUTO_REGISTER                # No auto register as we don't have a server
   #     - OFFHEAP_MAX_SIZE=513m           # Customized offheap size
