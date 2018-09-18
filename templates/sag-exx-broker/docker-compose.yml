@@ -20,8 +20,8 @@
 version: "3.2"
 
 services:
-  exxbroker:
-    image: exx-broker:10.3
+  entirex-broker:
+    image: entirex-broker:10.3
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image

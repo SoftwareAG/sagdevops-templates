@@ -21,7 +21,7 @@ version: "3.2"
 
 services:
   exxjavaserver:
-    image: exx-java-rpc-server:10.3
+    image: sag-exx-java-rpc-server:10.3
     build:
       context: .
       dockerfile: Dockerfile            # instructions to build image
