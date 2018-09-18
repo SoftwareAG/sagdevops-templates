@@ -33,7 +33,7 @@ Provide your configuration files with the default file names, for example:
 
 ```
 <my-license-dir>/license.xml	(required)
-<my-config-dir>/etbfile			(optional)
+<my-config-dir>/etbfile		(optional)
 <my-config-dir>/exxAppCert.pem	(optional)
 <my-config-dir>/exxAppKey.pem	(optional)
 <my-config-dir>/exxCACert.pem	(optional)
@@ -49,7 +49,7 @@ Provide your configuration files with the default file names, for example:
 
 ```
 <my-license-dir>/myLicense.xml		(required)
-<my-config-dir>/myEtbfile			(optional)
+<my-config-dir>/myEtbfile		(optional)
 <my-config-dir>/myExxAppCert.pem	(optional)
 <my-config-dir>/myExxAppKey.pem		(optional)
 <my-config-dir>/myExxCACert.pem		(optional)
