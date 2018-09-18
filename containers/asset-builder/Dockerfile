@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -17,13 +17,17 @@
 #
 ###############################################################################
 
-ARG TAG=10.3
-ARG BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:$TAG
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/java:jdk-8-centos
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-RUN $CC_HOME/provision.sh && ./test.sh && $CC_HOME/cleanup.sh
+ARG TEMPLATE=sag-abe
+
+# provision and unit test
+RUN $CC_HOME/provision.sh $TEMPLATE && \
+    $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/test.sh && \
+    $CC_HOME/cleanup.sh
 
 FROM $BASE_IMAGE
 
@@ -36,7 +40,7 @@ ENV BUILD_OUTPUT_DIR=/src/build/assets/
 # build number for assets
 ENV BUILD_NUMBER=1
 
-COPY --from=builder $SAG_HOME/ $SAG_HOME/
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
 WORKDIR /src
 

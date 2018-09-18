@@ -101,6 +101,16 @@ services:
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
 
+  asset-builder:
+    image: ${REG:-softwareag}/asset-builder:$TAG # target image
+    build:
+      context: asset-builder/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+    environment:
+      - BUILD_NUMBER
+
   # terracotta-server:
   #   image: ${REG:-softwareag}/terracotta-server:$TAG # target image
   #   build:
