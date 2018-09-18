@@ -31,12 +31,12 @@ docker-compose build entirex-broker
 
 Provide your configuration files with the default file names, for example:
 
-<my-license-dir>/license.xml 	(required)
+`<my-license-dir>/license.xml 		(required)`
  
-<my-config-dir>/etbfile 		(optional)
-<my-config-dir>/exxAppCert.pem 	(optional)
-<my-config-dir>/exxAppKey.pem 	(optional)
-<my-config-dir>/exxCACert.pem 	(optional)
+`<my-config-dir>/etbfile 			(optional)`
+`<my-config-dir>/exxAppCert.pem 	(optional)`
+`<my-config-dir>/exxAppKey.pem 		(optional)`
+`<my-config-dir>/exxCACert.pem 		(optional)`
 
 ```bash
 docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/configs entirex_broker
@@ -46,12 +46,12 @@ docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/con
 
 Provide your configuration files with the default file names, for example:
 
-<my-license-dir>/myLicense.xml 	(required)
+`<my-license-dir>/myLicense.xml 	(required)`
  
-<my-config-dir>/myEtbfile 			(optional)
-<my-config-dir>/myExxAppCert.pem 	(optional)
-<my-config-dir>/myExxAppKey.pem 	(optional)
-<my-config-dir>/myExxCACert.pem 	(optional)
+`<my-config-dir>/myEtbfile 			(optional)`
+`<my-config-dir>/myExxAppCert.pem 	(optional)`
+`<my-config-dir>/myExxAppKey.pem 	(optional)`
+`<my-config-dir>/myExxCACert.pem 	(optional)`
 
 ```bash
 docker run -d -p 2001:1971 -e "EXX_ATTRIBUTE=myEtbfile" -e "EXX_LICENSE_KEY=myLicense.xml" -e "EXX_KEY_FILE=myExxAppKey.pem" -e "EXX_KEY_STORE=myExxAppCert.pem" -e "EXX_TRUST_STORE=myExxCACert.pem" -v <my-license-dir>:/licenses -v <my-config-dir>:/configs entirex_broker
