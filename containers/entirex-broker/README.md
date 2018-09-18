@@ -39,7 +39,7 @@ Provide your configuration files with the default file names, for example:
 <my-config-dir>/exxCACert.pem	(optional)
 ```
 
-```bash
+```
 docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/configs entirex_broker
 ```
 
