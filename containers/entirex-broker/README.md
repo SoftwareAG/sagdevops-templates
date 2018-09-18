@@ -22,7 +22,7 @@
 ## Building container image
 
 ```bash
-docker-compose build
+docker-compose build entirex-broker
 ```
 
 ## Running container image
