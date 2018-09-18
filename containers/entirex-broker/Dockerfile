@@ -22,7 +22,7 @@ ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-ARG TEMPLATE=entirex-broker
+ARG TEMPLATE=sag-exx-broker
 
 RUN $CC_HOME/provision.sh $TEMPLATE
 
