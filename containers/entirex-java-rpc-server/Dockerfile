@@ -28,8 +28,6 @@ RUN $CC_HOME/provision.sh sag-exx-java-rpc-server
 
 FROM $BASE_IMAGE
 
-RUN groupadd -g 1724 sagadmin && useradd -r -u 1724 sagadmin -g sagadmin -d /opt/softwareag -s /bin/bash -M
-
 # setting environment variables, can be overwritten during startup
 ENV EXX_JAVA_SERVER_CLASSPATH=
 ENV EXX_JAVA_SERVER_CONFIGURATION=entirex.javarpcserver.properties

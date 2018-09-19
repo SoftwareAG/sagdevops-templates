@@ -25,8 +25,6 @@ RUN $CC_HOME/provision.sh sag-exx-xml-rpc-server
 
 FROM $BASE_IMAGE
 
-RUN groupadd -g 1724 sagadmin && useradd -r -u 1724 sagadmin -g sagadmin -d /opt/softwareag -s /bin/bash -M
-
 # setting environment variables, can be overwritten during startup
 ENV EXX_XML_SERVER_CONFIGURATION=entirex.xmlrpcserver.properties
 ENV EXX_XML_SERVER_MAPPING=entirex.xmlrpcserver.configuration.xml
