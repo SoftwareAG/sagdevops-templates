@@ -31,7 +31,12 @@ echo "# Initialization   #"
 echo "####################"
 echo -e "\n"
 
-if [ ! -z $LICENSES_URL ]; then
+LICENSES_FILE="$CC_HOME/licenses/licenses.zip"
+if [ -f $LICENSES_FILE ]; then
+    echo "Importing license keys from: '$LICENSES_FILE' ..."
+    sagcc add license-tools keys -i $LICENSES_FILE
+    # rm $LICENSES_FILE
+elif [ ! -z $LICENSES_URL ]; then
     # https://solutionbook.softwareag.com/sb-web/page/detail_page.xhtml?guid=1227042885&type=platforms
     # https://iwiki.eur.ad.sag/pages/downloadallattachments.action?pageId=517544534
     echo "Importing license keys from: '$LICENSES_URL' ..."
@@ -39,7 +44,7 @@ if [ ! -z $LICENSES_URL ]; then
     sagcc add license-tools keys -i ~/licenses.zip && \
     rm ~/licenses.zip
 else
-    echo "SKIP: LICENSES_URL env var is not set. No new license keys are imported"    
+    echo "SKIP: LICENSES_URL or LICENSE_FILE env var is not set. No new license keys are imported"    
 fi
 
 # default credentials
