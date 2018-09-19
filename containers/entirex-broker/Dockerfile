@@ -50,13 +50,15 @@ COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbcmd $EXXDIR/bin/etbcmd
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/etb/ETB001/ $EXXDIR/config/etb/ETB001/
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
 
-ADD --chown=1724:1724 healthcheck.sh $EXXDIR/bin
-ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin
+USER sagadmin
+
+ADD *.sh $EXXDIR/bin/
+
+# ADD --chown=1724:1724 healthcheck.sh $EXXDIR/bin
+# ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin
 
 EXPOSE $TCPPORT
 EXPOSE $SSLPORT
-
-USER sagadmin
 
 WORKDIR $SAG_HOME
 

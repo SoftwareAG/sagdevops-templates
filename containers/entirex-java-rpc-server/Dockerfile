@@ -40,9 +40,11 @@ COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/
 COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/saglic.jar $SAG_HOME/common/lib/saglic.jar
 COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
-ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
-
 USER sagadmin
+
+ADD *.sh $EXXDIR/bin/
+
+#ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 
 WORKDIR $SAG_HOME
 

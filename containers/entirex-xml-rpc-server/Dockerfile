@@ -41,9 +41,11 @@ COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/ $SAG_HOME/common/lib
 COPY --from=builder --chown=1724:1724 $SAG_HOME/WS-Stack/lib/ $SAG_HOME/WS-Stack/lib/
 COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
-ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
-
 USER sagadmin
+
+ADD *.sh $EXXDIR/bin/
+
+# ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 
 WORKDIR $SAG_HOME
 
