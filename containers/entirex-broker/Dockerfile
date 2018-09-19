@@ -72,7 +72,7 @@ EXPOSE $SSLPORT
 
 # Set folder permissions and userswitch to be able to overwrite etbfile
 # and license.xml
-RUN chown -R sagadmin:sagadmin $EXXDIR/config
+#RUN chown -R sagadmin:sagadmin $EXXDIR/config
 
 USER sagadmin
 
