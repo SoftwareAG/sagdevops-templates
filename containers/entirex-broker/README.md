@@ -42,7 +42,9 @@ Provide your configuration files with the default file names, for example:
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/configs softwareag/entirex-broker:10.3
+docker run -d -p 2001:1971 
+	-v <my-license-dir>:/licenses 
+	-v <my-config-dir>:/configs softwareag/entirex-broker:10.3
 ```
 
 ### Configuring during Image Start, using Custom File Names
