@@ -59,7 +59,7 @@ repositories:
       
     CC_XPC:
       description: CC XPC testing sandbox
-      host: aquaruis-bg.eur.ad.sag
+      host: aquarius-bg.eur.ad.sag
       name: CC_XPC
       credentials: REPO-PRODUCT 
       
