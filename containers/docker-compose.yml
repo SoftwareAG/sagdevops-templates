@@ -141,7 +141,7 @@ services:
       - 1958                            # container specific ports
 
   entirex-java-rpc-server:
-    image: ${REG:-softwareag}/entirex-broker:${TAG:-10.3}
+    image: ${REG:-softwareag}/entirex-java-rpc-server:${TAG:-10.3}
     build:
       context: entirex-java-rpc-server/
       args:
@@ -150,7 +150,7 @@ services:
         - _fixes=$FIXES     # [] or ALL from the env
 
   entirex-xml-rpc-server:
-    image: ${REG:-softwareag}/entirex-broker:${TAG:-10.3}
+    image: ${REG:-softwareag}/entirex-xml-rpc-server:${TAG:-10.3}
     build:
       context: entirex-xml-rpc-server/
       args:
