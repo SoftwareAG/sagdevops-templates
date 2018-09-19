@@ -22,8 +22,6 @@ ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-
-
 RUN $CC_HOME/provision.sh sag-exx-java-rpc-server
 
 FROM $BASE_IMAGE

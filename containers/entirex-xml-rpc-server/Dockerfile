@@ -19,6 +19,7 @@
 
 ARG BUILDER_IMAGE
 ARG BASE_IMAGE
+
 FROM $BUILDER_IMAGE as builder
 
 RUN $CC_HOME/provision.sh sag-exx-xml-rpc-server
