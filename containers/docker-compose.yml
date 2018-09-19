@@ -152,7 +152,7 @@ services:
   entirex-java-xml-server:
     image: ${REG:-softwareag}/entirex-broker:${TAG:-10.3}
     build:
-      context: entirex-java-xml-server/
+      context: entirex-xml-rpc-server/
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
