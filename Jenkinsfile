@@ -117,14 +117,14 @@ pipeline {
                 }
             }
         }   
-        stage('Build Templates') {
-            steps {
-                sh 'docker-compose run --rm build'
-                dir ('build/repo') {
-                    archiveArtifacts '**'
-                }
-            }
-        }
+        // stage('Build Templates') {
+        //     steps {
+        //         sh 'docker-compose run --rm build'
+        //         dir ('build/repo') {
+        //             archiveArtifacts '**'
+        //         }
+        //     }
+        // }
         // stage("Build Images") {
         //     agent none
 
