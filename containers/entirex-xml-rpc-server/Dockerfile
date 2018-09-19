@@ -22,44 +22,29 @@ ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-ARG TEMPLATE=sag-exx-broker
-
-RUN $CC_HOME/provision.sh $TEMPLATE
+RUN $CC_HOME/provision.sh sag-exx-xml-rpc-server
 
 FROM $BASE_IMAGE
 
 # setting environment variables, can be overwritten during startup
+ENV EXX_XML_SERVER_CONFIGURATION=entirex.xmlrpcserver.properties
+ENV EXX_XML_SERVER_MAPPING=entirex.xmlrpcserver.configuration.xml
 ENV EXX_LICENSE_KEY=license.xml
-ENV EXX_ATTRIBUTE=etbfile
-ENV EXX_KEY_FILE=ExxAppKey.pem
-ENV EXX_KEY_STORE=ExxAppCert.pem
-ENV EXX_TRUST_STORE=ExxCACert.pem
 
-# setting internal environment variables
+# set some environment variables
 ENV SAG_HOME=/opt/softwareag
-ENV EXXDIR=/opt/softwareag/EntireX
-ENV ETBID=ETB001
-ENV TCPPORT=1971
-ENV SSLPORT=1958
+ENV EXXDIR=$SAG_HOME/EntireX
+ENV JAVA_HOME=$SAG_HOME/jvm/jvm
 
-COPY --from=builder --chown=1724:1724 $SAG_HOME/common/security/ $SAG_HOME/common/security/
-COPY --from=builder --chown=1724:1724 $SAG_HOME/common/saglic/ $SAG_HOME/common/saglic/
-COPY --from=builder --chown=1724:1724 $EXXDIR/lib/ $EXXDIR/lib/
-COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbnuc $EXXDIR/bin/etbnuc
-COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbcmd $EXXDIR/bin/etbcmd
-COPY --from=builder --chown=1724:1724 $EXXDIR/config/etb/ETB001/ $EXXDIR/config/etb/ETB001/
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
+COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/ $SAG_HOME/common/lib/
+COPY --from=builder --chown=1724:1724 $SAG_HOME/WS-Stack/lib/ $SAG_HOME/WS-Stack/lib/
+COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
-ADD --chown=1724:1724 healthcheck.sh $EXXDIR/bin
-ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin
-
-EXPOSE $TCPPORT
-EXPOSE $SSLPORT
+ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 
 USER sagadmin
 
 WORKDIR $SAG_HOME
-
-HEALTHCHECK --interval=5s --timeout=15s CMD sh $EXXDIR/bin/healthcheck.sh || exit 1
 
 ENTRYPOINT $EXXDIR/bin/entrypoint.sh

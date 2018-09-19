@@ -17,13 +17,13 @@
 
 -->
 
-# EntireX Broker 
+# EntireX RPC Server for XML/SOAP
 
 ## Building container image
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker-compose build entirex-broker
+docker-compose build entirex-xml-rpc-server
 ```
 
 ## Running container image
@@ -34,17 +34,15 @@ Provide your configuration files with the default file names, for example:
 
 ```
 <my-license-dir>/license.xml	(required)
-<my-config-dir>/etbfile		(optional)
-<my-config-dir>/exxAppCert.pem	(optional)
-<my-config-dir>/exxAppKey.pem	(optional)
-<my-config-dir>/exxCACert.pem	(optional)
+<my-config-dir>/entirex.xmlrpcserver.properties	(required)
+<my-config-dir>/entirex.xmlrpcserver.configuration.xml	(required)
+<my-config-dir>/<myMapping>.xmm 	(required)
 ```
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker run -d -p 2001:1971 
-	-v <my-license-dir>:/licenses 
-	-v <my-config-dir>:/configs softwareag/entirex-broker:10.3
+docker run -d -v <my-license-dir>:/licenses 
+              -v <my-config-dir>:/configs softwareag/entirex-xml-rpc-server:10.3
 ```
 
 ### Configuring during Image Start, using Custom File Names
@@ -52,22 +50,19 @@ docker run -d -p 2001:1971
 Provide your configuration files with the default file names, for example:
 
 ```
-<my-license-dir>/myLicense.xml		(required)
-<my-config-dir>/myEtbfile		(optional)
-<my-config-dir>/myExxAppCert.pem	(optional)
-<my-config-dir>/myExxAppKey.pem		(optional)
-<my-config-dir>/myExxCACert.pem		(optional)
+cd <home>/sagdevops-templates/containers>
+<my-license-dir>/myLicense.xml	(required)
+<my-config-dir>/myConfiguration		(required)
+<my-config-dir>/myWebServerConfiguration	(required)
+<my-config-dir>/<myMapping>.xmm	(required)
 ```
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker run -d -p 2001:1971 
-	-e "EXX_ATTRIBUTE=myEtbfile" 
-	-e "EXX_LICENSE_KEY=myLicense.xml" 
-	-e "EXX_KEY_FILE=myExxAppKey.pem" 
-	-e "EXX_KEY_STORE=myExxAppCert.pem" 
-	-e "EXX_TRUST_STORE=myExxCACert.pem" 
-	-v <my-license-dir>:/licenses 
-	-v <my-config-dir>:/configs softwareag/entirex-broker:10.3
+docker run -d -e "EXX_LICENSE_KEY=myLicense.xml" 
+              -e "EXX_XML_SERVER_CONFIGURATION=myConfiguration" 
+              -e "EXX_XML_SERVER_MAPPING=myWebServerConfiguration" 
+              -v <my-license-dir>:/licenses 
+              -v <my-config-dir>:/configs softwareag/entirex-xml-rpc-server:10.3
 ```
 

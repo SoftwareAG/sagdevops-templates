@@ -139,6 +139,23 @@ services:
     ports:
       - 1971                            # container specific ports
       - 1958                            # container specific ports
-    depends_on:
-      - cc
 
+  entirex-java-rpc-server:
+    image: ${REG:-softwareag}/entirex-java-rpc-server:${TAG:-10.3}
+    build:
+      context: entirex-java-rpc-server/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __exx_core_fixes=$FIXES     # [] or ALL from the env
+
+  entirex-xml-rpc-server:
+    image: ${REG:-softwareag}/entirex-xml-rpc-server:${TAG:-10.3}
+    build:
+      context: entirex-xml-rpc-server/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __exx_core_fixes=$FIXES     # [] or ALL from the env
+
+        

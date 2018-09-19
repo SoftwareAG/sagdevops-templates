@@ -17,13 +17,13 @@
 
 -->
 
-# EntireX Broker 
+# EntireX RPC Server for Java
 
 ## Building container image
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker-compose build entirex-broker
+docker-compose build entirex-java-rpc-server
 ```
 
 ## Running container image
@@ -33,18 +33,16 @@ docker-compose build entirex-broker
 Provide your configuration files with the default file names, for example:
 
 ```
-<my-license-dir>/license.xml	(required)
-<my-config-dir>/etbfile		(optional)
-<my-config-dir>/exxAppCert.pem	(optional)
-<my-config-dir>/exxAppKey.pem	(optional)
-<my-config-dir>/exxCACert.pem	(optional)
+<my-license-dir>/license.xml				(required)
+<my-config-dir>/entirex.javarpcserver.properties	(required)
+<my-data-dir>/<custom classes>				(required)
 ```
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker run -d -p 2001:1971 
-	-v <my-license-dir>:/licenses 
-	-v <my-config-dir>:/configs softwareag/entirex-broker:10.3
+docker run -d -v <my-license-dir>:/licenses 
+              -v <my-config-dir>:/configs 
+              -v <my-data-dir>:/data softwareag/entirex-java-rpc-server:10.3
 ```
 
 ### Configuring during Image Start, using Custom File Names
@@ -52,22 +50,18 @@ docker run -d -p 2001:1971
 Provide your configuration files with the default file names, for example:
 
 ```
-<my-license-dir>/myLicense.xml		(required)
-<my-config-dir>/myEtbfile		(optional)
-<my-config-dir>/myExxAppCert.pem	(optional)
-<my-config-dir>/myExxAppKey.pem		(optional)
-<my-config-dir>/myExxCACert.pem		(optional)
+<my-license-dir>/myLicense.xml				(required)
+<my-config-dir>/my.entirex.javarpcserver.properties	(required)
+<my-data-dir>/<custom jar file>				(required)
 ```
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker run -d -p 2001:1971 
-	-e "EXX_ATTRIBUTE=myEtbfile" 
-	-e "EXX_LICENSE_KEY=myLicense.xml" 
-	-e "EXX_KEY_FILE=myExxAppKey.pem" 
-	-e "EXX_KEY_STORE=myExxAppCert.pem" 
-	-e "EXX_TRUST_STORE=myExxCACert.pem" 
-	-v <my-license-dir>:/licenses 
-	-v <my-config-dir>:/configs softwareag/entirex-broker:10.3
+docker run -d -e "EXX_LICENSE_KEY=myLicense.xml" 
+              -e "EXX_JAVA_SERVER_CONFIGURATION=my.entirex.javarpcserver.properties" 
+              -e "EXX_JAVA_SERVER_CLASSPATH=/data/custom.jar" 
+              -v <my-license-dir>:/licenses 
+              -v <my-configuration-dir>:/configs 
+              -v <my-data-dir>:/data softwareag/entirex-java-rpc-server:10.3
 ```
 
