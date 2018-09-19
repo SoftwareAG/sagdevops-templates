@@ -149,7 +149,7 @@ services:
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
         - _fixes=$FIXES     # [] or ALL from the env
 
-  entirex-java-xml-server:
+  entirex-xml-rpc-server:
     image: ${REG:-softwareag}/entirex-broker:${TAG:-10.3}
     build:
       context: entirex-xml-rpc-server/
