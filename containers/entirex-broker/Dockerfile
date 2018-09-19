@@ -22,9 +22,7 @@ ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-ARG TEMPLATE=sag-exx-broker
-
-RUN $CC_HOME/provision.sh $TEMPLATE
+RUN $CC_HOME/provision.sh sag-exx-broker
 
 FROM $BASE_IMAGE
 
@@ -63,4 +61,3 @@ WORKDIR $SAG_HOME
 HEALTHCHECK --interval=5s --timeout=15s CMD sh $EXXDIR/bin/healthcheck.sh || exit 1
 
 ENTRYPOINT $EXXDIR/bin/entrypoint.sh
-
