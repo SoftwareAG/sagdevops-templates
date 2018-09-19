@@ -22,7 +22,9 @@ ARG BASE_IMAGE
 
 FROM $BUILDER_IMAGE as builder
 
-RUN $CC_HOME/provision.sh sag-exx-broker
+ARG TEMPLATE=sag-exx-broker
+
+RUN $CC_HOME/provision.sh $TEMPLATE
 
 FROM $BASE_IMAGE
 

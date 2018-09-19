@@ -21,36 +21,49 @@
 pipeline {
     agent { label 'docker' }
     parameters {
+        booleanParam(name: 'INFRA',         defaultValue: false, description: 'Build and push infrastructure')
+        booleanParam(name: 'TEST',          defaultValue: false, description: 'Test all templates')
+        booleanParam(name: 'BUILD',         defaultValue: false, description: 'Build and push product images')
+        booleanParam(name: 'PUBLISH',       defaultValue: false, description: 'Publish templates to repository')
+        
         choice(choices: '10.3\n10.2\n10.1', description: 'Release tag', name: 'TAG')
         choice(choices: 'staging\nmaster',  description: 'Upstream repos location (AQU, EMPOWER)', name: 'STAGE')
         choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
     }
     environment {
-        REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
-        CC_REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
-        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-        REPO_HOST = 'aquarius-bg.eur.ad.sag'
-        CC_INSTALLER_URL = 'http://aquarius-bg.eur.ad.sag/cc/installers'
+        REG = 'daerepository03.eur.ad.sag:4443/sagdevops'    // target registry/org for product images
+        REPO_HOST = 'aquarius-bg.eur.ad.sag'                 // product repos on
+        CC_REG = 'daerepository03.eur.ad.sag:4443/ccdevops'  // source registry/org for CC core images
+        CC_INSTALLER_URL = 'http://aquarius-bg.eur.ad.sag/cc/installers' // installers on
         EMPOWER = credentials('empower')
+        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage("Infrastructure Images") {
+            when {
+                anyOf {
+                    expression { return params.INFRA }
+                    changeset "Jenkinsfile" 
+                    changeset "infrastructure/**" 
+                    changeset "scripts/**" 
+                    changeset "templates/**" 
+                } 
+            }
             steps {
                 dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
+                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
                 }
             }
         }        
-        stage('Build Templates') {
-            steps {
-                sh 'docker-compose run --rm build'
-                dir ('build/repo') {
-                    archiveArtifacts '**'
-                }
-            }
-        }
         stage("Test Templates") {
+            when {
+                anyOf {
+                    expression { return params.TEST }
+                    changeset "templates/**" 
+                } 
+            }
             parallel {
                 stage('Group 1') {
                     agent { label 'docker' }
@@ -101,24 +114,40 @@ pipeline {
             }
         }
         stage("Build Images") {
+            when {
+                anyOf {
+                    expression { return params.BUILD }
+                    changeset "containers/**" 
+                } 
+            }
             steps {
                 dir ('containers') {
                     sh 'docker-compose config'
                     sh 'docker-compose build'
-                }
-            }
-        }   
-        stage("Publish Images") {
-            steps {
-                dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
-                }
-                dir ('containers') {
                     sh 'docker-compose push'
                 }
             }
-        }        
-
+        }   
+        // stage('Publish Templates') {
+            // when {
+            //     anyOf {
+            //         expression { return params.BUILD }
+            //         changeset "containers/**" 
+            //     } 
+            // }
+        //     steps {
+        //         sh 'docker-compose run --rm build'
+        //         dir ('build/repo') {
+        //             archiveArtifacts '**'
+        //             git branch: 'master', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
+        //             sh """
+        //             git add --all
+        //             git commit -m 'Jenkins'
+        //             git push
+        //             """
+        //         }
+        //     }
+        // }
         // stage("Build Images") {
         //     agent none
 
@@ -139,26 +168,6 @@ pipeline {
         //                 }                        
         //             }
         //             parallel builders // kick off parallel builds    
-        //         }
-        //     }
-        // }
-
-        // stage('Publish Templates') {
-        //     // agent { label 'docker' }
-        //     environment {
-        //         COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-        //     }
-        //     steps {
-        //         dir ('build/repo') {
-        //             git branch: 'master', url: 'http://irepo.eur.ad.sag/scm/devops/assets-templates-repo.git'
-        //         }
-        //         // unstash 'repo'
-        //         dir ('build/repo') {
-        //             sh """
-        //             git add --all
-        //             git commit -m 'Jenkins'
-        //             git push
-        //             """
         //         }
         //     }
         // }

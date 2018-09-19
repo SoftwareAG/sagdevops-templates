@@ -135,7 +135,7 @@ services:
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/base:${TAG:-10.3}
-        - _fixes=$FIXES     # [] or ALL from the env
+        - __exx_broker_fixes=$FIXES     # [] or ALL from the env
     ports:
       - 1971                            # container specific ports
       - 1958                            # container specific ports
@@ -147,7 +147,7 @@ services:
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
-        - _fixes=$FIXES     # [] or ALL from the env
+        - __exx_core_fixes=$FIXES     # [] or ALL from the env
 
   entirex-xml-rpc-server:
     image: ${REG:-softwareag}/entirex-xml-rpc-server:${TAG:-10.3}
@@ -156,6 +156,6 @@ services:
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
-        - _fixes=$FIXES     # [] or ALL from the env
+        - __exx_core_fixes=$FIXES     # [] or ALL from the env
 
         
