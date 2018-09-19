@@ -1,2 +1,3 @@
 build/*
 templates/jenkins/webapps/*.war
+/.project
