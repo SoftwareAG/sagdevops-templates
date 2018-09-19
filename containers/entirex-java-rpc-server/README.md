@@ -33,9 +33,9 @@ docker-compose build entirex-java-rpc-server
 Provide your configuration files with the default file names, for example:
 
 ```
-<my-license-dir>/license.xml	(required)
+<my-license-dir>/license.xml							(required)
 <my-config-dir>/entirex.javarpcserver.properties	(required)
-<my-data-dir>/<custom classes>	(required)
+<my-data-dir>/<custom classes>							(required)
 ```
 
 ```
@@ -50,9 +50,9 @@ docker run -d -v <my-license-dir>:/licenses
 Provide your configuration files with the default file names, for example:
 
 ```
-<my-license-dir>/myLicense.xml	(required)
+<my-license-dir>/myLicense.xml								(required)
 <my-config-dir>/my.entirex.javarpcserver.properties	(required)
-<my-data-dir>/<custom jar file>	(required)
+<my-data-dir>/<custom jar file>								(required)
 ```
 
 ```
