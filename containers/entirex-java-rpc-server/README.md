@@ -22,6 +22,7 @@
 ## Building container image
 
 ```bash
+cd <home>/sagdevops-templates/containers>
 docker-compose build entirex-java-rpc-server
 ```
 
@@ -38,6 +39,7 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```
+cd <home>/sagdevops-templates/containers>
 docker run -d -v <my-license-dir>:/licenses 
               -v <my-config-dir>:/configs 
               -v <my-data-dir>:/data entirex-java-rpc-server
@@ -54,6 +56,7 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```
+cd <home>/sagdevops-templates/containers>
 docker run -d -e "EXX_LICENSE_KEY=myLicense.xml" 
               -e "EXX_JAVA_SERVER_CONFIGURATION=my.entirex.javarpcserver.properties" 
               -e "EXX_JAVA_SERVER_CLASSPATH=/data/custom.jar" 

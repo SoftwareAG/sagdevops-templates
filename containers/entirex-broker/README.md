@@ -22,6 +22,7 @@
 ## Building container image
 
 ```bash
+cd <home>/sagdevops-templates/containers>
 docker-compose build entirex-broker
 ```
 
@@ -40,6 +41,7 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```
+cd <home>/sagdevops-templates/containers>
 docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/configs entirex_broker
 ```
 
@@ -56,6 +58,7 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```
+cd <home>/sagdevops-templates/containers>
 docker run -d -p 2001:1971 
 	-e "EXX_ATTRIBUTE=myEtbfile" 
 	-e "EXX_LICENSE_KEY=myLicense.xml" 

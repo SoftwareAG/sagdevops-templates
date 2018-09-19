@@ -22,6 +22,7 @@
 ## Building container image
 
 ```bash
+cd <home>/sagdevops-templates/containers>
 docker-compose build entirex-xml-rpc-server
 ```
 
@@ -39,6 +40,7 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```
+cd <home>/sagdevops-templates/containers>
 docker run -d -v <my-license-dir>:/licenses 
               -v <my-config-dir>:/configs entirex-xml-rpc-server
 ```
@@ -48,6 +50,7 @@ docker run -d -v <my-license-dir>:/licenses
 Provide your configuration files with the default file names, for example:
 
 ```
+cd <home>/sagdevops-templates/containers>
 <my-license-dir>/myLicense.xml	(required)
 <my-config-dir>/myConfiguration		(required)
 <my-config-dir>/myWebServerConfiguration	(required)
@@ -55,6 +58,7 @@ Provide your configuration files with the default file names, for example:
 ```
 
 ```
+cd <home>/sagdevops-templates/containers>
 docker run -d -e "EXX_LICENSE_KEY=myLicense.xml" 
               -e "EXX_XML_SERVER_CONFIGURATION=myConfiguration" 
               -e "EXX_XML_SERVER_MAPPING=myWebServerConfiguration" 
