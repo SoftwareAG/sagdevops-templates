@@ -42,7 +42,7 @@ Provide your configuration files with the default file names, for example:
 cd <home>/sagdevops-templates/containers>
 docker run -d -v <my-license-dir>:/licenses 
               -v <my-config-dir>:/configs 
-              -v <my-data-dir>:/data entirex-java-rpc-server
+              -v <my-data-dir>:/data softwareag/entirex-java-rpc-server:10.3
 ```
 
 ### Configuring during Image Start, using Custom File Names
@@ -62,6 +62,6 @@ docker run -d -e "EXX_LICENSE_KEY=myLicense.xml"
               -e "EXX_JAVA_SERVER_CLASSPATH=/data/custom.jar" 
               -v <my-license-dir>:/licenses 
               -v <my-configuration-dir>:/configs 
-              -v <my-data-dir>:/data entirex-java-rpc-server
+              -v <my-data-dir>:/data softwareag/entirex-java-rpc-server:10.3
 ```
 
