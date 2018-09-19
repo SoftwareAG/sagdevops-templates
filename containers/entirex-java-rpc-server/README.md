@@ -21,7 +21,7 @@
 
 ## Building container image
 
-```bash
+```
 cd <home>/sagdevops-templates/containers>
 docker-compose build entirex-java-rpc-server
 ```
