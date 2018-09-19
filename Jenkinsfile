@@ -21,6 +21,11 @@
 pipeline {
     agent { label 'docker' }
     parameters {
+        booleanParam(name: 'INFRA', defaultValue: true, description: 'Build infrastructure')
+        booleanParam(name: 'TEST', defaultValue: true, description: 'Test all templates')
+        booleanParam(name: 'BUILD', defaultValue: true, description: 'Build Docker images')
+        booleanParam(name: 'PUSH', defaultValue: true, description: 'Publish images and templates')
+        
         choice(choices: '10.3\n10.2\n10.1', description: 'Release tag', name: 'TAG')
         choice(choices: 'staging\nmaster',  description: 'Upstream repos location (AQU, EMPOWER)', name: 'STAGE')
         choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
@@ -35,22 +40,24 @@ pipeline {
     }
     stages {
         stage("Infrastructure Images") {
+            when {
+                anyOf {
+                    changeset "Jenkinsfile" 
+                    changeset "infrastructure/**" 
+                    changeset "scripts/**" 
+                    changeset "templates/**" 
+                } 
+            }
             steps {
                 dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
+                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
                 }
             }
         }        
-        stage('Build Templates') {
-            steps {
-                sh 'docker-compose run --rm build'
-                dir ('build/repo') {
-                    archiveArtifacts '**'
-                }
-            }
-        }
         stage("Test Templates") {
+            when { changeset "templates/**" }
             parallel {
                 stage('Group 1') {
                     agent { label 'docker' }
@@ -101,24 +108,23 @@ pipeline {
             }
         }
         stage("Build Images") {
+            when { changeset "containers/**" }
             steps {
                 dir ('containers') {
                     sh 'docker-compose config'
                     sh 'docker-compose build'
-                }
-            }
-        }   
-        stage("Publish Images") {
-            steps {
-                dir ('infrastructure') {
-                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
-                }
-                dir ('containers') {
                     sh 'docker-compose push'
                 }
             }
-        }        
-
+        }   
+        stage('Build Templates') {
+            steps {
+                sh 'docker-compose run --rm build'
+                dir ('build/repo') {
+                    archiveArtifacts '**'
+                }
+            }
+        }
         // stage("Build Images") {
         //     agent none
 
