@@ -26,12 +26,12 @@ pipeline {
         choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
     }
     environment {
-        REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
-        CC_REG = 'daerepository03.eur.ad.sag:4443/ccdevops'
-        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
-        REPO_HOST = 'aquarius-bg.eur.ad.sag'
-        CC_INSTALLER_URL = 'http://aquarius-bg.eur.ad.sag/cc/installers'
+        REG = 'daerepository03.eur.ad.sag:4443/sagdevops'    // target registry/org for product images
+        REPO_HOST = 'aquarius-bg.eur.ad.sag'                 // product repos on
+        CC_REG = 'daerepository03.eur.ad.sag:4443/ccdevops'  // source registry/org for CC core images
+        CC_INSTALLER_URL = 'http://aquarius-bg.eur.ad.sag/cc/installers' // installers on
         EMPOWER = credentials('empower')
+        COMPOSE_PROJECT_NAME = 'sagdevops-templates'
     }
     stages {
         stage("Infrastructure Images") {
