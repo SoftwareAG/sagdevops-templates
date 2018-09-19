@@ -56,24 +56,6 @@ ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin
 EXPOSE $TCPPORT
 EXPOSE $SSLPORT
 
-# Possibility to add a valid license file already to the image instead of
-# providing it during start up
-# e.g.:
-# ADD myLicense.xml $EXXDIR/config/license.xml
-
-# Possibility to add a different attribute file already to the image instead of
-# providing it during start up
-# e.g.:
-# ADD myEtbfile $EXXDIR/config/etb/$ETBID/etbfile
-
-# Possibility to add certificates for security broker
-# e.g.:
-# ADD *.pem $EXXDIR/config/etb/$ETBID/
-
-# Set folder permissions and userswitch to be able to overwrite etbfile
-# and license.xml
-#RUN chown -R sagadmin:sagadmin $EXXDIR/config
-
 USER sagadmin
 
 WORKDIR $SAG_HOME
