@@ -42,7 +42,7 @@ Provide your configuration files with the default file names, for example:
 
 ```
 cd <home>/sagdevops-templates/containers>
-docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/configs entirex_broker
+docker run -d -p 2001:1971 -v <my-license-dir>:/licenses -v <my-config-dir>:/configs softwareag/entirex-broker:10.3
 ```
 
 ### Configuring during Image Start, using Custom File Names
@@ -66,6 +66,6 @@ docker run -d -p 2001:1971
 	-e "EXX_KEY_STORE=myExxAppCert.pem" 
 	-e "EXX_TRUST_STORE=myExxCACert.pem" 
 	-v <my-license-dir>:/licenses 
-	-v <my-config-dir>:/configs entirex_broker
+	-v <my-config-dir>:/configs softwareag/entirex-broker:10.3
 ```
 
