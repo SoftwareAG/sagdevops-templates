@@ -103,6 +103,7 @@ pipeline {
                         sh './provisionw sag-exx-c-rpc-server'
                         sh './provisionw sag-exx-java-rpc-server'
                         sh './provisionw sag-exx-xml-rpc-server'
+                        sh './provisionw sag-infradc'
                         // sh './provisionw sag-onedata'
                     }
                     post {
