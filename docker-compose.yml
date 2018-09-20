@@ -36,10 +36,11 @@ services:
     #   - REPO_PASSWORD                           # Empower or user password
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
-      - ./environments/:/src/environments/
-    #   - ./scripts/init.sh:/opt/sagtools/init.sh
-    #   - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
-    #   - ./scripts/provision.sh:/opt/sagtools/provision.sh
+      - ./licenses/:/opt/sagtools/licenses/:ro
+      - ./environments/:/src/environments/:ro
+      - ./scripts/init.sh:/opt/sagtools/init.sh:ro
+      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh:ro
+      - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
 
   sagcc: # sagcc wrapper
     image: ${CC_REG}/commandcentral-client:${CC_TAG}-alpine
@@ -51,16 +52,6 @@ services:
     entrypoint: sagcc
     command: --help
 
-  sagccant: # sagccant wrapper
-    image: ${CC_REG}/commandcentral-client:${CC_TAG}
-    volumes: 
-      - ./:/src/
-    environment: 
-      - CC_SERVER
-      - CC_PASSWORD
-    entrypoint: sagccant
-    command: -p
-
   antcc: # antcc wrapper
     image: ${CC_REG}/commandcentral-client:${CC_TAG}-antcc
     volumes: 
@@ -68,6 +59,7 @@ services:
     environment: 
       - CC_SERVER
       - CC_PASSWORD
+      - CC_ENV=${CC_ENV:-dev}
     entrypoint: antcc
     command: -p
 
@@ -83,9 +75,20 @@ services:
     entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
 
-  build:
+  build: # ABE wrapper
     image: ${CC_REG}/asset-builder:${CC_TAG}
     volumes:
       - .:/src/ # required
     environment:
       - BUILD_NUMBER
+
+  mirrors: # antcc wrapper for mirrors creation
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}-antcc
+    volumes: 
+      - ./:/src/
+    environment: 
+      - CC_SERVER
+      - CC_PASSWORD
+      - CC_ENV=${CC_ENV:-devcc}
+    entrypoint: antcc
+    command: waitcc mirrors -Drelease=${TAG}
