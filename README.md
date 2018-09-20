@@ -56,14 +56,14 @@ The following table lists the run-time micro templates for Software AG products.
 
 Template alias | Provisions
 -------------------------|--------------------------------
-[sag-abe](templates/sag-ab) | Asset Build Environment
+[sag-abe](templates/sag-abe) | Asset Build Environment
 [sag-apama-correlator](templates/sag-apama-correlator) | Apama correlator instance
 [sag-des](templates/sag-des) | Digital Event Services
 [sag-des-config](templates/sag-des-config) | Digital Event Services configuration
 [sag-designer-services](templates/sag-designer-services) | Designer Service Development
 [sag-designer-cloudstreams](templates/sag-designer-services) | Designer Cloudstreams Development
 [sag-exx-broker](templates/sag-exx-broker) | EntireX Broker
-[sag-exx-c-prc-server](templates/sag-exx-c-rpc-server) | EntireX C RPC server
+[sag-exx-c-rpc-server](templates/sag-exx-c-rpc-server) | EntireX C RPC server
 [sag-exx-java-rpc-server](templates/sag-exx-java-rpc-server) | EntireX Java RPC server
 [sag-exx-xml-rpc-server](templates/sag-exx-xml-rpc-server) | EntireX XML RPC server
 [sag-infradc](templates/sag-infradc) | Infrastructure Data Collector
