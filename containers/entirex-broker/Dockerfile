@@ -48,7 +48,7 @@ COPY --from=builder --chown=1724:1724 $EXXDIR/lib/ $EXXDIR/lib/
 COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbnuc $EXXDIR/bin/etbnuc
 COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbcmd $EXXDIR/bin/etbcmd
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/etb/ETB001/ $EXXDIR/config/etb/ETB001/
-COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
+#COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
 
 USER sagadmin
 
