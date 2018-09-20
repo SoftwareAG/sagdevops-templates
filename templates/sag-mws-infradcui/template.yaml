@@ -1,54 +1,27 @@
 alias: sag-mws-infradcui
-description: My webMethods Server single instance
+description: Infrastructure Data Collector UI on MWS
 
 environments:
   default:
-    db.host:             localhost           # REQUIRED: Database server hostname
-    db.type:             sqlserver           # oracle,sqlserver
-    db.port:             1433                # Database port
-    db.name:             WEBMDB              # Database name
-    db.url:              "jdbc:wm:sqlserver://${db.host}:${db.port};databaseName=${db.name}"     #Database URL
-    db.username:         Administrator        # Database username
-    db.password:         manage               # Database password
-
     mws.instance.name:   default              # MWS instance name
-    mws.http.port:       8585                 # MWS http port
-    mws.https.port:      8586                 # MWS https port
-    mws.jmx.port:        8587                 # MWS JMX port
-    mws.memory.init:     256                  # initial memory
-    mws.memory.max:      512                  # Maximum memory
-    
-    mws.fixes:           ALL
+    mws.infradcui.fixes:     ALL
 
 layers:
   runtime:
     productRepo: ${repo.product}
     fixRepo: ${repo.fix}
     templates:
-      - sag-mws-infradcui
+      - infradcui
 
 templates:
-  sag-mws-infradcui:
-    fixes: ${mws.fixes}
+  infradcui:
+    fixes: ${mws.infradcui.fixes}
     products:
       centralConfiguratorUI:
       infraDCUI:
       MwsProgramFiles:
         ${mws.instance.name}:
-          node.name: ${node.alias}
-          http.port: ${mws.http.port}
-          https.port: ${mws.https.port}
-          jmx.port: ${mws.jmx.port}
-          db.type: ${db.type}
-          db.url: "${db.url}"
-          db.username: "${db.username}"
-          db.password: "${db.password}"
-          configuration:
-            OSGI-MWS_${instance.name}:
-              COMMON-MEMORY:
-                COMMON-MEMORY:
-                  InitSize: ${mws.memory.init}
-                  MaxSize: ${mws.memory.max}
+
 provision:
   default:
     runtime: ${nodes}
