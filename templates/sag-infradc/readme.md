@@ -29,11 +29,11 @@ To import the template file in Command Central, use one of the methods described
 
 To apply the template, follow the instructions in [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
 
-Provision Infrastructure Data Collector on the installation with alias `node`:
+Provision Infrastructure Data Collector on the installation with alias `node` and configure it to point to the [Universal Messaging realm server](../sag-um-server/) that listens at `nsp://umhost:9000`:
 
 ```bash
 sagcc exec templates composite apply sag-infradc nodes=node \
-    infradc.jms.host=localhost \
+    infradc.jms.host=umhost \
     repo.product=products-10.1 repo.fix=fixes-10.1 \
     --sync-job --wait 360
 ```
