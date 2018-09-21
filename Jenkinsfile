@@ -21,9 +21,9 @@
 pipeline {
     agent { label 'docker' }
     parameters {
-        booleanParam(name: 'INFRA', defaultValue: false, description: 'Build and push infrastructure')
-        booleanParam(name: 'TEST',  defaultValue: false, description: 'Test all templates')
-        booleanParam(name: 'BUILD', defaultValue: false, description: 'Build and push product images')
+        booleanParam(name: 'INFRA', defaultValue: false, description: 'Force build and push infrastructure')
+        booleanParam(name: 'TEST',  defaultValue: false, description: 'Force test all templates')
+        booleanParam(name: 'BUILD', defaultValue: false, description: 'Force build and push product images')
         
         choice(name: 'TAG',    choices: '10.4\n10.3\n10.2\n10.1', description: 'Release tag')
         choice(name: 'STAGE',  choices: 'staging\nmaster',            description: 'Upstream repos location (AQU, EMPOWER)')
