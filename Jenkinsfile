@@ -25,9 +25,10 @@ pipeline {
         booleanParam(name: 'TEST',  defaultValue: false, description: 'Force test all templates')
         booleanParam(name: 'BUILD', defaultValue: false, description: 'Force build and push product images')
         
-        choice(name: 'TAG',    choices: '10.4\n10.3\n10.2\n10.1', description: 'Release tag')
-        choice(name: 'STAGE',  choices: 'staging\nmaster',            description: 'Upstream repos location (AQU, EMPOWER)')
-        choice(name: 'CC_ENV', choices: 'dev\nprod',                  description: 'Templates Test Environment')
+        choice(name: 'CC_TAG', choices: '10.3\n10.4',       description: 'Command Central core tag')
+        choice(name: 'TAG',    choices: '10.3\n10.2\n10.1', description: 'Product release tag')
+        choice(name: 'STAGE',  choices: 'staging\nmaster',  description: 'Upstream repos location (AQU, EMPOWER)')
+        choice(name: 'CC_ENV', choices: 'dev\nprod',        description: 'Templates Test Environment')
     }
     environment {
         REG = 'daerepository03.eur.ad.sag:4443/sagdevops'    // target registry/org for product images
