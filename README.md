@@ -38,6 +38,7 @@ The following table lists the default infrastructure micro templates and describ
 
 Template alias | Provisions Platform Manager
 -------------------------|--------------------------------
+[hello-world](templates/hello-world) | Hello world example
 [sag-spm-boot-local](templates/sag-spm-boot-local) | on the same host as Command Central
 [sag-spm-boot-ssh](templates/sag-spm-boot-ssh) | on remote UNIX hosts using SSH protocol
 [sag-spm-boot-winrm](templates/sag-spm-boot-winrm) | on remote Windows hosts using the native Windows remote protocol
@@ -108,6 +109,7 @@ The following table lists the default Docker images.
 
 Docker image | Description
 -------------------------|--------------------------------
+[hello-world](containers/hello-world) | Hello World example
 [asset-builder](containers/asset-builder) | webMethods Asset builder (ABE)
 [cloud-streams](containers/cloud-streams) | Cloudstreams on Microservices runtime
 [entirex-broker](containers/entirex-broker) | Entire X Broker
