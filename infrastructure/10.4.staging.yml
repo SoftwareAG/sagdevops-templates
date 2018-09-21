@@ -22,15 +22,9 @@ services:
   node:
     build:
       args:
-        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-        - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-dae.eur.ad.sag/PDShare/cc}
-        # - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-bg.eur.ad.sag/cc/installers} # use this until 10.3-release is promoted
+        - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.4-milestone-lnxamd64}
 
   builder:
     build:
       args:
-        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-        - REPO_PRODUCT=${REPO_PRODUCT:-103oct2018_SIC}
-        - REPO_FIX=${REPO_FIX:-GA_Fix_Repo}
-        - REPO_HOST=${REPO_HOST:-aquarius-dae.eur.ad.sag}
-        - LICENSES_URL=${LICENSES_URL:-http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster}
+        - REPO_PRODUCT=${REPO_PRODUCT:-SuiteIntCollector}

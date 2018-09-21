@@ -19,19 +19,17 @@
 
 # Small integration stack
 
-Use this template to provision and configure containers stack with the following runtimes:
+Use this template to run managed or unmanaged containers stack with the following runtimes:
 
-* Integration Server 10.3 ([Dockerfile](../../sag-is-server/Dockerfile)
-* Universal Messaging Server 10.3 ([Dockerfile](../../sag-um-server/Dockerfile)
+* Integration Server ([Dockerfile](../../containers/microservices-runtime/Dockerfile)
+* Universal Messaging Server ([Dockerfile](../../universal-messaging/Dockerfile)
 
 ## Requirements
 
 ### Supported Software AG releases
 
-* Universal Messaging 10.3
-* Integration Server 10.3
-* Platform Manager 10.3
-* Command Central 10.3
+* Universal Messaging 10.1 or higher
+* Integration Server 10.1 or higher
 
 ### Supported platforms
 
@@ -39,18 +37,29 @@ Use this template to provision and configure containers stack with the following
 
 ### Supported use cases
 
-* Provisioning 10.3 UM and IS containers
-* Configuring UM and IS using push model (from CC)
+* Running Universal Messaging and Integration Server containers
 
 ## Launching integration stack using docker-compose
 
-Launch [Command Central 10.3 Stack](../sag-cc/) first.
+> IMPORTANT: if you run the stacks on a machine different from where you built container images, point to a remote Docker registry that contains the images
 
-Launch Universal Messaging 10.3 and Integration Server 10.3 containers and configure
-them using Command Central templates (push model):
+For example:
 
 ```bash
-CC_TAG=10.3 TAG=10.3 docker-compose up -d
+export REG=daerepository03.eur.ad.sag:4443/sagdevops
+export CC_REG=daerepository03.eur.ad.sag:4443/ccdevops
 ```
 
-Browse to http://localhost:5555 to open Integration Server Admin UI. Login (Administrator/manage)
+Launch Universal Messaging 10.3 and Integration Server 10.3 containers:
+
+```bash
+TAG=10.3 docker-compose up -d
+```
+
+Browse to [Integration Server Admin UI](http://localhost:5555) and login (Administrator/manage)
+Manually configure Integration Server to point to Universal Messaging container listening at nsp://um01:9000
+
+For automated configuration see:
+
+* [Configuring containers using push deployment](../sag-um-is-push)
+* [Configuring containers using pull deployment](../sag-um-is-pull)

@@ -21,14 +21,13 @@
 pipeline {
     agent { label 'docker' }
     parameters {
-        booleanParam(name: 'INFRA',         defaultValue: false, description: 'Build and push infrastructure')
-        booleanParam(name: 'TEST',          defaultValue: false, description: 'Test all templates')
-        booleanParam(name: 'BUILD',         defaultValue: false, description: 'Build and push product images')
-        booleanParam(name: 'PUBLISH',       defaultValue: false, description: 'Publish templates to repository')
+        booleanParam(name: 'INFRA', defaultValue: false, description: 'Build and push infrastructure')
+        booleanParam(name: 'TEST',  defaultValue: false, description: 'Test all templates')
+        booleanParam(name: 'BUILD', defaultValue: false, description: 'Build and push product images')
         
-        choice(choices: '10.3\n10.2\n10.1', description: 'Release tag', name: 'TAG')
-        choice(choices: 'staging\nmaster',  description: 'Upstream repos location (AQU, EMPOWER)', name: 'STAGE')
-        choice(choices: 'dev\nprod',        description: 'Environment', name: 'CC_ENV')
+        choice(name: 'TAG',    choices: ['10.4', '10.3', '10.2', '10.1'], description: 'Release tag')
+        choice(name: 'STAGE',  choices: ['staging', 'master'],            description: 'Upstream repos location (AQU, EMPOWER)')
+        choice(name: 'CC_ENV', choices: ['dev', 'prod'],                  description: 'Templates Test Environment')
     }
     environment {
         REG = 'daerepository03.eur.ad.sag:4443/sagdevops'    // target registry/org for product images
@@ -43,7 +42,6 @@ pipeline {
             when {
                 anyOf {
                     expression { return params.INFRA }
-                    changeset "Jenkinsfile" 
                     changeset "infrastructure/**" 
                     changeset "scripts/**" 
                     changeset "templates/**" 

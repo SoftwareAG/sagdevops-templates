@@ -20,7 +20,7 @@ version: "3.2"
 
 services:
   cc:
-    image: ${REG:-store/softwareag}/commandcentral-builder:${CC_TAG:-10.3}
+    image: ${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
     ports:
       - 8091:8091 # CCE
     environment:

@@ -40,7 +40,7 @@ Template alias | Provisions Platform Manager
 -------------------------|--------------------------------
 [sag-spm-boot-local](templates/sag-spm-boot-local) | on the same host as Command Central
 [sag-spm-boot-ssh](templates/sag-spm-boot-ssh) | on remote UNIX hosts using SSH protocol
-[sag-spm-boot-winrm](templates/sag-spm-boot-winrm) | on remote Windows hosts using the native	Windows remote protocol, which eliminates the requirement for SSH access
+[sag-spm-boot-winrm](templates/sag-spm-boot-winrm) | on remote Windows hosts using the native Windows remote protocol
 [sag-spm-connect](templates/sag-spm-connect) | connects to existing Platform Manager nodes
 
 ### Micro Templates for creating database components

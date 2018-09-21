@@ -19,10 +19,20 @@
 
 # Deployments on Docker
 
-Navigate subfolders to launch various stacks using Docker.
+Launch various stacks using Docker.
 
 ## Requirements
 
 ### Supported platforms
 
-* Docker 17.09+
+These deployments were tested with:
+
+* Docker 18.06-ce
+
+## Quick start
+
+1. Build infrastructure images as described [here](../../infrastructure)
+2. Build product images as described [here](../../containers/)
+3. Launch [Command Central stack](sag-cc)
+4. Launch [Prometheus monitoring stack](prometheus)
+5. Launch [Universal Messaging and Integration Server stack](sag-um-is)
