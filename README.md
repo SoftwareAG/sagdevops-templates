@@ -115,6 +115,6 @@ Docker image | Description
 [entirex-broker](containers/entirex-broker) | Entire X Broker
 [entirex-java-rpc-server](containers/entirex-java-rpc-server) | Entire Java RPC server
 [entirex-xml-rpc-server](containers/entirex-xml-rpc-server) | Entire XML RPC server
-[microservices-runtime](containers/microservices-runtime) | webMethods Microservices runtime and Integration Server
+[integration-server](containers/integration-server) | webMethods Microservices runtime and Integration Server
 [terracotta-server](containers/terracotta-server) | Terracotta BigMemory server
 [universal-messaging](containers/universal-messages) | Universal Messaging server

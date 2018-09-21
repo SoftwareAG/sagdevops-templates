@@ -19,8 +19,4 @@
 
 # Building Docker container images with Command Central
 
-## Building container images
-
-```bash
-docker-compose build
-```
+See [Building Docker images](https://github.com/SoftwareAG/sagdevops-templates/wiki/Building-default-Docker-images)

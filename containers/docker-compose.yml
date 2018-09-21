@@ -92,7 +92,7 @@ services:
   microservices-runtime:
     image: ${REG:-softwareag}/microservices-runtime:$TAG # target image
     build:
-      context: microservices-runtime/
+      context: integration-server/
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
@@ -106,7 +106,7 @@ services:
   integration-server:
     image: ${REG:-softwareag}/integration-server:$TAG # target image
     build:
-      context: microservices-runtime/
+      context: integration-server/
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}

@@ -19,4 +19,4 @@
 
 # Building Infrastructure images
 
-Build these Docker images as the base images for your target product images.
+See [Building infrastructure images](https://github.com/SoftwareAG/sagdevops-templates/wiki/Building-Command-Central-Docker-builder-images)
