@@ -22,9 +22,9 @@
 pipeline {
     agent { label 'docker-swarm' }
     parameters {
-        choice(name: 'TAG', choices: ['10.3', '10.2', '10.1'], description: 'Tag to launch')
-        choice(name: 'CC_TAG', choices: ['10.3', '10.4'], description: 'CC Tag to launch')
-        choice(name: 'REG', choices: ['daerepository03.eur.ad.sag:4443/sagdevops', 'daerepository03.eur.ad.sag:4443/cloud-deployment'], description: 'Tag to launch')
+        choice(name: 'TAG', choices: '10.3\n10.2\n10.1', description: 'Tag to launch')
+        choice(name: 'CC_TAG', choices: '10.3\n10.4', description: 'CC Tag to launch')
+        choice(name: 'REG', choices: 'daerepository03.eur.ad.sag:4443/sagdevops\ndaerepository03.eur.ad.sag:4443/cloud-deployment', description: 'Tag to launch')
         string(name: 'UM_ASSET_REPO_URL', defaultValue: 'http://irepo/scm/devops/wmic-asset-repo-um.git', description: 'LAR repo for UM assets') 
         string(name: 'IS_ASSET_REPO_URL', defaultValue: 'http://irepo/scm/devops/wmic-asset-repo-is.git', description: 'LAR repo for IS assets') 
     }
