@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #*******************************************************************************
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -28,7 +28,8 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
 
     export CC_WAIT=5
     echo "Verifying fixes ..."
-    sagcc get inventory fixes -e wMFix.SPM
+    sagcc get inventory fixes
+    # -e wMFix.SPM
 
     echo "Verifying instances ..."
     sagcc get inventory components -e OSGI-SPM

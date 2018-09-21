@@ -41,6 +41,23 @@ services:
     #   - ./scripts/provision.sh:/opt/sagtools/provision.sh
     #   - ./environments/:/src/environments/
   
+  hello-world:
+    image: ${REG:-softwareag}/hello-world:${TAG:-10.3}
+    build:
+      context: hello-world/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __hello_world=Container       # container specific build ARG
+    ports:
+      - 8092                            # container specific ports
+      - 8093
+    environment:
+      - CC_AUTO_REGISTER=0              # No auto register
+      - HELLO_NAME=CONTAINER_INSTANCE   # container specific ENV var
+    # volumes:
+    #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+
   universal-messaging:
     image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
     build:

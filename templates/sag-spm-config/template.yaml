@@ -47,8 +47,8 @@ templates:
             
             OSGI-SPM-ENGINE:                  # SPM Engine configuration
               COMMON-SYSPROPS:                # System properties
-                com.softwareag.platform.management.common.monitoring.BasicMonitoringService: | # Monitoring
-                  com.softwareag.plm.spm.monitoring.poll.interval.seconds=15 # SPM monitoring interval
+                com.softwareag.platform.management.common.monitoring.BasicMonitoringService: | # Monitoring service config
+                  com.softwareag.plm.spm.monitoring.poll.interval.seconds=15
 
 provision:
   default:                                  

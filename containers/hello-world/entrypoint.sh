@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #*******************************************************************************
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -17,5 +17,6 @@
 #     limitations under the License.                                                            
 #
 #*******************************************************************************
+
 echo "Hello $HELLO_NAME !"
 $SAG_HOME/profiles/SPM/bin/console.sh
