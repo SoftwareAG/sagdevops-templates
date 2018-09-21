@@ -20,7 +20,7 @@ version: "3.2"
 
 services:
   cc: # command-central
-    image: ${CC_REG:-store/softwareag}/commandcentral-server:${CC_TAG:-10.3}
+    image: ${REG:-store/softwareag}/commandcentral-builder:${TAG:-10.3}
     ports:
       - 8091 # CCE
       - 8092 # target node SPM
