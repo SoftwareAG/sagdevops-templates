@@ -37,6 +37,7 @@ pipeline {
                         sh 'printenv'
                         sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml config"
                         sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml pull"
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml down --remove-orphans"
                         sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml up -d"
                     }
                 }
