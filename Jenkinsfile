@@ -51,10 +51,24 @@ pipeline {
                 dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
+                }
+
+                echo 'Testing infrastructure images with Hello World template ...'
+                sh './provisionw hello-world'
+                sh 'docker-compose down'
+
+                echo 'Testing infrastructure images with Hello World container ...'
+                dir ('containers') {
+                    sh 'docker-compose config'
+                    sh 'docker-compose build hello-world'
+                }
+
+                echo 'Pushing infrastructure images ...'
+                dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
                 }
             }
-        }        
+        }
         stage("Test Templates") {
             when {
                 anyOf {
