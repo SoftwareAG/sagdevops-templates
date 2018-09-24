@@ -27,4 +27,4 @@ services:
   builder:
     build:
       args:
-        - REPO_PRODUCT=${REPO_PRODUCT:-SuiteIntCollector}
+        - REPO_PRODUCT=${REPO_PRODUCT:-104apr2019_SIC}
