@@ -21,9 +21,10 @@
 pipeline {
     agent { label 'docker' }
     parameters {
-        booleanParam(name: 'INFRA', defaultValue: false, description: 'Force build and push infrastructure')
-        booleanParam(name: 'TEST',  defaultValue: false, description: 'Force test all templates')
-        booleanParam(name: 'BUILD', defaultValue: false, description: 'Force build and push product images')
+        booleanParam(name: 'INFRA',  defaultValue: false, description: 'Force build and push infrastructure')
+        booleanParam(name: 'TEST',   defaultValue: false, description: 'Force test all templates')
+        booleanParam(name: 'BUILD',  defaultValue: false, description: 'Force build and push product images')
+        booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Force deploy to staging environment')
         
         choice(name: 'CC_TAG', choices: '10.3\n10.4',       description: 'Command Central core tag')
         choice(name: 'TAG',    choices: '10.3\n10.4\n10.2\n10.1', description: 'Product release tag')
@@ -142,6 +143,17 @@ pipeline {
                 }
             }
         }   
+        stage("Deploy") {
+            when {
+                anyOf {
+                    expression { return params.DEPLOY }
+                    changeset "containers/**" 
+                } 
+            }
+            steps {
+                build job: 'cc-docker-staging', parameters: [string(name: 'CC_TAG', value: "$CC_TAG"), string(name: 'TAG', value: "$TAG"), booleanParam(name: 'INFRA', value: true), booleanParam(name: 'STACKS', value: true)], propagate: true, wait: true
+            }
+        }   
         // stage('Publish Templates') {
             // when {
             //     anyOf {
@@ -185,12 +197,5 @@ pipeline {
         //         }
         //     }
         // }
-    }
-    post {
-        success {
-			script { 
-	            build job: 'cc-docker-staging', parameters: [string(name: 'TAG', value: "$TAG")], propagate: false, wait: false
-	        }
-        }
-    }    
+    }  
 }
