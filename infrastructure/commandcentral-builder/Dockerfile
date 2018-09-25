@@ -52,6 +52,6 @@ COPY --from=node --chown=1724:1724 /opt/softwareag/ /opt/softwareag/
 # configure repos and add licenses
 RUN $CC_HOME/provision.sh
 
-ONBUILD ADD . .
+ONBUILD ADD --chown=1724:1724 . .
 
 WORKDIR /src
