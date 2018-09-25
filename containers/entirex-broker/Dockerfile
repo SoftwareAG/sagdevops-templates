@@ -49,13 +49,9 @@ COPY --from=builder --chown=1724:1724 $EXXDIR/lib/ $EXXDIR/lib/
 COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbnuc $EXXDIR/bin/etbnuc
 COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbcmd $EXXDIR/bin/etbcmd
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/etb/ETB001/ $EXXDIR/config/etb/ETB001/
-#COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
 
 USER root
 RUN chown -R 1724:1724 $EXXDIR/config
-#RUN echo "" > $EXXDIR/config/license.xml
-
-#ADD *.sh $EXXDIR/bin/
 
 COPY --chown=1724:1724 healthcheck.sh $EXXDIR/bin
 COPY --chown=1724:1724 entrypoint.sh $EXXDIR/bin
