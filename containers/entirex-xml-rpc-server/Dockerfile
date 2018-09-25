@@ -35,14 +35,13 @@ ENV EXX_LICENSE_KEY=license.xml
 ENV SAG_HOME=/opt/softwareag
 ENV EXXDIR=$SAG_HOME/EntireX
 
-COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
 COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/ $SAG_HOME/common/lib/
 COPY --from=builder --chown=1724:1724 $SAG_HOME/WS-Stack/lib/ $SAG_HOME/WS-Stack/lib/
+COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
 RUN mkdir $EXXDIR/config
 
 COPY --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
-
 USER sagadmin
 
 WORKDIR $SAG_HOME
