@@ -38,25 +38,58 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 9.12, 10.1, and 10.2 environments
-* Installing the latest fixes and support patches
-* Configuring licenses
+* Provisioning of new 9.12, 10.1 and higher environments
+* Installing the latest fixes
 
 ## Running as a composite template
 
-> IMPORTANT: Apply this template on an _existing_ Integration Server instance with the same release version as CloudStreams.
+> IMPORTANT: Apply this template on top of an _existing_ Integration Server or Microservices Runtime instance with the same release version as CloudStreams.
 
 1. To import the sag-is-cloudstreams/template.yaml file in Command Central, use one of the methods described in [Importing templates library](https://github.com/SoftwareAG/sagdevops-templates/wiki/Importing-templates-library)
 2. To apply the template, follow the instructions in [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
 
-### Example
+### Provisioning CloudStreams on Microservices Runtime
 
-To install CloudStreams 10.1 on top of the Integration Server instance with name `default`, in the installation
-with alias `dev1`:
+Provision an instance of Microservices Runtime on managed node with alias `dev1`:
 
 ```bash
+sagcc exec templates composite apply sag-msc-server nodes=dev1 \
+  repo.product=products-10.1 \
+  repo.fix=fixes-10.1 \
+  --sync-job --wait 360
+```
+
+See [sag-msc-server](../sag-msc-server/) for details.
+
+Provision CloudStreams on top of the above Microservices Runtime instance:
+
+```bash
+
 sagcc exec templates composite apply sag-is-cloudstreams nodes=dev1 \
-  is.instance.name=default \
+  repo.product=products-10.1 \
+  repo.fix=fixes-10.1 \
+  --sync-job --wait 360
+```
+
+### Provisioning CloudStreams on Integration Server
+
+Provision an instance of Integration Server on managed node with alias `dev2`
+
+```bash
+sagcc exec templates composite apply sag-msc-server nodes=dev2 \
+  repo.product=products-10.1 \
+  repo.fix=fixes-10.1 \
+  --sync-job --wait 360
+```
+
+See [sag-is-server](../sag-is-server/) for details.
+
+Provision CloudStreams on top of the above Integration Server instance:
+
+```bash
+
+sagcc exec templates composite apply sag-is-cloudstreams nodes=dev2 \
+  is.instance.type=integrationSever \
   repo.product=products-10.1 \
   repo.fix=fixes-10.1 \
   --sync-job --wait 360
