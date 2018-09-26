@@ -40,7 +40,8 @@ templates:
       ${is.instance.type}:
         ${is.instance.name}: 
           package.list:    WmCloudStreams,WmCloudStreamsAnalytics
-           
+          runtimeComponentId: integrationServer-${instance.name} # hint to find existing instance by id
+
 provision:
   default:
     runtime: ${nodes}
