@@ -23,11 +23,13 @@ ARG BASE_IMAGE
 FROM $BUILDER_IMAGE as builder
 
 # sag-is-server or sag-msc-server
-ARG BASE_TEMPLATE=sag-is-server
+ARG BASE_TEMPLATE=sag-msc-server
 
 ARG __is_fixes=[]
 ARG __cst_fixes=[]
 ARG __is_instance_name=default
+# has to match BASE_TEMPLATE: MSC for sag-msc-server | integrationServer for sag-is-server
+ARG __is_instance_type=MSC
 
 RUN $CC_HOME/provision.sh $BASE_TEMPLATE && \
     $CC_HOME/provision.sh sag-is-cloudstreams && \
