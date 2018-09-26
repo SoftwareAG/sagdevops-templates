@@ -37,10 +37,10 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc get inventory components -e "OSGI-IS_${__is_instance_name}"
 
     echo "Start the instance ..."
-    sagcc exec lifecycle components "OSGI-IS_${__is_instance_name}" start -e DONE --sync-job
+    sagcc exec lifecycle components "OSGI-IS_${__is_instance_name}" restart -e DONE --sync-job
 
     echo "Verifying status ..."
-    sagcc get monitoring runtimestatus "OSGI-IS_${__is_instance_name}" -e ONLINE
+    sagcc get monitoring runtimestatus "OSGI-IS_${__is_instance_name}" -e "STOPPED|UNRESPONSIVE,ONLINE"
     sagcc get monitoring runtimestatus "integrationServer-${__is_instance_name}" -e ONLINE
 fi
 
