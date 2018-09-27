@@ -1,0 +1,27 @@
+alias: sag-mws-infradcui
+description: Infrastructure Data Collector UI on MWS
+
+environments:
+  default:
+    mws.instance.name:   default              # MWS instance name
+    mws.infradcui.fixes:     ALL
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo: ${repo.fix}
+    templates:
+      - infradcui
+
+templates:
+  infradcui:
+    fixes: ${mws.infradcui.fixes}
+    products:
+      centralConfiguratorUI:
+      infraDCUI:
+      MwsProgramFiles:
+        ${mws.instance.name}:
+
+provision:
+  default:
+    runtime: ${nodes}

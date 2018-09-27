@@ -1,0 +1,150 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+alias: sag-is-config
+description: Integration Server configurations
+
+environments:
+  default:
+    is.um.url:           ${}               # REQUIRED: UM realm server or cluster URL
+    is.instance.name:    default           # EXISTING IS/MSR instance name
+    is.um.alias:         IS_UM_CONNECTION  # Messaging connection alias to configure
+    is.um.enabled:       true              # Enable Messaging connection to UM: true/false
+    is.um.client.prefix: is                # Messaging connection client prefix
+    is.um.client.share:  true              # Share client prefix: true/false
+    is.um.jndi.alias:    DEFAULT_IS_JNDI_PROVIDER  # JNDI connection alias to configure
+    is.um.jms.alias:     DEFAULT_IS_JMS_CONNECTION # JMS connection alias to configure
+    is.um.jms.enabled:   true              # Enable JMS connection to UM: true/false
+    is.um.jms.cf.name:   cf                # JMS connection factory name
+    is.configs:                            # Configurations to apply
+      - messaging                          # IS to UM messaging alias
+      - jndi-jms                           # IS to UM JMS and JNDI aliases
+
+layers:
+  runtime:
+    templates: ${is.configs}
+
+templates:
+  messaging:
+    descripton: Configure UM Messaging
+    products:
+      integrationServer:
+        ${is.instance.name}:
+          configuration:
+            integrationServer-${instance.name}:      
+              COMMON-WMMESSAGING:
+                COMMON-WMMESSAGING-${is.um.alias}:
+                  Messaging:
+                    '@alias': ${is.um.alias}             # messaging alias
+                    Description: Universal Messaging connection
+                    ClientPrefix: ${is.um.client.prefix}                     
+                    ShareClientPrefix: ${is.um.client.share}              
+                    Enabled: ${is.um.enabled}            
+                    Provider:
+                      '@type': UM                        # this is Universtal Messaging connection
+                      URL: ${is.um.url}                  # UM realm server or cluster URL
+                      MaxRetryAttempts: 3                # Retry up to 3 times
+                      RetryInterval: 30000               # Wait 30 seconds between retries
+                      Auth:                              
+                        '@type': none                    # No authentication with UM
+                    # ExtendedProperties:                # optional properties with defaults 
+                    #   Property:
+                    #   - '@name': useCSQ
+                    #     $: 'true'
+                    #   - '@name': csqDrainInOrder
+                    #     $: 'true'
+                    #   - '@name': enableRequestReply
+                    #     $: 'true'
+                    #   - '@name': csqSize
+                    #     $: '-1'
+                    #   - '@name': um_followTheMasterForSubscribe
+                    #     $: 'true'
+                    #   - '@name': um_followTheMasterForPublish
+                    #     $: 'true'
+  jndi-jms:
+    descripton: Configure UM JNDI and JMS connection aliases 
+    products:
+      integrationServer:
+        ${is.instance.name}:
+          configuration:
+            integrationServer-${instance.name}:      
+              COMMON-JNDI:
+                COMMON-JNDI-${is.um.jndi.alias}:
+                  JNDI:
+                    '@alias': ${is.um.jndi.alias}
+                    Description: Universal Messaging JNDI provider
+                    Provider:
+                      URL: ${is.um.url}
+                      InitialContextFactory: com.pcbsys.nirvana.nSpace.NirvanaContextFactory
+                      User: ''
+              COMMON-JMS:
+                COMMON-JMS-${is.um.jms.alias}:
+                  JMS:
+                    '@alias': ${is.um.jms.alias}
+                    Description: Universal Messaging JMS connection
+                    Enabled: ${is.um.jms.enabled}
+                    TransactionType: NO_TRANSACTION
+                    ClientId: DEFAULT_IS_JMS_CLIENT
+                    Provider:
+                      '@type': JNDI
+                      JNDIAlias: ${is.um.jndi.alias}
+                      JNDIConnectionFactoryName: ${is.um.jms.cf.name}
+                    User: ''
+                    MaxRetryAttempts: 3
+                    RetryInterval: 30000
+                    Caching: PER_DESTINATION # DISABLED
+                    ExtendedProperties:
+                      Property:
+                      - '@name': jndi_connectionFactoryUpdateType
+                        $: NONE
+                      - '@name': jndi_connectionFactoryPollingInterval
+                        $: '0'
+                      - '@name': jndi_enableFollowTheMaster
+                        $: 'true'
+                      - '@name': classLoader
+                        $: INTEGRATION_SERVER
+                      - '@name': csqSize
+                        $: '-1'
+                      - '@name': csqDrainInOrder
+                        $: 'true'
+                      - '@name': optTempQueueCreate
+                        $: 'true'
+                      - '@name': allowReplyToConsumer
+                        $: 'false'
+                      - '@name': manageDestinations
+                        $: 'true'
+                      - '@name': allowNewConnectionPerTrigger
+                        $: 'false'
+                      - '@name': producerSessionPoolSize
+                        $: '10'
+                      - '@name': producerSessionPoolMinSize
+                        $: '1'
+                      - '@name': cacheProducersPoolSize
+                        $: '10'
+                      - '@name': cacheProducersPoolMinSize
+                        $: '1'
+                      - '@name': cacheProducersQueueList
+                        $: q1
+                      - '@name': cacheProducersTopicList
+                        $: t1
+                      - '@name': poolTimeout
+                        $: '30000'
+                                               
+provision:
+  default:
+    runtime: ${nodes}

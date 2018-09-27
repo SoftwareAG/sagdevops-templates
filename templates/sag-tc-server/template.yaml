@@ -1,19 +1,39 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 alias: sag-tc-server
-description: Terracotta Big Memory server
+description: Terracotta Big Memory Max 4.x server
 
 environments:
   default:
-    tc.tes.license.key:  Terracotta.key # ${} # REQUIRED: license key
+    tc.tes.license.key:  Terracotta.key     # default license key for TES product code
     tc.tsa.port:         9010
     tc.jmx.port:         9020
     tc.grp.port:         9030
     tc.mgt.port:         9040
-    tc.memory.init:      128                # minimil memory configuration
+    tc.memory.init:      128                # initial memory configuration
     tc.memory.max:       512                # minimal memory configuration
     tc.storage.size:     50g
-    tc.offheap.size:     2g
-    tc.fixes:            [wMFix.TES]        # ALL
+    tc.offheap.enabled:  true
+    tc.offheap.size:     1g
+    tc.fixes:            [wMFix.TES]        # Minimal set of required fixes
     tc.data.dir:         ../data
+    tc.backup.dir:       ../backup
     tc.logs.dir:         ../logs
     tc.index.dir:        ../index
 
@@ -43,19 +63,26 @@ templates:
                   <ns2:tc-config xmlns:ns2="http://www.terracotta.org/config">
                     <servers>
                       <server name="${node.alias}" host="${node.host}" >
-                        <data>${tc.data.dir}</data>
-                        <logs>${tc.logs.dir}</logs>
-                        <index>${tc.index.dir}</index>
                         <tsa-port>${tc.tsa.port}</tsa-port>
                         <jmx-port>${tc.jmx.port}</jmx-port>
                         <tsa-group-port>${tc.grp.port}</tsa-group-port>
-                        <management-port>${tc.mgt.port}</management-port> 
+                        <management-port>${tc.mgt.port}</management-port>
+                        <offheap>
+                          <enabled>${tc.offheap.enabled}</enabled>
+                          <maxDataSize>${tc.offheap.size}</maxDataSize>
+                        </offheap>
                         <dataStorage size="${tc.storage.size}"> 
-                           <offheap size="${tc.offheap.size}"/> 
                            <hybrid/> 
                         </dataStorage>
+                        <logs>${tc.logs.dir}</logs>
+                        <data>${tc.data.dir}</data>
+                        <index>${tc.index.dir}</index>
+                        <data-backup>${tc.backup.dir}</data-backup>
                       </server>
-                    </servers>
+                      <update-check>
+                        <enabled>false</enabled>
+                      </update-check>                      
+                    </servers>                   
                   </ns2:tc-config>
               TC-SERVER-NAME:
                 TC-SERVER-NAME:

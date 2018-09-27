@@ -1,0 +1,58 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+version: "3.2"
+
+services:
+  is01:
+    image: ${REG:-softwareag}/integration-server:${TAG:-10.3}
+    hostname: is01
+    ports:
+      - 5555:5555
+    environment:
+      - CC_AUTO_REGISTER=1     
+      - CC_PASSWORD
+
+  um01:
+    image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
+    ports:
+      - 9000:9000
+    hostname: um01
+      - CC_AUTO_REGISTER=1
+      - CC_PASSWORD
+
+  init:
+    image: ${CC_REG:-store/softwareag}/commandcentral-client:${CC_TAG:-10.3}
+    environment: 
+      - CC_SERVER=cc
+      - CC_PASSWORD
+      - CC_CHECK_EVERY=10
+    entrypoint: >
+      bash -c '
+      sagcc list landscape nodes um01 -e ONLINE --wait 240 --wait-for-cc &&
+      sagcc exec templates composite apply sag-um-config nodes=um01 um.url=nsp://um01:9000 --sync-job && 
+      sagcc list landscape nodes is01 -e ONLINE --wait 240 &&
+      sagcc exec templates composite apply sag-is-config nodes=is01 is.um.url=nsp://um01:9000 --sync-job'
+    depends_on:
+      - um01
+      - is01
+
+networks:
+  default:
+    external:
+      name: ${NET:-sag-cc_default}

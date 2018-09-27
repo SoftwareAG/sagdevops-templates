@@ -1,0 +1,81 @@
+alias: sag-des-config
+description: Digital Event Services extended configuration providing security
+
+environments:
+  default:
+    des.instance.id:        OSGI-IS_default                               # server instance name
+    des.um.enabled:         true                                          # enable UM service: true|false
+    des.um.url:             nsp://localhost:9000                          # UM server or cluster URL
+    
+    des.servicegroup.name:  Default
+    des.servicegroup.uselocalqueue: 'Yes'                                 # Usage of local store and forward queue Yes|No
+    des.service.usage:      SourceAndDestination                          # SourceAndDestination|SourceOnly|DestinationOnly
+    des.service.name:       UniversalMessaging                            # Name of messaging service
+    des.eventtypes:         des.task.TaskChanged                          # Event Type added to this service
+    
+    des.truststore.name:     truststore                                                                                                                 
+                                                                                                        # Location of the truststore 
+    des.truststore.location: ${com.softwareag.install.root}/UniversalMessaging/server/default/bin/nirvanacacerts.jks
+                                                                                                        # Password is encrypted using default shared secret
+    des.truststore.password: '{AES/CBC/PKCS5Padding}{fKpfz0BX6XJNLKacYNbyRLTwzOKIIgbJbJNbN46mdjc=}{XJyLSfw3MbsxFs8HZkvRvw==}5ubFIE+j78Nz+d3TIj+Dtw=='
+    des.keystore.name:       keystore                                                                   # Keystore name 
+                                                                                                        # Location of the keystore 
+    des.keystore.location:   ${com.softwareag.install.root}/UniversalMessaging/server/default/bin/server.jks
+                                                                                                        # Password is encrypted using default shared secret
+    des.keystore.password:   '{AES/CBC/PKCS5Padding}{/e723CB1JgamVr+ReMNYB1YHuu9FtO3KsfnD+KXbt7M=}{ncbV+wM4UdOZBw7PLuZTpg==}bI420v2lGsRfK68zdP/EtA=='
+    des.um.user:             nirvana
+                                                                                                        # Password is encrypted using default shared secret
+    des.um.password:         '{AES/CBC/PKCS5Padding}{HYthoe0Oo7QzjwLK2XCGyzzdFSnIoyk+GbItQ+pnSVI=}{zy3T+yMcTG7GatqAv265TQ==}Q630tZBHC8oYxFAvamG67w=='
+    
+layers:
+  runtime:
+    templates:              [DES]
+
+templates:
+  DES:
+    products:
+       DEVRuntime:
+        default:
+          configuration:
+            ${des.instance.id}-DigitalEventServices:
+              COMMON-KEYSTORES-DES:
+                ${des.keystore.name}:
+                  Keystore:
+                    '@alias': ${des.keystore.name}
+                    Location: ${des.keystore.location}
+                    Password: '${des.keystore.password}'
+              COMMON-TRUSTSTORES-DES:
+                ${des.truststore.name}:
+                  Truststore:
+                    '@alias': ${des.truststore.name}
+                    Location: ${des.truststore.location}
+                    Password: '${des.truststore.password}'
+              COMMON-WMMESSAGING-DES:
+                ${des.service.name}:
+                  Messaging:
+                    '@alias': ${des.service.name}
+                    Description: ${des.service.name} service
+                    Enabled: ${des.um.enabled}
+                    Provider:
+                      '@type': UM
+                      URL: ${des.um.url}
+                      Auth:
+                        User: ${des.um.user}
+                        Password: '${des.um.password}'
+                        KeystoreAlias: ${des.keystore.name}
+                      Encryption:
+                        TruststoreAlias: ${des.truststore.name}
+              SERVICE-GROUP-DES:
+                ${des.servicegroup.name}:
+                  name: ${des.servicegroup.name}
+                  description: Additional DES Service Group
+                  services:
+                    service:
+                      service-name: ${des.service.name}
+                      usage: ${des.service.usage}
+                  event_types: ${des.eventtypes}
+                  use-local-store-and-forward-queue: '${des.servicegroup.uselocalqueue}'
+
+provision:
+  default:
+    runtime: ${nodes}

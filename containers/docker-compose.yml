@@ -1,0 +1,178 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+version: "3.2"
+
+services:
+  cc: # command-central
+    image: ${REG:-store/softwareag}/commandcentral-builder:${TAG:-10.3}
+    ports:
+      - 8091 # CCE
+      - 8092 # target node SPM
+    # environment:
+    #   - REPO_HOST                                 # alternative, closest AQU host
+    #   - REPO_PRODUCT                              # alternative, product repo within the same release
+    #   - REPO_FIX                                  # alternative, fix repo
+    #   - LICENSES_URL                              # additional licenses
+    #   - REPO_PRODUCT_URL                        # product mirror URL
+    #   - REPO_FIX_URL                            # fix mirror URL
+    #   - REPO_USERNAME                           # Empower or mirror username
+    #   - REPO_PASSWORD                           # Empower or user password
+    # volumes: 
+    #   - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+    #   - ./scripts/init.sh:/opt/sagtools/init.sh
+    #   - ./scripts/test.sh:/opt/sagtools/test.sh
+    #   - ./scripts/inventory.sh:/opt/sagtools/inventory.sh
+    #   - ./scripts/provision.sh:/opt/sagtools/provision.sh
+    #   - ./environments/:/src/environments/
+  
+  hello-world:
+    image: ${REG:-softwareag}/hello-world:${TAG:-10.3}
+    build:
+      context: hello-world/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __hello_world=Container       # container specific build ARG
+    ports:
+      - 8092                            # container specific ports
+      - 8093
+    environment:
+      - CC_AUTO_REGISTER=0              # No auto register
+      - HELLO_NAME=CONTAINER_INSTANCE   # container specific ENV var
+    # volumes:
+    #   - ./entrypoint.sh:/opt/softwareag/entrypoint.sh # for dev only to avoid image rebuild
+
+  universal-messaging:
+    image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
+    build:
+      context: universal-messaging/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __um_fixes=$FIXES             # [] or ALL from the env
+    ports:
+      - 9000                            # container specific ports
+    hostname: universal-messaging
+    environment:
+      - CC_AUTO_REGISTER                # No auto register as we don't have a server
+    depends_on:
+      - cc
+
+  cloud-streams:
+    image: ${REG:-softwareag}/cloud-streams:${TAG:-10.3}
+    build:
+      context: cloud-streams/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+    ports:
+      - 5555                            # container specific ports
+    hostname: cloud-streams
+    environment:
+      - CC_AUTO_REGISTER               # No auto register as we don't have a server
+    depends_on:
+      - cc
+
+  microservices-runtime:
+    image: ${REG:-softwareag}/microservices-runtime:$TAG # target image
+    build:
+      context: integration-server/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __is_fixes=$FIXES             # [] or ALL, from the env
+    ports:
+      - 5555                            # container specific ports
+    hostname: microservices-runtime
+    environment:
+      - CC_AUTO_REGISTER               # No auto register as we don't have a server
+
+  integration-server:
+    image: ${REG:-softwareag}/integration-server:$TAG # target image
+    build:
+      context: integration-server/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __is_fixes=$FIXES             # [] or ALL, from the env
+        - TEMPLATE=sag-is-server
+    ports:
+      - 5555                            # container specific ports
+    hostname: integration-server
+    environment:
+      - CC_AUTO_REGISTER               # No auto register as we don't have a server
+
+  asset-builder:
+    image: ${REG:-softwareag}/asset-builder:$TAG # target image
+    build:
+      context: asset-builder/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+    environment:
+      - BUILD_NUMBER
+
+  # terracotta-server:
+  #   image: ${REG:-softwareag}/terracotta-server:$TAG # target image
+  #   build:
+  #     context: terracotta-server/
+  #     args:
+  #       - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+  #       - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+  #       - __tc_fixes=$FIXES             # [] or ALL from the env
+  #   ports:
+  #     - 9010                            # container specific port
+  #     - 9030                            # container specific port
+  #     - 9040                            # container specific port
+  #   hostname: terracotta-server
+  #   environment:
+  #     - CC_AUTO_REGISTER                # No auto register as we don't have a server
+  #     - OFFHEAP_MAX_SIZE=513m           # Customized offheap size
+
+  entirex-broker:
+    image: ${REG:-softwareag}/entirex-broker:${TAG:-10.3}
+    build:
+      context: entirex-broker/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/base:${TAG:-10.3}
+        - __exx_broker_fixes=$FIXES     # [] or ALL from the env
+    ports:
+      - 1971                            # container specific ports
+      - 1958                            # container specific ports
+
+  entirex-java-rpc-server:
+    image: ${REG:-softwareag}/entirex-java-rpc-server:${TAG:-10.3}
+    build:
+      context: entirex-java-rpc-server/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __exx_core_fixes=$FIXES     # [] or ALL from the env
+
+  entirex-xml-rpc-server:
+    image: ${REG:-softwareag}/entirex-xml-rpc-server:${TAG:-10.3}
+    build:
+      context: entirex-xml-rpc-server/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
+        - __exx_core_fixes=$FIXES     # [] or ALL from the env
+
+        
