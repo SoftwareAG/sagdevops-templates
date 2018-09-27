@@ -19,16 +19,16 @@
 
 # EntireX RPC Server for C
 
-The current template provisions an Apama installation, creates an Apama correlator instance and deploys a simple Apama application.
+The current template provisions an EntireX RPC Server for C.
 
-This template demonstrates in detail all possible Apama correlator configurations that can be applied using a product template. Use this template as a reference when provisioning Apama correlator instances.
+This template demonstrates in detail how to install the EntireX Core component, creates and configures an RPC Server for C. Use this template as a reference when provisioning EntireX RPC Server for C instances.
 
 ## Requirements
 
 ### Supported Software AG releases
 
-* Apama 10.2 and higher
-* Command Central 10.2 and higher
+* EntireX 10.3 and higher
+* Command Central 10.3 and higher
 
 ### Supported platforms
 
