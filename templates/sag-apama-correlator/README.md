@@ -63,8 +63,8 @@ latest fixes, listening on port 15904:
 
 ```bash
 sagcc exec templates composite apply sag-apama-correlator nodes=sag1 \
-  repo.product=webMethods-10.2 \
-  repo.fix=Empower \
+  repo.product=products-10.2 \
+  repo.fix=fixes-10.2 \
   os.platform=LNXAMD64 \
   --sync-job --wait 360
 ```

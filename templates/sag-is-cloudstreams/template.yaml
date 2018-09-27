@@ -22,6 +22,7 @@ description: CloudStreams provisioning on top of IS/MSR instance
 environments:
   default:
     is.instance.name:   default             # IS instance name to provision on top
+    is.instance.type:   MSC                 # IS instance type: MSC or integrationServer
     cst.fixes:          []                  # CloudStreams default fix list
 
 layers:
@@ -36,10 +37,11 @@ templates:
     fixes: ${cst.fixes}
     products:
       wst:
-      integrationServer:
+      ${is.instance.type}:
         ${is.instance.name}: 
           package.list:    WmCloudStreams,WmCloudStreamsAnalytics
-           
+          runtimeComponentId: integrationServer-${instance.name} # hint to find existing instance by id
+
 provision:
   default:
     runtime: ${nodes}

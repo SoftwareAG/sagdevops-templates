@@ -92,7 +92,6 @@ pipeline {
                         sh './provisionw sag-tdb-server'
                         sh './provisionw sag-is-server'
                         sh './provisionw sag-is-config'
-                        sh './provisionw sag-is-cloudstreams'
                         sh './provisionw sag-des'
                         sh './provisionw sag-des-config'
                         sh './provisionw sag-apama-correlator'
@@ -111,6 +110,7 @@ pipeline {
 
                         sh './provisionw sag-abe'                       
                         sh "./provisionw sag-msc-server"
+                        sh './provisionw sag-is-cloudstreams'
                         sh './provisionw sag-designer-services'
                         sh './provisionw sag-designer-cloudstreams'
                         sh './provisionw sag-exx-broker'

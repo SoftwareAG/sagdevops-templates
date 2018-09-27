@@ -15,12 +15,12 @@ environments:
     
     des.truststore.name:     truststore                                                                                                                 
                                                                                                         # Location of the truststore 
-    des.truststore.location: ${com.softareag.install.root}/UniversalMessaging/server/default/bin/nirvanacacerts.jks
+    des.truststore.location: ${com.softwareag.install.root}/UniversalMessaging/server/default/bin/nirvanacacerts.jks
                                                                                                         # Password is encrypted using default shared secret
     des.truststore.password: '{AES/CBC/PKCS5Padding}{fKpfz0BX6XJNLKacYNbyRLTwzOKIIgbJbJNbN46mdjc=}{XJyLSfw3MbsxFs8HZkvRvw==}5ubFIE+j78Nz+d3TIj+Dtw=='
     des.keystore.name:       keystore                                                                   # Keystore name 
                                                                                                         # Location of the keystore 
-    des.keystore.location:   ${com.softareag.install.root}/UniversalMessaging/server/default/bin/server.jks
+    des.keystore.location:   ${com.softwareag.install.root}/UniversalMessaging/server/default/bin/server.jks
                                                                                                         # Password is encrypted using default shared secret
     des.keystore.password:   '{AES/CBC/PKCS5Padding}{/e723CB1JgamVr+ReMNYB1YHuu9FtO3KsfnD+KXbt7M=}{ncbV+wM4UdOZBw7PLuZTpg==}bI420v2lGsRfK68zdP/EtA=='
     des.um.user:             nirvana
