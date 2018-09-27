@@ -1,0 +1,122 @@
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 Software AG, Darmstadt, Germany and/or             #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
+
+alias: sag-exx-c-rpc-server
+description: Create and configure EntireX rpc server for C
+version: 2.0
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
+
+environments:
+  default:
+
+    exx.server.name: CRpcSrv                          # Instance name of the RPC Server
+    exx.server.install.service: false                 # Install as Windows service true/false
+    exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
+    exx.server.broker.host: localhost                 # Broker Host
+    exx.server.broker.port: 1971                      # Broker Port
+    exx.server.broker.user: exxuser                   # User ID for Broker when running with security
+    exx.server.broker.password: exxpasswd             # Password for Broker when running with security
+    exx.server.address: RPC/SRV1/CALLNAT              # Server Address
+    exx.server.adminport: 3096                        # Administration port for Command Central
+    exx.server.broker.ssl.truststore: ""              # File Name for Trust Store
+    exx.server.broker.ssl.serververify: false         # Verify Server true/false    
+    exx.server.broker.encoding: Cp1252                # Encoding used between RPC Server and Broker
+    exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
+    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false
+    exx.server.fixnumber: 5                           # Fix number of workers
+    exx.server.minworkers: 2                          # Minimum number of workers
+    exx.server.maxworkers: 10                         # Maximum number of workers
+    exx.server.tracelevel: 1                          # Trace Level
+    # Directory Names for server implementation
+    exx.server.library.directory1: /opt/softwareag/MyApp                  
+    exx.server.library.directory2: /opt/softwareag/MyApp2
+
+    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
+                                                      # license repository
+                                                                  
+    exx.server.fixes:                                 # minimal recommended set of fixes to apply
+      - ALL
+       
+
+        
+       
+templates:
+
+  c.server:
+    licenses:
+      "EntireX/config/license.xml": "${exx.server.license.key}"        # license key
+    #fixes: ${exx.server.fixes} 
+    products:
+      EntireXCore:                    
+        ${exx.server.name}:
+          type: RPCSERVERC
+          runtimeComponentId: EntireXCore-RpcServerC-${exx.server.name}
+          install.service: ${exx.server.install.service}
+          broker.transport: ${exx.server.broker.transport}
+          broker.host: ${exx.server.broker.host}
+          broker.port: ${exx.server.broker.port}
+          broker.user: ${exx.server.broker.user}
+          broker.password: ${exx.server.broker.password}
+          server.address: ${exx.server.address}
+          server.adminport: ${exx.server.adminport}
+          library.dir: ${exx.server.c.library.dir}
+
+          configuration:
+            EntireXCore-RpcServerC-${exx.server.name}:
+              BROKER:
+                BROKER:
+                  BrokerHost: ${exx.server.broker.host}
+                  BrokerPort: ${exx.server.broker.port}
+                  BrokerTransport: ${exx.server.broker.transport}
+                  BrokerUser: ${exx.server.broker.user}
+                  BrokerPassword: ${exx.server.broker.password}
+                  BrokerEncoding: ${exx.server.broker.encoding}
+                  BrokerSslTrustStore: ${exx.server.broker.ssl.truststore}
+                  BrokerSslVerifyServer: ${exx.server.broker.ssl.serververify}
+                      
+              SERVER:
+                SERVER:
+                  ServerAddress: ${exx.server.address}
+                  ServerAdminport: ${exx.server.adminport}
+                  ReconnectionAttempts: ${exx.server.reconnect.attempts}
+                  WorkerScalability: ${exx.server.worker.scalability}
+                  FixNumber: ${exx.server.fixnumber}
+                  MinWorkers: ${exx.server.minworkers}
+                  MaxWorkers: ${exx.server.maxworkers}
+              TRACE:
+                TRACE:
+                  TraceLevel: ${exx.server.tracelevel}
+
+              LIBRARY-LOCATIONS:
+                LIBRARY-LOCATIONS:
+                  LibraryDirectories:
+                    - Directory: ${exx.server.library.directory1} 
+                    - Directory: ${exx.server.library.directory2}
+
+
+layers:
+  runtime:
+    productRepo: ${repo.product}      # default repository to install products from
+    #fixRepo: ${repo.fix}              # default repository to install products from
+    templates:
+      - c.server                      # template to apply
+
+provision:                            # PROVISION layers to nodes
+  default:                            # default environment type
+    runtime: ${nodes}
