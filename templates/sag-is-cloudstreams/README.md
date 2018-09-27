@@ -76,7 +76,7 @@ sagcc exec templates composite apply sag-is-cloudstreams nodes=dev1 \
 Provision an instance of Integration Server on managed node with alias `dev2`
 
 ```bash
-sagcc exec templates composite apply sag-msc-server nodes=dev2 \
+sagcc exec templates composite apply sag-is-server nodes=dev2 \
   repo.product=products-10.1 \
   repo.fix=fixes-10.1 \
   --sync-job --wait 360
