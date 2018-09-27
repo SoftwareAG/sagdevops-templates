@@ -42,25 +42,26 @@ ENV ETBID=ETB001
 ENV TCPPORT=1971
 ENV SSLPORT=1958
 
+
 COPY --from=builder --chown=1724:1724 $SAG_HOME/common/security/ $SAG_HOME/common/security/
 COPY --from=builder --chown=1724:1724 $SAG_HOME/common/saglic/ $SAG_HOME/common/saglic/
 COPY --from=builder --chown=1724:1724 $EXXDIR/lib/ $EXXDIR/lib/
 COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbnuc $EXXDIR/bin/etbnuc
 COPY --from=builder --chown=1724:1724 $EXXDIR/bin/etbcmd $EXXDIR/bin/etbcmd
 COPY --from=builder --chown=1724:1724 $EXXDIR/config/etb/ETB001/ $EXXDIR/config/etb/ETB001/
-COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
 
-USER sagadmin
+USER root
+RUN chown -R 1724:1724 $EXXDIR/config
 
-ADD *.sh $EXXDIR/bin/
-
-# ADD --chown=1724:1724 healthcheck.sh $EXXDIR/bin
-# ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin
+COPY --chown=1724:1724 healthcheck.sh $EXXDIR/bin
+COPY --chown=1724:1724 entrypoint.sh $EXXDIR/bin
 
 EXPOSE $TCPPORT
 EXPOSE $SSLPORT
 
 WORKDIR $SAG_HOME
+
+USER sagadmin
 
 HEALTHCHECK --interval=5s --timeout=15s CMD sh $EXXDIR/bin/healthcheck.sh || exit 1
 

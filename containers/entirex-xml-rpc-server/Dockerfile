@@ -34,18 +34,15 @@ ENV EXX_LICENSE_KEY=license.xml
 # set some environment variables
 ENV SAG_HOME=/opt/softwareag
 ENV EXXDIR=$SAG_HOME/EntireX
-ENV JAVA_HOME=$SAG_HOME/jvm/jvm
 
-COPY --from=builder --chown=1724:1724 $EXXDIR/config/license.xml $EXXDIR/config/license.xml
 COPY --from=builder --chown=1724:1724 $SAG_HOME/common/lib/ $SAG_HOME/common/lib/
 COPY --from=builder --chown=1724:1724 $SAG_HOME/WS-Stack/lib/ $SAG_HOME/WS-Stack/lib/
 COPY --from=builder --chown=1724:1724 $EXXDIR/classes/entirex.jar $EXXDIR/classes/entirex.jar
 
+RUN mkdir $EXXDIR/config
+
+COPY --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 USER sagadmin
-
-ADD *.sh $EXXDIR/bin/
-
-# ADD --chown=1724:1724 entrypoint.sh $EXXDIR/bin/
 
 WORKDIR $SAG_HOME
 
