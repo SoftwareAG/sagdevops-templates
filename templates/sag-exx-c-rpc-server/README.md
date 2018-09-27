@@ -52,7 +52,7 @@ All supported Windows and UNIX platforms.
 When importing the composite template to Command Central:
 Add the `template.yaml` and import that file using the Command Central CLI with the following command:
 
-```bash
+```
 sagcc exec templates composite import -i template.yaml
 ```
 
@@ -60,7 +60,7 @@ For more information about applying templates, see [Applying template using Comm
 
 To provision an instance of an EntireX RPC Server for C, use the Command Central CLI with the following command:
 
-```bash
+```
 sagcc exec templates composite apply sag-exx-c-rpc-server nodes=<your_node> \
   repo.product=<your_product_repository> \
   repo.fix=<your_fixes_repository>
