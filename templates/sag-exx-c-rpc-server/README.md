@@ -36,42 +36,32 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning new environments of version 10.2 and higher
+* Provisioning new environments of version 10.3 and higher
 * Installing latest fixes
-* Creating an Apama correlator instance and deploying a simple EPL application to it
+* Creating an EntireX RPC Server for C
 * Configuration of:
   * License
-  * Ports
+  * Broker connection parameters
+  * Admin Port
   * Logging
-  * Persistence
-  * All other supported correlator configuration items
+  * Path for server implementation
+  * All other supported configuration items
 
 ## Running as a composite template
 
-When importing the composite template to Command Central, you will have to
-attach the simple 'HelloWorld' application. Add the `template.yaml` and
-`HelloWorld.zip` into a single zip file and import that file using the Command Central CLI with the following command:
+When importing the composite template to Command Central:
+Add the `template.yaml` and import that file using the Command Central CLI with the following command:
 
 ```bash
-sagcc exec templates composite import -i template.zip
+sagcc exec templates composite import -i template.yaml
 ```
 
 For more information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-To provision a `default` instance of an Apama 10.2 correlator with all the
-latest fixes, listening on port 15904:
+To provision an instance of an EntireX RPC Server for C, use the Command Central CLI with the following command:
 
 ```bash
-sagcc exec templates composite apply sag-apama-correlator nodes=sag1 \
-  repo.product=products-10.2 \
-  repo.fix=fixes-10.2 \
-  os.platform=LNXAMD64 \
-  --sync-job --wait 360
+sagcc exec templates composite apply sag-exx-c-rpc-server nodes=<your_node> \
+  repo.product=<your_product_repository> \
+  repo.fix=<your_fixes_repository>
 ```
-
-## Adding as a runtime layer to a stack
-
-Once imported, this template can also be used as a runtime layer for stacks,
-using either the Command Central CLI, or the Command Central web user interface.
-
-For more information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
