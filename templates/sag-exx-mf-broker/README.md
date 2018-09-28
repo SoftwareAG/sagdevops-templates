@@ -17,7 +17,6 @@
 
 -->
 
-
 # EntireX Proxy for Mainframe Broker
 
 The current template provisions a Proxy for an EntireX Mainframe Broker.
