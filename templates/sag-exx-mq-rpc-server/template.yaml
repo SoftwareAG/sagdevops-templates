@@ -1,0 +1,161 @@
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 Software AG, Darmstadt, Germany and/or             #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
+
+alias: sag-exx-mq-rpc-server
+description: Create and configure EntireX rpc server for IBM MQ
+version: 2.0
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
+
+environments:
+  default:
+
+    exx.server.name: MqRpcSrv                           # Instance name of the RPC Server
+    exx.server.install.service: false                   # Install as Windows service true/false
+    exx.server.broker.transport: TCP                    # Connection type to Broker TCP/SSL
+    exx.server.broker.host: localhost                   # Broker Host
+    exx.server.broker.port: 1971                        # Broker Port
+    exx.server.broker.user: exxuser                     # User ID for Broker when running with security
+    exx.server.broker.password: exxpasswd               # Password for Broker when running with security
+    exx.server.address: RPC/SRVMQ/CALLNAT               # Server Address
+    exx.server.adminport: 7531                          # Administration port
+    exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
+    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false   
+    exx.server.mq.host: ibm2                            # Host name of the MQ server
+    exx.server.mq.port: 3434                            # Port of the MQ server
+    # Credentials if the MQ server is running with security
+    exx.server.mq.user: mquser                          # User ID
+    exx.server.mq.password: mqpassword                  # Password
+    exx.server.mq.channel: EXX.CHA.Q2                   # Channel name used to connect to the MQ Server
+    exx.server.mq.queuemanager: QM_exx                  # Name of the queue manager
+    exx.server.mq.inputqueue: EXX.IQ                    # Name of input queue, which is used for MQ GET operations
+    exx.server.mq.outputqueue: EXX.OQ                   # Name of output queue, which is used for MQ PUT operations
+    # Name of XMM (XML Mapping) file if MQ message payload is XML/SOAP. If this is specified, messages to/from MQ will be converted to XML/SOAP.
+    exx.server.mq.mapping: mapping.xmm
+    # Coded Character Set Identification used by the EntireX RPC Server for IBM MQ - not used in bindings mode
+    exx.server.mq.character.setid: cp037
+    exx.server.mq.wait.time: 20000                      # Wait interval for MQ GET operation in milliseconds
+    exx.server.mq.bindingsmode: yes                     # Binding mode 
+    exx.server.mq.priority: 5                           # Message priority for messages sent to MQ
+    exx.server.mq.ssl.ciper.suite: MyCipher             # Configuration for SSL connection to MQ Server - not used in bindings mode
+    exx.server.mq.installpath: /opt/softwareag/mqpath   # MQ Java installation path
+    exx.server.mq.libpath: /opt/softwareag/mqlib        # MQ Java library path
+    exx.server.mq.user.exit: UserExit                   # Class name for MQ Server user exit
+    # URL of the classpath for user exit
+    exx.server.mq.user.exit.classpath: /opt/softwareag/MQ/UserEXit
+    
+    exx.server.license.key: "EXX_LINSUSE_103"           # license key, alias name of license key in
+                                                        # license repository
+                                                                  
+    exx.server.fixes:                                   # minimal recommended set of fixes to apply
+      - ALL
+       
+ 
+      
+templates:
+   
+  mq.server:
+    licenses:
+      "EntireX/config/license.xml": "${exx.server.license.key}"        # license key
+    #fixes: ${exx.server.fixes} 
+    products:
+      EntireXCore:                    
+        ${exx.server.name}:
+          type: RPCSERVERIBMMQ
+          runtimeComponentId: EntireXCore-RpcServerIbmMq-${exx.server.name}
+          install.service: ${exx.server.install.service}
+          broker.transport: ${exx.server.broker.transport}
+          broker.host: ${exx.server.broker.host}
+          broker.port: ${exx.server.broker.port}
+          broker.user: ${exx.server.broker.user}
+          broker.password: ${exx.server.broker.password}
+          server.address: ${exx.server.address}
+          server.adminport: ${exx.server.adminport}
+          classpath: ${exx.server.classpath}
+          # MQ
+          mq.host: ${exx.server.mq.host}
+          mq.port: ${exx.server.mq.port}
+          mq.user: ${exx.server.mq.user}
+          mq.password: ${exx.server.mq.password}
+          mq.channel: ${exx.server.mq.channel}
+          mq.queuemanager: ${exx.server.mq.queuemanager}
+          mq.inputqueue: ${exx.server.mq.inputqueue}
+          mq.outputqueue: ${exx.server.mq.outputqueue}
+          mq.bindingsmode: ${exx.server.mq.bindingsmode}
+          mq.javainstallpath: ${exx.server.mq.installpath}
+          mq.javalibpath: ${exx.server.mq.libpath}
+
+          configuration:
+            EntireXCore-RpcServerXml-${exx.server.name}:
+              BROKER:
+                BROKER:
+                  BrokerHost: ${exx.server.broker.host}
+                  BrokerPort: ${exx.server.broker.port}
+                  BrokerTransport: ${exx.server.broker.transport}
+                  BrokerUser: ${exx.server.broker.user}
+                  BrokerPassword: ${exx.server.broker.password}
+                  BrokerEncoding: ${exx.server.broker.encoding}
+                  BrokerSslTrustStore: ${exx.server.broker.ssl.truststore}
+                  BrokerSslVerifyServer: ${exx.server.broker.ssl.serververify}
+                      
+              SERVER:
+                SERVER:
+                  ServerAddress: ${exx.server.address}
+                  ServerAdminport: ${exx.server.adminport}
+                  ReconnectionAttempts: ${exx.server.reconnect.attempts}
+                  WorkerScalability: ${exx.server.worker.scalability}
+                  FixNumber: ${exx.server.fixnumber}
+                  MinWorkers: ${exx.server.minworkers}
+                  MaxWorkers: ${exx.server.maxworkers}
+                  
+              TRACE:
+                TRACE:
+                  TraceLevel: ${exx.server.tracelevel}
+                           
+              IBM-MQ:
+                IBM-MQ: 
+                  IbmMqBindingsMode: ${exx.server.mq.bindingsmode}
+                  IbmMqHost: ${exx.server.mq.host}
+                  IbmMqPort: ${exx.server.mq.port}
+                  IbmMqChannel: ${exx.server.mq.channel}
+                  IbmMqQueueManager: ${exx.server.mq.queuemanager}
+                  IbmMqInputQueue: ${exx.server.mq.inputqueue}
+                  IbmMqOutputQueue: ${exx.server.mq.outputqueue}
+                  IbmMqUser: ${exx.server.mq.user}
+                  IbmMqPassword: ${exx.server.mq.password}
+                  IbmMqMapping: ${exx.server.mq.mapping}
+                  IbmMqCharacterSetId: ${exx.server.mq.character.setid}
+                  IbmMqWaitTime: ${exx.server.mq.wait.time}
+                  IbmMqSsl: ${exx.server.mq.ssl.ciper.suite:}
+                  IbmMqPriority: ${exx.server.mq.priority}
+                  IbmMqJavaInstallPath: ${exx.server.mq.installpath}
+                  IbmMqJavaLibPath: ${exx.server.mq.libpath}
+                  IbmMqUserExit: ${exx.server.mq.user.exit}
+                  IbmMqUserExitClasspath: ${exx.server.mq.user.exit.classpath}
+
+  
+layers:
+  runtime:
+    productRepo: ${repo.product}      # default repository to install products from
+    #fixRepo: ${repo.fix}              # default repository to install products from
+    templates:
+      - mq.server                    # template to apply
+
+provision:                            # PROVISION layers to nodes
+  default:                            # default environment type
+    runtime: ${nodes}
