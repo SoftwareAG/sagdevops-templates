@@ -21,7 +21,7 @@
 
 The current template provisions a Proxy for an EntireX Mainframe Broker.
 
-This template demonstrates in detail how to install the EntireX Core component, creates and configures a Proxy for an EntireX Mainframe Broker. Use this template as a reference when provisioning a Proxy for an EntireX Mainframe Broker instances.
+This template demonstrates in detail how to install the EntireX Mainframe Broker Administration component, creates and configures a Proxy for an EntireX Mainframe Broker. Use this template as a reference when provisioning a Proxy for an EntireX Mainframe Broker instances.
 
 ## Requirements
 
