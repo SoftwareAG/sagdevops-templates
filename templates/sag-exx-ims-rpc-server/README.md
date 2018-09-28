@@ -17,7 +17,7 @@
 
 -->
 
-# EntireX RPC Server for IBM MQ
+# EntireX RPC Server for IMS
 
 The current template provisions an EntireX RPC Server for IMS.
 
