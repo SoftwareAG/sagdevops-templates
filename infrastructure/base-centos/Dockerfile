@@ -17,7 +17,8 @@
 #
 ###############################################################################
 
-FROM centos:7
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
 
 ENV SAG_HOME=/opt/softwareag
 

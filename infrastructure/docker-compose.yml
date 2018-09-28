@@ -24,11 +24,16 @@ services:
     image: ${REG}/base:${TAG}
     build:
       context: base-centos/
+      args:
+        - BASE_IMAGE=centos:7
 
   java:
     image: ${REG}/java:${TAG}
     build:
       context: java-centos/
+      args:
+        - BASE_IMAGE=${REG}/base:${TAG}
+        - CC_SERVER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG} # base image for the builder, e.g. server-10.3
     depends_on: 
       - base
 
