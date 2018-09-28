@@ -46,7 +46,7 @@ All supported Windows and UNIX platforms.
   * Logging
   * .NET settings
   * Path for server implementation
-  * All other supported configuration items
+  * All other supported configuration item
 
 ## Running as a composite template
 
