@@ -13,7 +13,7 @@ env:
   matrix:
 #    - CC_TEMPLATE=sag-um-server  TAG=10.1
     - CC_TEMPLATE=hello-world TAG=10.1
-    - CC_TEMPLATE=sag-abe TAG=10.1
+#    - CC_TEMPLATE=sag-abe TAG=10.1
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
@@ -22,5 +22,5 @@ before_install:
   - cd ..
 
 script: 
-  - echo "Testing $CC_TEMPLATE with release $TAG
+  - echo "Testing $CC_TEMPLATE with release $TAG"
   - ./provisionw $CC_TEMPLATE
