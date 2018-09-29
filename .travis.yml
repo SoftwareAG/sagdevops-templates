@@ -7,7 +7,9 @@ env:
   global:
     - CC_TAG=10.3
     - CC_REG=softwareag
+    - TAG=10.1
     - REG=sergeipogrebnyak
+    - CC_ENV=prod
   matrix:
 #    - CC_TEMPLATE=sag-um-server  TAG=10.1
     - CC_TEMPLATE=sag-msc-server TAG=10.1
@@ -15,7 +17,7 @@ env:
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - cd infrastructure
-  - docker-compose build
+  - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
   - cd ..
 
 script: 
