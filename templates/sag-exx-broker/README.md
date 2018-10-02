@@ -17,11 +17,11 @@
 
 -->
 
-# EntireX Mainframe Broker Proxy
+# EntireX Broker
 
-The current template provisions a Proxy for an EntireX Mainframe Broker.
+The current template provisions an EntireX Broker.
 
-This template demonstrates in detail how to install the EntireX Mainframe Broker Administration component, creates and configures a Proxy for an EntireX Mainframe Broker. Use this template as a reference when provisioning a Proxy for an EntireX Mainframe Broker instances.
+This template demonstrates in detail how to install the EntireX Broker component, creates and configures an EntireX Broker. Use this template as a reference when provisioning an EntireX Broker instances.
 
 ## Requirements
 
@@ -38,9 +38,9 @@ All supported Windows and UNIX platforms.
 
 * Provisioning new environments of version 10.3 and higher
 * Installing latest fixes
-* Creating a Proxy for an EntireX Mainframe Broker
+* Creating an EntireX Broker
 * Configuration of:
-  * EntireX Mainframe Broker connection parameters
+  * EntireX Broker parameters
 
 ## Running as a composite template
 
@@ -53,10 +53,10 @@ sagcc exec templates composite import -i template.yaml
 
 For more information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-To provision an instance of a Proxy for an EntireX Mainframe Broker, use the Command Central CLI with the following command:
+To provision an instance of an EntireX Broker, use the Command Central CLI with the following command:
 
 ```
-sagcc exec templates composite apply sag-exx-mf-broker nodes=<your_node> \
+sagcc exec templates composite apply sag-exx-broker nodes=<your_node> \
   repo.product=<your_product_repository> \
   repo.fix=<your_fixes_repository>
 ```
