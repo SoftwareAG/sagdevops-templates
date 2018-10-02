@@ -1,0 +1,69 @@
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 Software AG, Darmstadt, Germany and/or             #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
+
+alias: sag-exx-mf-broker
+description: Create and configure EntireX Mainframe Broker Proxies
+version: 2.0
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
+
+environments:
+  default:
+
+   
+    # Mainframe Broker
+    exx.mf.broker.instance: DAEF1236              # Instance name of the mainframe broker proxy
+    exx.mf.broker.transport: TCP                  # Use TCP or SSL to communicate with EntireX Broker
+    exx.mf.broker.host: DAEF                      # EntireX Broker host name or IP address               
+    exx.mf.broker.port: 1236                      # TCP or SSL port where the EntireX Broker is listening
+    exx.mf.broker.user: fred                      # User ID when the EntireX Broker is running with security
+    exx.mf.broker.password: paasword              # Password when the EntireX Broker is running with security
+    exx.mf.broker.ssltrustsstore: SslFileName     # Specifies the location of SSL trust store
+    exx.mf.broker.sslverifyserver: no             # true/false, The RPC Server as SSL client checks the identity of the EntireX Broker as SSL server
+   
+      
+templates:
+                                    
+                
+  mf.broker:
+    products:
+      EntireXMainframeProxy:
+        mf.broker.proxy:
+          configuration:
+            EntireXMainframeProxy-Administration:
+              EXX-BROKER:
+                EXX-BROKER:
+                  Instance: ${exx.mf.broker.instance}
+                  Transport: ${exx.mf.broker.transport}
+                  Host: ${exx.mf.broker.host}
+                  Port: ${exx.mf.broker.port}
+                  SslTrustStore: ${exx.mf.broker.ssltrustsstore}
+                  SslVerifyServer: ${exx.mf.broker.sslverifyserver}
+                  User: ${exx.mf.broker.user}
+                  Password: ${exx.mf.broker.password}
+                                             
+
+layers:
+  runtime:
+    productRepo: ${repo.product}      # default repository to install products from
+    templates:
+      - mf.broker                     # template to apply
+
+provision:                            # PROVISION layers to nodes
+  default:                            # default environment type
+    runtime: ${nodes}
