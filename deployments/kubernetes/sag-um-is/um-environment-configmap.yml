@@ -20,7 +20,7 @@ apiVersion: v1
 data:
   CC_PASSWORD: manage
   CC_AUTO_REGISTER: "1"
-  LAR_REPO_URL: "http://irepo/scm/devops/wmic-asset-repo.git"
+  LAR_REPO_URL: "http://irepo/scm/devops/wmic-asset-repo-um.git"
   LAR_REPO_BRANCH: "master"
 kind: ConfigMap
 metadata:
