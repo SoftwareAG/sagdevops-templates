@@ -1,0 +1,27 @@
+alias: sag-mws-appplatform
+description: Application platform on MWS
+
+environments:
+  default:
+    mws.instance.name:   default              # MWS instance name
+    mws.PLS_MWS.fixes:     ALL
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo: ${repo.fix}
+    templates:
+      - appPlatformMWS
+
+templates:
+  appPlatformMWS:
+    fixes: ${mws.PLS_MWS.fixes}
+    products:
+      PLS_MWS:
+      PortalSharedComponents:
+      MwsProgramFiles:
+        ${mws.instance.name}:
+
+provision:
+  default:
+    runtime: ${nodes}
