@@ -26,8 +26,8 @@ None
 
 ### Supported Software AG releases
 
-* Designer 10.2 and higher
-* Command Central 10.2 and higher
+* Designer 10.1 and higher
+* Command Central 10.1 and higher
 
 ### Supported platforms
 
@@ -35,7 +35,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-Provisioning Application Platform on Designer 10.2 or higher 
+Provisioning Application Platform on Designer 10.1 or higher 
 
 ## Running as a composite template
 
