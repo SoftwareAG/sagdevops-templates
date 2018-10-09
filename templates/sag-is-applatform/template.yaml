@@ -17,7 +17,7 @@
 #
 ###############################################################################
 alias: sag-is-applatform
-description: Application Platform provisioning on top of IS/MSR instance
+description: Application Platform provisioning on top of IS instance
 
 environments:
   default:
