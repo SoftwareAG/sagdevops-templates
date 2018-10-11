@@ -18,9 +18,8 @@
 ###############################################################################
 
 ARG BASE_IMAGE
-ARG CC_SERVER_IMAGE
-FROM $CC_SERVER_IMAGE as javasource
-
+ARG NODE_IMAGE
+FROM $NODE_IMAGE as javasource
 FROM $BASE_IMAGE as base
 
 ENV SAG_HOME=/opt/softwareag
@@ -29,7 +28,7 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 USER 1724
 
-COPY --from=javasource --chown=1724:1724 /opt/sagtools/jvm/jvm/ $SAG_HOME/jvm/jvm/
+COPY --from=javasource --chown=1724:1724 $SAG_HOME/jvm/jvm/ $SAG_HOME/jvm/jvm/
 
 RUN env && java -version
 

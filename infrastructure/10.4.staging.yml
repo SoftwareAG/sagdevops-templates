@@ -19,12 +19,13 @@
 version: "3.2"
 
 services:
-  node:
-    build:
-      args:
-        - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.4-milestone-lnxamd64}
+  # node:
+  #   build:
+  #     args:
+  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.4-milestone-lnxamd64}
 
   builder:
     build:
       args:
-        - REPO_PRODUCT=${REPO_PRODUCT:-104apr2019_SIC}
+        - REPO_PRODUCT_URL=http://aquarius-bg.eur.ad.sag/dataserve104apr2019_SIC/repository/
+        - REPO_FIX_URL=http://aquarius-va.ame.ad.sag/updates/QARepo
