@@ -77,8 +77,8 @@ services:
     entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
 
-  build: # ABE wrapper
-    image: ${CC_REG}/asset-builder:${CC_TAG}
+  build: # ABE wrapper (built locally)
+    image: ${REG}/asset-builder:${TAG}
     volumes:
       - .:/src/ # required
     environment:

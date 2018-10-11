@@ -22,9 +22,8 @@ description: Oracle database and component schemas
 
 environments:
   default:                 
-    release:             ${}                # REQUIRED: target release, e.g. 10.2
-
     db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.2
     db.type:             oracle             # oracle
     db.port:             1521               # oracle default port
     db.sid:              XE                 # Database name
@@ -64,7 +63,7 @@ layers:
         db.name:     ${db.name}
       schemas:
         products:    ${db.products}
-        version:     "${release}.0.0"
+        version:     ${db.version}
         db.type:     ${db.type}
         db.url:      ${db.url}
         db.username: ${db.username}
