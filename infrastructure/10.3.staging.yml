@@ -19,12 +19,14 @@
 version: "3.2"
 
 services:
-  node:
-    build:
-      args:
-        - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-release-lnxamd64}
+  # node:
+  #   build:
+  #     args:
+  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-fix1-lnxamd64}
+  #       - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-bg.eur.ad.sag/cc/installers} # use this until 10.3-release is promoted
 
   builder:
     build:
       args:
-        - REPO_PRODUCT=${REPO_PRODUCT:-103oct2018_SIC}
+        - REPO_PRODUCT_URL=http://aquarius-bg.eur.ad.sag/dataserve103oct2018_SIC/repository/
+        - REPO_FIX_URL=http://aquarius-va.ame.ad.sag/updates/GA_Fix_Repo

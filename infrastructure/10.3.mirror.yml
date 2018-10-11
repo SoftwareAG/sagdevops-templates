@@ -19,17 +19,16 @@
 version: "3.2"
 
 services:
-  node:
-    build:
-      args:
-        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-        - CC_INSTALLER=cc-def-10.3-release-lnxamd64
-        - CC_INSTALLER_URL=http://docker.for.mac.localhost:8090/cce/provisioning/bootstrap/installers
+  # node:
+  #   build:
+  #     args:
+  #       - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
+  #       - CC_INSTALLER=cc-def-10.3-release-lnxamd64
+  #       - CC_INSTALLER_URL=http://docker.for.mac.localhost:8090/cce/provisioning/bootstrap/installers
 
   builder:
     build:
       args:
-        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
         - REPO_PRODUCT_URL=http://docker.for.mac.localhost:8092/products-10.3/repository
         - REPO_FIX_URL=http://docker.for.mac.localhost:8092/fix-fixes-10.3/repository
         - REPO_USERNAME=Administrator

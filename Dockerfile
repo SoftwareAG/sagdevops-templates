@@ -16,15 +16,26 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-version: "3.2"
 
-services:
-  node:
-    build:
-      args:
-        - CC_INSTALLER=${CC_INTALLER:-cc-def-10.2-fix2-lnxamd64}
+ARG BUILDER_IMAGE
+ARG NODE_IMAGE
+FROM $NODE_IMAGE as node
+FROM $BUILDER_IMAGE as builder
 
-  builder:
-    build:
-      args:
-        - REPO_PRODUCT=${REPO_PRODUCT:-102apr2018_SIC}
+# WORKDIR $CC_HOME
+# USER 1724
+# add all templates
+# ADD --chown=1724:1724 templates/ profiles/CCE/data/templates/composite/
+# replace default scripts
+# ADD --chown=1724:1724 scripts/*.sh ./
+
+# add licenses.zip, if any
+# ADD --chown=1724:1724 licenses/*.zip ./licenses/
+
+# Copy target node from the $NODE_IMAGE
+COPY --from=node --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
+
+# configure repos and add licenses
+RUN $CC_HOME/provision.sh sag-empty
+
+WORKDIR /src
