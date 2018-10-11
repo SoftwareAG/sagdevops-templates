@@ -38,6 +38,7 @@ environments:
       - IS
       - BPM
       - MWS 
+      - OPTI 
     dbc.fixes:           []                 # Database component configurator fixes to install
 
 layers:
