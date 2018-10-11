@@ -38,7 +38,12 @@ environments:
     db.name:             webm
     db.username:         ${db.name}         # Database username
     db.password:         ${db.name}         # Database password
-    db.products:         [IS,BPM,MWS,OPTI] 
+    db.products:         
+      - IS
+      - BPM
+      - MWS
+      # - OPTI  # failing! 
+    db.fixes:            []                 # Database component configurator fixes to install
 
 layers:
   db:
@@ -75,6 +80,7 @@ templates:
     products:
       DatabaseComponentConfigurator:
       # FEATURE: we need runtime instance to tag as layer instance
+    fixes: ${db.fixes}
 
 provision:
   default:

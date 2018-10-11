@@ -42,17 +42,6 @@ services:
     depends_on: 
       - oracle
 
-  # tester for webm db schemas
-  test:
-    image: ${CC_REG}/commandcentral-client:${CC_TAG}
-    command: >
-      sagcc list administration product node DatabaseComponentConfigurator  
-        database catalog db.type=oracle db.username=webm  
-        db.password=webm db.name=webm db.url="jdbc:wm:oracle://oracle:1521;SID=XE"
-        -e "ISI & MWS & PRE"
-    depends_on: 
-      - oracle
-
 networks:
   default:
     external:
