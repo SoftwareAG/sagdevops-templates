@@ -39,7 +39,7 @@ environments:
     db.name:             webm
     db.username:         ${db.name}         # Database username
     db.password:         ${db.name}         # Database password
-    db.products:         [IS,BPM,MWS] 
+    db.products:         [IS,BPM,MWS,OPTI] 
 
 layers:
   db:
