@@ -16,7 +16,10 @@
      limitations under the License.                                                  
 
 -->
+
 # Optimize Analytic Engine
+
+> STATUS: INCLUBATING
 
 Use this template to install Optimize Analytic Engine 10.1 and higher.
 
@@ -40,5 +43,19 @@ All supported Windows and UNIX platforms.
 ## Example how to run the composite template
 
 ```bash
- sagcc exec templates composite apply sag-optimize-analysis nodes=optimize repo.product=optimize repo.fix=Empower
+sagcc exec templates composite apply sag-optimize-analysis nodes=optimize \
+    repo.product=optimize repo.fix=Empower \
+    --sync-job --wait 360
+```
+
+## Local development and testing using Docker
+
+### With SQL Server database
+
+Provision [SQL Server](../sag-db-sqlserver) container and schemas
+
+Provision Optimize:
+
+```bash
+CC_ENV=sqlserver ./provisionw sag-optimize-analysis
 ```
