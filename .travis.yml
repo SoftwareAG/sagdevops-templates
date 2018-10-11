@@ -15,12 +15,12 @@ env:
     - CC_TEMPLATE=hello-world TAG=10.1
 #    - CC_TEMPLATE=sag-abe TAG=10.1
 
-before_install:
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - cd infrastructure
-  - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
-  - cd ..
+# before_install:
+#   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+#   - cd infrastructure
+#   - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
+#   - cd ..
 
 script: 
   - echo "Testing $CC_TEMPLATE with release $TAG"
-  - ./provisionw $CC_TEMPLATE
+  # - ./provisionw $CC_TEMPLATE
