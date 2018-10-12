@@ -1,4 +1,5 @@
-###############################################################################
+#!/bin/sh -e
+#*******************************************************************************
 #  Copyright � 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
@@ -15,23 +16,13 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.                                                            
 #
-###############################################################################
-# properties for local development/testing on TRUNK
+#*******************************************************************************
 
-db.host=oracle
-um.fixes=[]
-um.url=nsp://localhost:9000
-tc.fixes=[]
-is.fixes=[]
-is.um.url=nsp://localhost:9000
-des.fixes=[] 
-des.um.url=nsp://localhost:9000
-apama.fixes=[]
-abe.fixes=[]
-designer.fixes=[]
-cst.fixes=[]
-exx.broker.fixes=[]
-exx.server.fixes=[]
-infradc.jms.host=localhost
-infradc.fixes=[]
-mws.infradcui.fixes=[]
+# point to local SPM
+export CC_SERVER=cc
+
+sagcc list administration product node DatabaseComponentConfigurator database catalog \
+    db.type=sqlserver db.username=webm db.password=webm db.name=webm db.url="jdbc:wm:sqlserver://sqlserver:1433;databaseName=webm" \
+    -e "ISI & MWS & PRE"
+
+echo "TEST SUCCESSFUL"

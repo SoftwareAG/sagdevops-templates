@@ -22,9 +22,8 @@ description: SQLServer database and component schemas
 
 environments:
   default:                 
-    release:             ${}                # REQUIRED: target release, e.g. 10.2
-
     db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.2
     db.type:             sqlserver          # This is SQLServer database
     db.port:             1433               # Default port
     db.admin.username:   sa                 # Admin username for db and user creation
@@ -39,7 +38,7 @@ environments:
       - BPM
       - MWS 
       - OPTI 
-    dbc.fixes:           []                 # Database component configurator fixes to install
+    db.fixes:            []                 # Database component configurator fixes to install
 
 layers:
   db:
@@ -61,7 +60,7 @@ layers:
         db.name:     ${db.name}
       schemas:
         products:    ${db.products}
-        version:     "${release}.0.0"
+        version:     ${db.version}
         db.type:     ${db.type}
         db.url:      ${db.url}
         db.username: ${db.username}
@@ -72,7 +71,7 @@ templates:
   dbc:
     products:
       DatabaseComponentConfigurator:
-    fixes: ${dbc.fixes}
+    fixes: ${db.fixes}
 
 provision:
   default:

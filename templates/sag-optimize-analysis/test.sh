@@ -19,36 +19,44 @@
 #*******************************************************************************
 
 # if managed image
-export CC_SERVER=http://localhost:8092/spm
+if [ -d $SAG_HOME/profiles/SPM ] ; then
+    # point to local SPM
+    export CC_SERVER=http://localhost:8092/spm
 
-echo "Verifying managed container $CC_SERVER ..."
-sagcc get inventory products -e SPM --wait-for-cc
+    echo "Verifying managed container $CC_SERVER ..."
+    sagcc get inventory products -e SPM --wait-for-cc
 
-export CC_WAIT=5
-echo "Verifying fixes ..."
-sagcc get inventory fixes 
+    export CC_WAIT=60
+    
+    echo "Verifying fixes ..."
+    sagcc get inventory fixes 
 
-echo "Verifying instances ..."
-sagcc get inventory components -e optimizeAnalysis-analysis
+    echo "Verifying instances ..."
+    sagcc get inventory components -e optimizeAnalysis-analysis
 
-echo "Verifying configs ..."
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-JMS-Provider -e JMS-Provider
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-Configuration-Agent -e Configuration-Agent
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-MWS -e MWS
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-WS-Registry -e WS-Registry
+    echo "Start the instance ..."
+    sagcc exec lifecycle components optimizeAnalysis-analysis start -e DONE --sync-job
 
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-JDBC-webmdb -e webmdb
+    echo "Verifying status ..."
+    sagcc get monitoring runtimestatus optimizeAnalysis-analysis -e ONLINE
 
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-AnalysisEngine -e AnalysisEngine
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-CommonDirectory -e CommonDirectory
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-ProcessHistory -e ProcessHistory
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-ProcessModel -e ProcessModel
-sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-ProcessWork -e ProcessWork
+    echo "Verifying configs ..."
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-JMS-Provider -e JMS-Provider
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-Configuration-Agent -e Configuration-Agent
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-MWS -e MWS
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-COMPONENT-ENDPOINTS-WS-Registry -e WS-Registry
 
-echo "Verifying status ..."
-sagcc get monitoring runtimestatus optimizeAnalysis-analysis -e ONLINE
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-JDBC-webmdb -e webmdb
+
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-AnalysisEngine -e AnalysisEngine
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-CommonDirectory -e CommonDirectory
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-ProcessHistory -e ProcessHistory
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-ProcessModel -e ProcessModel
+    sagcc get configuration instances optimizeAnalysis-analysis COMMON-DBFUNCTION-ProcessWork -e ProcessWork
+
+fi
 
 echo "Verifying product runtime ..."
 curl -H Accept:text http://localhost:12503/services/mapivalidation.wsdl
 
-echo "DONE testing"
+echo "TEST SUCCESSFUL"

@@ -27,8 +27,6 @@ environments:
     db.username:         webmdb                 # Database username
     db.password:         ${}                    # Database password
     db.url:              "jdbc:wm:oracle://${db.host}:${db.port};serviceName=${db.name}"
-
-    release:             10.4
     
 layers:
     runtime:

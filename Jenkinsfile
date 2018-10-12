@@ -45,8 +45,8 @@ pipeline {
                 anyOf {
                     expression { return params.INFRA }
                     changeset "infrastructure/**" 
-                    changeset "scripts/**" 
-                    changeset "templates/**" 
+                    // changeset "scripts/**" 
+                    // changeset "templates/**" 
                 } 
             }
             steps {
@@ -79,12 +79,49 @@ pipeline {
                 } 
             }
             parallel {
-                stage('Group 1') {
+                stage('Group Oracle') {
                     agent { label 'docker' }
+                    environment {
+                        CC_ENV = 'oracle'
+                    }
+                    steps {
+                        sh 'docker-compose up -V -d --remove-orphans cc'
+                        sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml up -d oracle'
+                        sh './provisionw sag-db-oracle'
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml down'
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
+                stage('Group SQLServer') {
+                    agent { label 'docker' }
+                    environment {
+                        CC_ENV = 'sqlserver'
+                    }
+                    steps {
+                        sh 'docker-compose up -V -d --remove-orphans cc'
+                        sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml up -d sqlserver'
+                        sh './provisionw sag-db-sqlserver'
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml down'
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
+                stage('Group Core') {
+                    agent { label 'docker' }
+                    environment {
+                        CC_ENV = 'dev'
+                    }
                     steps {
                         // checkout scm
                         // sh 'docker-compose pull cc'
-                        sh 'docker-compose up -V -d cc'
+                        sh 'docker-compose up -V -d --remove-orphans cc'
 
                         sh './provisionw sag-um-server'
                         sh './provisionw sag-um-config'
@@ -104,9 +141,12 @@ pipeline {
                 }
                 stage('Group 2') {
                     agent { label 'docker' }
+                    environment {
+                        CC_ENV = 'dev'
+                    }
                     steps {
                         // sh 'docker-compose pull cc'
-                        sh 'docker-compose up -V -d cc'
+                        sh 'docker-compose up -V -d --remove-orphans cc'
 
                         sh './provisionw sag-abe'                       
                         sh "./provisionw sag-msc-server"

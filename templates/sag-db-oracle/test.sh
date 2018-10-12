@@ -1,5 +1,6 @@
-###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#!/bin/sh -e
+#*******************************************************************************
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -15,16 +16,13 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.                                                            
 #
-###############################################################################
-release=10.2
+#*******************************************************************************
 
-# provision from internal aqu mirrors
-repo.product=SuiteInt
-#repo.product=webMethods-${release}_GA
-repo.fix=GA_Fix_Repo
+# point to local SPM
+export CC_SERVER=cc
 
-db.host=oracle
-nodes=is1,is2
+sagcc list administration product node DatabaseComponentConfigurator database catalog \
+    db.type=oracle db.username=webm db.password=webm db.name=webm db.url="jdbc:wm:oracle://oracle:1521;SID=XE" \
+    -e "ISI & MWS & PRE"    
 
-is.integrationserver.license.key=*_PIE_10.*_*_LNXAMD64
-is.fixes=[]
+echo "TEST SUCCESSFUL"

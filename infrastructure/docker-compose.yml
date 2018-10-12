@@ -65,6 +65,7 @@ services:
         - BUILDER_IMAGE=${CC_REG}/commandcentral-builder:${CC_TAG}
         - NODE_IMAGE=${CC_REG}/commandcentral-node:${TAG}
         - REPO_PRODUCT_URL
+        - REPO_FIX_URL
         - REPO_USERNAME                           # Empower or mirror username
         - REPO_PASSWORD                           # Empower or user password
         - LICENSES_URL                            # licenses .zip, e.g. 10.x

@@ -40,7 +40,7 @@ To install Database Component Configurator 10.1 on the Command Central node with
 
 ```bash
 sagcc exec templates composite apply sag-db-sqlserver
-  release=10.1 repo.product=products-10.1 repo.fix=fixes-10.1 nodes=local
+  db.version=10.1.0.0 repo.product=products-10.1 repo.fix=fixes-10.1 nodes=local
   db.host=sqlserver db.admin.username=sa db.admin.password=MaNaGe123
   db.name=webm db.username=webm db.password=webm
   db.products=[IS,MWS]
@@ -49,24 +49,27 @@ sagcc exec templates composite apply sag-db-sqlserver
 
 ## Using for local development and testing on Docker platforms
 
-To use this template for local development you must first launch the Command Central container. From the root folder of this project run:
+Launch the Command Central container from the root folder of this project:
 
 ```bash
 docker-compose up -d cc
 ```
 
-To launch the [Miscrosoft SQL Server on Linux for Docker Engine](https://hub.docker.com/r/microsoft/mssql-server-linux/) container and apply the `sag-db-sqlserver` template to create a user, database, and Integration Server and My webMethods Server database components for the 10.3 release:
+Launch the [Miscrosoft SQL Server on Linux for Docker Engine](https://hub.docker.com/r/microsoft/mssql-server-linux/) container:
 
 ```bash
-docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm provision
-...
-17      Wed Jul 18 17:42:45 UTC 2018    DONE    DONE
+docker-compose -f templates/sag-db-sqlserver/docker-compose.yml up -d sqlserver
 ```
 
-To verify that the database components are created successfully:
+Provision sag-db-sqlserver template and run tests:
 
 ```bash
-docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm test
+CC_ENV=sqlserver ./provisionw sag-db-sqlserver
+```
+
+Successful test output looks like this:
+
+```bash
 ...
 **********************************
 * Executing action
@@ -95,6 +98,7 @@ docker-compose -f templates/sag-db-sqlserver/docker-compose.yml run --rm test
 **********************************
 
 The expected values were successfully retrieved after 1 call within 4 seconds.
+TEST SUCCESSFUL
 ```
 
 You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server) with the following database connection properties:
@@ -104,4 +108,10 @@ db.url=jdbc:wm:sqlserver://sqlserver:1433;databaseName=webm
 db.username=webm
 db.password=webm
 db.type=sqlserver
+```
+
+The properties are preset in `environments/sqlserver/env.properties` file and you can use them by poiting to the environment name. For example:
+
+```bash
+CC_ENV=sqlserver ./provisionw sag-optimize-analysis
 ```

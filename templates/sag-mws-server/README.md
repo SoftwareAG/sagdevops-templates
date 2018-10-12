@@ -21,32 +21,18 @@
 
 > STATUS: INCUBATING
 
-Use this template to install Optimize Analytic Engine 10.1 and higher.
+Use this template to provision My webMethods Server 10.1 and higher.
 
 ## Requirements
 
 ### Supported Software AG releases
 
 * Command Central 10.1 and higher
-* Optimize Analytic Engine 10.1 and higher
+* My webMethods Server 10.1 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
-
-### Supported use cases
-
-* Provisioning Optimize Analytic Engine version 10.1 or higher
-* Installing Optimize Analytic Engine latest fixes
-* Adding basic Optimize Analytic Engine configuration
-
-## Example how to run the composite template
-
-```bash
-sagcc exec templates composite apply sag-optimize-analysis nodes=optimize \
-    repo.product=optimize repo.fix=Empower \
-    --sync-job --wait 360
-```
 
 ## Local development and testing using Docker
 
@@ -54,8 +40,8 @@ sagcc exec templates composite apply sag-optimize-analysis nodes=optimize \
 
 Provision [SQL Server](../sag-db-sqlserver) container and schemas
 
-Provision Optimize:
+Provision My webMethods Server:
 
 ```bash
-CC_ENV=sqlserver ./provisionw sag-optimize-analysis
+CC_ENV=sqlserver ./provisionw sag-mws-server
 ```
