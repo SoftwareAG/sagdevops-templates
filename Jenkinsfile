@@ -113,53 +113,59 @@ pipeline {
                         }
                     }    
                 }
-                // stage('Group Core') {
-                //     agent { label 'docker' }
-                //     steps {
-                //         // checkout scm
-                //         // sh 'docker-compose pull cc'
-                //         sh 'docker-compose up -V -d --remove-orphans cc'
+                stage('Group Core') {
+                    agent { label 'docker' }
+                    environment {
+                        CC_ENV = 'dev'
+                    }
+                    steps {
+                        // checkout scm
+                        // sh 'docker-compose pull cc'
+                        sh 'docker-compose up -V -d --remove-orphans cc'
 
-                //         sh './provisionw sag-um-server'
-                //         sh './provisionw sag-um-config'
-                //         sh './provisionw sag-tc-server'
-                //         sh './provisionw sag-tdb-server'
-                //         sh './provisionw sag-is-server'
-                //         sh './provisionw sag-is-config'
-                //         sh './provisionw sag-des'
-                //         sh './provisionw sag-des-config'
-                //         sh './provisionw sag-apama-correlator'
-                //     }
-                //     post {
-                //         always {
-                //             sh 'docker-compose down'
-                //         }
-                //     }    
-                // }
-                // stage('Group 2') {
-                //     agent { label 'docker' }
-                //     steps {
-                //         // sh 'docker-compose pull cc'
-                //         sh 'docker-compose up -V -d --remove-orphans cc'
+                        sh './provisionw sag-um-server'
+                        sh './provisionw sag-um-config'
+                        sh './provisionw sag-tc-server'
+                        sh './provisionw sag-tdb-server'
+                        sh './provisionw sag-is-server'
+                        sh './provisionw sag-is-config'
+                        sh './provisionw sag-des'
+                        sh './provisionw sag-des-config'
+                        sh './provisionw sag-apama-correlator'
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
+                stage('Group 2') {
+                    agent { label 'docker' }
+                    environment {
+                        CC_ENV = 'dev'
+                    }
+                    steps {
+                        // sh 'docker-compose pull cc'
+                        sh 'docker-compose up -V -d --remove-orphans cc'
 
-                //         sh './provisionw sag-abe'                       
-                //         sh "./provisionw sag-msc-server"
-                //         sh './provisionw sag-is-cloudstreams'
-                //         sh './provisionw sag-designer-services'
-                //         sh './provisionw sag-designer-cloudstreams'
-                //         sh './provisionw sag-exx-broker'
-                //         sh './provisionw sag-exx-c-rpc-server'
-                //         sh './provisionw sag-exx-java-rpc-server'
-                //         sh './provisionw sag-exx-xml-rpc-server'
-                //         sh './provisionw sag-infradc'
-                //         // sh './provisionw sag-onedata'
-                //     }
-                //     post {
-                //         always {
-                //             sh 'docker-compose down'
-                //         }
-                //     }    
-                // }
+                        sh './provisionw sag-abe'                       
+                        sh "./provisionw sag-msc-server"
+                        sh './provisionw sag-is-cloudstreams'
+                        sh './provisionw sag-designer-services'
+                        sh './provisionw sag-designer-cloudstreams'
+                        sh './provisionw sag-exx-broker'
+                        sh './provisionw sag-exx-c-rpc-server'
+                        sh './provisionw sag-exx-java-rpc-server'
+                        sh './provisionw sag-exx-xml-rpc-server'
+                        sh './provisionw sag-infradc'
+                        // sh './provisionw sag-onedata'
+                    }
+                    post {
+                        always {
+                            sh 'docker-compose down'
+                        }
+                    }    
+                }
             }
         }
         stage("Build Images") {
