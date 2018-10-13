@@ -27,9 +27,9 @@ pipeline {
         booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Force deploy to staging environment')
         
         choice(name: 'CC_TAG', choices: '10.3\n10.4',       description: 'Command Central core tag')
-        choice(name: 'TAG',    choices: '10.3\n10.4\n10.2\n10.1', description: 'Product release tag')
+        choice(name: 'TAG',    choices: '10.3\n10.4\n10.1', description: 'Product release tag')
+        choice(name: 'FIXES',  choices: 'ALL\n[]',          description: 'ALL or no fixes')
         choice(name: 'STAGE',  choices: 'staging\nmaster',  description: 'Upstream repos location (AQU, EMPOWER)')
-        choice(name: 'CC_ENV', choices: 'dev\nprod',        description: 'Templates Test Environment')
     }
     environment {
         REG = 'daerepository03.eur.ad.sag:4443/sagdevops'    // target registry/org for product images
@@ -45,14 +45,12 @@ pipeline {
                 anyOf {
                     expression { return params.INFRA }
                     changeset "infrastructure/**" 
-                    // changeset "scripts/**" 
-                    // changeset "templates/**" 
                 } 
             }
             steps {
                 dir ('infrastructure') {
                     sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml config"
-                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml build"
+                    sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml build --pull"
                 }
 
                 echo 'Testing infrastructure images with Hello World template ...'
@@ -62,7 +60,7 @@ pipeline {
                 echo 'Testing infrastructure images with Hello World container ...'
                 dir ('containers') {
                     sh 'docker-compose config'
-                    sh 'docker-compose build hello-world'
+                    sh 'docker-compose build --no-cache --force-rm hello-world'
                 }
 
                 echo 'Pushing infrastructure images ...'
@@ -79,40 +77,40 @@ pipeline {
                 } 
             }
             parallel {
-                stage('Group Oracle') {
-                    agent { label 'docker' }
-                    environment {
-                        CC_ENV = 'oracle'
-                    }
-                    steps {
-                        sh 'docker-compose up -V -d --remove-orphans cc'
-                        sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml up -d oracle'
-                        sh './provisionw sag-db-oracle'
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml down'
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
-                stage('Group SQLServer') {
-                    agent { label 'docker' }
-                    environment {
-                        CC_ENV = 'sqlserver'
-                    }
-                    steps {
-                        sh 'docker-compose up -V -d --remove-orphans cc'
-                        sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml up -d sqlserver'
-                        sh './provisionw sag-db-sqlserver'
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml down'
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
+                // stage('Group Oracle') {
+                //     agent { label 'docker' }
+                //     environment {
+                //         CC_ENV = 'oracle'
+                //     }
+                //     steps {
+                //         sh 'docker-compose up -V -d --remove-orphans cc'
+                //         sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml up -d oracle'
+                //         sh './provisionw sag-db-oracle'
+                //     }
+                //     post {
+                //         always {
+                //             sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml down'
+                //             sh 'docker-compose down'
+                //         }
+                //     }    
+                // }
+                // stage('Group SQLServer') {
+                //     agent { label 'docker' }
+                //     environment {
+                //         CC_ENV = 'sqlserver'
+                //     }
+                //     steps {
+                //         sh 'docker-compose up -V -d --remove-orphans cc'
+                //         sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml up -d sqlserver'
+                //         sh './provisionw sag-db-sqlserver'
+                //     }
+                //     post {
+                //         always {
+                //             sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml down'
+                //             sh 'docker-compose down'
+                //         }
+                //     }    
+                // }
                 stage('Group Core') {
                     agent { label 'docker' }
                     environment {
@@ -126,12 +124,12 @@ pipeline {
                         sh './provisionw sag-um-server'
                         sh './provisionw sag-um-config'
                         sh './provisionw sag-tc-server'
-                        sh './provisionw sag-tdb-server'
+                        // sh './provisionw sag-tdb-server'
                         sh './provisionw sag-is-server'
                         sh './provisionw sag-is-config'
-                        sh './provisionw sag-des'
-                        sh './provisionw sag-des-config'
-                        sh './provisionw sag-apama-correlator'
+                        // sh './provisionw sag-des'
+                        // sh './provisionw sag-des-config'
+                        // sh './provisionw sag-apama-correlator'
                     }
                     post {
                         always {
@@ -139,33 +137,33 @@ pipeline {
                         }
                     }    
                 }
-                stage('Group 2') {
-                    agent { label 'docker' }
-                    environment {
-                        CC_ENV = 'dev'
-                    }
-                    steps {
-                        // sh 'docker-compose pull cc'
-                        sh 'docker-compose up -V -d --remove-orphans cc'
+                // stage('Group 2') {
+                //     agent { label 'docker' }
+                //     environment {
+                //         CC_ENV = 'dev'
+                //     }
+                //     steps {
+                //         // sh 'docker-compose pull cc'
+                //         sh 'docker-compose up -V -d --remove-orphans cc'
 
-                        sh './provisionw sag-abe'                       
-                        sh "./provisionw sag-msc-server"
-                        sh './provisionw sag-is-cloudstreams'
-                        sh './provisionw sag-designer-services'
-                        sh './provisionw sag-designer-cloudstreams'
-                        sh './provisionw sag-exx-broker'
-                        sh './provisionw sag-exx-c-rpc-server'
-                        sh './provisionw sag-exx-java-rpc-server'
-                        sh './provisionw sag-exx-xml-rpc-server'
-                        sh './provisionw sag-infradc'
-                        // sh './provisionw sag-onedata'
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
+                //         sh './provisionw sag-abe'                       
+                //         sh "./provisionw sag-msc-server"
+                //         sh './provisionw sag-is-cloudstreams'
+                //         sh './provisionw sag-designer-services'
+                //         sh './provisionw sag-designer-cloudstreams'
+                //         sh './provisionw sag-exx-broker'
+                //         sh './provisionw sag-exx-c-rpc-server'
+                //         sh './provisionw sag-exx-java-rpc-server'
+                //         sh './provisionw sag-exx-xml-rpc-server'
+                //         sh './provisionw sag-infradc'
+                //         // sh './provisionw sag-onedata'
+                //     }
+                //     post {
+                //         always {
+                //             sh 'docker-compose down'
+                //         }
+                //     }    
+                // }
             }
         }
         stage("Build Images") {
@@ -175,12 +173,37 @@ pipeline {
                     changeset "containers/**" 
                 } 
             }
-            steps {
-                dir ('containers') {
-                    sh 'docker-compose config'
-                    sh 'docker-compose build'
-                    sh 'docker-compose push'
+            parallel {
+                stage('Group Core') {
+                    agent { label 'docker' }
+                    steps {
+                        dir ('containers') {
+                            sh 'docker-compose config'
+                            sh 'docker-compose build --no-cache --force-rm universal-messaging integration-server'
+                            sh 'docker-compose push universal-messaging integration-server'
+                        }
+                    }
                 }
+                // stage('Group 2') {
+                //     agent { label 'docker' }
+                //     steps {
+                //         dir ('containers') {
+                //             sh 'docker-compose config'
+                //             sh 'docker-compose build --no-cache --force-rm asset-builder microservices-runtime cloud-streams'
+                //             sh 'docker-compose push asset-builder microservices-runtime cloud-streams'
+                //         }
+                //     }
+                // }
+                // stage('Group 3') {
+                //     agent { label 'docker' }
+                //     steps {
+                //         dir ('containers') {
+                //             sh 'docker-compose config'
+                //             sh 'docker-compose build --no-cache --force-rm entirex-broker entirex-java-rpc-server entirex-xml-rpc-server'
+                //             sh 'docker-compose push entirex-broker entirex-java-rpc-server entirex-xml-rpc-server'
+                //         }
+                //     }
+                // }
             }
         }   
         stage("Deploy") {
