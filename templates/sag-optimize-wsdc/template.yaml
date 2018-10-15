@@ -1,0 +1,53 @@
+alias: sag-optimize-wsdc
+description: The minimal required template can be used to install single instance of Optimize Web Service Data Collector
+
+environments:
+
+  default:
+    # optimize web service data collector
+    optimize.fixes:                 ALL
+    optimize.jms.protocol:          nsp
+    optimize.jms.host:              localhost
+    optimize.jms.port:              9000
+    optimize.config.agent.protocol: http
+    optimize.config.agent.port:     15001
+    optimize.config.agent.host:     localhost
+    optimize.wsdc.protocol:         http
+    optimize.wsdc.port:             12603
+   
+layers:
+    runtime:
+        productRepo: ${repo.product}            # install products from
+        fixRepo:     ${repo.fix}                # install fixes from
+        templates:   [wsdc]
+      
+templates:
+    wsdc:
+        fixes: ${optimize.fixes}
+        products:
+          optimizeWSDataCollector:
+            default:
+              configuration:
+                optimizeWSDataCollector-dataCollector:
+                  COMMON-COMPONENT-ENDPOINTS:
+                    COMMON-COMPONENT-ENDPOINTS-JMS-Provider:
+                      "@alias":   JMS-Provider
+                      Transport:
+                        Protocol: ${optimize.jms.protocol}
+                        Host:     ${optimize.jms.host}
+                        Port:     ${optimize.jms.port}
+                    COMMON-COMPONENT-ENDPOINTS-Configuration-Agent:
+                      "@alias":   Configuration-Agent
+                      Transport:
+                        Protocol: ${optimize.config.agent.protocol}
+                        Host:     ${optimize.config.agent.host}
+                        Port:     ${optimize.config.agent.port}
+                    COMMON-COMPONENT-ENDPOINTS-WS-Registry:
+                      "@alias":   WS-Registry
+                      Transport:
+                        Protocol: ${optimize.wsdc.protocol}
+                        Host:     ${node.host}
+                        Port:     ${optimize.wsdc.port}
+provision:
+  default:
+    runtime: ${nodes}
