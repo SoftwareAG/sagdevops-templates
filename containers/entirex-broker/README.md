@@ -22,7 +22,7 @@
 ## Building container image
 
 ```
-cd <home>/sagdevops-templates/containers>
+cd <home>/sagdevops-templates/containers
 docker-compose build entirex-broker
 ```
 
