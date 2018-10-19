@@ -32,12 +32,12 @@ With this template you can connect Command Central to an existing Platform Manag
 
 All supported Windows and UNIX platforms.
 
-## Running as a standalone Composite Template on Windows
+## Running as a standalone composite template on Windows
 
 To connect Command Central to an existing Platform Manager listening on port 8092 on remote1 host:
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-connect hosts=remote1 \
+sagcc exec templates composite apply sag-spm-connect hosts=remote1 \
   spm.port=8092 \
   --sync-job --wait 360
 ```
@@ -45,18 +45,17 @@ sagcc exec templates composite apply sag-spm-boot-connect hosts=remote1 \
 > IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command:
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-local hosts=remote1 \
+sagcc exec templates composite apply sag-spm-connect hosts=remote1 \
   spm.port=8092
 sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
 
-## Creating a new Stack and connect it to the Remote Infrastructure layer using Web UI
+## Creating and connecting a new stack to the remote infrastructure layer in the web user interface
 
-1. Open Stacks UI
-2. Add new stack
-3. Add layer > Existing nodes
-  * Select INFRA-EXISTING layer definition
-  * Enter layer name and description
+1. Open Command Central > Stacks
+2. Add a new stack
+3. To add a new layer, layer > Existing nodes
+  * Select the INFRA-EXISTING layer definition
+  * Enter a name and description for the layer
   * Select the target machine fromthe list of nodes
-  * Finish the wizard
-4. Wait until the create job completes. Use the Jobs view to monitor the job progress.
+After you finish the wizard, Command Central creates the new infrastructure layer.
