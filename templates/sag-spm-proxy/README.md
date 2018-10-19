@@ -37,7 +37,7 @@ All supported Windows and UNIX platforms.
 To configure proxy configuration on the `local` Platform Manager:
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-proxy proxy.http.host=proxyhost  \
+sagcc exec templates composite apply sag-spm-proxy proxy.http.host=proxyhost  \
   proxy.http.port=8080 \
   --sync-job --wait 360
 ```
@@ -45,7 +45,7 @@ sagcc exec templates composite apply sag-spm-boot-proxy proxy.http.host=proxyhos
 > IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command:
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-proxy proxy.http.host=proxyhost  \
+sagcc exec templates composite apply sag-spm-proxy proxy.http.host=proxyhost  \
   proxy.http.port=8080
 sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
