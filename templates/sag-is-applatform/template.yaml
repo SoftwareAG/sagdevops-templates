@@ -23,7 +23,7 @@ environments:
   default:
     is.instance.name:   default             # IS instance name to provision on top
     is.instance.type:   MSC                 # IS instance type: MSC or integrationServer
-    cst.fixes:          []                  # Application Platform default fix list
+    applatform.fixes:   ALL                 # Application Platform default fix list
 
 layers:
   runtime:
@@ -34,7 +34,7 @@ layers:
 
 templates:
   appplatform:
-    fixes: ${cst.fixes}
+    fixes: ${applatform.fixes}
     products:
       PLS_IS:
       ${is.instance.type}:
