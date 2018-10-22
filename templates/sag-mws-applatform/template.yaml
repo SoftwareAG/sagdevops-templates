@@ -18,7 +18,6 @@ templates:
     fixes: ${mws.applatform.fixes}
     products:
       PLS_MWS:
-      PortalSharedComponents:
       MwsProgramFiles:
         ${mws.instance.name}:
 
