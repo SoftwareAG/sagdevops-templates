@@ -32,18 +32,7 @@ templates:
              PLDMWSBundles:
              PLDISBundles:
              DesignerLegacy:
-             DesignerMWS:
              DesignerTask:
-             DesignerCAF:
-             DesignerSharedLib:
-             MWSSharedLib:
-             Eclipse:
-             LDev:
-             DesignerCPP:
-             DesignerDDJ:
-             WGLDesigner:
-             DesignerJCR:
-             BPMMetadata:                                  
 
 layers:
   designer:
