@@ -4,7 +4,7 @@ description: Application platform on MWS
 environments:
   default:
     mws.instance.name:   default              # MWS instance name
-    mws.PLS_MWS.fixes:     ALL
+    mws.applatform.fixes:     ALL
 
 layers:
   runtime:
@@ -15,7 +15,7 @@ layers:
 
 templates:
   appPlatformMWS:
-    fixes: ${mws.PLS_MWS.fixes}
+    fixes: ${mws.applatform.fixes}
     products:
       PLS_MWS:
       PortalSharedComponents:
