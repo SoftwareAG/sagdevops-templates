@@ -16,32 +16,30 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-alias: sag-is-applatform
-description: Application Platform provisioning on top of IS instance
+
+alias: sag-designer-appplatform
+description: Software AG Designer > Application platform
 
 environments:
   default:
-    is.instance.name:   default             # IS instance name to provision on top
-    is.instance.type:   MSC                 # IS instance type: MSC or integrationServer
-    applatform.fixes:   ALL                 # Application Platform default fix list
-
-layers:
-  runtime:
-    productRepo: ${repo.product}
-    fixRepo:     ${repo.fix}
-    templates:
-      - appplatform
+    designer.fixes: []
 
 templates:
-  appplatform:
-    fixes: ${applatform.fixes}
+  appPlatform:
+    fixes: ${designer.fixes}
     products:
-      PLS_IS:
-      ${is.instance.type}:
-        ${is.instance.name}: 
-          package.list:    WmAppPlat
-          runtimeComponentId: integrationServer-${instance.name} # hint to find existing instance by id
+             PLDCoreBundles:
+             PLDMWSBundles:
+             PLDISBundles:
+             DesignerLegacy:
+             DesignerTask:
+
+layers:
+  designer:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   appPlatform
 
 provision:
   default:
-    runtime: ${nodes}
+    designer: ${nodes}
