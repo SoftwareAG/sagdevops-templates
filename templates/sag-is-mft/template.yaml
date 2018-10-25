@@ -1,0 +1,52 @@
+alias: sag-mft-server
+description: ActiveTransfer Server/Gateway
+
+environments:
+  default:
+    mft.license.key: "*_(MAT|MAG)_10.*_*_*"       # ActiveTransfer license key
+    is.instance.name:   default                   # Instance name    
+    mft.fixes: ALL
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - mft-server   
+
+templates:
+  mft-server:
+    licenses:      
+      "IntegrationServer/instances/${is.instance.name}/packages/WmMFT/config/licenseKey.xml": ${mft.license.key}
+    fixes: ${mft.fixes}
+    products:      
+      MFT:
+      MFTSupport:
+      integrationServer:
+        ${is.instance.name}:          
+          package.list:  WmMFT          
+          configuration:            
+            integrationServer-${instance.name}:
+              COMMON-JDBC:              
+                COMMON-JDBC-Default:
+                  Pool: 
+                    "@alias": "Default"
+                    Name: "Default"
+                    Description: "Default DBConnection"
+                    MinSize: "0"
+                    MaxSize: "10"
+                    MaxIdleTime: "60000"
+                    DatabaseServer: 
+                      "@type": "oracle"
+                      URL: ${db.url}
+                      User: ${db.username}
+                      Password: ${db.password}                                    
+              COMMON-DBFUNCTION:                
+                COMMON-DBFUNCTION-ActiveTransfer:
+                  Function:
+                      "@alias": "ActiveTransfer"
+                      Description: "ActiveTransfer Function"
+                      PoolAlias: "Default"                            
+provision:
+  default:
+    runtime: ${nodes}

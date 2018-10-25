@@ -1,0 +1,66 @@
+alias: sag-mft-config
+description: ActiveTransfer Server configuration
+
+environments:
+  default:
+    hostname: localhost       # machine name   
+    portName: FTP			  # port name
+    portNumber: 22            # port number
+    protocal: FTP             # protocal name
+
+layers:
+  runtime:
+    templates:
+      - mft-config   
+
+templates:
+  mft-config:
+    products:      
+      integrationServer:
+        ${is.instance.name}:                  
+          configuration:                        
+            OSGI-IS_${instance.name}-WmMFT:
+              COMMON-PORTS:
+                COMMON-PORTS-MFT${portName}_${portNumber}:
+                  Port:
+                    '@alias': ${portName}
+                    Enabled: 'true'
+                    Number: '${portNumber}'
+                    Protocol: ${protocal}
+                    BindAddress: ${hostname}
+                    ExtendedProperties:
+                      Property:
+                      - '@name': loginMessage
+                        $: ''
+                      - '@name': commandDelayInterval
+                        $: '0'
+                      - '@name': requireEncryption
+                        $: 'false'
+                      - '@name': implicitSSL
+                        $: 'false'
+                      - '@name': explicitSSL
+                        $: 'false'
+                      - '@name': explicitTLS
+                        $: 'false'
+                      - '@name': ftpRouterAware
+                        $: 'false'
+                      - '@name': passiveIP
+                        $: Auto
+                      - '@name': passivePortFrom
+                        $: '1025'
+                      - '@name': passivePortTo
+                        $: '65535'
+                      - '@name': requireClientCert
+                        $: 'false'
+                      - '@name': keystoreLocation
+                        $: ''
+                      - '@name': keystorePassword
+                        $: ''
+                      - '@name': keyPassword
+                        $: ''
+                      - '@name': instanceName
+                        $: Default Server Instance
+                  
+provision:
+  default:
+    runtime: ${nodes}
