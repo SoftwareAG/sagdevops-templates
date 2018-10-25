@@ -17,31 +17,36 @@
 
 -->
 
-# My webMethods Server
+# Application Platform on My webMethods Server
 
-> STATUS: INCUBATING
-
-Use this template to provision My webMethods Server 10.1 and higher.
+Use this template to install Application Platform on My webMethods Server 10.1 and higher.
 
 ## Requirements
 
 ### Supported Software AG releases
 
-* Command Central 10.1 and higher
+* Command Central 10.1 or higher
+* Application Platform 10.1 and higher
 * My webMethods Server 10.1 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
 
-## Local development and testing using Docker
+### Supported use cases
 
-### With SQL Server database
+* Provisioning of new Application Platform on My webMethods Server instance
+* Installing latest fixes
 
-Provision [SQL Server](../sag-db-sqlserver) container and schemas
+## Running as a composite template
 
-Provision My webMethods Server:
+Provision an instance of [My webMethods Server](../sag-mws-server/) first.
 
-```bash
-CC_ENV=sqlserver ./provisionw sag-mws-server
+Provision Application Platform onto the My webMethods Server instance running on node alias `dev1`:
+
+ ```bash
+ sagcc exec templates composite apply sag-mws-appplatform nodes=dev1 \
+    mws.instance.name=default \
+    repo.product=products-10.1 repo.fix=fixes-10.1 \
+    --sync-job --wait 360
 ```

@@ -17,31 +17,35 @@
 
 -->
 
-# My webMethods Server
+# Configuring Proxy Settings for Platform Manager
 
-> STATUS: INCUBATING
+With this template you can configure HTTP and HTTPS proxy configuration on existing Platform Manager nodes.
 
-Use this template to provision My webMethods Server 10.1 and higher.
-
-## Requirements
+## Requirements and limitations
 
 ### Supported Software AG releases
 
 * Command Central 10.1 and higher
-* My webMethods Server 10.1 and higher
+* Platform Manager 10.1 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
 
-## Local development and testing using Docker
+## Running as a standalone Composite Template on Windows
 
-### With SQL Server database
-
-Provision [SQL Server](../sag-db-sqlserver) container and schemas
-
-Provision My webMethods Server:
+To configure proxy configuration on the `local` Platform Manager:
 
 ```bash
-CC_ENV=sqlserver ./provisionw sag-mws-server
+sagcc exec templates composite apply sag-spm-proxy proxy.http.host=proxyhost  \
+  proxy.http.port=8080 \
+  --sync-job --wait 360
+```
+
+> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command:
+
+```bash
+sagcc exec templates composite apply sag-spm-proxy proxy.http.host=proxyhost  \
+  proxy.http.port=8080
+sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```

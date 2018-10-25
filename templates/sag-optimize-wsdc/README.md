@@ -16,32 +16,33 @@
      limitations under the License.                                                  
 
 -->
+# Optimize Web Service Data Collector
 
-# My webMethods Server
-
-> STATUS: INCUBATING
-
-Use this template to provision My webMethods Server 10.1 and higher.
+Use this template to install Optimize Web Service Data Collector 10.1 and higher.
 
 ## Requirements
 
 ### Supported Software AG releases
 
 * Command Central 10.1 and higher
-* My webMethods Server 10.1 and higher
+* Optimize Web Service Data Collector 10.1 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
 
-## Local development and testing using Docker
+### Supported use cases
 
-### With SQL Server database
+* Provisioning Optimize Web Service Data Collector version 10.1 and higher
+* Installing Optimize Web Service Data Collector latest fixes
+* Adding basic Optimize Web Service Data Collector configuration
 
-Provision [SQL Server](../sag-db-sqlserver) container and schemas
+## Example how to run the composite template
 
-Provision My webMethods Server:
+To provision a default instance of Optimize Web Service Data Collector:
 
 ```bash
-CC_ENV=sqlserver ./provisionw sag-mws-server
+sagcc exec templates composite apply sag-optimize-wsdc nodes=optimize \
+   repo.product=optimize repo.fix=Empower \
+   --sync-job --wait 360
 ```
