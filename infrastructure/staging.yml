@@ -27,7 +27,7 @@ services:
   java:
     build:
       args:
-        - BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
+        # - BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
         - NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:${TAG} # store/softwareag/commandcentral-server
 
   # node:
