@@ -28,17 +28,17 @@ environments:
     db.port:             3306               # Default port
     db.admin.username:   root               # Admin username for db and user creation
     db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
-
+    db.admin.url:        "jdbc:mysql://${db.host}:${db.port}"
     db.url:              "jdbc:mysql://${db.host}:${db.port}/{db.name}"
     db.name:             webm               # webM database name
     db.username:         ${db.name}         # webM database username
     db.password:         ${db.name}         # webM database password
     db.products:         
       - IS
-      - BPM
-      - MWS 
-      - OPTI 
-    db.fixes:            []                 # Database component configurator fixes to install
+      # - BPM
+      # - MWS 
+#      - OPTI 
+    db.fixes:            [wMFix.DatabaseScripts] # Database component configurator fixes to install
 
 layers:
   db:
@@ -47,17 +47,17 @@ layers:
     templates:   
       - dbc
     databases:
-      storage:
-        components:  
-          - STR
-        version:     latest
-        db.type:     ${db.type}
-        db.url:      ${db.url}
-        db.admin.username: ${db.admin.username}
-        db.admin.password: ${db.admin.password}
-        db.username: ${db.username}
-        db.password: ${db.password}
-        db.name:     ${db.name}
+      # storage:
+      #   components:  
+      #     - STR
+      #   version:     latest
+      #   db.type:     ${db.type}
+      #   db.url:      ${db.admin.url}
+      #   db.admin.username: ${db.admin.username}
+      #   db.admin.password: ${db.admin.password}
+      #   db.username: ${db.username}
+      #   db.password: ${db.password}
+      #   db.name:     ${db.name}
       schemas:
         products:    ${db.products}
         version:     ${db.version}
@@ -73,7 +73,8 @@ templates:
       DatabaseComponentConfigurator:
     fixes: ${db.fixes}
     files:
-      common/db/lib/mysql-connector-java-5.1.47.jar: mysql-connector-java-5.1.47.jar # MySQL JDBC driver
+      # Using the fact that DCC picks up sl53* jars dynamically
+      common/lib/ext/sl53-mysql.jar: mysql-connector-java-5.1.47.jar # MySQL JDBC driver
 
 provision:
   default:
