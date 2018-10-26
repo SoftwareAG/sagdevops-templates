@@ -120,6 +120,7 @@ pipeline {
                         sh 'docker-compose up -V -d --remove-orphans cc'
                         sh 'docker-compose -f templates/sag-db-mysql/docker-compose.yml up -d mysql'
                         sh './provisionw sag-db-mysql'
+                        sh './provisionw sag-is-cluster db.type=mysqlce'
                     }
                     post {
                         always {
