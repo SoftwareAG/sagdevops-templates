@@ -40,14 +40,16 @@ With this template you can create user, database, and webMethods database schema
 
 ## Running as a standalone Composite Template
 
-To install Database Component Configurator 10.3 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database components for Integration Server 10.3 and My webMethods Server 10.3 with user `root` with password `root`:
+To install Database Component Configurator 10.3 on the Command Central node with alias `local`,
+create a database named `webm` and a database user named `webm` with password `webm`,
+and create ISInternal and ISCoreAudit database components with user `root` with password `root`:
 
 ```bash
 sagcc exec templates composite apply sag-db-mysql \
-  db.version=10.3.0.0 repo.product=products-10.3 repo.fix=fixes-10.3 nodes=local \
+  db.version=latest repo.product=products-10.3 repo.fix=fixes-10.3 nodes=local \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
-  db.products=[IS,MWS]
+  db.components=[ISInternal,ISCoreAudit] \
   --sync-job --wait 360
 ```
 
@@ -86,19 +88,9 @@ Successful test output looks like this:
 **********************************
 *      Installed Components      *
 **********************************
-*   BLZ 10 Blaze
-*   RUL 20 BusinessRules
-*   CCS 27 CentralConfiguration
 *   XRF 11 CrossReference
-*   DSL 20 DistributedLocking
-*   IDR 10 DocumentHistory
-*   DBO 25 DynamicBusinessOrchestrator
-*   ISC 51 ISCoreAudit
+*   ISC 60 ISCoreAudit
 *   ISI 75 ISInternal
-*   MWS 65 My webMethods Server
-*   OPM 30 Operation Management
-*   PRA 90 ProcessAudit
-*   PRE 95 ProcessEngine
 **********************************
 
 The expected values were successfully retrieved after 1 call within 4 seconds.

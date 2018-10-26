@@ -35,19 +35,6 @@ services:
       sagcc exec templates composite apply sag-db-sqlserver 
         repo.product=products repo.fix=fixes
         nodes=node db.host=sqlserver db.admin.password=MaNaGe123 --wait-for-cc --wait 600 --sync-job
-    # volumes: 
-    #   - ./:/src/ # required for accessing .properties file
-    depends_on: 
-      - sqlserver
-
-  # tester for webm db schemas
-  test:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
-    command: >
-      sagcc list administration product node DatabaseComponentConfigurator  
-        database catalog db.type=sqlserver db.username=webm  
-        db.password=webm db.name=webm db.url="jdbc:wm:sqlserver://sqlserver:1433;databaseName=webm"
-        -e "ISI & MWS & PRE"
     depends_on: 
       - sqlserver
 

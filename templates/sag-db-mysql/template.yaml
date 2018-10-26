@@ -23,7 +23,7 @@ description: MySQL server database and component schemas
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          latest             # 10.3.0.0           # REQUIRED: target release, e.g. 10.2
+    db.version:          latest             # 10.3.0.0           # REQUIRED: e.g. 10.3.0.0
     db.type:             mysql              # This is MySQL database
     db.port:             3306               # Default port
     db.admin.username:   root               # Admin username for db and user creation
@@ -39,12 +39,12 @@ environments:
       # - MWS 
       # - OPTI 
     db.components:
-      # - ProcessEngine
-      # - DynamicBusinessOrchestrator
-#      - OperationManagement
+      - ProcessEngine
+      - DynamicBusinessOrchestrator
+      - OperationManagement
       - ISInternal
-      # - ISCoreAudit
-      # - ProcessAudit
+      - ISCoreAudit
+      - ProcessAudit
     db.fixes:            [wMFix.DatabaseScripts] # Database component configurator fixes to install
 
 layers:
