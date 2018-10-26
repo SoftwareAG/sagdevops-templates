@@ -23,7 +23,7 @@ description: MySQL server database and component schemas
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.2
+    db.version:          latest             # 10.3.0.0           # REQUIRED: target release, e.g. 10.2
     db.type:             mysql              # This is MySQL database
     db.port:             3306               # Default port
     db.admin.username:   root               # Admin username for db and user creation
@@ -33,11 +33,18 @@ environments:
     db.name:             webm               # webM database name
     db.username:         ${db.name}         # webM database username
     db.password:         ${db.name}         # webM database password
-    db.products:         
-      - IS
+    db.products:         []
+      # - IS
       # - BPM
       # - MWS 
-#      - OPTI 
+      # - OPTI 
+    db.components:
+      # - ProcessEngine
+      # - DynamicBusinessOrchestrator
+#      - OperationManagement
+      - ISInternal
+      # - ISCoreAudit
+      # - ProcessAudit
     db.fixes:            [wMFix.DatabaseScripts] # Database component configurator fixes to install
 
 layers:
@@ -60,6 +67,7 @@ layers:
       #   db.name:     ${db.name}
       schemas:
         products:    ${db.products}
+        components:  ${db.components}
         version:     ${db.version}
         db.type:     ${db.type}
         db.url:      ${db.url}
