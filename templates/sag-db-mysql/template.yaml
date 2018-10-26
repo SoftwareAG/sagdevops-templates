@@ -72,6 +72,8 @@ templates:
     products:
       DatabaseComponentConfigurator:
     fixes: ${db.fixes}
+    files:
+      common/db/lib/mysql-connector-java-5.1.47.jar: mysql-connector-java-5.1.47.jar # MySQL JDBC driver
 
 provision:
   default:
