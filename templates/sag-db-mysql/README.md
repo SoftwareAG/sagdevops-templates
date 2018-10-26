@@ -45,7 +45,7 @@ To install Database Component Configurator 10.3 on the Command Central node with
 ```bash
 sagcc exec templates composite apply sag-db-mysql \
   db.version=10.3.0.0 repo.product=products-10.3 repo.fix=fixes-10.3 nodes=local \
-  db.host=mysqlserver db.admin.username=root db.admin.password=root \
+  db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
   db.products=[IS,MWS]
   --sync-job --wait 360
