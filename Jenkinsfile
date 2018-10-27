@@ -126,7 +126,7 @@ pipeline {
 
                         sh './provisionw sag-db-sqlserver'
                         sh './provisionw sag-mws-server'
-                        sh './provisionw sag-mws-infradc'
+                        sh './provisionw sag-mws-infradcui'
                         sh './provisionw sag-mws-applatform'
                     }
                     post {
@@ -273,8 +273,7 @@ pipeline {
                         sh './provisionw sag-exx-c-rpc-server'
                         sh './provisionw sag-exx-java-rpc-server'
                         sh './provisionw sag-exx-xml-rpc-server'
-                        sh './provisionw sag-exx-c-rpc-server'
-                        sh './provisionw sag-exx-cics-socket-listener-rpc-server'
+                        sh './provisionw sag-exx-csl-rpc-server'
                         sh './provisionw sag-exx-ims-rpc-server'
                         sh './provisionw sag-exx-mf-broker'
                         sh './provisionw sag-exx-mq-rpc-server'

@@ -1,10 +1,10 @@
-alias: sag-mws-appplatform
+alias: sag-mws-applatform
 description: Application platform on MWS
 
 environments:
   default:
     mws.instance.name:   default              # MWS instance name
-    mws.applatform.fixes:     ALL
+    mws.applatform.fixes: ALL
 
 layers:
   runtime:
