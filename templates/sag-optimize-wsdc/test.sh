@@ -18,28 +18,31 @@
 #
 #*******************************************************************************
 
+
 # if managed image
-export CC_SERVER=http://localhost:8092/spm
+if [ -d $SAG_HOME/profiles/SPM ] ; then
+    export CC_SERVER=http://localhost:8092/spm
 
-echo "Verifying managed container $CC_SERVER ..."
-sagcc get inventory products -e SPM --wait-for-cc
+    echo "Verifying managed container $CC_SERVER ..."
+    sagcc get inventory products -e SPM --wait-for-cc
 
-export CC_WAIT=5
-echo "Verifying fixes ..."
-sagcc get inventory fixes 
+    export CC_WAIT=5
+    echo "Verifying fixes ..."
+    sagcc get inventory fixes 
 
-echo "Verifying instances ..."
-sagcc get inventory components -e optimizeWSDataCollector-dataCollector
+    echo "Verifying instances ..."
+    sagcc get inventory components -e optimizeWSDataCollector-dataCollector
 
-echo "Verifying configs ..."
-sagcc get configuration instances optimizeWSDataCollector-dataCollector COMMON-COMPONENT-ENDPOINTS-JMS-Provider -e JMS-Provider
-sagcc get configuration instances optimizeWSDataCollector-dataCollector COMMON-COMPONENT-ENDPOINTS-Configuration-Agent -e Configuration-Agent
-sagcc get configuration instances optimizeWSDataCollector-dataCollector COMMON-COMPONENT-ENDPOINTS-WS-Registry -e WS-Registry
+    echo "Verifying configs ..."
+    sagcc get configuration instances optimizeWSDataCollector-dataCollector COMMON-COMPONENT-ENDPOINTS-JMS-Provider -e JMS-Provider
+    sagcc get configuration instances optimizeWSDataCollector-dataCollector COMMON-COMPONENT-ENDPOINTS-Configuration-Agent -e Configuration-Agent
+    sagcc get configuration instances optimizeWSDataCollector-dataCollector COMMON-COMPONENT-ENDPOINTS-WS-Registry -e WS-Registry
 
-echo "Verifying status ..."
-sagcc get monitoring runtimestatus optimizeWSDataCollector-dataCollector -e ONLINE
+    echo "Verifying status ..."
+    sagcc get monitoring runtimestatus optimizeWSDataCollector-dataCollector -e ONLINE
+fi
 
 echo "Verifying product runtime ..."
 curl -H Accept:text http://localhost:12603/services/WSProcessDataCollector.wsdl
 
-echo "DONE testing"
+echo "TEST SUCCESSFUL"

@@ -77,66 +77,66 @@ pipeline {
                 } 
             }
             parallel {
-                stage('Group Oracle / Optimize') {
-                    when {
-                        anyOf {
-                            expression { return params.TEST }
-                            changeset "templates/sag-db-oracle" 
-                            changeset "templates/sag-optimize-*"
-                            changeset "templates/sag-infradc" 
-                        } 
-                    }
-                    agent { label 'docker' }
-                    environment {
-                        CC_ENV = 'oracle'
-                    }
-                    steps {
-                        sh 'docker-compose pull cc'
-                        sh 'docker-compose up -V -d --remove-orphans cc'
-                        sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml up -d oracle'
+                // stage('Group Oracle / Optimize') {
+                //     when {
+                //         anyOf {
+                //             expression { return params.TEST }
+                //             changeset "templates/sag-db-oracle" 
+                //             changeset "templates/sag-optimize-*"
+                //             changeset "templates/sag-infradc" 
+                //         } 
+                //     }
+                //     agent { label 'docker' }
+                //     environment {
+                //         CC_ENV = 'oracle'
+                //     }
+                //     steps {
+                //         sh 'docker-compose pull cc'
+                //         sh 'docker-compose up -V -d --remove-orphans cc'
+                //         sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml up -d oracle'
 
-                        sh './provisionw sag-db-oracle'
-                        sh './provisionw sag-infradc'
-                        sh './provisionw sag-optimize-analysis'
-                        sh './provisionw sag-optimize-wsdc'
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml down'
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
-                stage('Group SQLServer / MWS') {
-                    when {
-                        anyOf {
-                            expression { return params.TEST }
-                            changeset "templates/sag-db-sqlserver" 
-                            changeset "templates/sag-mws-*" 
-                        } 
-                    }
-                    agent { label 'docker' }
-                    environment {
-                        CC_ENV = 'sqlserver'
-                    }
-                    steps {
-                        sh 'docker-compose pull cc'
-                        sh 'docker-compose up -V -d --remove-orphans cc'
-                        sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml up -d sqlserver'
+                //         sh './provisionw sag-db-oracle'
+                //         sh './provisionw sag-infradc'
+                //         sh './provisionw sag-optimize-analysis'
+                //         sh './provisionw sag-optimize-wsdc'
+                //     }
+                //     post {
+                //         always {
+                //             sh 'docker-compose -f templates/sag-db-oracle/docker-compose.yml down'
+                //             sh 'docker-compose down'
+                //         }
+                //     }    
+                // }
+                // stage('Group SQLServer / MWS') {
+                //     when {
+                //         anyOf {
+                //             expression { return params.TEST }
+                //             changeset "templates/sag-db-sqlserver" 
+                //             changeset "templates/sag-mws-*" 
+                //         } 
+                //     }
+                //     agent { label 'docker' }
+                //     environment {
+                //         CC_ENV = 'sqlserver'
+                //     }
+                //     steps {
+                //         sh 'docker-compose pull cc'
+                //         sh 'docker-compose up -V -d --remove-orphans cc'
+                //         sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml up -d sqlserver'
 
-                        sh './provisionw sag-db-sqlserver'
-                        sh './provisionw sag-mws-server'
-                        sh './provisionw sag-mws-infradcui'
-                        sh './provisionw sag-mws-applatform'
-                        sh './provisionw sag-mws-mftui'
-                    }
-                    post {
-                        always {
-                            sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml down'
-                            sh 'docker-compose down'
-                        }
-                    }    
-                }
+                //         sh './provisionw sag-db-sqlserver'
+                //         sh './provisionw sag-mws-server'
+                //         sh './provisionw sag-mws-infradcui'
+                //         sh './provisionw sag-mws-applatform'
+                //         sh './provisionw sag-mws-mftui'
+                //     }
+                //     post {
+                //         always {
+                //             sh 'docker-compose -f templates/sag-db-sqlserver/docker-compose.yml down'
+                //             sh 'docker-compose down'
+                //         }
+                //     }    
+                // }
                 stage('Group MySQL / DAP') {
                     when {
                         anyOf {
@@ -154,6 +154,7 @@ pipeline {
                         sh 'docker-compose pull cc'
                         sh 'docker-compose up -V -d --remove-orphans cc'
                         sh 'docker-compose -f templates/sag-db-mysql/docker-compose.yml up -d mysql'
+                        
                         sh './provisionw sag-db-mysql'
                         sh './provisionw sag-is-cluster db.type=mysqlce'
                         sh './provisionw sag-is-config'
