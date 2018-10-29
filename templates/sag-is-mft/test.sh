@@ -17,17 +17,21 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     echo "Verifying instances ..."
     sagcc get inventory components -e "OSGI-IS_${is_instance_name}"
 
-    echo "Start the instance ..."
-    sagcc exec lifecycle components "OSGI-IS_${is_instance_name}" restart -e DONE --sync-job
+    # echo "Restart the instance ..."
+    # sagcc exec lifecycle components "OSGI-IS_${is_instance_name}" restart -e DONE --sync-job
 
-    echo "Verifying status ..."
-    sagcc get monitoring runtimestatus "OSGI-IS_${is_instance_name}" -e ONLINE
+    echo "Verifying instance status ..."
+    sagcc get monitoring runtimestatus "integrationServer-${is_instance_name}" -e ONLINE
+
+    echo "Verifying WmMFT status ..."
+    sagcc get monitoring runtimestatus "OSGI-IS_${is_instance_name}-WmMFT" -e ONLINE
 fi
 
 echo "Verifying product runtime ..."
 curl -u Administrator:manage -s http://localhost:5555/
 
-echo "verifying ActiveTransfer runtime..."
-curl -u Administrator:manage -s http://localhost:2080/WebInterface/login.html
+# echo "Verifying ActiveTransfer runtime..."
+# curl -u Administrator:manage -s http://localhost:2080/WebInterface/login.html
+curl -u Administrator:manage -s http://localhost:5555/WmMFT/
 
 echo "TEST SUCCESSFUL"
