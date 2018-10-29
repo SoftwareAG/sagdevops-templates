@@ -1,4 +1,4 @@
-alias: sag-mft-server
+alias: sag-is-mft
 description: ActiveTransfer Server/Gateway
 
 environments:
@@ -6,6 +6,10 @@ environments:
     mft.license.key: "*_(MAT|MAG)_10.*_*_*"       # ActiveTransfer license key
     is.instance.name:   default                   # Instance name    
     mft.fixes: ALL
+    db.type: oracle
+    db.url: jdbc:wm:oracle://localhost.eur.ad.sag:1521;serviceName=R12MAT01
+    db.password: mat_101
+    db.username: mat_101
 
 layers:
   runtime:
@@ -37,7 +41,7 @@ templates:
                     MaxSize: "10"
                     MaxIdleTime: "60000"
                     DatabaseServer: 
-                      "@type": "oracle"
+                      "@type": ${db.type}
                       URL: ${db.url}
                       User: ${db.username}
                       Password: ${db.password}                                    
