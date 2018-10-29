@@ -21,7 +21,7 @@ version: "3.2"
 services:
   # this is the oracle db itself
   oracle:
-    image: ${CC_REG}/oracle:11.1
+    image: wnameless/oracle-xe-11g:18.04
     ports: 
       - 1521
     environment: 
