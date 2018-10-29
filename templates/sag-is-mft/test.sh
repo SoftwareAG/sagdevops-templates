@@ -12,7 +12,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     export CC_WAIT=180
     
     echo "Verifying fixes ..."
-    sagcc get inventory fixes -e MAT_10.1_Server_Fix
+    sagcc get inventory fixes -e wMFix.MFTServer
 
     echo "Verifying instances ..."
     sagcc get inventory components -e "OSGI-IS_${is_instance_name}"
@@ -27,5 +27,7 @@ fi
 echo "Verifying product runtime ..."
 curl -u Administrator:manage -s http://localhost:5555/
 
+echo "verifying ActiveTransfer runtime..."
+curl -u Administrator:manage -s http://localhost:2080/WebInterface/login.html
 
 echo "TEST SUCCESSFUL"
