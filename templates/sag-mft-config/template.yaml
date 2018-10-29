@@ -3,10 +3,11 @@ description: ActiveTransfer Server configuration
 
 environments:
   default:
-    hostname: localhost       # machine name   
-    portName: FTP			  # port name
-    portNumber: 22            # port number
-    protocal: FTP             # protocal name
+    is.instance.name: default
+    hostname: localhost                       # machine name   
+    mft.port.name: ATS_HTTP     			  # port name
+    mft.port.number: 4080                     # port number
+    mft.port.protocal: HTTP                   # protocal name
 
 layers:
   runtime:
@@ -21,45 +22,21 @@ templates:
           configuration:                        
             OSGI-IS_${instance.name}-WmMFT:
               COMMON-PORTS:
-                COMMON-PORTS-MFT${portName}_${portNumber}:
+                COMMON-PORTS-MFT${mft.port.name}_${mft.port.number}:
                   Port:
-                    '@alias': ${portName}
+                    '@alias': ${mft.port.name}
                     Enabled: 'true'
-                    Number: '${portNumber}'
-                    Protocol: ${protocal}
+                    Number: '${mft.port.number}'
+                    Protocol: ${mft.port.protocal}
                     BindAddress: ${hostname}
                     ExtendedProperties:
                       Property:
-                      - '@name': loginMessage
-                        $: ''
                       - '@name': commandDelayInterval
                         $: '0'
-                      - '@name': requireEncryption
-                        $: 'false'
-                      - '@name': implicitSSL
-                        $: 'false'
-                      - '@name': explicitSSL
-                        $: 'false'
-                      - '@name': explicitTLS
-                        $: 'false'
-                      - '@name': ftpRouterAware
-                        $: 'false'
-                      - '@name': passiveIP
-                        $: Auto
-                      - '@name': passivePortFrom
-                        $: '1025'
-                      - '@name': passivePortTo
-                        $: '65535'
-                      - '@name': requireClientCert
-                        $: 'false'
-                      - '@name': keystoreLocation
-                        $: ''
-                      - '@name': keystorePassword
-                        $: ''
-                      - '@name': keyPassword
-                        $: ''
                       - '@name': instanceName
                         $: Default Server Instance
+                      - '@name': description
+                        $: ''
                   
 provision:
   default:
