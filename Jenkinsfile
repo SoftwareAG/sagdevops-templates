@@ -128,6 +128,7 @@ pipeline {
                         sh './provisionw sag-mws-server'
                         sh './provisionw sag-mws-infradcui'
                         sh './provisionw sag-mws-applatform'
+                        sh './provisionw sag-mws-mftui'
                     }
                     post {
                         always {
