@@ -12,7 +12,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     export CC_WAIT=180
     
     echo "Verifying fixes ..."
-    sagcc get inventory fixes -e MAT_10.1_MWS_Fix
+    sagcc get inventory fixes -e wMFix.MFTPortal
 
     echo "Verifying instances ..."
     sagcc get inventory components -e "OSGI-MWS_${mws_instance_name}"
