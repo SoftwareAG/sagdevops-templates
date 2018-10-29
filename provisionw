@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/sh -e
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -43,10 +43,32 @@ echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
 
-docker-compose exec -T \
-    cc bash -c \
-    "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if /opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS; then if [ -f test.sh ]; then ./test.sh ; fi; fi"
+# apply template
+docker-compose exec -T cc bash -c "/opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS" 
 
+echo ""
 echo "===================================================================="
 echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
 echo "===================================================================="
+echo ""
+echo "Testing '$TEMPLATE_ALIAS' ..."
+echo ""
+
+# test
+if docker-compose exec -T cc bash -c "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if [ -f test.sh ]; then ./test.sh ; else echo 'WARNING: No test.sh found!'; fi" ; then
+    echo ""
+    echo "===================================================================="
+    echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
+    echo "===================================================================="
+    echo ""
+    echo "TEST '$TEMPLATE_ALIAS' SUCCESSFUL"
+    exit 0
+else
+    echo ""
+    echo "===================================================================="
+    echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
+    echo "===================================================================="
+    echo ""
+    echo "TEST '$TEMPLATE_ALIAS' FAILED"
+    exit 101
+fi

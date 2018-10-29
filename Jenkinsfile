@@ -158,6 +158,8 @@ pipeline {
                         sh './provisionw sag-is-config'
                         sh './provisionw sag-des'
                         sh './provisionw sag-des-config'
+                        sh "./provisionw sag-is-mft"
+                        // sh "./provisionw sag-mft-config" # FAILING!
                     }
                     post {
                         always {
