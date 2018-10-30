@@ -1,0 +1,84 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+alias: sag-mws-server
+description: My webMethods Server single instance or a cluster
+
+environments:
+  default:
+    db.host:             oracle             # REQUIRED: Database server hostname
+    db.type:             oracle             # oracle,sqlserver
+    db.url:              "jdbc:wm:oracle://${db.host}:1521;SID=XE"
+    db.username:         webm               # Database username
+    db.password:         webm               # Database password
+
+    mws.instance.name:   default
+    mws.http.port:       8585
+    mws.https.port:      8586
+    mws.jmx.port:        8587
+    mws.memory.init:     256
+    mws.memory.max:      512
+    mws.lb.protocol:     http
+    mws.lb.host:         localhost
+    mws.lb.http.port:    ${mws.http.port}
+    mws.lb.https.port:   ${mws.https.port}
+    mws.fixes:           []
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo: ${repo.fix}
+    templates:
+      - mws-server
+
+templates:
+  mws-server:
+    fixes: ${mws.fixes}
+    products:
+      MwsProgramFiles:
+        ${mws.instance.name}:
+          node.name: ${node.alias}
+          http.port: ${mws.http.port}
+          https.port: ${mws.https.port}
+          jmx.port: ${mws.jmx.port}
+          db.type: ${db.type}
+          db.url: "${db.url}"
+          db.username: "${db.username}"
+          db.password: "${db.password}"
+          configuration:
+            OSGI-MWS_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${mws.memory.init}
+                  MaxSize: ${mws.memory.max}
+            MwsProgramFiles-${instance.name}:
+              COMMON-CLUSTER:
+                COMMON-CLUSTER:
+                  ExtendedProperties:
+                    Property:
+                    - '@name': LoadBalancerHost
+                      $: ${mws.lb.host}
+                    - '@name': LoadBalancerHttpPort
+                      $: ${mws.lb.http.port}
+                    - '@name': LoadBalancerHttpsPort
+                      $: ${mws.lb.https.port}
+                    - '@name': jndiEnabled
+                      $: false
+provision:
+  default:
+    runtime: ${nodes}

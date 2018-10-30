@@ -1,9 +1,10 @@
-ActiveTransfer Listener ports configuration
+# ActiveTransfer Listener ports configuration
 
-Use this template to provision create a ports in ActiveTransfer 10.1 and higher.
+> STATUS: INCUBATING
+
+Use this template to configure ports on Active Transfer 10.1 and higher.
 
 ## Requirements
-
 
 ### Supported Software AG releases
 
@@ -19,11 +20,11 @@ All supported Windows and UNIX platforms.
 * Listener ports configuration
 
 ## Running as a composite template
-	Important: Apply this template on top of existing integration server instance which includes ActiveTransfer server.
-	
-## Listener ports configuration in ActiveTransfer 
 
-``bash
+### Listener ports configuration in ActiveTransfer
+
+```bash
 sagcc exec templates composite apply sag-mft-config nodes=dev \
+  mft.port.protocol=HTTP mft.port.number=4081 mft.port.name=p1 \
   --sync-job --wait 600
-``
+```

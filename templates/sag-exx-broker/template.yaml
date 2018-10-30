@@ -1,46 +1,51 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
 alias: sag-exx-broker
+description: Create and configure EntireX Broker
+version: 2.0
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
 
 environments:
   default:
-    repo.product: ${}    # product repository is required
-    repo.fix:     ""     # fix repository is required for fix installation only
-    nodes:        ${}    # local or any other node alias
-  
-    exx.broker.name: ETB4711
-    exx.broker.tcp.port: 1971
-    exx.broker.tcp.enable: true
-    exx.broker.ssl.port: 1972
-    exx.broker.ssl.enable: false
-    exx.broker.autostart: false
-    exx.broker.security: false
-    exx.broker.tracelevel: 0
-    exx.broker.fixes:
-      - wMFix.EntireXBroker
-                    
+    # Broker
+    exx.entirexbroker.license.key: "*_EXX_10.*_*_*"            # license key alias name                                                             
+    exx.broker.fixes: []
+       
+templates:
+  sag-exx-broker:                                               # template for definition of broker
+    licenses:
+      "EntireX/config/license.xml": "${exx.entirexbroker.license.key}"
+    fixes: ${exx.broker.fixes}                                  # fixes to install
+    products:
+      EntireXBroker:                    
+      EntireXCommandLineScripts:
+
 layers:
   runtime:
-    productRepo: ${repo.product}
-    fixRepo:     ${repo.fix}
-    templates:   
-      - exx-broker
-    # - exx-cli    # 10.3 only  
+    productRepo: ${repo.product}    # default repository to install products from
+    fixRepo: ${repo.fix}            # default repository to install fixes from
+    templates:
+      - sag-exx-broker              # template to apply
 
-templates:
-  exx-broker:
-    fixes: ${exx.broker.fixes}
-    products:
-      EntireXBroker:
-         ${exx.broker.name}:
-           type: BROKER
-           instance.name: ${exx.broker.name}
-           autostart: ${exx.broker.autostart}
-           tcp.port: ${exx.broker.tcp.port}
-           ssl.port: ${exx.broker.ssl.port}
-           security: ${exx.broker.security}
-  exx-cli:
-    products:
-      EntireXCommandLineScripts: # CommandLineScripts starting from version 10.3
-
-provision:                                   # PROVISION layers to nodes
-  default:                                  
+provision:                          # PROVISION layers to nodes
+  default:                          # default environment type
     runtime: ${nodes}

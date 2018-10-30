@@ -1,0 +1,62 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: um-deployment
+  namespace: um-is-namespace
+spec:
+  selector:
+    matchLabels:
+      app: um
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: um
+    spec:
+      containers:
+      - name: um01
+        image:  daerepository03.eur.ad.sag:4443/ccdevops/universal-messaging:10.3
+        ports:
+        - containerPort: 9000
+        - containerPort: 8092
+        envFrom:
+        - configMapRef:
+            name: um-env-variables
+        volumeMounts:
+        - name: spm-prop-1
+          mountPath: /opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+          subPath: com.softwareag.registry.handler.pid-CC.properties
+        - name: spm-prop-2
+          mountPath: /opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+          subPath: com.softwareag.registry.pid-CC.properties
+        - name: spm-prop-3
+          mountPath: /opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+          subPath: com.softwareag.repository.git.pid-CC.properties
+      volumes:
+      - name: spm-prop-1
+        configMap:
+          name: spm-prop-1
+      - name: spm-prop-2
+        configMap:
+          name: spm-prop-2
+      - name: spm-prop-3
+        configMap:
+          name: spm-prop-3

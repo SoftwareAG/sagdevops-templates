@@ -3,11 +3,10 @@ description: ActiveTransfer Server configuration
 
 environments:
   default:
-    is.instance.name: default
-    hostname: localhost                       # machine name   
-    mft.port.name: ATS_HTTP     			  # port name
-    mft.port.number: 4080                     # port number
-    mft.port.protocal: HTTP                   # protocal name
+    is.instance.name: default # ActiveTransfer IS instance name
+    mft.port.name: ATS_HTTP   # port name
+    mft.port.number: 4080     # port number
+    mft.port.protocol: HTTP   # protocol: HTTP|HTTPS|FTP|SFTP
 
 layers:
   runtime:
@@ -27,8 +26,8 @@ templates:
                     '@alias': ${mft.port.name}
                     Enabled: 'true'
                     Number: '${mft.port.number}'
-                    Protocol: ${mft.port.protocal}
-                    BindAddress: ${hostname}
+                    Protocol: ${mft.port.protocol}
+                    BindAddress: ${node.host}
                     ExtendedProperties:
                       Property:
                       - '@name': commandDelayInterval

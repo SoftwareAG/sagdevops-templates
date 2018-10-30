@@ -1,0 +1,36 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+version: "3.2"
+
+services:
+  # node:
+  #   build:
+  #     args:
+  #       - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
+  #       - CC_INSTALLER=cc-def-10.3-release-lnxamd64
+  #       - CC_INSTALLER_URL=http://docker.for.mac.localhost:8090/cce/provisioning/bootstrap/installers
+
+  builder:
+    build:
+      args:
+        - REPO_PRODUCT_URL=http://docker.for.mac.localhost:8092/products-10.3/repository
+        - REPO_FIX_URL=http://docker.for.mac.localhost:8092/fix-fixes-10.3/repository
+        - REPO_USERNAME=Administrator
+        - REPO_PASSWORD=manage
+        - LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster

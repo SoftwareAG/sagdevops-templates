@@ -1,0 +1,92 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+version: "3.2"
+
+services:
+  is01:
+    image: ${REG:-softwareag}/integration-server:${TAG:-10.3}
+    hostname: is01
+    ports:
+      - 5555:5555
+      - 8192:8092
+    environment:
+      - CC_AUTO_REGISTER # 0 or 1 (if you wnat to use CC)
+      - CC_PASSWORD
+      - REPO_ASSET_URL=${IS_ASSET_REPO_URL}
+#      - REPO_ASSET_BRANCH=develop
+      - UM_URL=nsp://um01:9000 # used by configuration assets ACDL properties
+    volumes:
+      - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+      - ./com.softwareag.registry.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+      - ./com.softwareag.repository.git.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+
+  um01:
+    image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
+    ports:
+      - 9000:9000
+      - 8292:8092
+    hostname: um01
+    environment:    
+      - CC_AUTO_REGISTER # 0 or 1 (if you wnat to use CC)
+      - CC_PASSWORD
+      - REPO_ASSET_URL=${UM_ASSET_REPO_URL}
+#      - REPO_ASSET_BRANCH=develop
+      - UM_URL=nsp://um01:9000 # used by configuration assets ACDL properties
+    volumes:
+      - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+      - ./com.softwareag.registry.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+      - ./com.softwareag.repository.git.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+
+  # is02:
+  #   image: ${REG:-softwareag}/integration-server:${TAG:-10.3}
+  #   hostname: is02
+  #   ports:
+  #     - 5255:5555
+  #   environment:
+  #     - CC_AUTO_REGISTER=1 # can be 0    
+  #     - CC_PASSWORD
+  #     - REPO_ASSET_URL=${IS_ASSET_REPO_URL}
+  #     - REPO_ASSET_BRANCH=master
+  #     - UM_URL=nsp://um02:9000 # used by configuration assets ACDL properties
+  #   volumes:
+  #     - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+  #     - ./com.softwareag.registry.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+  #     - ./com.softwareag.repository.git.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+
+  # um02:
+  #   image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
+  #   ports:
+  #     - 9200:9000
+  #   hostname: um02
+  #   environment:    
+  #     - CC_AUTO_REGISTER=1 # can be 0
+  #     - CC_PASSWORD
+  #     - REPO_ASSET_URL=${UM_ASSET_REPO_URL}
+  #     - REPO_ASSET_BRANCH=master
+  #     - UM_URL=nsp://um02:9000 # used by configuration assets ACDL properties
+  #   volumes:
+  #     - ./com.softwareag.registry.handler.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.handler.pid-CC.properties
+  #     - ./com.softwareag.registry.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.registry.pid-CC.properties
+  #     - ./com.softwareag.repository.git.pid-CC.properties:/opt/softwareag/profiles/SPM/configuration/com.softwareag.platform.config.propsloader/com.softwareag.repository.git.pid-CC.properties
+
+
+networks:
+  default:
+    external:
+      name: ${NET:-sag-cc_default}

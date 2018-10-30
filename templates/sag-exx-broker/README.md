@@ -1,25 +1,62 @@
-# Entire X Broker
+<!-- Copyright 2018 Software AG, Darmstadt, Germany and/or its licensors
 
-## Develop template
+   SPDX-License-Identifier: Apache-2.0
 
-From the root of the project:
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-```bash
-../../provisionw sag-exx-broker
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+
+     limitations under the License.                                                  
+
+-->
+
+# EntireX Broker
+
+The current template provisions an EntireX Broker.
+
+This template demonstrates in detail how to install the EntireX Broker component, creates and configures an EntireX Broker. Use this template as a reference when provisioning an EntireX Broker instances.
+
+## Requirements
+
+### Supported Software AG releases
+
+* EntireX 10.3 and higher
+* Command Central 10.3 and higher
+
+### Supported platforms
+
+All supported Windows and UNIX platforms.
+
+### Supported use cases
+
+* Provisioning new environments of version 10.3 and higher
+* Installing latest fixes
+* Creating an EntireX Broker
+* Configuration of:
+  * EntireX Broker parameters
+
+## Running as a composite template
+
+When importing the composite template to Command Central:
+Add the `template.yaml` and import that file using the Command Central CLI with the following command:
+
+```
+sagcc exec templates composite import -i template.yaml
 ```
 
-Make changes to template.yaml and rerun the above command.
+For more information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-FIXME's:
+To provision an instance of an EntireX Broker, use the Command Central CLI with the following command:
 
-* SPM plugin does not get activated! Instance cannot be created
-
-## Docker image build
-
-```bash
-docker-compose build
 ```
-
-FIXME's
-
-* Add real entrypoint.sh
+sagcc exec templates composite apply sag-exx-broker nodes=<your_node> \
+  repo.product=<your_product_repository> \
+  repo.fix=<your_fixes_repository>
+```

@@ -1,0 +1,70 @@
+/*
+* Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+*
+* SPDX-License-Identifier: Apache-2.0
+*
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*       http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.                                                            
+*
+*/
+
+// curl -X POST -F "jenkinsfile=<deployments/docker/Jenkinsfile" http://ccbvtauto.eur.ad.sag:8080/pipeline-model-converter/validate
+
+pipeline {
+    agent { label 'docker-swarm' }
+    parameters {
+        booleanParam(name: 'INFRA', defaultValue: false, description: 'Force pull and launch infrastructure')
+        choice(name: 'CC_TAG', choices: '10.3\n10.4', description: 'CC Tag to launch')
+
+        booleanParam(name: 'STACKS',  defaultValue: false, description: 'Force pull and launch test stacks')
+        string(name: 'STACK_LIST', defaultValue: 'sag-um-is-pull', description: 'Stacks to deploy (csv)') 
+        choice(name: 'TAG', choices: '10.3\n10.4\n10.2\n10.1', description: 'Tag to launch')
+        choice(name: 'REG', choices: 'daerepository03.eur.ad.sag:4443/sagdevops\ndaerepository03.eur.ad.sag:4443/cloud-deployment', description: 'Tag to launch')
+        string(name: 'UM_ASSET_REPO_URL', defaultValue: 'http://irepo/scm/devops/wmic-asset-repo-um.git', description: 'LAR repo for UM assets') 
+        string(name: 'IS_ASSET_REPO_URL', defaultValue: 'http://irepo/scm/devops/wmic-asset-repo-is.git', description: 'LAR repo for IS assets') 
+    }
+    stages {
+        stage('Deploy Infrastructure') {
+            when { expression { return params.INFRA }} 
+            steps {
+                script {
+                    def stacks = ['sag-cc', 'prometheus']
+                    for (stack in stacks) {
+                        sh 'printenv'
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml config"
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml pull"
+                        //sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml down --remove-orphans"
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml up -d"
+                    }
+                }
+            }
+        }
+        stage('Deploy Stacks') {
+            when { expression { return params.STACKS }} 
+            environment {
+                CC_AUTO_REGISTER = '1'
+            }
+            steps {
+                script {
+                    def stacks = params.STACK_LIST.split(/,/)
+                    for (stack in stacks) {
+                        sh 'printenv'
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml config"
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml pull"
+                        //sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml down --remove-orphans"
+                        sh "docker-compose -f deployments/docker/${stack}/docker-compose.yml up -d"
+                    }
+                }
+            }
+        }
+    }
+}

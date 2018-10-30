@@ -1,0 +1,81 @@
+#!/bin/sh -e
+
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+NODE_ALIAS=${1:-node}
+RUNTIME_COMPONENT_ID=${2:-OSGI-SPM}
+TEMPLATE_ALIAS=${3:-my-template}
+PREFIX=${4:-my}
+
+if [ "$#" -lt 2 ]; then
+
+    echo ""
+    echo "Usage: $0 <nodeAlias> <componentId> <templateAlias> <prefix>"
+    echo ""
+    echo "Command Central generate template tool"
+    echo ""
+    echo "Parameters:"
+    echo "  nodeAlias       Node lias to export from. Default ($NODE_ALIAS). One of these:"
+    ./sagccw list landscape nodes properties=alias includeHeaders=false
+    echo "  componentId     Runtime Component Id to export from $NODE_ALIAS. Default ($RUNTIME_COMPONENT_ID). One of these:"
+    ./sagccw list inventory components nodeAlias=$NODE_ALIAS properties=runtimeComponent.id,runtimeComponent.displayName
+    echo "  templateAlias   Template alias to generate, default ($TEMPLATE_ALIAS)"
+    echo "  prefix          Parameters prefix. Default ($PREFIX)"
+    echo ""
+    exit 1
+fi
+
+echo "Generating '$TEMPLATE_ALIAS' template ..."
+
+# <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+# <generateCompositeTemplate>
+#     <alias>${TEMPLATE_ALIAS}</alias>
+#     <nodeAlias>${NODE_ALIAS}</nodeAlias>
+#     <runtimeComponentId>${RUNTIME_COMPONENT_ID}</runtimeComponentId>
+#     <configurations exclude="true">
+#       <runtimeComponent id="$RUNTIME_COMPONENT_ID">
+#         <configurationTypeId>COMMON-CONFIGURATION-TYPE-METADATA</configurationTypeId>
+#       </runtimeComponent>
+#     </configurations>
+#     <parameterize>true</parameterize>
+#     <paramPrefix>${PREFIX}</paramPrefix>
+#     <overwrite>true</overwrite>
+# </generateCompositeTemplate>
+
+if ./sagccw exec templates composite generate nodeAlias=$NODE_ALIAS parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml -o /src/build/templates/$TEMPLATE_ALIAS/template.yaml ; then
+    echo ""
+    echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFUL"
+    echo ""
+    echo "The template file: /src/build/templates/$TEMPLATE_ALIAS/template.yaml"
+    echo ""
+    echo "Supported parameters and default values are:"
+    echo ""
+    ./sagccw list templates composite properties $TEMPLATE_ALIAS
+    echo ""
+    echo "Apply the template, optionally customizing parameter values:"
+    echo "./applyw $TEMPLATE_ALIAS nodes=node1,node2 [ <paramName>=<nonDefaultValue> ... ]"
+    echo ""
+else
+    echo ""
+    echo "ERROR: generation of '$TEMPLATE_ALIAS' FAILED !"
+    echo ""
+    ./sagccw get diagnostics logs local OSGI-CCE default.log tail lines=50
+    exit 100
+fi

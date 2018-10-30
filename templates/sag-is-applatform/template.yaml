@@ -1,123 +1,47 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 alias: sag-is-applatform
-description: Integration Server with Application Platform
+description: Application Platform provisioning on top of IS instance
 
 environments:
   default:
-    is.integrationserver.license.key: ${}   # REQUIRED: IS license key
-    is.instance.name:   applatform          # Instance name
-    is.primary.port:    5555                # Primary port number
-    is.diagnostic.port: 9999                # Dialgnostic port number
-    is.jmx.port:        8095                # JMX port number
-    is.memory.init:     128                 # Initial memory size
-    is.memory.max:      256                 # Maximum memory size
-    is.install.service: false
-    is.fixes: []                            # Default list of IS fixes
-      # - wMFix.integrationServer.Core
-      # - wMFix.integrationServer.SPM
-      # - wMFix.PLSIS
-      # - wMFix.SPMspm
-    # app.http.port:      8072                # Applatform http port
-    # app.https.port:     8074                # Applatform https port
+    is.instance.name:   default             # IS instance name to provision on top
+    is.instance.type:   MSC                 # IS instance type: MSC or integrationServer
+    applatform.fixes:   ALL                 # Application Platform default fix list
 
 layers:
   runtime:
     productRepo: ${repo.product}
     fixRepo:     ${repo.fix}
-    templates:   is-server
+    templates:
+      - appplatform
 
 templates:
-  is-server:
-    licenses:
-      "IntegrationServer/config/licenseKey.xml": ${is.integrationserver.license.key} 
-    fixes: ${is.fixes}
+  appplatform:
+    fixes: ${applatform.fixes}
     products:
       PLS_IS:
-      integrationServer:
+      ${is.instance.type}:
         ${is.instance.name}: 
-          primary.port:    ${is.primary.port}
-          diagnostic.port: ${is.diagnostic.port}
-          jmx.port:        ${is.jmx.port}
-          license.file:    IntegrationServer/config/licenseKey.xml
-          install.service: ${is.install.service}
-          package.list:    WmAppPlat # deploy the new package
-          configuration:
-            OSGI-IS_${instance.name}:
-              COMMON-MEMORY:
-                COMMON-MEMORY:
-                  InitSize: ${is.memory.init}
-                  MaxSize:  ${is.memory.max}
-              # COMMON-PORTS:
-              #   COMMON-PORTS-defaultHttp:
-              #     Port:
-              #       '@alias': defaultHttp
-              #       Enabled: 'true'
-              #       Type: STANDARD
-              #       Number: ${app.http.port}
-              #       Protocol: http
-              #       ThreadPool:
-              #         '@enabled': 'false'
-              #         Max: '150'
-              #       ExtendedProperties:
-              #         Property:
-              #         - '@name': disableUploadTimeout
-              #           $: 'true'
-              #         - '@name': minSpareThreads
-              #           $: '25'
-              #         - '@name': redirectPort
-              #           $: ${app.https.port}
-              #         - '@name': server
-              #           $: SoftwareAG-Runtime
-              #         - '@name': maxSpareThreads
-              #           $: '75'
-              #         - '@name': enableLookups
-              #           $: 'false'
-              #         - '@name': acceptCount
-              #           $: '100'
-              #         - '@name': connectionTimeout
-              #           $: '20000'
-              #         - '@name': description
-              #           $: Default HTTP Connector
-              #         - '@name': maxHttpHeaderSize
-              #           $: '8192'
-              #   COMMON-PORTS-defaultHttps:
-              #     Port:
-              #       '@alias': defaultHttps
-              #       Enabled: 'true'
-              #       Type: STANDARD
-              #       Number: ${app.https.port}
-              #       Protocol: https
-              #       ThreadPool:
-              #         '@enabled': 'false'
-              #         Max: '150'
-              #       SSL:
-              #         ClientAuth: NONE
-              #         KeystoreDefinition:
-              #           Type: JKS
-              #           Location: /opt/softwareag/profiles/IS_app/configuration/tomcat/conf/localhost_dont_use_in_production.jks
-              #           Password: '{AES/CBC/PKCS5Padding}{rYYvdQhs1FmbG34Bze5ygdPGRdyx1mkPrUkD9z92+dc=}{ulL0NpXEZ0EEeatCjIH9yg==}RLt0CbYrvdMc93EZwKFf38yjncsHMs0qmU5gZpn2if4='
-              #       ExtendedProperties:
-              #         Property:
-              #         - '@name': sslProtocol
-              #           $: TLS
-              #         - '@name': enableLookups
-              #           $: 'false'
-              #         - '@name': maxSpareThreads
-              #           $: '75'
-              #         - '@name': server
-              #           $: SoftwareAG-Runtime
-              #         - '@name': disableUploadTimeout
-              #           $: 'true'
-              #         - '@name': description
-              #           $: Default HTTPS Connector
-              #         - '@name': algorithm
-              #           $: SunX509
-              #         - '@name': minSpareThreads
-              #           $: '25'
-              #         - '@name': acceptCount
-              #           $: '100'
-              #         - '@name': maxHttpHeaderSize
-              #           $: '8192'
-                                                
+          package.list:    WmAppPlat
+          runtimeComponentId: integrationServer-${instance.name} # hint to find existing instance by id
+
 provision:
   default:
     runtime: ${nodes}

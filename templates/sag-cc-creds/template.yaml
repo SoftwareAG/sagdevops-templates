@@ -1,12 +1,30 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 alias: sag-cc-creds
-description: Default Command Central outbound credentials
+description: Basic outbound credentials
 version: 10.2
 
 environments:
   default:                      
-    empower.username: ${}       # REQUIRED, username on https://empower.softwareag.com/
-    empower.password: ${}       # REQUIRED, password on https://empower.softwareag.com/
-    cc.password: manage123      # Administrator password for remote SPMs
+    credentials.username: ${}    # REQUIRED, username
+    credentials.password: ${}    # REQUIRED, password
+    credentials.key:      ${}
 
 layers:
   cce:
@@ -20,19 +38,12 @@ templates:
         default:
           configuration:
             OSGI-CCE-ENGINE:              
-              COMMON-CREDENTIALS:                    # Credentials configuration type
-                COMMON-CREDENTIALS-EMPOWER:          # EMPOWER credentials
-                    "@alias": EMPOWER
-                    AuthenticationType: BASIC        # MUST be BASIC authentication
-                    UserName: "${empower.username}"  # Username
-                    Password: "${empower.password}"  # Password
-                    Description: "empower.softwareag.com Download Center"
-                COMMON-CREDENTIALS-SECURE_ADMINISTRATOR: # SECURE_ADMINISTRATOR credentials
-                    "@alias": SECURE_ADMINISTRATOR
-                    AuthenticationType: BASIC        # MUST be BASIC authentication
-                    UserName: Administrator          # MUST be Administrator user
-                    Password: ${cc.password}         # custom password for Administrator user
-                    Description: "Custom Administrator password"    
+              COMMON-CREDENTIALS:                        # Credentials configuration type
+                COMMON-CREDENTIALS-${credentials.key}: 
+                    "@alias": ${credentials.key}
+                    AuthenticationType: BASIC            # MUST be BASIC authentication
+                    UserName: "${credentials.username}"  # Username
+                    Password: "${credentials.password}"  # Password
 provision:
   default:
     cce:  

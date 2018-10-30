@@ -5,27 +5,22 @@ services:
 
 env:
   global:
-    - DOCKER_REGISTRY_URL=store
-    - ORG=softwareag
-    - TAG=10.2
-#    - LICENSES_URL=
+    - CC_TAG=10.3
+    - CC_REG=softwareag
+    - TAG=10.1
+    - REG=sergeipogrebnyak
+    - CC_ENV=prod
   matrix:
-    - CC_TEMPLATE=sag-um-server
-    - CC_TEMPLATE=sag-um-server TAG=10.1
+#    - CC_TEMPLATE=sag-um-server  TAG=10.1
+    - CC_TEMPLATE=hello-world TAG=10.1
+#    - CC_TEMPLATE=sag-abe TAG=10.1
 
-    - CC_TEMPLATE=sag-msc-server
-    - CC_TEMPLATE=sag-msc-server TAG=10.1
-    - CC_TEMPLATE=sag-msc-server TAG=9.12
-
-before_install:
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - cd templates/$CC_TEMPLATE
-
-#  - docker-compose up -d cc
-#  - docker-compose run --rm sagcc -h
-#  - docker-compose logs
+# before_install:
+#   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+#   - cd infrastructure
+#   - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
+#   - cd ..
 
 script: 
-  - echo "Testing $CC_TEMPLATE with release $TAG from `pwd`"
-#     - docker-compose run --rm provision
-#     - docker-compose logs
+  - echo "Testing $CC_TEMPLATE with release $TAG"
+  # - ./provisionw $CC_TEMPLATE

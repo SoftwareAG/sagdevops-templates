@@ -1,9 +1,27 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 alias: sag-spm-config
+description: SPM configurations
 
 environments:
   default:
-    nodes:        ${}    # target node alias(es)
-    hello.world:  ${}    # example parameter
+    hello.world: devops # example parameter
                     
 layers:
   runtime:
@@ -29,8 +47,8 @@ templates:
             
             OSGI-SPM-ENGINE:                  # SPM Engine configuration
               COMMON-SYSPROPS:                # System properties
-                com.softwareag.platform.management.common.monitoring.BasicMonitoringService: | # Monitoring
-                  com.softwareag.plm.spm.monitoring.poll.interval.seconds=15 # SPM monitoring interval
+                com.softwareag.platform.management.common.monitoring.BasicMonitoringService: | # Monitoring service config
+                  com.softwareag.plm.spm.monitoring.poll.interval.seconds=15
 
 provision:
   default:                                  

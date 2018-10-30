@@ -1,0 +1,127 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+alias: sag-um-config
+description: Universal Messaging configurations
+
+environments:
+  default:
+    um.url:              ${}                # REQUIRED: UM connection URL
+    um.instance.name:    default            # EXISTING UM realm server instance name
+    um.cf.name:          cf                 # Connection factory name
+    um.cf.type:          Shared             # Connection factory type: Named|Shared|SharedQueued|Priority|Serial
+    um.q.cf.name:        qcf1               # Queue connection factory name
+    um.q.name:           q1                 # Queue name
+    um.q.type:           Mixed              # Queue type: Transient|Simple|Reliable|Persistent|Mixed|Off_Heap|Paged
+    um.q.ttl:            0                  # Queue time to live
+    um.q.capacity:       0                  # Queue capacity
+    um.q.clusterwide:    false              # Queue is cluster wide? true/false
+    um.q.jndi.name:      q2                 # JNDI queue name
+    um.q.store.name:     ${um.q.jndi.name}  # JNDI queue store name
+    um.topic.cf.name:    tcf1               # Topic connection factory name
+    um.topic.cf.type:    Shared             # Topic connection factory type: Named|Shared|SharedQueued|Priority|Serial
+    um.topic.jndi.name:  t1                 # JNDI topic name
+    um.topic.store.name: ${um.topic.jndi.name} # JNDI topic store name
+    um.configs:                             # list of inline templates to apply
+      - jndi                
+      - queues
+
+layers:
+  runtime:
+    templates: ${um.configs}
+            
+provision:
+  default:
+    runtime: ${nodes} # apply to selected nodes
+
+templates:
+  jndi:
+    products:                              
+      NUMRealmServer:                                              # Universal Messaging | Realm Server
+        ${um.instance.name}:                                       # instance name is different from realm
+          runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${instance.name}:
+              UM-JNDI-CF:
+                UM-JNDI-CF-${um.cf.name}:
+                  name: ${um.cf.name}
+                  type: ConnectionFactory
+                  url: ${um.url}
+                  durableType: ${um.cf.type}
+                UM-JNDI-CF-${um.q.cf.name}:
+                  name: ${um.q.cf.name}
+                  type: QueueConnectionFactory
+                  url: ${um.url}
+                UM-JNDI-CF-${um.topic.cf.name}:
+                  name: ${um.topic.cf.name}
+                  type: TopicConnectionFactory
+                  url: ${um.url}
+                  durableType: ${um.topic.cf.type}
+              UM-JNDI-DEST:
+                UM-JNDI-DEST-${um.topic.jndi.name}:
+                  name: ${um.topic.jndi.name}
+                  type: Topic
+                  storeName: ${um.topic.store.name}
+                  autoCreateDest: true
+                UM-JNDI-DEST-q2:
+                  name: ${um.q.jndi.name}
+                  type: Queue
+                  storeName: ${um.q.store.name}
+                  autoCreateDest: true
+  queues:
+    description: Configure queues. Requires Universal Messaging 10.1
+    products:                              
+      NUMRealmServer:                                              # Universal Messaging | Realm Server
+        ${um.instance.name}:                                       # instance name is different from realm
+          runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${instance.name}:                  
+              UM-QUEUES:
+                UM-QUEUES-${um.q.name}:
+                  name: ${um.q.name}
+                  type: ${um.q.type}
+                  ttl:  ${um.q.ttl}
+                  capacity: ${um.q.capacity}
+                  deadEventStore: ''
+                  clusterWide: ${um.q.clusterwide}
+                  storageProperties:
+                    autoMaintenance: 'true'
+                    honourCapacity: 'true'
+                    enableCaching: 'true'
+                    cacheOnReload: 'true'
+                    enableReadBuffering: 'true'
+                    enableMulticast: 'false'
+                    readBufferSize: '10240'
+                    syncEachWrite: 'false'
+                    syncBatchSize: N/A
+                    syncBatchTime: N/A
+                    fanoutArchiveTarget: ''
+                    priority: '4'
+                    eventsPerSpindle: '50000'
+                    stampDictionary: default
+                  protoBufDescriptor: ''
+                  queueACLs:
+                    queueACLEntry:
+                    - name: Everyone
+                      manageACL: 'false'
+                      full: 'true'
+                      purge: 'true'
+                      peek: 'true'
+                      push: 'true'
+                      pop: 'true'

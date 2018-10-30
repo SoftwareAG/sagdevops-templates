@@ -1,3 +1,22 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
 alias: sag-cc-layer-defs
 description: Software AG base layer type definitions
 version: 0.1
@@ -88,15 +107,6 @@ templates:
                       Template:
                         "@alias": sag-is-server                
                          
-                CCE-LAYER-TYPES-IS-APPLATFORM:
-                  "@name": IS-APPLATFORM
-                  Description: Create Integration Server instance with Application Platform
-                  Type: RUNTIME
-                  Scalable: 'true'
-                  Templates:
-                      Template:
-                        "@alias": sag-is-applatform                    
-
                 CCE-LAYER-TYPES-IS-STATELESS-CLUSTER:
                   "@name": IS-STATELESS-CLUSTER
                   Description: Create Integration STATELESS cluster. Requires RDBMS
@@ -133,14 +143,41 @@ templates:
                       Template:
                         "@alias": sag-tc-cluster  
 
-                # CCE-LAYER-TYPES-TDB-SERVER:
-                #   "@name": TDB-SERVER
-                #   Description: Create Terracotta DB standalone server
-                #   Type: RUNTIME
-                #   Scalable: 'false'
-                #   Templates:
-                #       Template:
-                #         "@alias": sag-tdb-server 
+                CCE-LAYER-TYPES-TDB-SERVER:
+                  "@name": TDB-SERVER
+                  Description: Create Terracotta DB standalone server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tdb-server 
+
+                CCE-LAYER-TYPES-APAMA-CORRELATOR:
+                  "@name": APAMA-CORRELATOR
+                  Description: Create Apama Correlator
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-apama-correlator 
+
+                CCE-LAYER-TYPES-EXX-BROKER:
+                  "@name": EXX-BROKER
+                  Description: Create EntireX Broker
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-exx-broker 
+
+                CCE-LAYER-TYPES-EXX-C-RPC-SERVER:
+                  "@name": EXX-C-RPC-SERVER
+                  Description: Create EntireX C RPC Server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-exx-broker 
 
                 # CCE-LAYER-TYPES-NINJA-SERVER:
                 #     "@name": NINJA-SERVER

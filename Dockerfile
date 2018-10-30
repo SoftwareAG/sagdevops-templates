@@ -1,43 +1,41 @@
-ARG BASE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server
-ARG NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
 
-# Get access to the node image
+ARG BUILDER_IMAGE
+ARG NODE_IMAGE
 FROM $NODE_IMAGE as node
+FROM $BUILDER_IMAGE as builder
 
-# Base CC server image
-FROM $BASE_IMAGE as builder
-
-ARG LICENSES_URL
-ARG REPO_PRODUCT
-ARG REPO_FIX
-ARG REPO_HOST
-
-WORKDIR $CC_HOME
-
+# WORKDIR $CC_HOME
+# USER 1724
 # add all templates
-ADD templates/ profiles/CCE/data/templates/composite/
+# ADD --chown=1724:1724 templates/ profiles/CCE/data/templates/composite/
 # replace default scripts
-ADD scripts/*.sh ./
+# ADD --chown=1724:1724 scripts/*.sh ./
 
-# instead of bootstrapping node from $CC_INSTALLER
+# add licenses.zip, if any
+# ADD --chown=1724:1724 licenses/*.zip ./licenses/
+
 # Copy target node from the $NODE_IMAGE
-COPY --from=node /opt/softwareag/ /opt/softwareag/
+COPY --from=node --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
 # configure repos and add licenses
-# RUN SAG_HOME=$CC_HOME NODES=local $CC_HOME/provision.sh && ./init.sh
-RUN $CC_HOME/provision.sh && ./init.sh
-
-# default parameters
-ONBUILD ARG RELEASE=$RELEASE
-ONBUILD ARG REPO_PRODUCT=products
-ONBUILD ARG REPO_FIX=fixes
-ONBUILD ARG REPO_ASSET=assets
-
-ONBUILD ADD . .
-# do not run by default # ONBUILD RUN $CC_HOME/provision.sh
-
-ENV REPO_PRODUCT=products
-ENV REPO_FIX=fixes
-ENV REPO_ASSET=assets
+RUN $CC_HOME/provision.sh sag-empty
 
 WORKDIR /src

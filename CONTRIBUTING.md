@@ -1,0 +1,1 @@
+Please see [Contributing section on wiki](https://github.com/SoftwareAG/sagdevops-templates/wiki/Contributing)

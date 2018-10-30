@@ -1,0 +1,78 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+alias: sag-db-sqlserver
+description: SQLServer database and component schemas
+
+environments:
+  default:                 
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.2
+    db.type:             sqlserver          # This is SQLServer database
+    db.port:             1433               # Default port
+    db.admin.username:   sa                 # Admin username for db and user creation
+    db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
+
+    db.url:              "jdbc:wm:sqlserver://${db.host}:${db.port};databaseName=${db.name}"
+    db.name:             webm               # webM database name
+    db.username:         ${db.name}         # webM database username
+    db.password:         ${db.name}         # webM database password
+    db.products:         
+      - IS
+      - BPM
+      - MWS 
+      - OPTI 
+    db.fixes:            []                 # Database component configurator fixes to install
+
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   
+      - dbc
+    databases:
+      storage:
+        components:  
+          - STR
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.admin.username: ${db.admin.username}
+        db.admin.password: ${db.admin.password}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+      schemas:
+        products:    ${db.products}
+        version:     ${db.version}
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+    
+templates:
+  dbc:
+    products:
+      DatabaseComponentConfigurator:
+    fixes: ${db.fixes}
+
+provision:
+  default:
+    db: ${nodes}
