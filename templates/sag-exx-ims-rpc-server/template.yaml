@@ -57,7 +57,7 @@ environments:
     # Exit Name. If left blank, the following defaults will be used: *SAMPLE* for old exit, *SAMPLE1* for new exit
     exx.server.ims.exit.name: ''
     
-    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
+    exx.server.license.key: "*_EXX_10.*_*_*"          # license key, alias name of license key in
                                                       # license repository
                                                                   
     # fixes

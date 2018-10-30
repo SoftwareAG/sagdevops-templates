@@ -49,7 +49,8 @@ Template alias | Provisions Platform Manager
 Template alias | Description
 -------------------------|--------------------------------
 [sag-db-oracle](templates/sag-db-oracle) | Creates a user, database, and webMethods database schemas on an Oracle database server.
-[sag-db-sqlserver](templates/sag-db-sqlserver) | Creates a user, database, and webMethods database schemas on an SQL Server database server.
+[sag-db-sqlserver](templates/sag-db-sqlserver) | Creates a user, database, and webMethods database schemas on a SQL Server database server.
+[sag-db-mysql](templates/sag-db-mysql) | Creates a user, database, and webMethods database schemas on a MySQL database server.
 
 ### Micro Templates for provisioning Software AG products
 
@@ -75,8 +76,8 @@ Template alias | Provisions
 [sag-is-cloudstreams](templates/sag-is-applatform) | Cloudstreams on Integration Server or Microservices runtime
 [sag-is-applatform](templates/sag-is-applatform) | Application Platform on Integration Server or Microservices runtime
 [sag-msc-server](templates/sag-msc-server) | webMethods Microservices Runtime
-[sag-mws-server](templates/sag-mws-server) | My webMethods server
-[sag-mws-infradc](templates/sag-mws-server) | Infrastructure Data Collector UI on My webMethods server
+<!-- [sag-mws-server](templates/sag-mws-server) | My webMethods server
+[sag-mws-infradc](templates/sag-mws-server) | Infrastructure Data Collector UI on My webMethods server -->
 [sag-tc-server](templates/sag-tc-server) | Terracotta BigMemory server
 [sag-tc-cluster](templates/sag-tc-cluster) | Terracotta BigMemory cluster
 [sag-tdb-server](templates/sag-tdb-server) | Terracotta DB server

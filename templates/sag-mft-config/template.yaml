@@ -1,0 +1,42 @@
+alias: sag-mft-config
+description: ActiveTransfer Server configuration
+
+environments:
+  default:
+    is.instance.name: default # ActiveTransfer IS instance name
+    mft.port.name: ATS_HTTP   # port name
+    mft.port.number: 4080     # port number
+    mft.port.protocol: HTTP   # protocol: HTTP|HTTPS|FTP|SFTP
+
+layers:
+  runtime:
+    templates:
+      - mft-config   
+
+templates:
+  mft-config:
+    products:      
+      integrationServer:
+        ${is.instance.name}:                  
+          configuration:                        
+            OSGI-IS_${instance.name}-WmMFT:
+              COMMON-PORTS:
+                COMMON-PORTS-MFT${mft.port.name}_${mft.port.number}:
+                  Port:
+                    '@alias': ${mft.port.name}
+                    Enabled: 'true'
+                    Number: '${mft.port.number}'
+                    Protocol: ${mft.port.protocol}
+                    BindAddress: ${node.host}
+                    ExtendedProperties:
+                      Property:
+                      - '@name': commandDelayInterval
+                        $: '0'
+                      - '@name': instanceName
+                        $: Default Server Instance
+                      - '@name': description
+                        $: ''
+                  
+provision:
+  default:
+    runtime: ${nodes}

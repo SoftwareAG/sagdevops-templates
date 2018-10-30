@@ -1,0 +1,26 @@
+alias: sag-mws-mftui
+description: ActiveTransfer UI provisioning on top of MWS
+
+environments:
+  default:
+    mws.instance.name: default # MWS instance name
+    mws.mftui.fixes: ALL       # MFT UI fixes
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - mft-portal	  
+
+templates:
+  mft-portal:
+    fixes: ${mws.mftui.fixes}
+    products:
+      MFTTransfer:
+      MwsProgramFiles:
+        ${mws.instance.name}:
+          
+provision:
+  default:
+    runtime: ${nodes}

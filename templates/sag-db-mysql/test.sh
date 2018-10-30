@@ -1,4 +1,5 @@
-###############################################################################
+#!/bin/sh -e
+#*******************************************************************************
 #  Copyright � 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
@@ -15,27 +16,14 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.                                                            
 #
-###############################################################################
-# properties for local development/testing on TRUNK
+#*******************************************************************************
 
-db.host=sqlserver
-db.type=sqlserver
-db.username=webm
-db.password=webm
-db.name=webm 
-db.url="jdbc:wm:sqlserver://sqlserver:1433;databaseName=webm"
-db.admin.password=MaNaGe123
+# point to local SPM
+export CC_SERVER=cc
 
-um.fixes=[]
-um.url=nsp://localhost:9000
-tc.fixes=[]
-is.fixes=[]
-is.um.url=nsp://localhost:9000
-des.fixes=[] 
-des.um.url=nsp://localhost:9000
-apama.fixes=[]
-cst.fixes=[]
-infradc.jms.host=localhost
-infradc.fixes=[]
-mws.infradcui.fixes=[]
-mws.applatform.fixes=[]
+sagcc list administration product node DatabaseComponentConfigurator database catalog \
+    db.type=mysql db.username=webm db.password=webm db.name=webm db.url="jdbc:mysql://mysql:3306/webm" \
+    -e "ISI"
+    #-e "ISI & MWS & PRE"
+
+echo "TEST SUCCESSFUL"

@@ -47,7 +47,7 @@ environments:
     exx.server.library.directory1: /opt/softwareag/MyApp                  
     exx.server.library.directory2: /opt/softwareag/MyApp2
 
-    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
+    exx.server.license.key: "*_EXX_10.*_*_*"          # license key, alias name of license key in
                                                       # license repository
                                                                   
     exx.server.fixes:                                 # minimal recommended set of fixes to apply

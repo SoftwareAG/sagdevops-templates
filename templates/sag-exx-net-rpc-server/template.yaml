@@ -56,7 +56,7 @@ environments:
     # Full path of DLL
     exx.server.dotnet.assembly2: C:\assemblies\terminator\terminator.dll
    
-    exx.server.license.key: "EXX_WIN_103"             # license key, alias name of license key in
+    exx.server.license.key: "*_EXX_10.*_*_*"          # license key, alias name of license key in
                                                       # license repository
                                                                   
     exx.server.fixes:                                 # minimal recommended set of fixes to apply
