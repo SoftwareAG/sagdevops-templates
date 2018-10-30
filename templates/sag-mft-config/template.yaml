@@ -3,10 +3,23 @@ description: ActiveTransfer Server configuration
 
 environments:
   default:
-    is.instance.name: default # ActiveTransfer IS instance name
-    mft.port.name: ATS_HTTP   # port name
-    mft.port.number: 4080     # port number
-    mft.port.protocol: HTTP   # protocol: HTTP|HTTPS|FTP|SFTP
+    is.instance.name: default
+    
+    mft.ftp.port.name: ATS_FTP_2222		        # FTP port name
+    mft.ftp.port.number: 2222                 # FTP port number
+    mft.ftp.port.protocal: FTP                # FTP protocal name
+
+    mft.sftp.port.name: ATS_SFTP_3333		      # SFTP port name
+    mft.sftp.port.number: 3333                # SFTP port number
+    mft.sftp.port.protocal: SFTP              # SFTP protocal name
+
+    mft.http.port.name: ATS_HTTP_4444	        # HTTP port name
+    mft.http.port.number: 4444                # HTTP port number
+    mft.http.port.protocal: HTTP              # HTTP protocal name
+
+    mft.https.port.name: ATS_HTTPS_5555		    # HTTPS port name
+    mft.https.port.number: 1080               # HTTPS port number
+    mft.https.port.protocal: HTTPS            # HTTPS protocal name
 
 layers:
   runtime:
@@ -21,12 +34,120 @@ templates:
           configuration:                        
             OSGI-IS_${instance.name}-WmMFT:
               COMMON-PORTS:
-                COMMON-PORTS-MFT${mft.port.name}_${mft.port.number}:
+                COMMON-PORTS-MFT${mft.ftp.port.name}_${mft.ftp.port.number}:
                   Port:
-                    '@alias': ${mft.port.name}
+                    '@alias': ${mft.ftp.port.name}
                     Enabled: 'true'
-                    Number: '${mft.port.number}'
-                    Protocol: ${mft.port.protocol}
+                    Number: '${mft.ftp.port.number}'
+                    Protocol: ${mft.ftp.port.protocal}
+                    BindAddress: ${node.host}
+                    ExtendedProperties:
+                      Property:
+                      - '@name': loginMessage
+                        $: ''
+                      - '@name': commandDelayInterval
+                        $: '0'
+                      - '@name': requireEncryption
+                        $: 'false'
+                      - '@name': implicitSSL
+                        $: 'false'
+                      - '@name': explicitSSL
+                        $: 'false'
+                      - '@name': explicitTLS
+                        $: 'false'
+                      - '@name': ftpRouterAware
+                        $: 'false'
+                      - '@name': passiveIP
+                        $: Auto
+                      - '@name': passivePortFrom
+                        $: '1025'
+                      - '@name': passivePortTo
+                        $: '65535'
+                      - '@name': requireClientCert
+                        $: 'false'
+                      - '@name': keystoreLocation
+                        $: ''
+                      - '@name': keystorePassword
+                        $: ''
+                      - '@name': keyPassword
+                        $: ''
+                      - '@name': instanceName
+                        $: Default Server Instance
+                      - '@name': description
+                        $: ''
+                COMMON-PORTS-MFT${mft.sftp.port.name}_${mft.sftp.port.number}:        
+                  Port:      
+                    '@alias': ${mft.sftp.port.name}
+                    Enabled: 'true'
+                    Number: '${mft.sftp.port.number}'
+                    Protocol: ${mft.sftp.port.protocal}
+                    BindAddress: ${node.host}
+                    ExtendedProperties:
+                      Property:
+                      - '@name': commandDelayInterval
+                        $: '0'
+                      - '@name': enableDSA
+                        $: 'true'
+                      - '@name': DSAKeyLocation
+                        $: ''
+                      - '@name': enableRSA
+                        $: 'true'
+                      - '@name': RSAKeyLocation
+                        $: ''
+                      - '@name': aes128-cbc
+                        $: 'true'
+                      - '@name': aes128-ctr
+                        $: 'true'
+                      - '@name': 3des-cbc
+                        $: 'true'
+                      - '@name': blowfish-cbc
+                        $: 'true'
+                      - '@name': arcfour128
+                        $: 'true'
+                      - '@name': arcfour
+                        $: 'true'
+                      - '@name': aes192-cbc
+                        $: 'false'
+                      - '@name': aes192-ctr
+                        $: 'false'
+                      - '@name': aes256-cbc
+                        $: 'false'
+                      - '@name': aes256-ctr
+                        $: 'false'
+                      - '@name': arcfour256
+                        $: 'false'
+                      - '@name': hmac-md5
+                        $: 'true'
+                      - '@name': hmac-md5-96
+                        $: 'true'
+                      - '@name': hmac-sha1
+                        $: 'true'
+                      - '@name': hmac-sha1-96
+                        $: 'true'
+                      - '@name': hmac-sha256
+                        $: 'true'
+                      - '@name': hmac-sha512
+                        $: 'true'
+                      - '@name': requirePassword
+                        $: 'false'
+                      - '@name': requirePublicKey
+                        $: 'false'
+                      - '@name': idleTimeOut
+                        $: ''
+                      - '@name': synchronous
+                        $: 'false'
+                      - '@name': textEncoding
+                        $: ''
+                      - '@name': instanceName
+                        $: Default Server Instance
+                      - '@name': description
+                        $: ''                    
+                COMMON-PORTS-MFT${mft.http.port.name}_${mft.http.port.number}:
+                  Port:
+                    '@alias': ${mft.http.port.name}
+                    Enabled: 'true'
+                    Number: '${mft.http.port.number}'
+                    Protocol: ${mft.http.port.protocal}
                     BindAddress: ${node.host}
                     ExtendedProperties:
                       Property:
@@ -36,7 +157,37 @@ templates:
                         $: Default Server Instance
                       - '@name': description
                         $: ''
-                  
+                      - '@name': requireClientCert
+                        $: 'false'
+                      - '@name': keystoreLocation
+                        $: ''
+                      - '@name': keystorePassword
+                        $: ''
+                      - '@name': keyPassword
+                        $: ''
+                COMMON-PORTS-MFT${mft.https.port.name}_${mft.https.port.number}:
+                  Port:
+                    '@alias': ${mft.https.port.name}
+                    Enabled: 'true'
+                    Number: '${mft.https.port.number}'
+                    Protocol: ${mft.https.port.protocal}
+                    BindAddress: ${node.host}
+                    ExtendedProperties:
+                      Property:
+                      - '@name': commandDelayInterval
+                        $: '0'
+                      - '@name': instanceName
+                        $: Default Server Instance
+                      - '@name': description
+                        $: ''
+                      - '@name': requireClientCert
+                        $: 'false'
+                      - '@name': keystoreLocation
+                        $: ''
+                      - '@name': keystorePassword
+                        $: ''
+                      - '@name': keyPassword
+                        $: ''                        
 provision:
   default:
     runtime: ${nodes}
