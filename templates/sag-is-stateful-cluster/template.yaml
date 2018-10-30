@@ -16,8 +16,8 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-alias: sag-is-statefull-cluster
-description: Integration Server statefull cluster using Terracotta BigMemory
+alias: sag-is-stateful-cluster
+description: Integration Server stateful cluster using Terracotta BigMemory
 
 environments:
   default:
