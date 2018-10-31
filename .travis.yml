@@ -15,7 +15,7 @@ env:
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - cd templates && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
+  - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
   - cd infrastructure && docker-compose -f docker-compose.yml:master.yml:${TAG}.master.yml build && cd ..
 
 script: 
