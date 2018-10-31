@@ -63,11 +63,11 @@ templates:
                        "@name": "-XX:MaxDirectMemorySize"
                        $: ${um.memory.direct}                     # JVM maximum direct memory size 
               COMMON-JAVASYSPROPS: 
-                COMMON-JAVASYSPROPS: | 
-                   REALM=${um.realm}                              # realm name IMPORTANT: this can only be set before first startup
-                   com.sun.management.jmxremote.port=${um.jmx.port} # JVM JMX port number
-                   com.sun.management.jmxremote.authenticate=false  # do not use JMX authentication
-                   com.sun.management.jmxremote.ssl=false           # do not use JMX SSL
+                COMMON-JAVASYSPROPS:  
+                   REALM: ${um.realm}                                # realm name IMPORTANT: this can only be set before first startup
+                   com.sun.management.jmxremote.port: ${um.jmx.port} # JVM JMX port number
+                   com.sun.management.jmxremote.authenticate: false  # do not use JMX authentication
+                   com.sun.management.jmxremote.ssl: false           # do not use JMX SSL
             
 provision:
   default:
