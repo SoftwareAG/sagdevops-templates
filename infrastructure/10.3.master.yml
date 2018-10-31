@@ -22,4 +22,4 @@ services:
   builder:
     build:
       args:
-        - REPO_PRODUCT_URL=http://sdc.softwareag.com/dataservewebM103/repository/
+        - REPO_PRODUCT_URL=https://sdc.softwareag.com/dataservewebM103/repository
