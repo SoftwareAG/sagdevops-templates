@@ -3,8 +3,6 @@
 # if managed image
 if [ -d $SAG_HOME/profiles/SPM ] ; then
     # point to local SPM
-	export __mft_port_number=4080
-	export __mft_port_name=ATS_HTTP
     export CC_SERVER=http://localhost:8092/spm
     export is_instance_name=${is_instance_name:-default}
 	
@@ -13,14 +11,17 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
 
     export CC_WAIT=180
 
-    echo "Verifying instances ..."
-    sagcc get inventory components -e "OSGI-IS_${is_instance_name}-WmMFT"
+    echo "Restart the instance ..."
+    sagcc exec lifecycle components "OSGI-IS_${is_instance_name}" restart -e DONE --sync-job
 
-    echo "Verifying status ..."
+    echo "Verifying instance status ..."
+    sagcc get monitoring runtimestatus "integrationServer-${is_instance_name}" -e ONLINE
+
+    echo "Verifying WmMFT status ..."
     sagcc get monitoring runtimestatus "OSGI-IS_${is_instance_name}-WmMFT" -e ONLINE
 	
 	echo "Verifying configuration"
-	sagcc get configuration data OSGI-IS_${is_instance_name}-WmMFT COMMON-PORTS-MFT${__mft_port_name}
+	sagcc get configuration instances OSGI-IS_${is_instance_name}-WmMFT -e COMMON-PORTS-MFT -w 1
 fi
 
 echo "Verifying product runtime ..."

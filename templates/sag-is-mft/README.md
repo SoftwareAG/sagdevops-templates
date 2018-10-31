@@ -18,10 +18,13 @@ All supported Windows and UNIX platforms.
 
 * Provisioning of new environments
 * Installing latest fixes
+* Configuration of:
+  * JDBC Pool alias for ActiveTransfer
+  * Functional alias for ActiveTransfer
 
 ## Running as a composite template
 
-> Important: Apply this template on top of an existing [Integration Server](../templates/sag-is-server) instance of the same release version as ActiveTransfer
+> IMPORTANT: Apply this template on top of an existing [Integration Server](../templates/sag-is-server) instance of the same release version as ActiveTransfer
 
 ## Provisioning ActiveTransfer Server/Gateway on Integration server
 

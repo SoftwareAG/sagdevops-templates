@@ -4,9 +4,11 @@ description: ActiveTransfer Server/Gateway
 environments:
   default:
     is.instance.name: default                # Integration Server instance name    
+    
     mft.license.key: "*_(MAT|MAG)_10.*_*_*"  # ActiveTransfer license key
     mft.fixes: ALL                           # ActiveTransfer fixes to install
-    db.type: ${}                             # REQUIRED: database type: oracle|sqlserver
+
+    db.TYPE: ${}                             # REQUIRED: database type: ORACLE|SQLSERVER|DB2
     db.url: ${}                              # REQUIRED: database JDBC url
     db.password: ${}                         # REQUIRED: database username
     db.username: ${}                         # REQUIRED: database password
@@ -32,16 +34,16 @@ templates:
           configuration:            
             integrationServer-${instance.name}:
               COMMON-JDBC:              
-                COMMON-JDBC-Default:
+                COMMON-JDBC-MFT:
                   Pool: 
-                    "@alias": "Default"
-                    Name: "Default"
-                    Description: "Default DBConnection"
+                    "@alias": "MFT"
+                    Name: "MFT"
+                    Description: "MFT DBConnection"
                     MinSize: "0"
                     MaxSize: "10"
                     MaxIdleTime: "60000"
                     DatabaseServer: 
-                      "@type": ${db.type}
+                      "@type": ${db.TYPE}
                       URL: ${db.url}
                       User: ${db.username}
                       Password: ${db.password}                                    
@@ -50,7 +52,7 @@ templates:
                   Function:
                       "@alias": "ActiveTransfer"
                       Description: "ActiveTransfer Function"
-                      PoolAlias: "Default"                            
+                      PoolAlias: "MFT"                            
 provision:
   default:
     runtime: ${nodes}

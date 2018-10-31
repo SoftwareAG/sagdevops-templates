@@ -17,11 +17,14 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     echo "Verifying instances ..."
     sagcc get inventory components -e "OSGI-IS_${is_instance_name}"
 
-    # echo "Restart the instance ..."
-    # sagcc exec lifecycle components "OSGI-IS_${is_instance_name}" restart -e DONE --sync-job
+    echo "Restart the instance ..."
+    sagcc exec lifecycle components "OSGI-IS_${is_instance_name}" restart -e DONE --sync-job
 
     echo "Verifying instance status ..."
     sagcc get monitoring runtimestatus "integrationServer-${is_instance_name}" -e ONLINE
+
+    echo "Verifying components ..."
+    sagcc get inventory components -e "OSGI-IS_${is_instance_name}-WmMFT" refresh=true # FIXME: no refresh should be necessary!
 
     echo "Verifying WmMFT status ..."
     sagcc get monitoring runtimestatus "OSGI-IS_${is_instance_name}-WmMFT" -e ONLINE

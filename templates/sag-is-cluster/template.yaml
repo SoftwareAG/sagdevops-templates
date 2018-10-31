@@ -32,14 +32,10 @@ environments:
     is.fixes: [wMFix.integrationServer.Core]
     
     # Database connection
-    db.type:             oracle             # REQUIRED: Database type: oracle,sqlserver,db2
-    db.host:             oracle             # REQUIRED: Database server hostname
-    db.port:             1521               # REQUIRED: Database server port
-    db.name:             webm
-    db.username:         ${db.name}         # Database username
-    db.password:         ${db.name}         # Database password
-    db.sid:              XE                 # Database name
-    db.url:              "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}"
+    db.type:             ${}                # REQUIRED: Database type: oracle,sqlserver,db2
+    db.url:              ${}                # REQUIRED: JDBC URL
+    db.username:         ${}                # REQUIRED: Database username
+    db.password:         ${}                # REQUIRED: Database password
 
 layers:
   runtime:
@@ -62,7 +58,7 @@ templates:
           license.file:    IntegrationServer/config/licenseKey.xml
           install.service: ${is.install.service}
           db.type:         ${db.type}
-          db.url:          ${db.url}
+          db.url:          "${db.url}"
           db.username:     ${db.username}
           db.password:     ${db.password}
           db.alias:        Default

@@ -5,21 +5,21 @@ environments:
   default:
     is.instance.name: default
     
-    mft.ftp.port.name: ATS_FTP_2222		        # FTP port name
-    mft.ftp.port.number: 2222                 # FTP port number
-    mft.ftp.port.protocal: FTP                # FTP protocal name
+    mft.ftp.port: 2222                   # FTP port number
+    mft.ftp.port.alias: ATS_FTP_2222	   # FTP port alias
+    mft.ftp.port.enabled: true           # FTP port enabled: true|false
 
-    mft.sftp.port.name: ATS_SFTP_3333		      # SFTP port name
-    mft.sftp.port.number: 3333                # SFTP port number
-    mft.sftp.port.protocal: SFTP              # SFTP protocal name
+    mft.sftp.port: 3333                  # SFTP port number
+    mft.sftp.port.alias: ATS_SFTP_3333   # SFTP port alias
+    mft.sftp.port.enabled: true          # SFTP port enabled: true|false
 
-    mft.http.port.name: ATS_HTTP_4444	        # HTTP port name
-    mft.http.port.number: 4444                # HTTP port number
-    mft.http.port.protocal: HTTP              # HTTP protocal name
+    mft.http.port: 4444                  # HTTP port number
+    mft.http.port.alias: ATS_HTTP_4444   # HTTP port alias
+    mft.http.port.enabled: true          # HTTP port enabled: true|false
 
-    mft.https.port.name: ATS_HTTPS_5555		    # HTTPS port name
-    mft.https.port.number: 1080               # HTTPS port number
-    mft.https.port.protocal: HTTPS            # HTTPS protocal name
+    mft.https.port: 1080                 # HTTPS port number
+    mft.https.port.alias: ATS_HTTPS_5555 # HTTPS port name
+    mft.https.port.enabled: true         # HTTPS port enabled: true|false
 
 layers:
   runtime:
@@ -34,12 +34,12 @@ templates:
           configuration:                        
             OSGI-IS_${instance.name}-WmMFT:
               COMMON-PORTS:
-                COMMON-PORTS-MFT${mft.ftp.port.name}_${mft.ftp.port.number}:
+                COMMON-PORTS-MFT${mft.ftp.port.alias}_${mft.ftp.port}:
                   Port:
-                    '@alias': ${mft.ftp.port.name}
-                    Enabled: 'true'
-                    Number: '${mft.ftp.port.number}'
-                    Protocol: ${mft.ftp.port.protocal}
+                    '@alias': "${mft.ftp.port.alias}"
+                    Enabled: "${mft.ftp.port.enabled}"
+                    Number: '${mft.ftp.port}'
+                    Protocol: FTP
                     BindAddress: ${node.host}
                     ExtendedProperties:
                       Property:
@@ -75,12 +75,12 @@ templates:
                         $: Default Server Instance
                       - '@name': description
                         $: ''
-                COMMON-PORTS-MFT${mft.sftp.port.name}_${mft.sftp.port.number}:        
+                COMMON-PORTS-MFT${mft.sftp.port.alias}_${mft.sftp.port}:        
                   Port:      
-                    '@alias': ${mft.sftp.port.name}
-                    Enabled: 'true'
-                    Number: '${mft.sftp.port.number}'
-                    Protocol: ${mft.sftp.port.protocal}
+                    '@alias': ${mft.sftp.port.alias}
+                    Enabled: ${mft.sftp.port.enabled}
+                    Number: '${mft.sftp.port}'
+                    Protocol: SFTP
                     BindAddress: ${node.host}
                     ExtendedProperties:
                       Property:
@@ -142,12 +142,12 @@ templates:
                         $: Default Server Instance
                       - '@name': description
                         $: ''                    
-                COMMON-PORTS-MFT${mft.http.port.name}_${mft.http.port.number}:
+                COMMON-PORTS-MFT${mft.http.port.alias}_${mft.http.port}:
                   Port:
-                    '@alias': ${mft.http.port.name}
-                    Enabled: 'true'
-                    Number: '${mft.http.port.number}'
-                    Protocol: ${mft.http.port.protocal}
+                    '@alias': ${mft.http.port.alias}
+                    Enabled: ${mft.http.port.enabled}
+                    Number: ${mft.http.port}
+                    Protocol: HTTP
                     BindAddress: ${node.host}
                     ExtendedProperties:
                       Property:
@@ -165,12 +165,12 @@ templates:
                         $: ''
                       - '@name': keyPassword
                         $: ''
-                COMMON-PORTS-MFT${mft.https.port.name}_${mft.https.port.number}:
+                COMMON-PORTS-MFT${mft.https.port.alias}_${mft.https.port}:
                   Port:
-                    '@alias': ${mft.https.port.name}
-                    Enabled: 'true'
-                    Number: '${mft.https.port.number}'
-                    Protocol: ${mft.https.port.protocal}
+                    '@alias': ${mft.https.port.alias}
+                    Enabled: ${mft.https.port.enabled}
+                    Number: '${mft.https.port}'
+                    Protocol: HTTPS
                     BindAddress: ${node.host}
                     ExtendedProperties:
                       Property:
