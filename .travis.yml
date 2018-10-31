@@ -21,7 +21,8 @@ before_install:
 
 script: 
   - cd containers
-  - docker-compose build hello-world universal-messaging integration-server
-  - cd ../deployments/docker
-  - docker-compose -f sag-cc/docker-compose.yml up -d
-  - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+  - docker-compose build hello-world
+  # - docker-compose universal-messaging integration-server
+  # - cd ../deployments/docker
+  # - docker-compose -f sag-cc/docker-compose.yml up -d
+  # - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
