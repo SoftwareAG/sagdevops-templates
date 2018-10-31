@@ -19,11 +19,6 @@
 version: "3.2"
 
 services:
-  # node:
-  #   build:
-  #     args:
-  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-release-lnxamd64}
-
   builder:
     build:
       args:

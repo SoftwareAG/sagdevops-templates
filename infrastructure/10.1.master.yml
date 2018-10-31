@@ -19,14 +19,15 @@
 version: "3.2"
 
 services:
-  # node:
-  #   build:
-  #     args:
-  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.1-fix12-lnxamd64}
+  java:
+    build:
+      args:
+        - NODE_IMAGE=${CC_REG}/commandcentral:${TAG}-node
+    depends_on: 
+      - base
 
   builder:
     build:
       args:
         - REPO_PRODUCT_URL=http://sdc.softwareag.com/dataservewebM101/repository/
-        - REPO_USERNAME=${EMPOWER_USR}
-        - REPO_PASSWORD=${EMPOWER_PSW}
+        - NODE_IMAGE=${CC_REG}/commandcentral:${TAG}-node
