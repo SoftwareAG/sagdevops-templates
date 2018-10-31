@@ -6,21 +6,22 @@ services:
 env:
   global:
     - CC_TAG=10.3
-    - CC_REG=softwareag
-    - TAG=10.1
-    - REG=sergeipogrebnyak
-    - CC_ENV=prod
-  matrix:
-#    - CC_TEMPLATE=sag-um-server  TAG=10.1
-    - CC_TEMPLATE=hello-world TAG=10.1
-#    - CC_TEMPLATE=sag-abe TAG=10.1
+    - TAG=10.3
+    - FIXES=ALL
+  # matrix:
+  #   - C=hello-world
+  #   - C=integration-server
+  #   - C=universal-messaging
 
-# before_install:
-#   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-#   - cd infrastructure
-#   - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
-#   - cd ..
+before_install:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - cd infrastructure
+  - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
+  - cd ..
 
 script: 
-  - echo "Testing $CC_TEMPLATE with release $TAG"
-  # - ./provisionw $CC_TEMPLATE
+  - cd containers
+  - docker-compose build hello-world universal-messaging integration-server
+  - cd ../deployments/docker
+  - docker-compose -f sag-cc/docker-compose.yml up -d
+  - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
