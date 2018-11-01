@@ -4,20 +4,19 @@ services:
   - docker
 
 env:
+  - IMAGE=hello-world
+  - IMAGE=universal-messaging
+  - IMAGE=integration-server
   global:
     - CC_TAG=10.3
     - TAG=10.3
     - FIXES=ALL
     - REG=sergeipogrebnyak
-matrix:
-  include:
-    - env: IMAGE=hello-world
-    - env: IMAGE=universal-messaging
-    - env: IMAGE=integration-server
 
 jobs:
   include:
     - stage: builder
+      env: IMAGE=none
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
@@ -31,6 +30,7 @@ jobs:
       # - docker-compose build $IMAGE
       # - docker-compose push $IMAGE
     - stage: deploy
+      env: IMAGE=none
       script: 
       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd deployments/docker
