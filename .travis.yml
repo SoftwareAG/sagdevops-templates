@@ -42,6 +42,7 @@ jobs:
     - stage: deploy
       env:
         - IMAGE=none
+        - NET=sagcc_default
       script: 
         - cd deployments/docker
         - docker-compose -f sag-cc/docker-compose.yml up -d
