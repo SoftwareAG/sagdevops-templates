@@ -76,14 +76,16 @@ Template alias | Provisions
 [sag-is-cloudstreams](templates/sag-is-applatform) | Cloudstreams on Integration Server or Microservices runtime
 [sag-is-applatform](templates/sag-is-applatform) | Application Platform on Integration Server or Microservices runtime
 [sag-msc-server](templates/sag-msc-server) | webMethods Microservices Runtime
-<!-- [sag-mws-server](templates/sag-mws-server) | My webMethods server
-[sag-mws-infradc](templates/sag-mws-server) | Infrastructure Data Collector UI on My webMethods server -->
 [sag-tc-server](templates/sag-tc-server) | Terracotta BigMemory server
 [sag-tc-cluster](templates/sag-tc-cluster) | Terracotta BigMemory cluster
 [sag-tdb-server](templates/sag-tdb-server) | Terracotta DB server
 [sag-um-server](templates/sag-um-server) | Universal Messaging server
 [sag-um-cluster](templates/sag-um-cluster) | Universal Messaging cluster
 [sag-um-config](templates/sag-um-config) | Universal Messaging configuration
+
+<!-- [sag-mws-server](templates/sag-mws-server) | My webMethods server
+[sag-mws-infradc](templates/sag-mws-server) | Infrastructure Data Collector UI on My webMethods server -->
+
 
 ### Micro Templates for configuring Command Central and Platform Manager
 
