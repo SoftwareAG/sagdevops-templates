@@ -4,15 +4,16 @@ services:
   - docker
 
 env:
-  - IMAGE=hello-world
-  - IMAGE=universal-messaging
-  - IMAGE=integration-server
-  - TAG=10.3
-  - TAG=10.1
   global:
     - CC_TAG=10.3
     - FIXES=ALL
     - REG=sergeipogrebnyak
+  matrix:
+    - IMAGE=hello-world
+    - IMAGE=universal-messaging
+    - IMAGE=integration-server
+    - TAG=10.3
+    - TAG=10.1
 
 jobs:
   include:
