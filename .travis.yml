@@ -9,9 +9,11 @@ env:
     - TAG=10.3
     - FIXES=ALL
     - REG=sergeipogrebnyak
-  # - IMAGE=hello-world
-  # - IMAGE=universal-messaging
-  # - IMAGE=integration-server
+matrix:
+  include:
+    - env: IMAGE=hello-world
+    - env: IMAGE=universal-messaging
+    - env: IMAGE=integration-server
 
 jobs:
   include:
@@ -23,11 +25,13 @@ jobs:
       - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
     - stage: test
       script:
+      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd containers
-      - docker-compose build hello-world universal-messaging integration-server
-      - docker-compose push hello-world universal-messaging integration-server
+      - docker-compose build $IMAGE
+      - docker-compose push $IMAGE
     - stage: deploy
       script: 
+      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd deployments/docker
       - docker-compose -f sag-cc/docker-compose.yml up -d
       - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
