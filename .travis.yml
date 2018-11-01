@@ -15,6 +15,11 @@ env:
     - TAG=10.3
     - TAG=10.1
 
+stages:
+  - builder
+  - test
+  - deploy
+
 jobs:
   include:
     - stage: builder
