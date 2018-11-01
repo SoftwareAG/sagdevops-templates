@@ -9,12 +9,6 @@ env:
     - CC_TAG=10.3
     - FIXES=ALL
     - REG=sergeipogrebnyak
-  matrix:
-    - IMAGE=hello-world
-    - IMAGE=universal-messaging
-    - IMAGE=integration-server
-    - TAG=10.3
-    - TAG=10.1
 
 stages:
   - builder
@@ -24,7 +18,9 @@ stages:
 jobs:
   include:
     - stage: builder
-      env: IMAGE=none
+      env: 
+        - TAG=10.3
+        - TAG=10.1
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
@@ -32,6 +28,12 @@ jobs:
       # - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build
       # - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
     - stage: test
+      env:
+        - IMAGE=hello-world TAG=10.1
+        - IMAGE=universal-messaging TAG=10.3
+        - IMAGE=universal-messaging TAG=10.1
+        - IMAGE=integration-server TAG=10.3
+        - IMAGE=integration-server TAG=10.1
       script:
       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd containers
@@ -39,7 +41,9 @@ jobs:
       # - docker-compose build $IMAGE
       # - docker-compose push $IMAGE
     - stage: deploy
-      env: IMAGE=none
+      env: 
+        - TAG=10.3
+        - TAG=10.1
       script: 
       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd deployments/docker
