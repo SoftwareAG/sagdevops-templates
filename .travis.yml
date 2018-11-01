@@ -8,20 +8,39 @@ env:
     - CC_TAG=10.3
     - TAG=10.3
     - FIXES=ALL
-  # matrix:
-  #   - C=hello-world
-  #   - C=integration-server
-  #   - C=universal-messaging
+    - REG=sergeipogrebnyak
+  - IMAGE=hello-world
+  - IMAGE=universal-messaging
+  - IMAGE=integration-server
 
-before_install:
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
-  - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build && cd ..
+jobs:
+  include:
+    - stage: builder
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
+      - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build
+      - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
+    - script:
+      - cd containers
+      - docker-compose build $IMAGE
+      - docker-compose push $IMAGE
+    - stage: deploy
+      script: 
+      - cd deployments/docker
+      - docker-compose -f sag-cc/docker-compose.yml up -d
+      - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
 
-script: 
-  - cd containers
-  - docker-compose build hello-world
-  - docker-compose build universal-messaging integration-server
-  - cd ../deployments/docker
-  - docker-compose -f sag-cc/docker-compose.yml up -d
-  - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+
+# before_install:
+#   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+#   - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
+#   - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build && cd ..
+
+# script: 
+#   - cd containers
+#   - docker-compose build hello-world
+#   - docker-compose build universal-messaging integration-server
+#   - cd ../deployments/docker
+#   - docker-compose -f sag-cc/docker-compose.yml up -d
+#   - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
