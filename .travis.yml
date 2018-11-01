@@ -28,28 +28,28 @@ jobs:
         - IMAGE=none
         - TAG=10.3
       script:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
-      - echo "Building infra for $TAG"
-      # - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build
-      # - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
+        - echo "Building infra for $TAG"
+        - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build
+        - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
     - stage: test
       script:
-      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-      - cd containers
-      - echo "Building and testing $IMAGE:$TAG"
-      # - docker-compose build $IMAGE
-      # - docker-compose push $IMAGE
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - cd containers
+        - echo "Building and testing $IMAGE:$TAG"
+        - docker-compose build $IMAGE
+        - docker-compose push $IMAGE
     - stage: deploy
       env: 
         - IMAGE=none
         - TAG=10.3
       script: 
-      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-      - cd deployments/docker
-      - echo "Deploying $TAG"
-      # - docker-compose -f sag-cc/docker-compose.yml up -d
-      # - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - cd deployments/docker
+        - echo "Deploying $TAG"
+        - docker-compose -f sag-cc/docker-compose.yml up -d
+        - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
 
 # before_install:
 #   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
