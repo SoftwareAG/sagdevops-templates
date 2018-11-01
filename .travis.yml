@@ -21,20 +21,22 @@ jobs:
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
-      - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build
-      - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
+      # - cd infrastructure && COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose build
+      # - COMPOSE_FILE=docker-compose.yml:master.yml:${TAG}.master.yml docker-compose push
     - stage: test
       script:
       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd containers
-      - docker-compose build $IMAGE
-      - docker-compose push $IMAGE
+      - echo "Building and testing $IMAGE"
+      # - docker-compose build $IMAGE
+      # - docker-compose push $IMAGE
     - stage: deploy
       script: 
       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       - cd deployments/docker
-      - docker-compose -f sag-cc/docker-compose.yml up -d
-      - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+      - echo "Deploying stuff"
+      # - docker-compose -f sag-cc/docker-compose.yml up -d
+      # - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
 
 # before_install:
 #   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
