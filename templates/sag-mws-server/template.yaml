@@ -21,11 +21,11 @@ description: My webMethods Server single instance or a cluster
 
 environments:
   default:
-    db.host:             oracle             # REQUIRED: Database server hostname
-    db.type:             oracle             # oracle,sqlserver
-    db.url:              "jdbc:wm:oracle://${db.host}:1521;SID=XE"
-    db.username:         webm               # Database username
-    db.password:         webm               # Database password
+    # Database connection
+    db.type:             ${}                # REQUIRED: Database type: oracle,sqlserver,db2
+    db.url:              ${}                # REQUIRED: JDBC URL
+    db.username:         ${}                # REQUIRED: Database username
+    db.password:         ${}                # REQUIRED: Database password
 
     mws.instance.name:   default
     mws.http.port:       8585

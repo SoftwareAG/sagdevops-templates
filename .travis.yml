@@ -1,26 +1,49 @@
+language: minimal
 sudo: required
-
 services:
   - docker
+
+# os:
+#   - linux
+#   - osx
+#   - windows
 
 env:
   global:
     - CC_TAG=10.3
-    - CC_REG=softwareag
-    - TAG=10.1
+    - TAG=10.3
+    - FIXES=ALL
     - REG=sergeipogrebnyak
-    - CC_ENV=prod
   matrix:
-#    - CC_TEMPLATE=sag-um-server  TAG=10.1
-    - CC_TEMPLATE=hello-world TAG=10.1
-#    - CC_TEMPLATE=sag-abe TAG=10.1
+    - IMAGE=universal-messaging
+    - IMAGE=integration-server
 
-# before_install:
-#   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-#   - cd infrastructure
-#   - docker-compose -f docker-compose.yml -f master.yml -f ${TAG}.master.yml build
-#   - cd ..
+stages:
+  - infra
+  - test
+  - deploy
 
-script: 
-  - echo "Testing $CC_TEMPLATE with release $TAG"
-  # - ./provisionw $CC_TEMPLATE
+before_install: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
+script:
+  - cd containers && echo "Building and testing $IMAGE:$TAG"
+  - docker-compose build $IMAGE && docker-compose push $IMAGE
+
+jobs:
+  include:
+    - stage: infra
+      env:
+        - IMAGE=none
+      script: 
+        - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
+        - cd infrastructure && export COMPOSE_FILE="docker-compose.yml:master.yml:${TAG}.master.yml"
+        - docker-compose build && docker-compose push
+
+    - stage: deploy
+      env:
+        - IMAGE=none
+        - NET=sagcc_default
+      script: 
+        - cd deployments/docker
+        - docker-compose -f sag-cc/docker-compose.yml up -d
+        - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init

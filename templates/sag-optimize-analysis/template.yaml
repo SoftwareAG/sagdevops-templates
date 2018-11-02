@@ -20,13 +20,10 @@ environments:
     optimize.jdbc.pool.alias:       optimize
    
     # Database connection
-    db.type:             ORACLE                 # REQUIRED: Database type: ORACLE,SQLSERVER
-    db.host:             localhost              # REQUIRED: Database server hostname
-    db.port:             1521                   # REQUIRED: Database server port
-    db.name:             webmdb
-    db.username:         webmdb                 # Database username
-    db.password:         ${}                    # Database password
-    db.url:              "jdbc:wm:oracle://${db.host}:${db.port};serviceName=${db.name}"
+    db.TYPE:             ${}                # REQUIRED: Database type: ORACLE,SQLSERVER,DB2
+    db.url:              ${}                # REQUIRED: JDBC URL
+    db.username:         ${}                # REQUIRED: Database username
+    db.password:         ${}                # REQUIRED: Database password
     
 layers:
     runtime:
@@ -80,9 +77,7 @@ templates:
                         RetriesBackoff: 500
                         MaxStatementsInCache: 0
                         DatabaseServer:
-                          "@type" : ${db.type}
-                          Host: ${db.host}
-                          PortNumber: ${db.port}
+                          "@type" : ${db.TYPE}
                           URL: "${db.url}"
                           User: ${db.username}
                           Password: ${db.password}

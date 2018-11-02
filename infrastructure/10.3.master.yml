@@ -19,14 +19,7 @@
 version: "3.2"
 
 services:
-  # node:
-  #   build:
-  #     args:
-  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-fix1-lnxamd64}
-
   builder:
     build:
       args:
-        - REPO_PRODUCT_URL=http://sdc.softwareag.com/dataservewebM103/repository/
-        - REPO_USERNAME=${EMPOWER_USR}
-        - REPO_PASSWORD=${EMPOWER_PSW}
+        - REPO_PRODUCT_URL=https://sdc.softwareag.com/dataservewebM103/repository
