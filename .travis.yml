@@ -35,7 +35,7 @@ jobs:
       env:
         - IMAGE=none
       script: 
-        - cd licenses && openssl aes-256-cbc -K $encrypted_9d8aedf6ae71_key -iv $encrypted_9d8aedf6ae71_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
+        - cd licenses && openssl aes-256-cbc -K $encrypted_11f35f1fe671_key -iv $encrypted_11f35f1fe671_iv -in licenses.zip.enc -out licenses.zip -d && cd ..
         - cd infrastructure && export COMPOSE_FILE="docker-compose.yml:master.yml:${TAG}.master.yml"
         - docker-compose build && docker-compose push
 
