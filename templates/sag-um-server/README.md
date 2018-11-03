@@ -42,6 +42,7 @@ All supported Windows and UNIX platforms.
   * License
   * JVM memory
   * NHP and JMX ports
+  * COMMON-JAVASYSPROPS configuration in yaml format used in the template is supported for 10.1 or higher. 
 * Building docker images for 10.x releases
 
 ## Provisioning of new server instance
