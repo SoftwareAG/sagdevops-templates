@@ -16,9 +16,9 @@
      limitations under the License.                                                  
 
 -->
-# Command Central and Platform Manager Default Timeout Configuration
+# Command Central and Platform Manager Server System Properties
 
-Use this template to set default timeout configuration for basic operations in Command Central and Platform Manager.
+Use the template to configure system properties for Command Central and Platform Manager that modify the server behavior during operations, such as bootstrapping, installing products, or creating repositories.
 
 ## Requirements
 
@@ -32,7 +32,7 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To set default timeout configuration in Command Central and Platform Manager:
+To set up server system properties for Command Central and Platform Manager:
 
 ```bash
 sagcc exec templates composite apply sag-cc-tuneup --sync-job --wait 360
