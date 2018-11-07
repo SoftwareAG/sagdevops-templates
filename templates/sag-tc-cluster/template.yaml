@@ -18,10 +18,11 @@
 ###############################################################################
 alias: sag-tc-cluster
 description: Terracotta Big Memory Max 4.x two-node cluster
+dslVersion: "1.1"
 
 environments:
   default:
-    tc.tes.license.key:  Terracotta.key # ${} # REQUIRED: license key
+    tc.tes.license.key:  Terracotta.key     # license key
     tc.tsa.port:         9010
     tc.jmx.port:         9020
     tc.grp.port:         9030
@@ -35,20 +36,13 @@ environments:
     tc.logs.dir:         ../logs
     tc.index.dir:        ../index
 
-    # FEATURE: auto-resolve from selected ${nodes}
-    # cluster.size:        2                # how many nodes cluster: 2 or 4 ?
-    nodes[0]:            dev1               # REQUIRED: nodes[0].alias
-    hosts[0]:            dev1               # REQUIRED: nodes[0].host
-    nodes[1]:            dev2               # REQUIRED: nodes[1].alias
-    hosts[1]:            dev2               # REQUIRED: nodes[1].host
-
 layers:
   runtime:
     productRepo: ${repo.product}
     fixRepo:     ${repo.fix}
     templates:
       - tc-server
-      - tc-cluster-2 # ${cluster.size}
+      - tc-cluster-${runtime.nodes.count}
 
 templates:
   tc-server:
@@ -81,7 +75,7 @@ templates:
                       xmlns:tc="http://www.terracotta.org/config" 
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-9.xsd">
                       <servers>
-                          <server name="${nodes[0]}" host="${hosts[0]}">
+                          <server name="${runtime.nodes[1]}" host="${runtime.hosts[1]}">
                               <data>${tc.data.dir}</data>
                               <logs>${tc.logs.dir}</logs>
                               <index>${tc.index.dir}</index>
@@ -94,7 +88,7 @@ templates:
                                   <hybrid/>
                               </dataStorage>
                           </server>
-                          <server name="${nodes[1]}" host="${hosts[1]}">
+                          <server name="${runtime.nodes[2]}" host="${runtime.hosts[2]}">
                               <data>${tc.data.dir}</data>
                               <logs>${tc.logs.dir}</logs>
                               <index>${tc.index.dir}</index>
@@ -123,4 +117,5 @@ templates:
            
 provision:
   default:
-    runtime: ${nodes}
+    runtime:
+      aliases: ${nodes}
