@@ -18,7 +18,7 @@
 -->
 # Command Central Layer Type Definitions
 
-Use this template to configure Software AG base layer type definitions.
+Creates configuration instances of layer type definitions that you use when defining layers in a Software AG product stack.
 
 ## Requirements
 
@@ -32,13 +32,13 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To configure Software AG base layer type definitions:
+To create configuration instances of the layer definitions defined in the template:
 
 ```bash
 sagcc exec templates composite apply sag-cc-layer-defs --sync-job -- wait 360
 ```
 
-> > IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
+> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
 
 ```bash
 sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
