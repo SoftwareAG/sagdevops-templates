@@ -12,32 +12,42 @@ env:
   - secure: OuBN7AuWaoi9cyK1xaCFs1opHfaWU3HSyezANq6wqwwyz79k0XqKX75StiK2mkuAT3kmiKlMYBwMX45SUsKSPFjWDFzxs/KnUAVXVMAvrZTz+uj9+BLYhtN/ATEM+9jWaksIzkD0KeVkytfBzagD9/VHhwJmOIEEnULieKyuCjDH4FNJc0iCF+SLXQ8fr/j8eljBNMtscxgnMFV/NHY8wyeM/lcAmv6qOxd3zjv6GSQR7z7OgNHxUQox89G0ISrqOSmWcEezSTLBmTzxAMn0OfXSwDJbYMKTVAeoHpFmP0RBaozDxFrHzvx0g9oBg4WFouf1LMYBpSDqRd392ZJQft9vtXSTohtlr8WQ6lUMSR/0Wq4O6u+QLQNGD73sHRjf0I67+XCOnRbjEk0W8WHNPHm4fy+D7X0FAE28vv6pjI3beOEBE8F3Mt7peYBkZyBzmmTrjV9B8MfubqbD+anlFm+PvIdLz7rdSt5ya2gR6j01ziUAvxQ5gjIjXxaVYpb/LxeFSVrNMqF+mr9gSZyfoWFIid5JJJH+oFfWEt7VHk2k79tQQjVxkqrFKCOCHlBDtJwop3UynWGT8Rwe7aTiMdDjsXmRHOmGffVraQCxBo128uppYxGpGkcWuk8AxUWBEZT6PC/HHjxnFmdyjXcaKCsZFe45zj56e4mddC8M++Y=
   - secure: FWx5fSE7fTJ3bVVKo9NPrtw+lHfhRVYQSIRbehISCnDb0jEjqis0u1GYAMXXAYMfTnNixBkpUrphz1tKPe1dZ4KzG3mDPrKd8FfZ3lUePKPMY5bqQJZ7+7nVvCRtxIKmSb+RMUevFxHwefm19FHSHnle568DKNX63rn6VKjuBvYDgTg8rZjEfF6mdt6RgJpD3KZkMWVsStxElWezva2pnEgti+Dy2pCQQ/pMdmsxjBn/TC2v//zrsl5e5v/yqGBqCt0pAY2f2vK5MreV84RtOzY0obhkK7G5xlExmj/NcRuaMYQHUgRMZo6r2RE08ClExJfIFzx9BclOfDhQohAdH/n1tUe9CQXVdQXpy4XJNOgVXKI9vHwqOuf/81VYdwj4bCCeZaCATut+wQhhJWs/TjK8EKPP1StTuaNE1qOwnK89lr3eu15MJb4R4Hl5pz/OeLNJ22fRO0fxQngiks50S50WGt3IIhDKotLhvsjlr1xFY3Bm3Tj/5bopRqs0CD0g16Gfyc6ngBKPuVjiplASyvhU2j/TDsa8g0J17APJ+OgwJbqEKr1k9pE6eR2E1/DGXZ9ohkjDjadJPB9ZbCqhPpPkYkatmJIokEfaq6rgYHIWqovjQ4VJ9mudkjfOjhQM5yMECcX8Rc2hE8Q5fb8BNOUAlZncZVpIfDgKeBSRz5k=
   - secure: QvtsBsCArJPktVJZyQsyXi9YvdUJ2DmmVW7WbkbqCGU+LbQ8eFVZDkxqcV1svl1vTTtQU7vNVGeYryd8SeO5cm69R0Yu2W6+PkvBinjOKJv7D/oTC0W1AxKcjjvvthl5Afw+VOkeYmLV/1x3oNTTmpRVoV9OJBVOQbRCFko9nmamwTArwUDtu8PiCTRSqI1ptz2ELLd+6y4+3qRIYZxdfyXmbXqoAAPnIJy4PN5Mdy2eY+CxtWwkLoMBtcmIL34gbrJBtWwYluRHal3fLWOdesE78ptcJFvbgaf6h8Eo5xoOXPaHUSkhSnOHitTlnUsq58f2jsbmxnpXpojlwZ/owugGQB2jrdRwdnNW6d1oITJmiCd86X8zW+o0e5I0csl70u3A/pHqb2usYQok4iXKOCWXd9JhcdbNQR4XbcwYRkDXAcnYeIAzroND6Q2J1UmY5uU+xpGa5Y9uxgs8h9UtYvnkOno29YamVAEsMnHmCiSuNywtVhkkiCZgbj9JlhLD0H6TdJdEjK3O5r2SDCEYdqLYqfb7GDHaOjmq0qrUfaaJtixJdrplpc75/vKOCKhNjOj89+zaFr18vxqnrRaeNr7R/h8W4GwxHzjTVdko35hvw7apzVfwUnXwVvZOxk5xdmkIdtDaVspPNJa/Lm9dPd3xDpuL4Qnzii5jJsssTKs=
+  # matrix:
+  # - IMAGE=universal-messaging
+  # - IMAGE=integration-server
   matrix:
-  - IMAGE=universal-messaging
-  - IMAGE=integration-server
-stages:
-- infra
-- test
-- deploy
+  - T=hello-world
+  - T=sag-um-server
+  - T=sag-msc-server
+  - T=sag-tc-server
+  - T=sag-apama-correlator
+# stages:
+# - infra
+# - test
+# - deploy
 before_install: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
 script:
-- cd containers && echo "Building and testing $IMAGE:$TAG"
-- docker-compose build $IMAGE && docker-compose push $IMAGE
-jobs:
-  include:
-  - stage: infra
-    env:
-    - IMAGE=none
-    script:
-    - cd licenses && openssl aes-256-cbc -K $encrypted_11f35f1fe671_key -iv $encrypted_11f35f1fe671_iv
-      -in licenses.zip.enc -out licenses.zip -d && cd ..
-    - cd infrastructure && export COMPOSE_FILE="docker-compose.yml:master.yml:${TAG}.master.yml"
-    - docker-compose build && docker-compose push
-  - stage: deploy
-    env:
-    - IMAGE=none
-    - NET=sagcc_default
-    script:
-    - cd deployments/docker
-    - docker-compose -f sag-cc/docker-compose.yml up -d
-    - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+- ./provisionw $T
+
+# script:
+# - cd containers && echo "Building and testing $IMAGE:$TAG"
+# - docker-compose build $IMAGE && docker-compose push $IMAGE
+# jobs:
+#   include:
+#   - stage: infra
+#     env:
+#     - IMAGE=none
+#     script:
+#     - cd licenses && openssl aes-256-cbc -K $encrypted_11f35f1fe671_key -iv $encrypted_11f35f1fe671_iv
+#       -in licenses.zip.enc -out licenses.zip -d && cd ..
+#     - cd infrastructure && export COMPOSE_FILE="docker-compose.yml:master.yml:${TAG}.master.yml"
+#     - docker-compose build && docker-compose push
+#   - stage: deploy
+#     env:
+#     - IMAGE=none
+#     - NET=sagcc_default
+#     script:
+#     - cd deployments/docker
+#     - docker-compose -f sag-cc/docker-compose.yml up -d
+#     - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
