@@ -1,0 +1,42 @@
+version: "3.2"
+
+services:
+  dev1:
+    image: ${CC_REG}/commandcentral-node:${TAG}
+    hostname: dev1
+    environment:
+      - CC_AUTO_REGISTER=1
+      - CC_SERVER=cc
+      - CC_PASSWORD
+
+  dev2:
+    image: ${CC_REG}/commandcentral-node:${TAG}
+    hostname: dev2
+    environment:
+      - CC_AUTO_REGISTER=1
+      - CC_SERVER=cc
+      - CC_PASSWORD
+
+  provision:
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}
+    environment: 
+      - CC_ENV=cluster
+      - CC_SERVER=cc
+      - CC_PASSWORD
+    command: > 
+      bash -c '
+      echo "Waiting for repositories ..." &&
+      sagcc list repository products -e products -w 600 --wait-for-cc &&
+      sagcc list repository fixes -e fixes -w 600 --wait-for-cc &&
+      echo "Provisioning TC cluster ..." &&
+      sagcc exec templates composite apply sag-tc-cluster \
+        repo.product=products repo.fix=fixes \
+        nodes=dev1,dev2 --wait-for-cc --wait 600 --sync-job'
+    depends_on: 
+      - dev1
+      - dev2
+
+networks:
+  default:
+    external:
+      name: ${NET:-sagdevops-templates_default}
