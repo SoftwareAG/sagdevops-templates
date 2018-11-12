@@ -17,12 +17,11 @@
 
 -->
 
-# Application Platform on Designer
+# Application Platform in Designer
 
-Use this template to provision Application Platform on Designer.
+Use this template to provision Application Platform in Designer.
 
-## Requirements
-None
+## Requirements and Limitations
 
 ### Supported Software AG releases
 
@@ -35,19 +34,21 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-Provisioning Application Platform on Designer 10.1 or higher 
+Provisioning Application Platform in Software AG Designer 10.1 and higher.
 
 ## Running as a composite template
 
 1. To import the sag-designer-appplatform/template.yaml file in Command Central, use one of the methods described in [Importing templates library](https://github.com/SoftwareAG/sagdevops-templates/wiki/Importing-templates-library)
+
 2. To apply the template, follow the instructions in [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
 
-### Example
-To provision Application Platform on Designer with alias `dev1`:
+### Provisioning Application Platform in Designer
+
+To provision Application Platform in a Designer installation with alias `dev1`:
 
 ```bash
 sagcc exec templates composite apply sag-designer-appplatform nodes=dev1 \
-  repo.product=products-10.2 \
-  repo.fix=fixes-10.2 \
+  repo.product=products-10.3 \
+  repo.fix=fixes-10.3 \
   --sync-job --wait 360
 ```
