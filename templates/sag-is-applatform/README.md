@@ -21,9 +21,7 @@
 
 Use this template to provision Application Platform 10.1 and higher.
 
-## Requirements
-
-None
+## Requirements and Limitations
 
 ### Supported Software AG releases
 
@@ -43,54 +41,63 @@ All supported Windows and UNIX platforms.
 
 ## Running as a composite template
 
-> IMPORTANT: Apply this template on top of an _existing_ Integration Server or Microservices Runtime instance with the same release version as Application Platform.
+> IMPORTANT: Apply this template to an _existing_ Integration Server or Microservices Runtime instance with the same release version as Application Platform.
 
-1. To import the sag-is-applatform/template.yaml file in Command Central, use one of the methods described in [Importing templates library](https://github.com/SoftwareAG/sagdevops-templates/wiki/Importing-templates-library)
-2. To apply the template, follow the instructions in [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli)
+1. To import the sag-is-applatform/template.yaml file in Command Central, use one of the methods described in [Importing templates library](https://github.com/SoftwareAG/sagdevops-templates/wiki/Importing-templates-library).
+2. To apply the template, follow the instructions in [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
 ### Provisioning Application Platform on Microservices Runtime
 
-Provision an instance of Microservices Runtime on managed node with alias `dev1`:
+1. Provision an instance of Microservices Runtime on a managed node with alias `dev1`:
+
+	```bash
+	sagcc exec templates composite apply sag-msc-server nodes=dev1 \
+  	repo.product=products-10.1 \
+  	repo.fix=fixes-10.1 \
+  	--sync-job --wait 360
+	```
+	See [sag-msc-server](../sag-msc-server/) for details.
+
+2. Provision Application Platform on top of the above Microservices Runtime instance:
+
+	```bash
+	sagcc exec templates composite apply sag-is-applatform nodes=dev1 \
+	 repo.product=products-10.1 \
+	 repo.fix=fixes-10.1 \
+	 --sync-job --wait 360
+	```
+
+> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
 
 ```bash
-sagcc exec templates composite apply sag-msc-server nodes=dev1 \
-  repo.product=products-10.1 \
-  repo.fix=fixes-10.1 \
-  --sync-job --wait 360
-```
-
-See [sag-msc-server](../sag-msc-server/) for details.
-
-Provision Application Platform on top of the above Microservices Runtime instance:
-
-```bash
-
-sagcc exec templates composite apply sag-is-applatform nodes=dev1 \
-  repo.product=products-10.1 \
-  repo.fix=fixes-10.1 \
-  --sync-job --wait 360
+sagcc list jobmanager jobs <jobIdFromCommand> --wait 360 -e DONE
 ```
 
 ### Provisioning Application Platform on Integration Server
 
-Provision an instance of Integration Server on managed node with alias `dev2`
+1. Provision an instance of Integration Server on a managed node with alias `dev2`:
+
+	```bash
+	sagcc exec templates composite apply sag-is-server nodes=dev2 \
+     repo.product=products-10.1 \
+	 repo.fix=fixes-10.1 \
+	 --sync-job --wait 360
+	```
+
+	See [sag-is-server](../sag-is-server/) for details.
+
+2. Provision Application Platform on top of the above Integration Server instance:
+
+	```bash
+	sagcc exec templates composite apply sag-is-applatform nodes=dev2 \
+	 is.instance.type=integrationSever \
+	 repo.product=products-10.1 \
+ 	 repo.fix=fixes-10.1 \
+	 --sync-job --wait 360
+	```
+
+> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=dev2 \
-  repo.product=products-10.1 \
-  repo.fix=fixes-10.1 \
-  --sync-job --wait 360
-```
-
-See [sag-is-server](../sag-is-server/) for details.
-
-Provision Application Platform on top of the above Integration Server instance:
-
-```bash
-
-sagcc exec templates composite apply sag-is-applatform nodes=dev2 \
-  is.instance.type=integrationSever \
-  repo.product=products-10.1 \
-  repo.fix=fixes-10.1 \
-  --sync-job --wait 360
+sagcc list jobmanager jobs <jobIdFromCommand> --wait 360 -e DONE
 ```
