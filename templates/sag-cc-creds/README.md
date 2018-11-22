@@ -18,8 +18,7 @@
 -->
 # Command Central Credentials for Basic Authentication
 
-Use this template to configure user credentials that Command Central uses when connecting to managed products using basic authentication.
-You can also use the template to define a credentials key alias for the user credentials used for basic authentication.
+Use this template to configure user credentials that Command Central uses when connecting to managed products using basic authentication. You can also use the template to define a credentials key alias for the user credentials used for basic authentication.
 
 ## Requirements
 
