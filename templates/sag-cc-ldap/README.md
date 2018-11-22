@@ -16,11 +16,15 @@
      limitations under the License.                                                  
 
 -->
-# Command Central LDAP Configuration
+# Users, Roles, and Groups for an LDAP Directory and the Command Central Internal User Repository
 
-This template provides sample configurationfor LDAP, including users, groups, and roles.
+Use this template to configure users, roles, and groups for:
+- an external LDAP directory (including the LDAP domain parameter that helps Command Central determine whether to verify the user against the LDAP user store or the internal user repository)
+- the Command Central internal user repository
 
 ## Requirements
+
+None.
 
 ### Supported Software AG releases
 
@@ -32,14 +36,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To create sample LDAP configuration:
+To configure users, roles, and groups that Command Central uses to authenticate users and determine what permissions they have:
 
 ```bash
 sagcc exec templates composite apply sag-cc-ldap --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
