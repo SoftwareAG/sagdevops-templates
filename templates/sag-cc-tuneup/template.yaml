@@ -27,7 +27,7 @@ environments:
     # Read from Platform Manager timeout (seconds) 
     timeout.spm.read.seconds: 900
     # Read product and fix repositories timeout (milliseconds)
-    timeout.repo.read.seconds: 5
+    timeout.repo.read.seconds: 3600
     
     # Default job timeout (seconds)
     timeout.job.seconds: 4800
