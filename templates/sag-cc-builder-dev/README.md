@@ -18,7 +18,7 @@
 -->
 # Internal Repositories for the Command Central Docker Builder
 
-Use this template to add internal mirror repositories (located inside the Software AG network) to use with the Command Central Docker builder when building images for internal development or testing.
+Use this template to add internal product, fix, and asset repositories (located inside the Software AG network) to use with the Command Central Docker builder when building images for internal development or testing.
 
 ## Requirements
 
@@ -34,7 +34,7 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To add internal repositories to use with Command Central Docker builder:
+To add internal product, fix, and asset repositories to use with Command Central Docker builder:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-dev --sync-job --wait 360
