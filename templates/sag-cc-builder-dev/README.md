@@ -16,11 +16,13 @@
      limitations under the License.                                                  
 
 -->
-# Command Central Product, Fix, and Asset Repositories
+# Internal Repositories for the Command Central Docker Builder
 
-Use this template to add product, fix, and asset repositories in Command Central.
+Use this template to add internal product, fix, and asset repositories (located inside the Software AG network) to use with the Command Central Docker builder when building images for internal development or testing.
 
 ## Requirements
+
+None.
 
 ### Supported Software AG releases
 
@@ -32,14 +34,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To add product, fix, and asset repositories in Command Central:
+To add internal product, fix, and asset repositories to use with Command Central Docker builder:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-dev --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
