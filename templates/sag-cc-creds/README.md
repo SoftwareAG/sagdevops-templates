@@ -16,11 +16,13 @@
      limitations under the License.                                                  
 
 -->
-# Command Central Basic Outbound Credentials
+# Command Central Credentials for Basic Authentication
 
-Use this template to configure basic outbound credentials for Command Central.
+Use this template to configure user credentials that Command Central uses when connecting to managed products using basic authentication. You can also use the template to define a credentials key alias for the user credentials used for basic authentication.
 
 ## Requirements
+
+None.
 
 ### Supported Software AG releases
 
@@ -32,18 +34,12 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To configure basic outbound credentials for Command Central with username "Administrator", password "manage", and credentials key alias "administrator":
+To configure credentials that Command Central uses for basic authentication for a user with username "myuser", password "secret", and credentials key alias "MY_USER":
 
 ```bash
 sagcc exec templates composite apply sag-cc-creds \
-  credentials.username=Administrator \
-  credentials.password=manage \
-  credentials.key=administrator \
+  credentials.username=myuser \
+  credentials.password=secret \
+  credentials.key=MY_USER \
   --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option::
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
