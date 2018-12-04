@@ -22,7 +22,18 @@ Use this template to add Software AG product and fix repositories for all offici
 
 ## Requirements
 
-None.
+Create Empower credentials by running the sag-cc-creds template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=yourusername \
+  credentials.password=yourpassword \
+  credentials.key=EMPOWER \
+  --sync-job --wait 360
+```
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
+
 
 ### Supported Software AG releases
 
