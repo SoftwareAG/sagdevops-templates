@@ -22,7 +22,17 @@ Use this template to add remote mirror repositories for products and fixes. This
 
 ## Requirements
 
-None.
+Create administrator credentials for the Platform Manager hosting the mirrors by running the sag-cc-creds template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=Administrator \
+  credentials.password=manage \
+  credentials.key=DEFAULT_ADMINISTRATOR \
+  --sync-job --wait 360
+```
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
 
 ### Supported Software AG releases
 
