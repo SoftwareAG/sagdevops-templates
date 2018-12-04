@@ -23,7 +23,15 @@ Use this template to add public Software AG product and fix repositories to use 
 
 ## Requirements
 
-None.
+Create Empower credentials by running the sag-cc-creds template:
+
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=myempoweruser \
+  credentials.password=myempowerpass \
+  credentials.key=empower \
+  --sync-job --wait 360
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
 
 ### Supported Software AG releases
 
@@ -39,7 +47,7 @@ To add Software AG repositories to use with the Command Central Docker builder:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
-  repo.product.url=https://sdc.softwareag.com/dataservewebM103/repository
+  repo.product.url=https://sdc.softwareag.com/dataservewebM103/repository \
   repo.product.credentials.key=empower \
   repo.product.name=webM103 \
   repo.fix.url=https://sdc.softwareag.com/updates/prodRepo \
