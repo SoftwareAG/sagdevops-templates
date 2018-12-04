@@ -22,7 +22,13 @@ Only for internal use. With this template, you can add the General Availability 
 
 ## Requirements
 
-None.
+Configure custom credentials by running the sag-cc-creds-dev template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds-dev cc.password=mycustompass --sync-job --wait 20 -c 5
+```
+
+For more information, see [sag-cc-creds-dev](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds-dev).
 
 ### Supported Software AG releases
 
