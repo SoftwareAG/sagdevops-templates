@@ -63,7 +63,7 @@ Template alias | Provisions
 [sag-des](templates/sag-des) | Digital Event Services
 [sag-des-config](templates/sag-des-config) | Digital Event Services configuration
 [sag-designer-services](templates/sag-designer-services) | Designer Service Development
-[sag-designer-cloudstreams](templates/sag-designer-services) | Designer Cloudstreams Development
+[sag-designer-cloudstreams](templates/sag-designer-cloudstreams) | Designer Cloudstreams Development
 [sag-exx-broker](templates/sag-exx-broker) | EntireX Broker
 [sag-exx-c-rpc-server](templates/sag-exx-c-rpc-server) | EntireX C RPC server
 [sag-exx-java-rpc-server](templates/sag-exx-java-rpc-server) | EntireX Java RPC server
@@ -73,7 +73,7 @@ Template alias | Provisions
 [sag-is-cluster](templates/sag-is-cluster) | webMethods Integration Server stateless cluster
 [sag-is-statefull-cluster](templates/sag-is-statefull-cluster) | webMethods Integration Server statefull cluster
 [sag-is-config](templates/sag-is-config) | webMethods Integration Server configurations
-[sag-is-cloudstreams](templates/sag-is-applatform) | Cloudstreams on Integration Server or Microservices runtime
+[sag-is-cloudstreams](templates/sag-is-cloudstreams) | Cloudstreams on Integration Server or Microservices runtime
 [sag-is-applatform](templates/sag-is-applatform) | Application Platform on Integration Server or Microservices runtime
 [sag-msc-server](templates/sag-msc-server) | webMethods Microservices Runtime
 [sag-tc-server](templates/sag-tc-server) | Terracotta BigMemory server
@@ -84,7 +84,7 @@ Template alias | Provisions
 [sag-um-config](templates/sag-um-config) | Universal Messaging configuration
 
 <!-- [sag-mws-server](templates/sag-mws-server) | My webMethods server
-[sag-mws-infradc](templates/sag-mws-server) | Infrastructure Data Collector UI on My webMethods server -->
+[sag-mws-infradc](templates/sag-mws-infradc) | Infrastructure Data Collector UI on My webMethods server -->
 
 
 ### Micro Templates for configuring Command Central and Platform Manager
@@ -93,11 +93,11 @@ The following table lists the micro templates for configuring Command Central an
 
 Template alias | Description
 -------------------------|--------------------------------
-[sag-cc-builder-repos](templates/sag-cc-builder-dev) | Configures product and fix repositories for Docker builder
+[sag-cc-builder-repos](templates/sag-cc-builder-repos) | Configures product and fix repositories for Docker builder
 [sag-cc-creds-dev](templates/sag-cc-creds-dev) | Configures different types of credentials.
 [sag-cc-creds](templates/sag-cc-creds) | Configures default outbound credentials for Command Central.
 [sag-cc-layer-defs](templates/sag-cc-layer-defs) | Creates Software AG layer type definitions for Stacks API and UI
-[sag-cc-ldap](templates/sag-spm-boot-local) | Configures Command Central LDAP connection and sample users, groups and roles.
+[sag-cc-ldap](templates/sag-cc-ldap) | Configures Command Central LDAP connection and sample users, groups and roles.
 [sag-cc-mirrors](templates/sag-cc-mirrors) | Registers remote mirrors.
 [sag-cc-repos](templates/sag-cc-repos) | Configures master repositories hosted on Empower SDC.
 [sag-cc-repos-asset](templates/sag-cc-repos-asset) | Configures a sample asset repository.
@@ -120,4 +120,4 @@ Docker image | Description
 [entirex-xml-rpc-server](containers/entirex-xml-rpc-server) | Entire XML RPC server
 [integration-server](containers/integration-server) | webMethods Microservices runtime and Integration Server
 [terracotta-server](containers/terracotta-server) | Terracotta BigMemory server
-[universal-messaging](containers/universal-messages) | Universal Messaging server
+[universal-messaging](containers/universal-messaging) | Universal Messaging server
