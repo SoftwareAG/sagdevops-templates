@@ -18,9 +18,17 @@
 -->
 # Command Central Internal CD Product and Fix Repositories
 
-Use this template to create internal CD Software AG product and fix repositories in Command Central for development purposes.
+Only for internal use. With this template, you can add the development or testing sandboxes, located on the Software AG internal install servers, as product and fix repositories in Command Central.
 
 ## Requirements
+
+Configure custom credentials by running the sag-cc-creds-dev template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds-dev cc.password=mycustompass --sync-job --wait 20 -c 5
+```
+
+For more information, see [sag-cc-creds-dev](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds-dev).
 
 ### Supported Software AG releases
 
@@ -32,14 +40,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To create a internal CD Software AG product and fix repositories in Command Central:
+To add internal sandboxes with product and fix builds as repositories in Command Central:
 
 ```bash
 sagcc exec templates composite apply sag-cc-repos-dev --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
