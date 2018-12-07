@@ -18,9 +18,17 @@
 -->
 # Command Central Internal GA Product and Fix Repositories
 
-Use this template to create internal GA Software AG product and fix repositories in Command Central that replicate the production repositories, provided to Software AG customers.
+Only for internal use. With this template, you can add the General Availability (GA) or release-candidate sandboxes, located on the Software AG internal install servers, as product and fix repositories in Command Central.
 
 ## Requirements
+
+Configure custom credentials by running the sag-cc-creds-dev template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds-dev cc.password=mycustompass --sync-job --wait 20 -c 5
+```
+
+For more information, see [sag-cc-creds-dev](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds-dev).
 
 ### Supported Software AG releases
 
@@ -32,14 +40,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To create a internal GA Software AG product and fix repositories in Command Central:
+To add internal sandboxes with GA or release-candidate products and fixes as repositories in Command Central:
 
 ```bash
 sagcc exec templates composite apply sag-cc-repos-ga --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
