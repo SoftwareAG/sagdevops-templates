@@ -18,9 +18,21 @@
 -->
 # Command Central Remote Mirrors Registration
 
-Use this template to register product and fix mirror repositories in Command Central.
+Use this template to add remote mirror repositories for products and fixes. This template connects Command Central to the mirror repositories that already exist on a remote Platform Manager node.
 
 ## Requirements
+
+Create administrator credentials for the Platform Manager hosting the mirrors by running the sag-cc-creds template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=Administrator \
+  credentials.password=manage \
+  credentials.key=DEFAULT_ADMINISTRATOR \
+  --sync-job --wait 360
+```
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
 
 ### Supported Software AG releases
 
@@ -32,14 +44,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To register product and fix mirror repositories in Command Central:
+To add remote mirror repositories:
 
 ```bash
 sagcc exec templates composite apply sag-cc-mirrors --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
