@@ -53,7 +53,7 @@ sagcc exec templates composite apply sag-cc-builder-repos \
   repo.product.credentials.key=empower \
   repo.product.name=webM103 \
   repo.fix.url=https://sdc.softwareag.com/updates/prodRepo \
-  repo.fix.credentials.key=empower \
+  repo.fix.credentials.key=EMPOWER \
   repo.fix.name=fixRepo103 \
   --sync-job --wait 360
 ```
