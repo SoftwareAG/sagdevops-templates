@@ -17,11 +17,23 @@
 
 -->
 
-# Command Central Product and Fix Repositories
+# Software AG Repositories for the Command Central Docker Builder
 
-Use this template to add product and fix repositories in Command Central.
+Use this template to add public Software AG product and fix repositories to use with the Command Central Docker builder.
 
 ## Requirements
+
+Create Empower credentials by running the sag-cc-creds template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=yourusername \
+  credentials.password=yourpassword \
+  credentials.key=EMPOWER \
+  --sync-job --wait 360
+```
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
 
 ### Supported Software AG releases
 
@@ -33,23 +45,16 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To add product and fix repositories in Command Central:
+To add Software AG repositories to use with the Command Central Docker builder:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
-  repo.product.url=http://aquarius-bg.eur.a.sag/103oct2018_SIC \
-  repo.product.credentials.key=empower \
-  repo.product.name=103oct2018_SIC \
-  repo.fix.url=http://aquarius-bg.eur.a.sag/GA_Fix_Repo \
-  repo.fix.credentials.key=empower \
-  repo.fix.name=GA_Fix_Repo \
+  repo.product.url=https://sdc.softwareag.com/dataservewebM103/repository \
+  repo.product.credentials.key=EMPOWER \
+  repo.product.name=webM103 \
+  repo.fix.url=https://sdc.softwareag.com/updates/prodRepo \
+  repo.fix.credentials.key=EMPOWER \
+  repo.fix.name=fixRepo103 \
   --sync-job --wait 360
 ```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
-```
-
 
