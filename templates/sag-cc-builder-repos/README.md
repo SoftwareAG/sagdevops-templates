@@ -50,7 +50,7 @@ To add Software AG repositories to use with the Command Central Docker builder:
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
   repo.product.url=https://sdc.softwareag.com/dataservewebM103/repository \
-  repo.product.credentials.key=empower \
+  repo.product.credentials.key=EMPOWER \
   repo.product.name=webM103 \
   repo.fix.url=https://sdc.softwareag.com/updates/prodRepo \
   repo.fix.credentials.key=EMPOWER \
