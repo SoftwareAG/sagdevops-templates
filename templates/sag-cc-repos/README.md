@@ -18,9 +18,22 @@
 -->
 # Command Central Public Product and Fix Master Repositories
 
-Use this template to create public Software AG master repositories for products and fixes in Command Central with default contents.
+Use this template to add Software AG product and fix repositories for all officially supported releases.
 
 ## Requirements
+
+Create Empower credentials by running the sag-cc-creds template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=yourusername \
+  credentials.password=yourpassword \
+  credentials.key=EMPOWER \
+  --sync-job --wait 360
+```
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
+
 
 ### Supported Software AG releases
 
@@ -32,14 +45,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To create a public GA Software AG product and fix master repositories in Command Central:
+To add Software AG product and fix repositories for all officially supported releases:
 
 ```bash
 sagcc exec templates composite apply sag-cc-repos --sync-job --wait 360
-```
-
-> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
-
-```bash
-sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```
