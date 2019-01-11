@@ -1,0 +1,62 @@
+alias: sag-apigateway-server
+description: API Gateway Server provisioning and configuration
+
+environments:
+  default:
+    is.instance.type:                  MSC                                                               # IS instance type: MSC or integrationServer
+    agw.license.key:                   "0000424948_YAIAA_10.1_PROD_LNXAMD64"                             # REQUIRED: IS license key
+    agw.instance.name:                 apigateway                                                        # Instance name
+    agw.primary.port:                  5555                                                              # Primary port number
+    agw.diagnostic.port:               9999                                                              # Dialgnostic port number
+    agw.jmx.port:                      5559                                                              # JMX port number
+    agw.memory.init:                   128                                                               # Initial memory size
+    agw.memory.max:                    256                                                               # Maximum memory size
+    agw.install.service:               false
+    agw.fixes:                         ALL   
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:   [agw-server]
+
+templates:
+  agw-server:
+    licenses:
+      "IntegrationServer/config/APIGatewayLicenseKey.xml": ${agw.license.key} 
+    fixes: ${agw.fixes}
+    products:
+      YAI:
+      ${is.instance.type}:
+        ${agw.instance.name}: 
+          primary.port:    ${agw.primary.port}
+          diagnostic.port: ${agw.diagnostic.port}
+          jmx.port:        ${agw.jmx.port}
+          license.file:    IntegrationServer/config/APIGatewayLicenseKey.xml
+          install.service: ${agw.install.service}
+          package.list:    WmAPIGateway
+          configuration:
+            OSGI-IS_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${agw.memory.init}
+                  MaxSize:  ${agw.memory.max}
+              COMMON-JVM-OPTIONS:                             
+                COMMON-JVM-OPTIONS:                          
+                    option: 
+                      - "-Xbootclasspath/a:\"%JAVA_BOOT_CLASSPATH%\""
+                      - "-server"
+                      - "-verbose:gc"
+                      - "-XX:+PrintGC"
+                      - "-XX:+PrintGCDetails"
+                      - "-XX:+PrintGCTimeStamps"
+                      - "-XX:+PrintTenuringDistribution"
+                      - "-XX:+PrintGCCause"
+                      - "-XX:+PrintAdaptiveSizePolicy"
+                      - "-XX:+UseGCLogFileRotation"
+                      - "-XX:NumberOfGCLogFiles=5"
+                      - "-XX:GCLogFileSize=10M"
+                      - "-Xloggc:%OSGI_INSTALL_AREA%/logs/gc_agw.log"
+provision:
+  default:
+    runtime: ${nodes}
