@@ -73,7 +73,10 @@ if [ ! -z $REPO_PRODUCT_URL ]; then
         sagcc exec templates composite apply sag-cc-builder-repos --sync-job -c 5 -e DONE \
             repo.product.credentials.key=$REPO_CREDS \
             repo.product.url=$REPO_PRODUCT_URL \
-            repo.fix.url=$REPO_FIX_URL
+            repo.fix.url=$REPO_FIX_URL \
+            repo.fix.credentials.key=$REPO_CREDS \
+            repo.fix.name=fixRepo103 \
+            repo.product.name=webM103
     else
         echo "Registering public MASTER repositories with $REPO_CREDS ..."
         echo "products: $REPO_PRODUCT_URL"
