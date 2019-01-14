@@ -26,6 +26,8 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
 
     echo "Verifying managed container $CC_SERVER ..."
     sagcc get inventory products -e integrationServer --wait-for-cc
+    sagcc get inventory products -e YAI --wait-for-cc
+
 
     export CC_WAIT=180
     
@@ -49,6 +51,8 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
 fi
 
 echo "Verifying product runtime ..."
+echo "Verifying IS..."
 curl -u Administrator:manage -s http://`hostname`:5555/
-
+echo "Verifying API GATEWAY..."
+curl -u Administrator:manage -s http://`hostname`:9072/
 echo "DONE testing"
