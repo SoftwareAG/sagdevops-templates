@@ -3,16 +3,19 @@ description: Event Data Store (CEL) provisioning and cluster configuration
 
 environments:
   default:
-    release.major:    10                                                   # release major version number
-    os.platform:      lnxamd64                                             # OS platform code: w64|lnxamd64|osx 
-    nodes:            [dev1, dev2]              
-    cel.port:         9340
-    cel.fixes:        ALL
+    release.major:         10                                                   # release major version number
+    os.platform:           lnxamd64                                             # OS platform code: w64|lnxamd64|osx 
+    nodes:                 [dev1, dev2]              
+    cel.port:              9340
+    cel.fixes:             ALL
+    cel.logs.shared.path:  "/var/elk/logs"
+    
 layers:
   runtime:
-    productRepo:      ${repo.product}
-    fixRepo:          ${repo.fix}
-    templates:        cel-cluster-${runtime.nodes.count}
+    productRepo:           ${repo.product}
+    fixRepo:               ${repo.fix}
+    templates:             cel-cluster-${runtime.nodes.count}
+    
 templates:
   cel-cluster-1:
     fixes: ${cel.fixes}
@@ -45,7 +48,7 @@ templates:
                           $: ${cel.port} 
               CUSTOM-PROPERTIES:
                 CUSTOM-PROPERTIES-default: |
-                  path.logs: "/var/elk/logs"
+                  path.logs: ${cel.logs.shared.path}
                   discovery.zen.minimum_master_nodes: ${runtime.nodes.count}
                   node.master: true
                   node.data: true
@@ -82,7 +85,7 @@ templates:
                           $: ${cel.port}                                              
               CUSTOM-PROPERTIES:
                 CUSTOM-PROPERTIES-default: |
-                  path.logs: "/var/elk/logs"
+                  path.logs: ${cel.logs.shared.path}
                   discovery.zen.minimum_master_nodes: ${runtime.nodes.count}
                   node.master: true
                   node.data: true
