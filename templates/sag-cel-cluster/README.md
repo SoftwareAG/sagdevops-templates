@@ -78,15 +78,12 @@ All supported Windows and UNIX platforms.
 
 * Installing latest fixes
 
-* Configuration of:
-
-  * Cluster if 2 or 3 nodes are specified
+* Configurations for clustered environment with two or three nodes
   
-  * Custom properties required for functioning cluster if 2 or 3 nodes are specified
 
 
 
-## Using the template to provisioning a new Internal Data Store product and configure a cluster up to 3 nodes
+## Using the template to provision a new Internal Data Store server or clustered environment
 
 
 
@@ -94,7 +91,7 @@ For information about applying templates, see [Applying template using Command C
 
 
 
-To provision Internal Data Store on one node with all latest fixes:
+To provision Internal Data Store 10.3 on a single node with all latest fixes:
 
 
 
@@ -112,7 +109,7 @@ sagcc exec templates composite apply sag-cel-cluster nodes=node \
 
 
 
-To provision Internal Data Store on 2 nodes with all latest fixes and configure them in a cluster:
+To provision Internal Data Store 10.3 on two nodes with all latest fixes and configure the nodes in a cluster:
 
 
 

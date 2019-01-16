@@ -48,7 +48,7 @@ Use this template to provision and maintain API Gateway server.
 
 
 
-API Gateway server should be the only package in Integration server or Microservices Runtime instance, where it is installed
+There should not be any other packages installed on the Integration Server or Microservices Runtime instance where API Gateway is running.
 
 
 
@@ -58,7 +58,7 @@ API Gateway server should be the only package in Integration server or Microserv
 
 * API Gateway 10.1 and higher
 
-* Command Central 10.3
+* Command Central latest version
 
 
 
@@ -74,7 +74,7 @@ All supported Windows and UNIX platforms.
 
 
 
-* Provisioning of new 10.1 and higher environments
+* Provisioning a new Integration Server or Microservices Runtime instance with API Gateway 10.1 and higher
 
 * Installing latest fixes
 
@@ -96,7 +96,7 @@ For information about applying templates, see [Applying template using Command C
 
 
 
-To provision API Gateway 10.3 on newly created `apigateway` instance on Integration Server with all latest fixes:
+To provision a new Integration Server instance named "apigateway" with API Gateway 10.3 and all latest fixes:
 
 
 
@@ -118,7 +118,7 @@ sagcc exec templates composite apply sag-apigateway-server nodes=node \
 
 
 
-To provision API Gateway 10.3 on newly created `apigateway` instance on Microservices Runtime with all latest fixes:
+To provision a new Microservices Runtime instance named "apigateway" with API Gateway 10.3 and all latest fixes:
 
 
 
