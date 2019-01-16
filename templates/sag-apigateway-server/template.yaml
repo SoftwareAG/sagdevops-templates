@@ -3,8 +3,10 @@ description: API Gateway Server provisioning and configuration
 
 environments:
   default:
+    release.major:                     10                                                   
+    os.platform:                       lnxamd64   
     is.instance.type:                  MSC                                                               # IS instance type: MSC or integrationServer
-    agw.license.key:                   "0000424948_YAIAA_10.1_PROD_LNXAMD64"                             
+    agw.license.key:                   "*_YAIAA_10.*_*_*"                                  
     agw.instance.name:                 apigateway                                                        
     agw.primary.port:                  5555                                                              
     agw.diagnostic.port:               9999                                                                  
@@ -18,7 +20,7 @@ layers:
   runtime:
     productRepo: ${repo.product}
     fixRepo:     ${repo.fix}
-    templates:   [agw-server]
+    templates:   agw-server
 
 templates:
   agw-server:
