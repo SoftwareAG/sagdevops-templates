@@ -54,7 +54,7 @@ Before using this template, you must provision Terracotta cluster and Internal D
 
 * [sag-tc-cluster](https://github.com/SoftwareAG/sagdevops-templates/templates/sag-tc-cluster)
 
-* [sag-cel-cluster](https://github.com/SoftwareAG/sagdevops-templates/templates/sag-cel-cluster)
+* [sag-internaldatastore](https://github.com/SoftwareAG/sagdevops-templates/templates/sag-internaldatastore)
 
 
 ### Supported Software AG releases
@@ -115,7 +115,7 @@ sagcc exec templates composite apply sag-apigateway-cluster nodes=[dev1, dev2] \
 
   agw.memory.max=512 \
   
-  tsa.urls="dev1:9010,dev2:9010" \
+  agw.tsa.url="dev1:9010" \
 
   repo.product=webMethods-10.3 \
 
@@ -126,7 +126,7 @@ sagcc exec templates composite apply sag-apigateway-cluster nodes=[dev1, dev2] \
 ```
 
 
-To provision a new Microservices Runtime instance "apigateway" with API Gateway 10.3, install all latest fixes, and configure the cluster:
+To provision a new Microservices Runtime instance "apigateway" with API Gateway 10.3, install all latest fixes, and configure the cluster using default values:
 
 
 ```bash

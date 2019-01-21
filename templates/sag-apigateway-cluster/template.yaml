@@ -8,7 +8,7 @@ environments:
     is.instance.type:                  MSC                                                               # IS instance type: MSC or integrationServer
     agw.license.key:                   "*_YAIAA_10.*_*_*"      
     tsa.license.key:                   "*Terracotta.key"
-    tsa.urls:                          "dev1:9010,dev2:9010"
+    agw.tsa.url:                       "dev1:9010"
     agw.instance.name:                 apigateway                             
     agw.primary.port:                  5555                             
     agw.diagnostic.port:               9999                             
@@ -66,12 +66,15 @@ templates:
               COMMON-JAVASYSPROPS:
                 COMMON-JAVASYSPROPS: |
                   test.cluster.withDerby=true
-            integrationServer-${instance.name}:
-              COMMON-SYSPROPS:
-                COMMON-SYSPROPS: |
-                  watt.server.cluster.aware=true
-                  watt.server.cluster.name=APIGatewayTSAcluster
-                  watt.server.cluster.tsaURLs=${tsa.urls}
+            integrationServer-${instance.name}:              
+              COMMON-CLUSTER:
+                COMMON-CLUSTER:
+                  Name: APIGatewayTSAcluster
+                  Enabled: true
+                  Servers:
+                    Server: 
+                      - 
+                       URL: ${agw.tsa.url}  
 provision:
   default:
     runtime: ${nodes}

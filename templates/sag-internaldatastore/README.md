@@ -97,7 +97,7 @@ To provision Internal Data Store 10.3 on a single node with all latest fixes:
 
 ```bash
 
-sagcc exec templates composite apply sag-cel-cluster nodes=node \
+sagcc exec templates composite apply sag-internaldatastore nodes=node \
 
   repo.product=webMethods-10.3 \
 
@@ -115,7 +115,7 @@ To provision Internal Data Store 10.3 on two nodes with all latest fixes and con
 
 ```bash
 
-sagcc exec templates composite apply sag-cel-cluster nodes=[dev1,dev2] \
+sagcc exec templates composite apply sag-internaldatastore nodes=[dev1,dev2] \
 
   repo.product=webMethods-10.3 \
 
