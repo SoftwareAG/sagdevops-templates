@@ -20,22 +20,23 @@
 
 > STATUS: INCUBATING
 
-With this template you can create user, database, and webMethods database schemas on a Microsoft SQL Server.
-If you need any other database components, you can extend the template with similar inline templates as is-db-scripts for example.
+With this template you can create user, database, and webMethods database schemas on a Microsoft SQL Server. If you need any other database components, you can extend the template with similar inline templates, is-db-scripts.
 
 ## Requirements
 
+None.
+
 ### Supported Software AG releases
 
-* Command Central 10.4 or higher
-* Database Component Configurator 10.4 or higher
-* webMethods database schemas for products version 9.8 or higher
+* Command Central 10.4 and higher
+* Database Component Configurator 10.4 and higher
+* webMethods database schemas for products version 9.8 and higher
 
 ### Supported platforms
 
 * All supported Windows and UNIX platforms
 * All supported versions of Microsoft SQL Server database
-* Docker Engine 17.09 or higher
+* Docker Engine 17.09 and higher
 
 ## Running as a standalone Composite Template
 
