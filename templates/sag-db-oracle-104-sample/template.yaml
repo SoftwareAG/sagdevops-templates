@@ -61,8 +61,7 @@ layers:
   db:
     productRepo: ${repo.product}            # install products from
     fixRepo:     ${repo.fix}                # install fixes from
-    templates:   
-      - dbc
+    templates:   ${db.templates} 
     databases:
       storage:
         components:  

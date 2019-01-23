@@ -75,6 +75,7 @@ Successful output looks like this:
 
 ```bash
 ...
+
 **********************************************************************************
 * Installed components                                                           *
 *                                                                                *
@@ -83,23 +84,17 @@ Successful output looks like this:
 * Therefore all database components will not show the same release number.       *
 *                                                                                *
 * code  version    name                           data                           *
-* ISC   10.3       ISCoreAudit                                                   *
-* ISI   10.3.fix1  ISInternal                                                    *
-* DSL   7.1        DistributedLocking                                            *
-* IDR   7.1        DocumentHistory                                               *
-* XRF   8.2.2      CrossReference                                                *
-* CCS   9.0.1      CentralConfiguration                                          *
-* MWS   10.2       MywebMethodsServer                                            *
-* OPM   9.0.1      OperationManagement                                           *
-* OPT_AE_ANL 85         Optimize Analytic Engine Analysis Component                                *
-* ANL   10.1       Analysis                                                      *
-* DBM   9.9        DatabaseManagement                                            *
-* DTP   9.0.1      DataPurge                                                     *
-* PRA   10.3       ProcessAudit                                                  *
-* OPT_AE_PTR 50         Optimize Analytic Engine Process Tracker Component                                *
-* PTR   10.1       ProcessTracker                                                *
-* CTR   8.0        ComponentTracker                                              *
-* PRE   10.4       ProcessEngine                                                 *
+* ISC   10.3       ISCoreAudit                    WEBMDATA,WEBMINDX              *
+* ISI   10.3.fix1  ISInternal                     WEBMDATA,WEBMINDX              *
+* DSL   7.1        DistributedLocking             WEBMDATA,WEBMINDX              *
+* IDR   7.1        DocumentHistory                WEBMDATA,WEBMINDX              *
+* XRF   8.2.2      CrossReference                 WEBMDATA,WEBMINDX              *
+* CCS   9.0.1      CentralConfiguration           WEBMDATA,WEBMINDX              *
+* MWS   10.2       MywebMethodsServer             WEBMDATA,WEBMINDX              *
+* CTR   8.0        ComponentTracker               WEBMDATA,WEBMINDX              *
+* PRA   10.3       ProcessAudit                   WEBMDATA,WEBMINDX              *
+* PRE   10.4       ProcessEngine                  WEBMDATA,WEBMINDX              *
+
 
 The expected values were successfully retrieved after 1 call within 5 seconds.
 TEST SUCCESSFUL
