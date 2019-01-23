@@ -21,22 +21,23 @@
 
 > STATUS: INCUBATING
 
-With this template you can create user, storage tablespaces and webMethods database components on an Oracle database server.
-If you need any other database components, you can extend the template with similar inline templates as is-db-scripts for example.
+With this template you can create user, storage tablespaces and webMethods database components on an Oracle database server. If you need any other database components, you can extend the template with similar inline templates, like is-db-scripts.
 
 ## Requirements
 
+None.
+
 ### Supported Software AG releases
 
-* Command Central 10.4 or higher
-* Database Component Configurator 10.4 or higher
-* webMethods database components for products 9.8 or higher
+* Command Central 10.4 and higher
+* Database Component Configurator 10.4 and higher
+* webMethods database components for products 9.8 and higher
 
 ### Supported platforms
 
 * All supported Windows and UNIX platforms
 * All supported versions of Oracle database
-* Docker Engine 17.09 or higher
+* Docker Engine 17.09 and higher
 
 ## Running as a standalone Composite Template
 
