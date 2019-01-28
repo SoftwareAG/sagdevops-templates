@@ -27,7 +27,6 @@ layers:
 templates:
   agw-cluster:
     licenses:
-    licenses:
       "IntegrationServer/config/APIGatewayLicenseKey.xml": ${agw.license.key} 
       "common/conf/terracotta-license.key": ${tsa.license.key} 
     fixes: ${agw.fixes}
