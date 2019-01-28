@@ -1,0 +1,94 @@
+alias: sag-internaldatastore
+description: Internal Data Store provisioning and cluster configuration
+
+environments:
+  default:
+    release.major:         10                                                   # release major version number
+    os.platform:           lnxamd64                                             # OS platform code: w64|lnxamd64|osx 
+    nodes:                 [dev1, dev2]              
+    ids.port:              9340
+    ids.fixes:             ALL
+    ids.repo.shared.path:  "/opt/softwareag/InternalDataStore/archives"
+    
+layers:
+  runtime:
+    productRepo:           ${repo.product}
+    fixRepo:               ${repo.fix}
+    templates:             ids-cluster-${runtime.nodes.count}
+    
+templates:
+  ids-cluster-1:
+    fixes: ${ids.fixes}
+    products:
+      CEL:
+  ids-cluster-2:
+    fixes: ${ids.fixes}
+    products:
+      CEL:
+        default:
+          configuration:
+            CEL:
+              COMMON-CLUSTER:
+                COMMON-CLUSTER-default:
+                  Enabled: 'true'
+                  Name: SAG_EventDataStore
+                  Servers:
+                    Server:
+                    - ExtendedProperties:
+                        Property:
+                        - '@name': host
+                          $: ${runtime.hosts[1]}
+                        - '@name': port
+                          $: ${ids.port}
+                    - ExtendedProperties:
+                        Property:
+                        - '@name': host
+                          $: ${runtime.hosts[2]}
+                        - '@name': port
+                          $: ${ids.port} 
+              CUSTOM-PROPERTIES:
+                CUSTOM-PROPERTIES-default: |
+                  path.repo: ${ids.repo.shared.path}
+                  discovery.zen.minimum_master_nodes: ${runtime.nodes.count}
+                  node.master: true
+                  node.data: true
+  ids-cluster-3:
+    fixes: ${ids.fixes}
+    products:
+      CEL:
+        default:
+          configuration:
+            CEL:
+              COMMON-CLUSTER:
+                COMMON-CLUSTER-default:
+                  Enabled: 'true'
+                  Name: SAG_EventDataStore
+                  Servers:
+                    Server:
+                    - ExtendedProperties:
+                        Property:
+                        - '@name': host
+                          $: ${runtime.hosts[1]}
+                        - '@name': port
+                          $: ${ids.port}
+                    - ExtendedProperties:
+                        Property:
+                        - '@name': host
+                          $: ${runtime.hosts[2]}
+                        - '@name': port
+                          $: ${ids.port}     
+                    - ExtendedProperties:
+                        Property:
+                        - '@name': host
+                          $: ${runtime.hosts[3]}
+                        - '@name': port
+                          $: ${ids.port}                                              
+              CUSTOM-PROPERTIES:
+                CUSTOM-PROPERTIES-default: |
+                  path.repo: ${ids.repo.shared.path}
+                  discovery.zen.minimum_master_nodes: ${runtime.nodes.count}
+                  node.master: true
+                  node.data: true
+provision:
+  default:
+    runtime: ${nodes}
