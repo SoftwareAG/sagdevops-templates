@@ -40,18 +40,17 @@ environments:
       - ISInternal
       - ISCoreAudit
       - ProcessAudit
-    db.fixes:            [wMFix.DatabaseScripts] # Database component configurator fixes to install
     db.products:         
       - IS
       - MWS 
       - OPTI 
       - PRE
-    db.fixes:            []                 # Database component configurator fixes to install
-    is.db.fixes:         []                 # IS database scripts fixes to install
-    mws.db.fixes:        []                 # MWS database scripts fixes to install
-    obe.db.fixes:        []                 # OBE database scripts fixes to install
-    dbo.db.fixes:        []                 # DBO database scripts fixes to install
-    pre.db.fixes:        []                 # PRE database scripts fixes to install    
+    db.fixes:            ALL                 # Database component configurator fixes to install
+    is.db.fixes:         ALL                 # IS database scripts fixes to install
+    mws.db.fixes:        ALL                 # MWS database scripts fixes to install
+    obe.db.fixes:        ALL                 # OBE database scripts fixes to install
+    dbo.db.fixes:        ALL                 # DBO database scripts fixes to install
+    pre.db.fixes:        ALL                 # PRE database scripts fixes to install    
     db.templates:
       - dbc
       - is-db-scripts
