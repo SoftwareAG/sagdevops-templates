@@ -34,8 +34,8 @@ before_install: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 script:
 - ./provisionw $T
-- [ -f /opt/softwareag/profiles/SPM/logs/default.log ] && cat /opt/softwareag/profiles/SPM/logs/default.log
-- [ -f /opt/softwareag/InternalDataStore/logs/SAG_EventDataStore.log ] && cat /opt/softwareag/InternalDataStore/logs/SAG_EventDataStore.log
+- cat /opt/softwareag/profiles/SPM/logs/default.log
+- cat /opt/softwareag/InternalDataStore/logs/SAG_EventDataStore.log
 # script:
 # - cd containers && echo "Building and testing $IMAGE:$TAG"
 # - docker-compose build $IMAGE && docker-compose push $IMAGE
