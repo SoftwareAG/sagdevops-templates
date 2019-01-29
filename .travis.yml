@@ -23,6 +23,8 @@ env:
   - T=sag-tc-server
   - T=sag-apama-correlator
   - T=sag-abe
+  - T=sag-apigateway-server
+  - T=sag-internaldatastore
 
 # stages:
 # - infra
