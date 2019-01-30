@@ -49,7 +49,13 @@ Use this template to provision and maintain API Gateway server.
 
 
 There should not be any other packages installed on the Integration Server or Microservices Runtime instance where API Gateway is running.
+ 
+This template provisions Internal Data Store. You must prepare your environment for Internal Data Store installation by completing the required steps, provided in the [Installing Software AG Products] 
 
+(https://documentation.softwareag.com/webmethods/wmsuites/wmsuite10-3/SysReqs_Installation_and_Upgrade/compendium/index.html#page/install-upgrade-webhelp%2Fto-prepare_machines_10.html%23wwconnect_header) 
+
+help on Empower. 
+ 
 
 
 ### Supported Software AG releases

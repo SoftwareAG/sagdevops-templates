@@ -33,6 +33,7 @@ env:
 before_install: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 script:
+- sudo sysctl -w vm.max_map_count=262144  
 - ./provisionw $T
 
 # script:

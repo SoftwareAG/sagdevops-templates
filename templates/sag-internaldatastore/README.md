@@ -47,9 +47,12 @@ Use this template to provision and maintain Internal Data Store.
 ## Requirements and limitations
 
 
+Prepare your environment for Internal Data Store installation by completing the required steps, provided in the [Installing Software AG Products]
 
-None.
+(https://documentation.softwareag.com/webmethods/wmsuites/wmsuite10-3/SysReqs_Installation_and_Upgrade/compendium/index.html#page/install-upgrade-webhelp%2Fto-prepare_machines_10.html%23wwconnect_header) 
 
+help on Empower. 
+ 
 
 
 ### Supported Software AG releases
