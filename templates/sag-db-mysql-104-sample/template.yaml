@@ -62,20 +62,19 @@ layers:
   db:
     productRepo: ${repo.product}            # install products from
     fixRepo:     ${repo.fix}                # install fixes from
-    templates:   
-      - dbc
+    templates:   ${db.templates}
     databases:
-      # storage:
-      #   components:  
-      #     - STR
-      #   version:     latest
-      #   db.type:     ${db.type}
-      #   db.url:      ${db.admin.url}
-      #   db.admin.username: ${db.admin.username}
-      #   db.admin.password: ${db.admin.password}
-      #   db.username: ${db.username}
-      #   db.password: ${db.password}
-      #   db.name:     ${db.name}
+      storage:
+        components:  
+          - STR
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.admin.url}
+        db.admin.username: ${db.admin.username}
+        db.admin.password: ${db.admin.password}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
       schemas:
         products:    ${db.products}
         components:  ${db.components}

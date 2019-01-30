@@ -30,11 +30,12 @@ services:
     volumes:
       - ./mysql.cnf:/etc/mysql/conf.d/mysql.cnf
       - mysql_data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=webm
-      - MYSQL_USER=webm
-      - MYSQL_PASSWORD=webm
+    #no need to create user and db upfront; will be created via the storage section of the template  
+    #environment:
+      #- MYSQL_ROOT_PASSWORD=root
+      #- MYSQL_DATABASE=webm
+      #- MYSQL_USER=webm
+      #- MYSQL_PASSWORD=webm
 
   # provisioner for webm db schemas using template.yaml
   provision:
