@@ -21,7 +21,7 @@ set -e
 
 sagcc list inventory products --wait-for-cc
 
-if [ -d $SAG_HOME/profiles/SPM/bin ]; then
+if [ -d $SAG_HOME/profiles/SPM/bin -a "$1" = "startSPM" ]; then
     $SAG_HOME/profiles/SPM/bin/startup.sh
 fi
 
