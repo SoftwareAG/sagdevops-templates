@@ -17,13 +17,13 @@
 #     limitations under the License.                                                            
 #
 #*******************************************************************************
-set -e
+#set -e
 
 sagcc list inventory products --wait-for-cc
 
-if [ -d $SAG_HOME/profiles/SPM/bin ]; then
-    $SAG_HOME/profiles/SPM/bin/startup.sh
-fi
+#if [ -d $SAG_HOME/profiles/SPM/bin ]; then
+#    $SAG_HOME/profiles/SPM/bin/startup.sh
+#fi
 
 echo -e "\n"
 echo "####################"
