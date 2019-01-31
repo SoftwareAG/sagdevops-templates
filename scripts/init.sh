@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -x
 #*******************************************************************************
 #  Copyright � 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
@@ -21,7 +21,9 @@ set -e
 
 sagcc list inventory products --wait-for-cc
 
-if [ -d $SAG_HOME/profiles/SPM/bin ]; then
+echo the value of '$1' is $1
+if [ -d $SAG_HOME/profiles/SPM/bin -a "$1" = "startSPM" ]; then
+    echo "unnecessary start the SPM"
     $SAG_HOME/profiles/SPM/bin/startup.sh
 fi
 
