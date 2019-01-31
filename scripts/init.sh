@@ -21,9 +21,8 @@ set -e
 
 sagcc list inventory products --wait-for-cc
 
-if [ -d $SAG_HOME/profiles/SPM/bin ]; then
-    $SAG_HOME/profiles/SPM/bin/startup.sh
-fi
+echo do not start SPM
+
 
 echo -e "\n"
 echo "####################"
