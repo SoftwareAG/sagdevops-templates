@@ -22,7 +22,7 @@ set -e
 sagcc list inventory products --wait-for-cc
 
 if [ -d $SAG_HOME/profiles/SPM/bin ]; then
-    $SAG_HOME/profiles/SPM/bin/startup.sh
+        [ ! -f "$SPMSTARTUPLOCK" ] && ( touch "$SPMSTARTUPLOCK" && $SAG_HOME/bin/startup.sh && rm -f "$SPMSTARTUPLOCK" ) || ( sleep 10 && $SAG_HOME/bin/startup.sh && rm -f "$SPMSTARTUPLOCK" )
 fi
 
 echo -e "\n"
