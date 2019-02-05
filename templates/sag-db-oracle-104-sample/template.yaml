@@ -1,0 +1,116 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+alias: sag-db-oracle-104-sample
+description: Oracle database and sample component schemas for 10.4 plus releases
+
+environments:
+  default:                 
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          10.4.0.0           # REQUIRED: target release, e.g. 10.2
+    db.type:             oracle             # oracle
+    db.port:             1521               # oracle default port
+    db.sid:              XE                 # Database name
+    db.admin.url:        "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}" # ;sysLoginRole=sysdba
+    db.admin.username:   system             # REQUIRED: for db storage only
+    db.admin.password:   oracle             # REQUIRED: for db storage only
+    db.tablespace.data:  WEBMDATA           # for Oracle/DB2
+    db.tablespace.index: WEBMINDX           # for Oracle/DB2
+    db.tablespace.dir:   /u01/app/oracle/oradata/XE # REQUIRED: for Oracle/DB2
+
+    db.url:              "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}"
+    db.name:             webm
+    db.username:         ${db.name}         # Database username
+    db.password:         ${db.name}         # Database password
+    db.products:         
+      - IS
+      - MWS 
+      - OPTI 
+      - PRE
+    db.fixes:            ALL                 # Database component configurator fixes to install
+    is.db.fixes:         ALL                 # IS database scripts fixes to install
+    mws.db.fixes:        ALL                 # MWS database scripts fixes to install
+    obe.db.fixes:        ALL                 # OBE database scripts fixes to install
+    dbo.db.fixes:        ALL                 # DBO database scripts fixes to install
+    pre.db.fixes:        ALL                 # PRE database scripts fixes to install    
+    db.templates:
+      - dbc
+      - is-db-scripts
+      - mws-db-scripts
+      - optimize-db-scripts
+      - dbo-db-scripts
+      - pre-db-scripts      
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   ${db.templates} 
+    databases:
+      storage:
+        components:  
+          - STR
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.admin.url}
+        db.admin.username: ${db.admin.username}
+        db.admin.password: ${db.admin.password}
+        db.tablespace.dir: ${db.tablespace.dir}
+        db.tablespace.data: ${db.tablespace.data}
+        db.tablespace.index: ${db.tablespace.index}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+      schemas:
+        products:    ${db.products}
+        version:     ${db.version}
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
+    
+templates:
+  dbc:
+    products:
+      DatabaseComponentConfigurator:
+      # FEATURE: we need runtime instance to tag as layer instance
+    fixes: ${db.fixes}
+  is-db-scripts:
+    products:
+      PIEcdc:
+    fixes: ${is.db.fixes}
+  mws-db-scripts:
+    products:
+      MWScdc:
+    fixes: ${mws.db.fixes}      
+  optimize-db-scripts:
+    products:
+      OBEcdc:
+    fixes: ${obe.db.fixes}      
+  dbo-db-scripts:
+    products:
+      DBOcdc:
+    fixes: ${dbo.db.fixes}      
+  pre-db-scripts:
+    products:
+      WPEcdc:
+    fixes: ${pre.db.fixes}      
+provision:
+  default:
+    db: ${nodes}
