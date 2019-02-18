@@ -49,13 +49,13 @@ Provision `default` instance of Integration Server 10.1 with all latest fixes,
 listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=dev1 \
+sagcc exec templates composite apply sag-is-server nodes=localhost \
   is.memory.max=512 \
   repo.product=webMethods-10.1 \
   repo.fix=Empower \
+  is.integrationserver.license.key=IS_LIC \
   --sync-job --wait 360
 ```
-
 ## Creating a new stack with Integration Server layer using Web UI
 
 Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
