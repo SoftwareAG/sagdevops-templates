@@ -17,52 +17,46 @@
 
 -->
 
-# Integration Server
+# MicrService Runtime
 
-> STATUS: INCUBATING
-
-Use this template to provision and maintain Integration Server stateless cluster
+Use this template to provision and maintain MicroService Runtime
 
 ## Requirements
 
 ### Supported Software AG releases
 
-* Integration Server 9.8 and higher
+* MicroService 10.0 and higher
 * Command Central 10.2 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
-All supported Database servers.
 
 ### Supported use cases
 
-* Provisioning of new 9.8 or higher single server environment with database
-* Provisioning of new 9.8 or higher cluster environment
+* Provisioning of new 10.0 or higher environments
 * Installing latest fixes and support patches
 * Configuration of:
   * License
   * JVM memory
   * Primary, diagnostics and JMX ports
 
-## Provisioning of new Cluster
+## Provisioning of new server instance
 
 Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
 
-Provision `default` instance of Integration Server 10.1 with all latest fixes onto `dev1` and `dev2` nodes,
-connected to an Oracle database, listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
+Provision `default` instance of MicroService Runtime 10.1 with all latest fixes,
+listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=dev1,dev2 \
+sagcc exec templates composite apply sag-msc-server nodes=localhost \
   is.memory.max=512 \
-  db.type=oracle db.username=webm db.password=**** \
-  db.url="jdbc:wm:oracle://oracledb:1521;SID=XE" \
   repo.product=webMethods-10.1 \
   repo.fix=Empower \
+  is.msc.license.key=MSC_LIC \
   --sync-job --wait 360
 ```
-
-## Creating a new stack with Integration Cluster layer using Web UI
+## Creating a new stack with Integration Server layer using Web UI
 
 Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
 for additional information about using Stacks UI.
@@ -73,19 +67,7 @@ for additional information about using Stacks UI.
 * Add new Runtime layer
   * Select `IS-SERVER` layer definition
   * Select product and fix repositories
-  * Select one or more nodes on which to provision Integration Server
+  * Select exactly one node on which to provision Integration Server
   * Review and adjust optional parameters as needed
   * Finish the wizard
 * Wait until provision jobs completes. Use Jobs view to monitor
-
-## Local development and testing using Docker
-
-### With SQL Server database
-
-Provision [SQL Server](../sag-db-sqlserver) container and schemas
-
-Provision My webMethods Server:
-
-```bash
-CC_ENV=sqlserver ./provisionw sag-is-cluster
-```
