@@ -66,7 +66,7 @@ pipeline {
                 echo 'Pushing infrastructure images ...'
                 dir ('infrastructure') {
                     script{
-                        docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'docker-registry'){
+                        docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'bpas-dtr'){
                             sh "docker-compose -f docker-compose.yml -f ${STAGE}.yml -f ${TAG}.${STAGE}.yml push"
                         }
                     }
@@ -310,7 +310,7 @@ pipeline {
                             sh 'docker-compose config'
                             sh 'docker-compose build --no-cache --force-rm universal-messaging integration-server'
                             script{
-                                docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'docker-registry'){
+                                docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'bpas-dtr'){
                                     sh 'docker-compose push universal-messaging integration-server'
                                 }
                             }
@@ -324,7 +324,7 @@ pipeline {
                             sh 'docker-compose config'
                             sh 'docker-compose build --no-cache --force-rm asset-builder microservices-runtime cloud-streams'
                             script{
-                                docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'docker-registry'){
+                                docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'bpas-dtr'){
                                     sh 'docker-compose push asset-builder microservices-runtime cloud-streams'
                                 }
                             }
@@ -338,7 +338,7 @@ pipeline {
                             sh 'docker-compose config'
                             sh 'docker-compose build --no-cache --force-rm entirex-broker entirex-java-rpc-server entirex-xml-rpc-server'
                             script{
-                                docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'docker-registry'){
+                                docker.withRegistry('https://daerepository03.eur.ad.sag:4443', 'bpas-dtr'){
                                     sh 'docker-compose push entirex-broker entirex-java-rpc-server entirex-xml-rpc-server'
                                 }
                             }
