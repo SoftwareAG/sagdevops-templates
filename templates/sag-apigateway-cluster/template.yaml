@@ -6,8 +6,8 @@ environments:
     release.major:                     10                                                   
     os.platform:                       lnxamd64   
     is.instance.type:                  MSC                                                               # IS instance type: MSC or integrationServer
-    agw.license.key:                   "*_YAIAA_10.*_*_*"      
-    tsa.license.key:                   "*Terracotta.key"
+    agw.key.license:                   "*_YAIAA_10.*_*_*"      
+    tsa.key.license:                   "*Terracotta.key"
     agw.tsa.url:                       "dev1:9010"
     agw.instance.name:                 apigateway                             
     agw.primary.port:                  5555                             
@@ -27,8 +27,8 @@ layers:
 templates:
   agw-cluster:
     licenses:
-      "IntegrationServer/config/APIGatewayLicenseKey.xml": ${agw.license.key} 
-      "common/conf/terracotta-license.key": ${tsa.license.key} 
+      "IntegrationServer/config/APIGatewayLicenseKey.xml": ${agw.key.license} 
+      "common/conf/terracotta-license.key": ${tsa.key.license} 
     fixes: ${agw.fixes}
     products:
       YAI:
