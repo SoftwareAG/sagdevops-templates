@@ -25,8 +25,8 @@ Use this template to provision and maintain MicroService Runtime
 
 ### Supported Software AG releases
 
-* MicroService 10.0 and higher
-* Command Central 10.2 and higher
+* MicroService Runtime 10.1 and higher
+* Command Central 10.3 and higher
 
 ### Supported platforms
 
@@ -34,7 +34,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.0 or higher environments
+* Provisioning of new 10.1 or higher environments
 * Installing latest fixes and support patches
 * Configuration of:
   * License
@@ -45,18 +45,18 @@ All supported Windows and UNIX platforms.
 
 Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
 
-Provision `default` instance of MicroService Runtime 10.1 with all latest fixes,
-listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
+Provision `default` instance of MicroService Runtime 10.1 with all latest fixes, using license key alias `MSC_LIC`,
+listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory, into managed installation node alias `dev1`:
 
 ```bash
-sagcc exec templates composite apply sag-msc-server nodes=localhost \
+sagcc exec templates composite apply sag-msc-server nodes=dev1 \
   is.memory.max=512 \
   repo.product=webMethods-10.1 \
   repo.fix=Empower \
   is.msc.license.key=MSC_LIC \
   --sync-job --wait 360
 ```
-## Creating a new stack with Integration Server layer using Web UI
+## Creating a new stack with using Web UI
 
 Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
 for additional information about using Stacks UI.
@@ -65,7 +65,7 @@ for additional information about using Stacks UI.
 * Add new stack by clicking `(+)` icon
 * Add new Infrastructure layer
 * Add new Runtime layer
-  * Select `IS-SERVER` layer definition
+  * Select `MSC-SERVER` layer definition
   * Select product and fix repositories
   * Select exactly one node on which to provision Integration Server
   * Review and adjust optional parameters as needed
