@@ -55,7 +55,7 @@ connected to an Oracle database, listening on default ports 5555, 9999 and 8094 
 ```bash
 sagcc exec templates composite apply sag-is-server nodes=dev1,dev2 \
   is.memory.max=512 \
-  db.type=oracle db.name=webm db.username=webm db.password=**** \
+  db.type=oracle db.username=webm db.password=**** \
   db.url="jdbc:wm:oracle://oracledb:1521;SID=XE" \
   repo.product=webMethods-10.1 \
   repo.fix=Empower \
