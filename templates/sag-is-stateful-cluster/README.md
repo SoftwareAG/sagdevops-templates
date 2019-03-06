@@ -23,21 +23,8 @@
 
 Use this template to provision and maintain Integration Server statelful cluster
 
-## Requirements
-
-### Supported Software AG releases
-
-* Integration Server 9.8 and higher
-* Command Central 10.2 and higher
-
-### Supported platforms
-
-All supported Windows and UNIX platforms.
-All supported Database servers.
-
 ### Supported use cases
 
-* Provisioning of new 9.8 or higher single server environment with database
 * Provisioning of new 9.8 or higher cluster environment
 * Installing latest fixes and support patches
 * Configuration of:
