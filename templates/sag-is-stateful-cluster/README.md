@@ -23,6 +23,19 @@
 
 Use this template to provision and maintain Integration Server statelful cluster
 
+## Requirements
+
+### Supported Software AG releases
+
+* Integration Server 9.8 and higher
+* Command Central 10.2 and higher
+
+### Supported platforms
+
+All supported Windows and UNIX platforms.
+All supported Database servers.
+
+
 ### Supported use cases
 
 * Provisioning of new 9.8 or higher cluster environment
@@ -31,6 +44,7 @@ Use this template to provision and maintain Integration Server statelful cluster
   * License
   * JVM memory
   * Primary, diagnostics and JMX ports
+  * Stateful cluster
 
 ## Provisioning of new Cluster
 
@@ -40,7 +54,7 @@ Provision `default` instance of Integration Server 10.1 with all latest fixes on
 connected to an Oracle database, listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=dev1,dev2 \
+sagcc exec templates composite apply sag-is-stateful-cluster nodes=dev1,dev2 \
   is.memory.max=512 \
   db.type=oracle db.username=webm db.password=**** \
   db.url="jdbc:wm:oracle://oracledb:1521;SID=XE" \
@@ -76,5 +90,5 @@ Provision [SQL Server](../sag-db-sqlserver) container and schemas
 Provision My webMethods Server:
 
 ```bash
-CC_ENV=sqlserver ./provisionw sag-is-cluster
+CC_ENV=sqlserver ./provisionw sag-is-stateful-cluster
 ```

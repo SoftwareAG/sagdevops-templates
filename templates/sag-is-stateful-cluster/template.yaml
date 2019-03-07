@@ -93,7 +93,7 @@ templates:
             integrationServer-${instance.name}:                  
               COMMON-CLUSTER:
                 COMMON-CLUSTER:
-                  Name: ${instance.name}-cluster
+                  Name: ${is.cluster.name}
                   Enabled: ${is.cluster.enabled}
                   Servers:
                     Server: 
