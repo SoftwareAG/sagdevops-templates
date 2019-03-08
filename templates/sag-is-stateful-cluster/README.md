@@ -74,7 +74,7 @@ for additional information about using Stacks UI.
 * Add new stack by clicking `(+)` icon
 * Add new Infrastructure layer
 * Add new Runtime layer
-  * Select `IS-SERVER` layer definition
+  * Select `IS-CLUSTER` layer definition
   * Select product and fix repositories
   * Select one or more nodes on which to provision Integration Server
   * Review and adjust optional parameters as needed
