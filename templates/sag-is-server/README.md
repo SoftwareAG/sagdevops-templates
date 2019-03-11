@@ -26,7 +26,7 @@ Use this template to provision and maintain Integration Server
 ### Supported Software AG releases
 
 * Integration Server 9.8 and higher
-* Command Central 10.2 and higher
+* Command Central 10.3 and higher
 
 ### Supported platforms
 
@@ -45,11 +45,12 @@ All supported Windows and UNIX platforms.
 
 Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
 
-Provision `default` instance of Integration Server 10.1 with all latest fixes,
-listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
+Provision `default` instance of Integration Server 10.1 with all latest fixes, using `IS_LIC` license key alias,
+listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory, into managed
+installation node alias `dev1`:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=localhost \
+sagcc exec templates composite apply sag-is-server nodes=dev1 \
   is.memory.max=512 \
   repo.product=webMethods-10.1 \
   repo.fix=Empower \
