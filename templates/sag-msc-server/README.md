@@ -17,15 +17,15 @@
 
 -->
 
-# Integration Server
+# MicrService Runtime
 
-Use this template to provision and maintain Integration Server
+Use this template to provision and maintain MicroService Runtime
 
 ## Requirements
 
 ### Supported Software AG releases
 
-* Integration Server 9.8 and higher
+* MicroService 10.0 and higher
 * Command Central 10.2 and higher
 
 ### Supported platforms
@@ -34,7 +34,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 9.8 or higher environments
+* Provisioning of new 10.0 or higher environments
 * Installing latest fixes and support patches
 * Configuration of:
   * License
@@ -45,15 +45,15 @@ All supported Windows and UNIX platforms.
 
 Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
 
-Provision `default` instance of Integration Server 10.1 with all latest fixes,
+Provision `default` instance of MicroService Runtime 10.1 with all latest fixes,
 listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=localhost \
+sagcc exec templates composite apply sag-msc-server nodes=localhost \
   is.memory.max=512 \
   repo.product=webMethods-10.1 \
   repo.fix=Empower \
-  is.integrationserver.license.key=IS_LIC \
+  is.msc.license.key=MSC_LIC \
   --sync-job --wait 360
 ```
 ## Creating a new stack with Integration Server layer using Web UI

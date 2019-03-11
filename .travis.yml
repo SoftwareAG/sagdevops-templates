@@ -23,6 +23,8 @@ env:
   - T=sag-tc-server
   - T=sag-apama-correlator
   - T=sag-abe
+  - T=sag-apigateway-server
+  - T=sag-internaldatastore
 
 # stages:
 # - infra
@@ -31,8 +33,8 @@ env:
 before_install: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 script:
+- sudo sysctl -w vm.max_map_count=262144  
 - ./provisionw $T
-
 # script:
 # - cd containers && echo "Building and testing $IMAGE:$TAG"
 # - docker-compose build $IMAGE && docker-compose push $IMAGE
@@ -54,3 +56,4 @@ script:
 #     - cd deployments/docker
 #     - docker-compose -f sag-cc/docker-compose.yml up -d
 #     - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+

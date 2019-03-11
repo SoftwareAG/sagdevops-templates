@@ -33,6 +33,12 @@ services:
     #     - REPO_FIX_NAME=QARepo
     #     - REPO_FIX_URL=http://aquarius-va.ame.ad.sag/updates/QARepo
     #     - LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
     ports:
       - 8091 # https://$(docker-compose port cc 8091)/cce/web
       - 8092 # http://$(docker-compose port cc 8092)/spm
