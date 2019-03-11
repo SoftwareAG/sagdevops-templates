@@ -21,7 +21,7 @@
 
 > STATUS: INCUBATING
 
-Use this template to provision and maintain Integration Server statelful cluster
+Use this template to provision and maintain Integration Server stateful cluster
 
 ## Requirements
 
@@ -54,7 +54,7 @@ Provision `default` instance of Integration Server 10.1 with all latest fixes on
 connected to an Oracle database, listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
 
 ```bash
-sagcc exec templates composite apply sag-is-stateful-cluster nodes=dev1,dev2 \
+sagcc exec templates composite apply sag-is-stateful-cluster nodes=[dev1,dev2] \
   is.memory.max=512 \
   db.type=oracle db.username=webm db.password=**** \
   db.url="jdbc:wm:oracle://oracledb:1521;SID=XE" \
@@ -74,7 +74,7 @@ for additional information about using Stacks UI.
 * Add new stack by clicking `(+)` icon
 * Add new Infrastructure layer
 * Add new Runtime layer
-  * Select `sag-is-stateful-cluster` layer definition
+  * Select `IS-STATEFUL-CLUSTER` layer definition
   * Select product and fix repositories
   * Select one or more nodes on which to provision Integration Server
   * Review and adjust optional parameters as needed
