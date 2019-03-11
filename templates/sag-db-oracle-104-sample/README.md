@@ -36,7 +36,7 @@ None.
 ### Supported platforms
 
 * All supported Windows and UNIX platforms
-* All supported versions of Oracle database
+* All supported versions of Oracle database   
 * Docker Engine 17.09 and higher
 
 ## Running as a standalone Composite Template
@@ -85,19 +85,25 @@ Successful output looks like this:
 * Therefore all database components will not show the same release number.       *
 *                                                                                *
 * code  version    name                           data                           *
+* CTR   10.4       ComponentTracker               WEBMDATA,WEBMINDX              *
 * ISC   10.3       ISCoreAudit                    WEBMDATA,WEBMINDX              *
 * ISI   10.3.fix1  ISInternal                     WEBMDATA,WEBMINDX              *
 * DSL   7.1        DistributedLocking             WEBMDATA,WEBMINDX              *
 * IDR   7.1        DocumentHistory                WEBMDATA,WEBMINDX              *
 * XRF   8.2.2      CrossReference                 WEBMDATA,WEBMINDX              *
+* MWS   10.4       MywebMethodsServer             WEBMDATA,WEBMINDX              *
 * CCS   9.0.1      CentralConfiguration           WEBMDATA,WEBMINDX              *
-* MWS   10.2       MywebMethodsServer             WEBMDATA,WEBMINDX              *
-* CTR   8.0        ComponentTracker               WEBMDATA,WEBMINDX              *
+* OPM   9.0.1      OperationManagement            WEBMDATA,WEBMINDX              *
+* OPT_AE_ANL 85         Optimize Analytic Engine Analysis Component null,null                      *
+* ANL   10.1       Analysis                       WEBMDATA,WEBMINDX              *
+* DBM   9.9        DatabaseManagement             WEBMDATA,WEBMINDX              *
+* DTP   9.0.1      DataPurge                      WEBMDATA,WEBMINDX              *
 * PRA   10.3       ProcessAudit                   WEBMDATA,WEBMINDX              *
+* OPT_AE_PTR 50         Optimize Analytic Engine Process Tracker Component null,null                      *
+* PTR   10.1       ProcessTracker                 WEBMDATA,WEBMINDX              *
 * PRE   10.4       ProcessEngine                  WEBMDATA,WEBMINDX              *
+The expected values were successfully retrieved after 1 call within 6 seconds.
 
-
-The expected values were successfully retrieved after 1 call within 5 seconds.
 TEST SUCCESSFUL
 ```
 
