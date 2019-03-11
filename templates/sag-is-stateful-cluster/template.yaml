@@ -41,7 +41,7 @@ environments:
     db.host:             oracle             # REQUIRED: Database server hostname
     db.port:             1521               # REQUIRED: Database server port
     db.name:             webm
-    db.username:         ${db.name}         # Database username
+    db.username:         ${db.name}         # Database username 
     db.password:         ${db.name}         # Database password
     db.sid:              XE                 # Database name
     db.url:              "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}"
@@ -90,6 +90,7 @@ templates:
                 COMMON-MEMORY:
                   InitSize: ${is.memory.init}
                   MaxSize:  ${is.memory.max}
+            integrationServer-${instance.name}:                  
               COMMON-CLUSTER:
                 COMMON-CLUSTER:
                   Name: ${is.cluster.name}
@@ -97,7 +98,7 @@ templates:
                   Servers:
                     Server: 
                       - 
-                        URL: ${is.tsa.url}  
+                        URL: ${is.tsa.url}
 provision:
   default:
     runtime: ${nodes}
