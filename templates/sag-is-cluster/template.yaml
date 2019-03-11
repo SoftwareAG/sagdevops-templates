@@ -29,7 +29,8 @@ environments:
     is.memory.init:     128                 # Initial memory size
     is.memory.max:      256                 # Maximum memory size
     is.install.service: false
-    is.fixes: [wMFix.integrationServer.Core]
+    is.fixes: 
+      - wMFix.integrationServer.Core
     
     # Database connection
     db.type:             ${}                # REQUIRED: Database type: oracle,sqlserver,db2
