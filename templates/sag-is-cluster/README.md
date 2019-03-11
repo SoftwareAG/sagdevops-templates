@@ -53,7 +53,7 @@ Provision `default` instance of Integration Server 10.1 with all latest fixes on
 connected to an Oracle database, listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory:
 
 ```bash
-sagcc exec templates composite apply sag-is-server nodes=dev1,dev2 \
+sagcc exec templates composite apply sag-is-server nodes=[dev1,dev2] \
   is.memory.max=512 \
   db.type=oracle db.username=webm db.password=**** \
   db.url="jdbc:wm:oracle://oracledb:1521;SID=XE" \
@@ -71,7 +71,7 @@ for additional information about using Stacks UI.
 * Add new stack by clicking `(+)` icon
 * Add new Infrastructure layer
 * Add new Runtime layer
-  * Select `IS-SERVER` layer definition
+  * Select `IS-STATELESS-CLUSTER` layer definition
   * Select product and fix repositories
   * Select one or more nodes on which to provision Integration Server
   * Review and adjust optional parameters as needed
