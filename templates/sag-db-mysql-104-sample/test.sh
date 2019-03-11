@@ -23,7 +23,6 @@ export CC_SERVER=cc
 
 sagcc list administration product node DatabaseComponentConfigurator database catalog \
     db.type=mysql db.username=webm db.password=webm db.name=webm db.url="jdbc:mysql://mysql:3306/webm" \
-    -e "ISI"
-    #-e "ISI & MWS & PRE"
+    -e "ISI & MWS & PRE"
 
 echo "TEST SUCCESSFUL"
