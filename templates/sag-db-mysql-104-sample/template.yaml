@@ -35,7 +35,6 @@ environments:
     db.password:         ${db.name}         # webM database password
     db.components:
       - ProcessEngine
-      - DynamicBusinessOrchestrator
       - OperationManagement
       - ISInternal
       - ISCoreAudit
@@ -49,14 +48,12 @@ environments:
     is.db.fixes:         ALL                 # IS database scripts fixes to install
     mws.db.fixes:        ALL                 # MWS database scripts fixes to install
     obe.db.fixes:        ALL                 # OBE database scripts fixes to install
-    dbo.db.fixes:        ALL                 # DBO database scripts fixes to install
     pre.db.fixes:        ALL                 # PRE database scripts fixes to install    
     db.templates:
       - dbc
       - is-db-scripts
       - mws-db-scripts
       - optimize-db-scripts
-      - dbo-db-scripts
       - pre-db-scripts      
 layers:
   db:
@@ -64,17 +61,17 @@ layers:
     fixRepo:     ${repo.fix}                # install fixes from
     templates:   ${db.templates}
     databases:
-      storage:
-        components:  
-          - STR
-        version:     latest
-        db.type:     ${db.type}
-        db.url:      ${db.admin.url}
-        db.admin.username: ${db.admin.username}
-        db.admin.password: ${db.admin.password}
-        db.username: ${db.username}
-        db.password: ${db.password}
-        db.name:     ${db.name}
+      #storage:
+      #  components:  
+      #    - STR
+      #  version:     latest
+      #  db.type:     ${db.type}
+      #  db.url:      ${db.admin.url}
+      #  db.admin.username: ${db.admin.username}
+      #  db.admin.password: ${db.admin.password}
+      #  db.username: ${db.username}
+      #  db.password: ${db.password}
+      #  db.name:     ${db.name}
       schemas:
         products:    ${db.products}
         components:  ${db.components}
@@ -104,11 +101,7 @@ templates:
   optimize-db-scripts:
     products:
       OBEcdc:
-    fixes: ${obe.db.fixes}      
-  dbo-db-scripts:
-    products:
-      DBOcdc:
-    fixes: ${dbo.db.fixes}      
+    fixes: ${obe.db.fixes}           
   pre-db-scripts:
     products:
       WPEcdc:
