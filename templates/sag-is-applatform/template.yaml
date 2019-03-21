@@ -39,7 +39,7 @@ templates:
       PLS_IS:
       ${is.instance.type}:
         ${is.instance.name}: 
-          package.list:    WmAppPlat
+          package.list:    WmAppPlat                             # comma-separated list of packages (DO NOT USE SPACES)
           runtimeComponentId: integrationServer-${instance.name} # hint to find existing instance by id
 
 provision:

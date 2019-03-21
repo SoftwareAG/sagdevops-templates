@@ -30,7 +30,7 @@ templates:
       MFTSupport:
       integrationServer:
         ${is.instance.name}:          
-          package.list:  WmMFT          
+          package.list:  WmMFT         # comma-separated list of packages (DO NOT USE SPACES) 
           configuration:            
             integrationServer-${instance.name}:
               COMMON-JDBC:              
