@@ -79,23 +79,34 @@ Successful test output looks like this:
 
 ```bash
 ...
-**********************************
-* Executing action
-*   Action            : catalog
-*   Database          : SQL Server
-*   URL               : jdbc:mysql://mysql:3306/webm
-*   User              : webm
-**********************************
+**********************************************************************************
+* Installed components                                                           *
+*                                                                                *
+* The release number shown for each database component reflects the last         *
+* release in which a change was made to that database component.                 *
+* Therefore all database components will not show the same release number.       *
+*                                                                                *
+* code  version    name                           data                           *
+* CTR   10.4       ComponentTracker                                              *
+* PRE   10.4       ProcessEngine                                                 *
+* OPM   9.0.1      OperationManagement                                           *
+* ISI   10.3.fix1  ISInternal                                                    *
+* DSL   7.1        DistributedLocking                                            *
+* ISC   10.3       ISCoreAudit                                                   *
+* PRA   10.3       ProcessAudit                                                  *
+* IDR   7.1        DocumentHistory                                               *
+* XRF   8.2.2      CrossReference                                                *
+* MWS   10.4       MywebMethodsServer                                            *
+* CCS   9.0.1      CentralConfiguration                                          *
+* OPT_AE_ANL 85         Optimize Analytic Engine Analysis Component                                *
+* ANL   10.1       Analysis                                                      *
+* DBM   9.9        DatabaseManagement                                            *
+* DTP   9.0.1      DataPurge                                                     *
+* OPT_AE_PTR 50         Optimize Analytic Engine Process Tracker Component                                *
+* PTR   10.1       ProcessTracker                                                *
 
-**********************************
-*      Installed Components      *
-**********************************
-*   XRF 11 CrossReference
-*   ISC 60 ISCoreAudit
-*   ISI 75 ISInternal
-**********************************
+The expected values were successfully retrieved after 1 call within 2 seconds.
 
-The expected values were successfully retrieved after 1 call within 4 seconds.
 TEST SUCCESSFUL
 ```
 
