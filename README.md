@@ -34,7 +34,7 @@ The following tables describe the default micro templates available in this libr
 
 ### Infrastructure Micro Templates
 
-The following table lists the default infrastructure micro templates and describes what they provision.
+The following table lists all stable infrastructure micro templates and describes what they provision.
 
 Template alias | Provisions Platform Manager
 -------------------------|--------------------------------
@@ -46,50 +46,79 @@ Template alias | Provisions Platform Manager
 
 ### Micro Templates for creating database components
 
+The following table lists all stable micro templates for creating database components.
+
 Template alias | Description
 -------------------------|--------------------------------
-[sag-db-oracle](templates/sag-db-oracle) | Creates a user, database, and webMethods database schemas on an Oracle database server.
-[sag-db-sqlserver](templates/sag-db-sqlserver) | Creates a user, database, and webMethods database schemas on a SQL Server database server.
-[sag-db-mysql](templates/sag-db-mysql) | Creates a user, database, and webMethods database schemas on a MySQL database server.
+[sag-db-oracle](templates/sag-db-oracle) | Creates a user, database, and webMethods database schemas on an Oracle database server. Use with Command Central 10.3 and lower.
+[sag-db-sqlserver](templates/sag-db-sqlserver) | Creates a user, database, and webMethods database schemas on a SQL Server database server. Use with Command Central 10.3 and lower.
+
+The following table lists micro templates that are still in the testing phase.
+
+Template alias | Description
+-------------------|--------------------------
+[sag-db-mysql](templates/sag-db-mysql) | Creates a user, database, and webMethods database schemas on a MySQL Server. Use with Command Central 10.3 and lower.
+[sag-db-mysql-104-sample](templates/sag-db-mysql-104-sample) | Creates a user, database, and webMethods database schemas on a MySQL Server. Use with Command Central 10.4.
+[sag-db-oracle-104-sample](templates/sag-db-oracle-104-sample) | Creates a user, database, and webMethods database schemas on an Oracle database server. Use with Command Central 10.4.
+[sag-db-sqlserver-104-sample](templates/sag-db-sqlserver-104-sample) | Creates a user, database, and webMethods database schemas on a SQL Server database server. Use with Command Central 10.4.
 
 ### Micro Templates for provisioning Software AG products
 
-The following table lists the run-time micro templates for Software AG products.
+The following table lists all stable run-time micro templates for Software AG products.
 
 Template alias | Provisions
 -------------------------|--------------------------------
 [sag-abe](templates/sag-abe) | Asset Build Environment
 [sag-apama-correlator](templates/sag-apama-correlator) | Apama correlator instance
-[sag-des](templates/sag-des) | Digital Event Services
+[sag-apigateway-cluster](templates/sag-apigateway-cluster) | API Gateway cluster
+[sag-apigateway-server](templates/sag-apigateway-server) | API Gateway server
 [sag-des-config](templates/sag-des-config) | Digital Event Services configuration
-[sag-designer-services](templates/sag-designer-services) | Designer Service Development
+[sag-des](templates/sag-des) | Digital Event Services
+[sag-designer-applatform](templates/sag-designer-applatform) | Designer and Application Platform
 [sag-designer-cloudstreams](templates/sag-designer-cloudstreams) | Designer Cloudstreams Development
+[sag-designer-services](templates/sag-designer-services) | Designer Service Development
 [sag-exx-broker](templates/sag-exx-broker) | EntireX Broker
 [sag-exx-c-rpc-server](templates/sag-exx-c-rpc-server) | EntireX C RPC server
+[sag-exx-csl-rpc-server](templates/sag-exx-csl-rpc-server) | EntireX RPC Server for CICS Socket Listener
+[sag-exx-ims-rpc-server](templates/sag-exx-ims-rpc-server) | EntireX RPC Server for IMS
 [sag-exx-java-rpc-server](templates/sag-exx-java-rpc-server) | EntireX Java RPC server
+[sag-exx-mf-broker](templates/sag-exx-mf-broker) | a proxy for an EntireX Mainframe Broker
+[sag-exx-mq-rpc-server](templates/sag-exx-mq-rpc-server) | EntireX RPC Server for IBM MQ
+[sag-exx-net-rpc-server](templates/sag-exx-net-rpc-server) | EntireX RPC Server for .NET
 [sag-exx-xml-rpc-server](templates/sag-exx-xml-rpc-server) | EntireX XML RPC server
 [sag-infradc](templates/sag-infradc) | Infrastructure Data Collector
-[sag-is-server](templates/sag-is-server) | webMethods Integration Server instance
-[sag-is-cluster](templates/sag-is-cluster) | webMethods Integration Server stateless cluster
-[sag-is-statefull-cluster](templates/sag-is-statefull-cluster) | webMethods Integration Server statefull cluster
-[sag-is-config](templates/sag-is-config) | webMethods Integration Server configurations
-[sag-is-cloudstreams](templates/sag-is-cloudstreams) | Cloudstreams on Integration Server or Microservices runtime
+[sag-internaldatastore](templates/sag-internaldatastore) | Internal Data Store
 [sag-is-applatform](templates/sag-is-applatform) | Application Platform on Integration Server or Microservices runtime
+[sag-is-cloudstreams](templates/sag-is-cloudstreams) | Cloudstreams on Integration Server or Microservices runtime
+[sag-is-config](templates/sag-is-config) | webMethods Integration Server configurations
+[sag-is-mft](templates/sag-is-mft) | ActiveTransfer Server / ActiveTransfer Gateway on Integration Server
+[sag-is-server](templates/sag-is-server) | webMethods Integration Server instance
 [sag-msc-server](templates/sag-msc-server) | webMethods Microservices Runtime
-[sag-tc-server](templates/sag-tc-server) | Terracotta BigMemory server
+[sag-mws-applatform](templates/sag-mws-applatform) | Application Platform on My webMethods Server
+[sag-mws-infradcui](templates/sag-mws-infradcui) | Infrastructure Data Collector web user interface on My webMethods Server
+[sag-mws-mftui](templates/sag-mws-mftui) | ActiveTransfer web user interface
 [sag-tc-cluster](templates/sag-tc-cluster) | Terracotta BigMemory cluster
+[sag-tc-server](templates/sag-tc-server) | Terracotta BigMemory server
 [sag-tdb-server](templates/sag-tdb-server) | Terracotta DB server
-[sag-um-server](templates/sag-um-server) | Universal Messaging server
 [sag-um-cluster](templates/sag-um-cluster) | Universal Messaging cluster
 [sag-um-config](templates/sag-um-config) | Universal Messaging configuration
+[sag-um-server](templates/sag-um-server) | Universal Messaging server
 
-<!-- [sag-mws-server](templates/sag-mws-server) | My webMethods server
-[sag-mws-infradc](templates/sag-mws-infradc) | Infrastructure Data Collector UI on My webMethods server -->
+The following table lists micro templates that are still in the testing phase.
 
+Template alias | Provisions
+-------------------------|--------------------------------
+[sag-is-cluster](templates/sag-is-cluster) | webMethods Integration Server stateless cluster
+[sag-is-statefull-cluster](templates/sag-is-statefull-cluster) | webMethods Integration Server statefull cluster
+[sag-mft-config](templates/sag-mft-config) | ActiveTransfer
+[sag-mws-server](templates/sag-mws-server) | My webMethods Server
+[sag-onedata](templates/sag-onedata) | OneData
+[sag-optimize-wsdc](templates/sag-optimize-wsdc) | Optimize Web Service Data Collector
+[sag-optimize-analysis](templates/sag-optimize-analysis) | Optimize Analytic Engine
 
 ### Micro Templates for configuring Command Central and Platform Manager
 
-The following table lists the micro templates for configuring Command Central and Platform Manager.
+The following table lists all stable micro templates for configuring Command Central and Platform Manager.
 
 Template alias | Description
 -------------------------|--------------------------------
