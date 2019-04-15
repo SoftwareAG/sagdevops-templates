@@ -17,16 +17,19 @@
 
 -->
 
-# MicrService Runtime
+# Microservices Runtime
 
-Use this template to provision and maintain MicroService Runtime
+Use this template to provision and maintain Microservices Runtime
 
 ## Requirements
 
+None.
+
 ### Supported Software AG releases
 
-* MicroService Runtime 10.1 and higher
 * Command Central 10.3 and higher
+* Microservices Runtime 10.1 to 10.3
+>NOTE: This template is not supported for Microservices Runtime version 10.4.
 
 ### Supported platforms
 
@@ -43,10 +46,10 @@ All supported Windows and UNIX platforms.
 
 ## Provisioning of new server instance
 
-Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
+For information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-Provision `default` instance of MicroService Runtime 10.1 with all latest fixes, using license key alias `MSC_LIC`,
-listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory, into managed installation node alias `dev1`:
+To provision a `default` instance of Microservices Runtime 10.1 with all latest fixes, using license key alias `MSC_LIC`,
+listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory on a managed installation node alias `dev1`:
 
 ```bash
 sagcc exec templates composite apply sag-msc-server nodes=dev1 \
@@ -58,16 +61,15 @@ sagcc exec templates composite apply sag-msc-server nodes=dev1 \
 ```
 ## Creating a new stack with using Web UI
 
-Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
-for additional information about using Stacks UI.
+For information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
 
 * Open Stacks UI
-* Add new stack by clicking `(+)` icon
-* Add new Infrastructure layer
-* Add new Runtime layer
+* Click `(+)` to add a new stack
+* Add a new Infrastructure layer
+* Add a new Runtime layer
   * Select `MSC-SERVER` layer definition
   * Select product and fix repositories
-  * Select exactly one node on which to provision Integration Server
-  * Review and adjust optional parameters as needed
+  * Select a single node on which to provision Integration Server
+  * Review and adjust the optional parameters as requied
   * Finish the wizard
-* Wait until provision jobs completes. Use Jobs view to monitor
+* Wait until the provision jobs completes. Use the Jobs view to monitor the job progress.
