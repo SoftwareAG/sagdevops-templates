@@ -19,11 +19,11 @@
 
 # CloudStreams Server
 
-Use this template to provision CloudStreams server 9.12 and higher.
+Use this template to provision CloudStreams server 9.12 and higher on top of an existing Integration Server or Microservices Runtime instance.
 
 ## Requirements
 
-None
+None.
 
 ### Supported Software AG releases
 
@@ -31,6 +31,9 @@ The template is tested and supported for the following releases:
 
 * Command Central 10.1 and higher
 * CloudStreams Server 9.12 and higher
+* Integration Server 9.12 and higher
+* Microservices Runtime 10.1 to 10.3
+> NOTE: This template is not supported for Microservices Runtime version 10.4.
 
 ### Supported platforms
 
@@ -38,7 +41,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 9.12, 10.1 and higher environments
+* Provisioning of new 9.12, 10.1, and higher environments
 * Installing the latest fixes
 
 ## Running as a composite template
@@ -50,7 +53,7 @@ All supported Windows and UNIX platforms.
 
 ### Provisioning CloudStreams on Microservices Runtime
 
-Provision an instance of Microservices Runtime on managed node with alias `dev1`:
+1. Provision an instance of Microservices Runtime on managed node with alias `dev1` using the sag-msc-server template:
 
 ```bash
 sagcc exec templates composite apply sag-msc-server nodes=dev1 \
@@ -61,7 +64,7 @@ sagcc exec templates composite apply sag-msc-server nodes=dev1 \
 
 See [sag-msc-server](../sag-msc-server/) for details.
 
-Provision CloudStreams on top of the above Microservices Runtime instance:
+2. Provision CloudStreams on top of the above Microservices Runtime instance:
 
 ```bash
 
@@ -73,7 +76,7 @@ sagcc exec templates composite apply sag-is-cloudstreams nodes=dev1 \
 
 ### Provisioning CloudStreams on Integration Server
 
-Provision an instance of Integration Server on managed node with alias `dev2`
+1. Provision an instance of Integration Server on managed node with alias `dev2` using the sag-is-server template:
 
 ```bash
 sagcc exec templates composite apply sag-is-server nodes=dev2 \
@@ -84,7 +87,7 @@ sagcc exec templates composite apply sag-is-server nodes=dev2 \
 
 See [sag-is-server](../sag-is-server/) for details.
 
-Provision CloudStreams on top of the above Integration Server instance:
+2. Provision CloudStreams on top of the above Integration Server instance:
 
 ```bash
 
