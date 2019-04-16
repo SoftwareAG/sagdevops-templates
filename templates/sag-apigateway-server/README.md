@@ -36,8 +36,10 @@ help on Empower.
 
 ### Supported Software AG releases
 
-* API Gateway 10.1 and higher
 * Command Central 10.3 and higher
+* API Gateway with Integration Server 10.1 and higher
+* API Gateway with Microservices Runtime 10.1 to 10.3
+> NOTE: This template is not supported for Microservices Runtime version 10.4.
 
 ### Supported platforms
 
