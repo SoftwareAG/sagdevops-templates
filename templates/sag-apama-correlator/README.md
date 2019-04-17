@@ -28,7 +28,9 @@ This template demonstrates in detail all possible Apama correlator configuration
 ### Supported Software AG releases
 
 * Apama 10.2 and higher
-* Command Central 10.2 and higher
+* Command Central 10.4 
+* Command Central 10.2 and 10.3 with limitations
+When applying the template and Digital Event Service is not configured, it reports status UNKNOWN which causes template job to time out. 
 
 ### Supported platforms
 
