@@ -29,17 +29,21 @@ version: "1.0"
 
 environments:
   default:
-    # First digit of the release version being used
-    release.major: 10
-    # Correlator instance name
-    apama.instance.name: default  
-    # Correlator instance port
-    apama.port: 15904                
-    # Apama license key
-    apama.pamserver.license.key: "*_PAM*_${release.major}.*_*_${os.platform}"
-    # Fixes to install. ALL by default
-    apama.fixes: ALL
+    release.major:                     10                                                   
+    os.platform:                       lnxamd64       
+    apama.instance.name:               default  
+    apama.port:                        15904                
+    apama.pamserver.license.key:       "*_PAM*_${release.major}.*_*_${os.platform}"
+    apama.fixes:                       ALL
+    runtimes.skip.start:               ApamaSubcomponent-${apama.instance.name}-DigitalEventServices  # Skip start of DES when CCE 10.4 is used
 
+layers:                                                                         
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+        - apama-correlator
+        
 templates:                                                                      
   apama-correlator:
     description: |
@@ -49,21 +53,15 @@ templates:
       # template at import time. 'HelloWorld.zip' is a dummy application, but you can create your own using 'engine_deploy'.
       "Apama/command-central/instances/correlator/${apama.instance.name}/HelloWorld.zip": "HelloWorld.zip"      
     licenses:
-      # Make the license key available to the correlator instance
       "Apama/command-central/instances/correlator/${apama.instance.name}/ApamaCorrelatorLicense.xml": "${apama.pamserver.license.key}" 
-    # Install Apama fixes
     fixes: ${apama.fixes}
     products:
-      # Install Apama | Server
       PAMServer:
-        # Creating/reconfiguring a correlator instance with a given name
         ${apama.instance.name}:
           instance.type: 'correlator'
-          # Port that the correlator listens on
           instance.port: ${apama.port}
           # help SPM to match existing instance and skip creation operation and perform noop update
           runtimeComponentId: Apama-correlator-${instance.name}
-
           configuration:                                                      
             Apama-correlator-${instance.name}:
               APAMA-ARGS:
@@ -109,17 +107,6 @@ templates:
                   prop1: value1
                   prop2: value2
                   someHostname: remote.example.com
-      # Install Apama | Platform Manager Plug-in
-      PAMspm:
-
-layers:                                                                         
-  runtime:
-    # Product repository to install from
-    productRepo: ${repo.product}
-    # Fix repository to install from
-    fixRepo: ${repo.fix}
-    templates:
-        - apama-correlator
 
 provision:
   default:
