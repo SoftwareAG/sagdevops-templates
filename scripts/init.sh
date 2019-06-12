@@ -39,6 +39,18 @@ if [ -f $LICENSES_FILE ]; then
 else
     echo "SKIP: $LICENSE_FILE is file found. No new license keys are imported"    
 fi
+PRODUCT_LICENSES_FILE=$CC_HOME/licenses/product_licenses.zip
+if [ -f $PRODUCT_LICENSES_FILE ]; then
+    echo "Importing products license keys from: '$PRODUCT_LICENSES_FILE' ..."
+    sagcc add license-tools keys -i $PRODUCT_LICENSES_FILE
+    rm $PRODUCT_LICENSES_FILE
+else
+    echo "SKIP: $LICENSE_FILE is file found. No new license keys are imported"
+fi
+
+
+
+
 if [ ! -z $LICENSES_URL ]; then
     # https://solutionbook.softwareag.com/sb-web/page/detail_page.xhtml?guid=1227042885&type=platforms
     # https://iwiki.eur.ad.sag/pages/downloadallattachments.action?pageId=517544534
