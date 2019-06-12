@@ -19,8 +19,6 @@
 
 # Creating webMethods database on MySQL server
 
-> STATUS: INCUBATING
-
 With this template you can create user, database, and webMethods database schemas on a MySQL Server.
 
 ## Requirements
@@ -39,6 +37,12 @@ With this template you can create user, database, and webMethods database schema
 * Docker Engine 17.09 or higher
 
 ## Running as a standalone Composite Template
+
+When importing the composite template to Command Central, you will have to attach the 'mysql-connector-java-5.1.47.jar' file. Add the `template.yaml` and `mysql-connector-java-5.1.47.jar` files into a single template.zip file and import that file using the Command Central CLI with the following command:
+
+```bash
+sagcc exec templates composite import -i template.zip
+```
 
 To install Database Component Configurator 10.3 on the Command Central node with alias `local`,
 create a database named `webm` and a database user named `webm` with password `webm`,
