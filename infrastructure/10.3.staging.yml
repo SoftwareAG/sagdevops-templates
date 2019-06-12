@@ -22,7 +22,7 @@ services:
   # node:
   #   build:
   #     args:
-  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-fix1-lnxamd64}
+  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-latest-lnxamd64}
   #       - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-bg.eur.ad.sag/cc/installers} # use this until 10.3-release is promoted
 
   builder:

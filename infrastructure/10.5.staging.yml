@@ -22,15 +22,10 @@ services:
   # node:
   #   build:
   #     args:
-  #       - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-  #       - CC_INSTALLER=cc-def-10.3-latest-lnxamd64
-  #       - CC_INSTALLER_URL=http://docker.for.mac.localhost:8090/cce/provisioning/bootstrap/installers
+  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.5-latest-lnxamd64}
 
   builder:
     build:
       args:
-        - REPO_PRODUCT_URL=http://docker.for.mac.localhost:8092/products-10.3/repository
-        - REPO_FIX_URL=http://docker.for.mac.localhost:8092/fix-fixes-10.3/repository
-        - REPO_USERNAME=Administrator
-        - REPO_PASSWORD=manage
-        - LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster
+        - REPO_PRODUCT_URL=http://aquarius-bg.eur.ad.sag/dataserve105oct2019_SIC/repository/
+        - REPO_FIX_URL=http://aquarius-va.ame.ad.sag/updates/QARepo
