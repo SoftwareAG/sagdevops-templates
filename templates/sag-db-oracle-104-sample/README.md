@@ -19,8 +19,6 @@
 
 # Creating webMethods database on Oracle
 
-> STATUS: INCUBATING
-
 With this template you can create user, storage tablespaces and webMethods database components on an Oracle database server. If you need any other database components, you can extend the template with similar inline templates, like is-db-scripts.
 
 ## Requirements
