@@ -18,8 +18,6 @@
 -->
 # Creating webMethods database on Miscrosoft SQL Server
 
-> STATUS: INCUBATING
-
 With this template you can create user, database, and webMethods database schemas on a Microsoft SQL Server. If you need any other database components, you can extend the template with similar inline templates, is-db-scripts.
 
 ## Requirements
