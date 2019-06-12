@@ -42,6 +42,15 @@ None.
 
 ## Running as a standalone Composite Template
 
+When importing the composite template to Command Central, you will have to attach the 
+'mysql-connector-java-5.1.47.jar' file. Add the `template.yaml` and `mysql-connector-java-5.1.47.jar` 
+files into a single template.zip file and import that file using the Command Central CLI with the 
+following command:
+
+```bash
+sagcc exec templates composite import -i template.zip
+```
+
 To install Database Component Configurator 10.4 on the Command Central node with alias `local`,
 create a database named `webm` and a database user named `webm` with password `webm`,
 and create ISInternal and ISCoreAudit database components with user `root` with password `root`:
