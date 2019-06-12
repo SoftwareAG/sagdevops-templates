@@ -65,6 +65,12 @@ Set-Item WSMan:\localhost\Client\TrustedHosts -Value '<targetHost1>,<targetHost2
 
 ## Running as a standalone Composite Template
 
+When importing the composite template to Command Central, you will have to attach the 'push-bootstrap.ps1' script file. Add the `template.yaml` and `push-bootstrap.ps1` files into a single template.zip file and import that file using the Command Central CLI with the following command:
+
+```bash
+sagcc exec templates composite import -i template.zip
+```
+
 Bootstrap remote Windows machines on host1 and host2 with version 10.2 of Platform Manager into the C:\SoftwareAG2
 installation directory on port 8292. The remote connection user account is the `sagadmin` account, which
 has administrative privileges on host1 and host2. The list of hosts should be in the form of a YAML list, that is ["host1","host2"]
