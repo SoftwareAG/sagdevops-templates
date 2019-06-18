@@ -1,3 +1,4 @@
+# Trigger build on 18.06.2019 11:17
 language: minimal
 sudo: required
 services:
