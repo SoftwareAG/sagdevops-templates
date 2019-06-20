@@ -42,7 +42,7 @@ before_install:
 
 script:
 - sudo sysctl -w vm.max_map_count=262144 
-- sudo chown -R templates
+- sudo chown -R 1724:1724 templates
 - ./provisionw $T
 # script:
 # - cd containers && echo "Building and testing $IMAGE:$TAG"
