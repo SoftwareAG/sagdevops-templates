@@ -39,7 +39,7 @@ services:
       - LICENSES_URL
       - REPO_PRODUCT_NAME
       - REPO_FIX_NAME
-      - REPO_USERAME
+      - REPO_USERNAME
       - REPO_PASSWORD
     ports:
       - 8091 # https://$(docker-compose port cc 8091)/cce/web
