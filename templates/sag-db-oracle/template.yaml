@@ -18,16 +18,16 @@
 ###############################################################################
 
 alias: sag-db-oracle
-description: Oracle database and component schemas
+description: Oracle database and product schemas fro versions 10.3 and earlier
 
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.2
+    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.1.0.0
     db.type:             oracle             # oracle
     db.port:             1521               # oracle default port
     db.sid:              XE                 # Database name
-    db.admin.url:        "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}" # ;sysLoginRole=sysdba
+    db.admin.url:        "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid};sysLoginRole=sysdba"
     db.admin.username:   system             # REQUIRED: for db storage only
     db.admin.password:   oracle             # REQUIRED: for db storage only
     db.tablespace.data:  WEBMDATA           # for Oracle/DB2
@@ -42,8 +42,8 @@ environments:
       - IS
       - BPM
       - MWS
-      # - OPTI  # failing! 
-    db.fixes:            []                 # Database component configurator fixes to install
+      - OPTI
+    dbc.fixes:           ALL                 # Database component configurator fixes to install
 
 layers:
   db:
@@ -79,8 +79,7 @@ templates:
   dbc:
     products:
       DatabaseComponentConfigurator:
-      # FEATURE: we need runtime instance to tag as layer instance
-    fixes: ${db.fixes}
+    fixes: ${dbc.fixes}
 
 provision:
   default:
