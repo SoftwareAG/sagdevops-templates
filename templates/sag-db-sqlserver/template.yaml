@@ -18,7 +18,7 @@
 ###############################################################################
 
 alias: sag-db-sqlserver
-description: SQLServer database and component schemas
+description: SQLServer database and product schemas
 
 environments:
   default:                 
@@ -36,9 +36,9 @@ environments:
     db.products:         
       - IS
       - BPM
-      - MWS 
-      - OPTI 
-    db.fixes:            []                 # Database component configurator fixes to install
+      - MWS
+      - OPTI  
+    dbc.fixes:           ALL                # Database component configurator fixes to install
 
 layers:
   db:
@@ -71,7 +71,7 @@ templates:
   dbc:
     products:
       DatabaseComponentConfigurator:
-    fixes: ${db.fixes}
+    fixes: ${dbc.fixes}
 
 provision:
   default:

@@ -195,7 +195,7 @@ templates:
                   Templates:
                       Template:
                         "@alias": sag-apigateway-cluster  
-                        
+                                                
                 CCE-LAYER-TYPES-INTERNALDATASTORE:
                   "@name": INTERNALDATASTORE
                   Description: Create Internal Data Store server or cluster
@@ -204,23 +204,60 @@ templates:
                   Templates:
                       Template:
                         "@alias": sag-internaldatastore  
-                # CCE-LAYER-TYPES-NINJA-SERVER:
-                #     "@name": NINJA-SERVER
-                #     Description: Create Ninja stateless servers
-                #     Type: RUNTIME
-                #     Scalable: 'true'
-                #     Templates:
-                #        Template:
-                #          "@alias": sag-ninja-server
-
-                # CCE-LAYER-TYPES-NINJA-CLUSTER:
-                #     "@name": NINJA-CLUSTER
-                #     Description: Create Ninja cluster (requires DB)
-                #     Type: RUNTIME
-                #     Scalable: 'true'
-                #     Templates:
-                #        Template:
-                #          "@alias": sag-ninja-cluster                 
+                        
+                CCE-LAYER-TYPES-DB-ORACLE-104:
+                  '@name': DB-ORACLE-104
+                  Description: ORACLE database and sample product schemas for 10.4 release and later
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-oracle-104-sample   
+                        
+                CCE-LAYER-TYPES-DB-MYSQL-104:
+                  '@name': DB-MYSQL-104
+                  Description: MYSQL server database and sample product schemas for 10.4 release and later
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-mysql-104-sample 
+                      
+                CCE-LAYER-TYPES-DB-SQLSERVER-104:
+                  '@name': DB-SQLSERVER-104
+                  Description: SQLSERVER database and sample product schemas for 10.4 release and later
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-sqlserver-104-sample  
+                
+                CCE-LAYER-TYPES-DB-ORACLE: 
+                  '@name': DB-ORACLE
+                  Description: ORACLE database and sample product schemas for 10.3 release and earlier
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-oracle   
+                        
+                CCE-LAYER-TYPES-DB-MYSQL:
+                  '@name': DB-MYSQL
+                  Description: MYSQL server database and sample product schemas for 10.3 release and earlier
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-mysql 
+                      
+                CCE-LAYER-TYPES-DB-SQLSERVER:
+                  '@name': DB-SQLSERVER
+                  Description: SQLSERVER database and sample product schemas for 10.3 release and earlier
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-sqlserver                                  
 
 provision:
   default:

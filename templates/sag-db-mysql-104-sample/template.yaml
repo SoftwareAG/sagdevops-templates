@@ -29,52 +29,41 @@ environments:
     db.admin.username:   root               # Admin username for db and user creation
     db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
     db.admin.url:        "jdbc:mysql://${db.host}:${db.port}"
-    db.url:              "jdbc:mysql://${db.host}:${db.port}/{db.name}"
+    db.url:              "jdbc:mysql://${db.host}:${db.port}/${db.name}"
     db.name:             webm               # webM database name
     db.username:         ${db.name}         # webM database username
     db.password:         ${db.name}         # webM database password
-    db.components:
-      - ProcessEngine
-      - OperationManagement
-      - ISInternal
-      - ISCoreAudit
-      - ProcessAudit
+    db.components:       STR
     db.products:         
       - IS
       - MWS 
       - OPTI 
-      - PRE
-    db.fixes:            ALL                 # Database component configurator fixes to install
-    is.db.fixes:         ALL                 # IS database scripts fixes to install
-    mws.db.fixes:        ALL                 # MWS database scripts fixes to install
-    obe.db.fixes:        ALL                 # OBE database scripts fixes to install
-    pre.db.fixes:        ALL                 # PRE database scripts fixes to install    
-    db.templates:
-      - dbc
-      - is-db-scripts
-      - mws-db-scripts
-      - optimize-db-scripts
-      - pre-db-scripts      
+      - PRE        
+    dbc.products:         
+      - DatabaseComponentConfigurator      
+      - PIEcdc
+      - MWScdc
+      - WPEcdc
+      - OBEcdc 
+    dbc.fixes:            ALL               # Database component configurator fixes to install         
 layers:
   db:
     productRepo: ${repo.product}            # install products from
     fixRepo:     ${repo.fix}                # install fixes from
-    templates:   ${db.templates}
+    templates:   dbc
     databases:
-      #storage:
-      #  components:  
-      #    - STR
-      #  version:     latest
-      #  db.type:     ${db.type}
-      #  db.url:      ${db.admin.url}
-      #  db.admin.username: ${db.admin.username}
-      #  db.admin.password: ${db.admin.password}
-      #  db.username: ${db.username}
-      #  db.password: ${db.password}
-      #  db.name:     ${db.name}
+      storage:
+        components:  ${db.components}
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.admin.url}
+        db.admin.username: ${db.admin.username}
+        db.admin.password: ${db.admin.password}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
       schemas:
         products:    ${db.products}
-        components:  ${db.components}
         version:     ${db.version}
         db.type:     ${db.type}
         db.url:      ${db.url}
@@ -84,28 +73,11 @@ layers:
     
 templates:
   dbc:
-    products:
-      DatabaseComponentConfigurator:
-    fixes: ${db.fixes}
+    products:  ${dbc.products}
+    fixes:     ${dbc.fixes}
     files:
       # Using the fact that DCC picks up sl53* jars dynamically
       common/lib/ext/sl53-mysql.jar: mysql-connector-java-5.1.47.jar # MySQL JDBC driver
-  is-db-scripts:
-    products:
-      PIEcdc:
-    fixes: ${is.db.fixes}
-  mws-db-scripts:
-    products:
-      MWScdc:
-    fixes: ${mws.db.fixes}      
-  optimize-db-scripts:
-    products:
-      OBEcdc:
-    fixes: ${obe.db.fixes}           
-  pre-db-scripts:
-    products:
-      WPEcdc:
-    fixes: ${pre.db.fixes} 
 provision:
   default:
     db: ${nodes}

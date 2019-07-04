@@ -26,8 +26,8 @@ With this template you can create user, database, and webMethods database schema
 ### Supported Software AG releases
 
 * Command Central 10.3 or higher
-* Database Component Configurator 10.3 or higher
-* webMethods database schemas for products version 10.3 or higher
+* Database Component Configurator 10.3
+* webMethods database schemas for products version 10.3
 * [MySQL JDBC Driver](https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.47.zip)
 
 ### Supported platforms
@@ -46,14 +46,15 @@ sagcc exec templates composite import -i template.zip
 
 To install Database Component Configurator 10.3 on the Command Central node with alias `local`,
 create a database named `webm` and a database user named `webm` with password `webm`,
-and create ISInternal and ISCoreAudit database components with user `root` with password `root`:
+and create IS database product schemas with user `root` with password `root`:
 
 ```bash
 sagcc exec templates composite apply sag-db-mysql \
   db.version=latest repo.product=products-10.3 repo.fix=fixes-10.3 nodes=local \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
-  db.components=[ISInternal,ISCoreAudit] \
+  db.components=[STR] \
+  db.products=[IS]
   --sync-job --wait 360
 ```
 
