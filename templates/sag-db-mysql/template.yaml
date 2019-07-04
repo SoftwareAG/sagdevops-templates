@@ -29,15 +29,15 @@ environments:
     db.admin.username:   root               # Admin username for db and user creation
     db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
     db.admin.url:        "jdbc:mysql://${db.host}:${db.port}"
-    db.url:              "jdbc:mysql://${db.host}:${db.port}/{db.name}"
+    db.url:              "jdbc:mysql://${db.host}:${db.port}/${db.name}"
     db.name:             webm               # webM database name
     db.username:         ${db.name}         # webM database username
     db.password:         ${db.name}         # webM database password
+    db.components:       STR
     db.products:         
       - IS
       - MWS 
-      - OPTI 
-      - PRE        
+      - OPTI        
     dbc.fixes:            ALL               # Database component configurator fixes to install         
 layers:
   db:
@@ -45,6 +45,16 @@ layers:
     fixRepo:     ${repo.fix}                # install fixes from
     templates:   dbc
     databases:
+      storage:
+        components:  ${db.components}              
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.admin.url}
+        db.admin.username: ${db.admin.username}
+        db.admin.password: ${db.admin.password}
+        db.username: ${db.username}
+        db.password: ${db.password}
+        db.name:     ${db.name}
       schemas:
         products:    ${db.products}
         version:     ${db.version}
