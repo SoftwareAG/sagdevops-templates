@@ -23,27 +23,38 @@ description: SQLServer database and sample product schemas for 10.4 plus release
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          10.4.0.0           # REQUIRED: target release, e.g. 10.2
+    db.version:          latest             # REQUIRED: target release, e.g. 10.2
     db.type:             sqlserver          # This is SQLServer database
     db.port:             1433               # Default port
-    db.admin.username:   sa                 # Admin username for db and user creation
+    db.admin.username:   ${}                # Admin username for db and user creation
     db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
 
     db.url:              "jdbc:wm:sqlserver://${db.host}:${db.port};databaseName=${db.name}"
     db.name:             webm               # webM database name
-    db.username:         ${db.name}         # webM database username
-    db.password:         ${db.name}         # webM database password
+    db.username:         ${}                # webM database username
+    db.password:         ${}                # webM database password
     db.products:         
       - IS
       - MWS 
       - OPTI 
       - PRE
+      - TN
     dbc.products:         
-      - DatabaseComponentConfigurator      
-      - PIEcdc
+      - DatabaseComponentConfigurator
+      - OBEcdc      
+      - WOKcdc
+      - TNScdc
       - MWScdc
+      - B2BCloudCdc
+      - MATcdc
+      - ODEcdc
+      - PIEcdc
+      - PIEEmbeddedCdc
+      - PIEMobileCdc
+      - WMNcdc
       - WPEcdc
-      - OBEcdc  
+      - WSTcdc
+      - YAIcdc
     dbc.fixes:            ALL               # Database component configurator fixes to install 
 layers:
   db:

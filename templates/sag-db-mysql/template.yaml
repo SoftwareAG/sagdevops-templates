@@ -26,13 +26,13 @@ environments:
     db.version:          10.3.0.0           # 10.3.0.0
     db.type:             mysql              # This is MySQL database
     db.port:             3306               # Default port
-    db.admin.username:   root               # Admin username for db and user creation
+    db.admin.username:   ${}               # Admin username for db and user creation
     db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
     db.admin.url:        "jdbc:mysql://${db.host}:${db.port}"
     db.url:              "jdbc:mysql://${db.host}:${db.port}/${db.name}"
     db.name:             webm               # webM database name
-    db.username:         ${db.name}         # webM database username
-    db.password:         ${db.name}         # webM database password
+    db.username:         ${}                # webM database username
+    db.password:         ${}                # webM database password
     db.components:       STR
     db.products:         
       - IS
