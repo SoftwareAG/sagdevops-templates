@@ -28,16 +28,16 @@ environments:
     db.port:             1521               # oracle default port
     db.sid:              XE                 # Database name
     db.admin.url:        "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid};sysLoginRole=sysdba"
-    db.admin.username:   system             # REQUIRED: for db storage only
-    db.admin.password:   oracle             # REQUIRED: for db storage only
+    db.admin.username:   ${}             # REQUIRED: for db storage only
+    db.admin.password:   ${}             # REQUIRED: for db storage only
     db.tablespace.data:  WEBMDATA           # for Oracle/DB2
     db.tablespace.index: WEBMINDX           # for Oracle/DB2
     db.tablespace.dir:   /u01/app/oracle/oradata/XE # REQUIRED: for Oracle/DB2
 
     db.url:              "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}"
     db.name:             webm
-    db.username:         ${db.name}         # Database username
-    db.password:         ${db.name}         # Database password
+    db.username:         ${}         # Database username
+    db.password:         ${}         # Database password
     db.products:         
       - IS
       - BPM
