@@ -56,7 +56,7 @@ the bgcctbp11 and bgcctbp12 Linux hosts. The remote SSH connection is authentica
 `VMTEST` username/password credentials.
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 \
+sagcc exec templates composite apply sag-spm-boot-ssh nodes=[bgcctbp11,bgcctbp12] \
   cc.installer=cc-def-10.2-fix1-lnxamd64.sh \
   install.dir=/home/vmtest/sag102 \
   spm.port=8292 \
@@ -68,7 +68,7 @@ sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 
 to the `~/.ssh/id_rsa` private key on the Command Central (CCE) host for the user account that runs CCE, e.g. sagadmin:
 
 ```bash
-sagcc exec templates composite apply sag-spm-boot-ssh nodes=bgcctbp11,bgcctbp12 \
+sagcc exec templates composite apply sag-spm-boot-ssh nodes=[bgcctbp11,bgcctbp12] \
   cc.installer=cc-def-10.2-fix1-lnxamd64.sh \
   install.dir=/home/vmtest/sag103 \
   spm.port=8392 \
@@ -83,7 +83,7 @@ The SSH connection from CCE to host1 and host2 is authenticated through the saga
 
 ```bash
 sagcc create stacks alias=Dev01 release=10.1
-sagcc create stacks Dev01 layers alias=LinuxInfra layerType=INFRA-REMOTE-UNIX nodes=host1,host2 \
+sagcc create stacks Dev01 layers alias=LinuxInfra layerType=INFRA-REMOTE-UNIX nodes=[host1,host2] \
   cc.installer=cc-def-10.1-fix8-lnxadm64.sh \
   install.dir=/opt/softwareag \
   os.credentials.key=SSH-PRIVATE-KEY \

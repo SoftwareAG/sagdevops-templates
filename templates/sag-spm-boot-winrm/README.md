@@ -84,7 +84,7 @@ Create a new stack with version "10.2" and alias "Dev02" and provision the Windo
 
 ```bash
 sagcc create stacks alias=Dev02 release=10.2
-sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDOWS nodes=host1,host2 \
+sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDOWS nodes=[host1,host2] \
   cc.installer=cc-def-10.2-fix1-w64.zip \
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
