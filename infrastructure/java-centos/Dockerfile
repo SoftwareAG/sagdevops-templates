@@ -18,7 +18,7 @@
 ###############################################################################
 
 ARG BASE_IMAGE
-ARG NODE_IMAGE=store/softwareag/commandcentral-node:10.3
+ARG NODE_IMAGE
 FROM $NODE_IMAGE as javasource
 FROM $BASE_IMAGE as base
 
