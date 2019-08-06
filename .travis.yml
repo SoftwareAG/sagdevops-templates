@@ -41,7 +41,7 @@ env:
 # - deploy
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - openssl enc -d -aes-256-cbc -md sha256 -out licenses/product_licenses.zip -in licenses/product_licenses.zip.enc -d -k $ENCRYPTION_KEY
+  - openssl enc -d -aes-256-cbc -md sha256 -out licenses/product_licenses.zip -in licenses/product_licenses.zip.enc -d -k $ENCRYPTION_KEY; chmod 777 licenses/product_licenses.zip
   - ls -l licenses/
 
 
