@@ -25,15 +25,15 @@ env:
   # - IMAGE=universal-messaging
   # - IMAGE=integration-server
   matrix:
-  - T=hello-world
-  - T=sag-um-server
-  - T=sag-msc-server
+  #- T=hello-world
+  #- T=sag-um-server
+  #- T=sag-msc-server
   - T=sag-is-server
-  - T=sag-tc-server
-  - T=sag-apama-correlator
-  - T=sag-abe
-  - T=sag-apigateway-server
-  - T=sag-internaldatastore
+  #- T=sag-tc-server
+  #- T=sag-apama-correlator
+  #- T=sag-abe
+  #- T=sag-apigateway-server
+  #- T=sag-internaldatastore
 
 # stages:
 # - infra
@@ -47,26 +47,8 @@ before_install:
 script:
 - sudo sysctl -w vm.max_map_count=262144 
 - sudo chown -R 1724:1724 templates
+- ./provisionw sag-abe
 - ./provisionw $T
-# script:
-# - cd containers && echo "Building and testing $IMAGE:$TAG"
-# - docker-compose build $IMAGE && docker-compose push $IMAGE
-# jobs:
-#   include:
-#   - stage: infra
-#     env:
-#     - IMAGE=none
-#     script:
-#     - cd licenses && openssl aes-256-cbc -K $encrypted_11f35f1fe671_key -iv $encrypted_11f35f1fe671_iv
-#       -in licenses.zip.enc -out licenses.zip -d && cd ..
-#     - cd infrastructure && export COMPOSE_FILE="docker-compose.yml:master.yml:${TAG}.master.yml"
-#     - docker-compose build && docker-compose push
-#   - stage: deploy
-#     env:
-#     - IMAGE=none
-#     - NET=sagcc_default
-#     script:
-#     - cd deployments/docker
-#     - docker-compose -f sag-cc/docker-compose.yml up -d
-#     - docker-compose -f sag-um-is-push/docker-compose.yml run --rm init
+- docker ps
+
 
