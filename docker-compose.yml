@@ -42,10 +42,9 @@ services:
       # - ./scripts/init.sh:/opt/sagtools/init.sh:ro
       # - ./scripts/inventory.sh:/opt/sagtools/inventory.sh:ro
       # - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
-abe: # asset builder service
-    # image: ${CC_REG}/commandcentral-server:${CC_TAG}
+  abe: # asset builder service
+      # image: ${CC_REG}/commandcentral-server:${CC_TAG}
     image: ${REG}/commandcentral-builder-abe:${TAG}
-
     environment: 
       - REPO_PRODUCT_URL
       - REPO_FIX_URL
