@@ -42,32 +42,6 @@ echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
 
-# apply template
-docker-compose exec -T cc bash -c "GIT_USER=$GIT_USER GIT_PUBLISH_KEY=$GIT_PUBLISH_KEY /opt/sagtools/generateAsser.sh $TEMPLATE_ALIAS" 
-
-echo ""
-echo "===================================================================="
-echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
-echo "===================================================================="
-echo ""
-echo "Testing '$TEMPLATE_ALIAS' ..."
-echo ""
-
-# test
-if docker-compose exec -T cc bash -c "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if [ -f test.sh ]; then ./test.sh ; else echo 'WARNING: No test.sh found!'; fi" ; then
-    echo ""
-    echo "===================================================================="
-    echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
-    echo "===================================================================="
-    echo ""
-    echo "TEST '$TEMPLATE_ALIAS' SUCCESSFUL"
-    exit 0
-else
-    echo ""
-    echo "===================================================================="
-    echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
-    echo "===================================================================="
-    echo ""
-    echo "TEST '$TEMPLATE_ALIAS' FAILED"
-    exit 101
-fi
+# generate asset 
+docker-compose exec -T cc bash -c "GIT_USER=$GIT_USER GIT_PUBLISH_KEY=$GIT_PUBLISH_KEY /opt/sagtools/generateAsset.sh $TEMPLATE_ALIAS" 
+docker exec -it `docker ps -q` ls -lr /tmp/abe
