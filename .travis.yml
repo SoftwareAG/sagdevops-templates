@@ -52,6 +52,8 @@ script:
 - sudo chown -R 1724:1724 templates
 - ./provisionw sag-abe
 - ./provisionw $T
+- ./generateAssetw $T
+- docker exec -it `docker ps -q` ls -lr /tmp/abe
 - docker ps
 
 
