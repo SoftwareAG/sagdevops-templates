@@ -45,4 +45,4 @@ echo ""
 # generate asset 
 docker-compose exec -T cc bash -c "GIT_USER=$GIT_USER GIT_PUBLISH_KEY=$GIT_PUBLISH_KEY bash /opt/sagtools/scripts/generateAsset.sh $TEMPLATE_ALIAS" 
 echo "List of assets folder"
-docker exec -it `docker ps -q` ls -lr /tmp/abe
+docker exec -it `docker ps -q` ls -lR /tmp/abe
