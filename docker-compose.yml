@@ -39,6 +39,7 @@ services:
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./licenses/:/opt/sagtools/licenses/:ro
       - ./environments/:/src/environments/:ro
+      - ./scripts/:/opt/sagtools/scripts/:ro
       # - ./scripts/init.sh:/opt/sagtools/init.sh:ro
       # - ./scripts/inventory.sh:/opt/sagtools/inventory.sh:ro
       # - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
