@@ -52,6 +52,8 @@ cd $ASSET_REPO_FOLDER
 git clone https://github.com/SoftwareAG/sagdevops-templates-repo.git
 cd sagdevops-templates-repo
 git config credential.helper '!f() { sleep 1; echo "username=${GIT_USER}"; echo "password=${GIT_PUBLISH_KEY}"; }; f'
+ git config --global user.email "you@example.com"
+ git config --global user.name "Your Name"
 
 cd $ABE_HOME
 ant -v -Dbuild.source.dir=$ASSET_SOURCE_TEMP_FOLDER -Dbuild.output.dir=$ASSET_REPO_FOLDER/sagdevops-templates-repo
