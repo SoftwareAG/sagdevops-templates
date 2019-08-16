@@ -39,13 +39,7 @@ mkdir -p $ASSET_SOURCE_TEMP_FOLDER
 cp $ASSET_SOURCE_FOLDER/$TEMPLATE/* $ASSET_SOURCE_TEMP_FOLDER
 mv $ASSET_SOURCE_TEMP_FOLDER/template.yaml $ASSET_SOURCE_TEMP_FOLDER/$TEMPLATE.yaml
 ##debug
-echo list of environment vars
-echo $TEMPLATE
-echo $ASSET_REPO_FOLDER
-echo  $ASSET_SOURCE_TEMP_FOLDER
-echo the template is $TEMPLATE
-echo the original template file is `ls -l $ASSET_SOURCE_FOLDER/$TEMPLATE/` in  $ASSET_SOURCE_FOLDER/$TEMPLATE
-echo moved file is `ls -la  $ASSET_SOURCE_TEMP_FOLDER/$TEMPLATE.yaml` in $ASSET_SOURCE_TEMP_FOLDER
+echo building asset for template $TEMPLATE
 
 
 cd $ASSET_REPO_FOLDER
