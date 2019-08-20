@@ -23,22 +23,15 @@ services:
   cc: # builder service
     # image: ${CC_REG}/commandcentral-server:${CC_TAG}
     image: ${REG}/commandcentral-builder:${TAG}
-    # build:
-    #   context: .
-    #   args:
-    #     - BUILDER_IMAGE=${CC_REG}/commandcentral-builder:${CC_TAG}
-    #     - NODE_IMAGE=${CC_REG}/commandcentral-node:${TAG}
-    #     - REPO_PRODUCT_NAME=SIC
-    #     - REPO_PRODUCT_URL=http://aquarius-bg.eur.ad.sag/dataserve103oct2018_SIC/repository/
-    #     - REPO_FIX_NAME=QARepo
-    #     - REPO_FIX_URL=http://aquarius-va.ame.ad.sag/updates/QARepo
-    #     - LICENSES_URL=http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster
+
     environment: 
       - REPO_PRODUCT_URL
       - REPO_FIX_URL
       - LICENSES_URL
       - REPO_PRODUCT_NAME
       - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
     ports:
       - 8091 # https://$(docker-compose port cc 8091)/cce/web
       - 8092 # http://$(docker-compose port cc 8092)/spm
@@ -46,10 +39,27 @@ services:
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./licenses/:/opt/sagtools/licenses/:ro
       - ./environments/:/src/environments/:ro
+      - ./scripts/:/opt/sagtools/scripts/:ro
       # - ./scripts/init.sh:/opt/sagtools/init.sh:ro
       # - ./scripts/inventory.sh:/opt/sagtools/inventory.sh:ro
       # - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
-
+  abe: # asset builder service
+      # image: ${CC_REG}/commandcentral-server:${CC_TAG}
+    image: ${REG}/commandcentral-builder-abe:${TAG}
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
+    ports:
+      - 8091 # https://$(docker-compose port cc 8091)/cce/web
+      - 8092 # http://$(docker-compose port cc 8092)/spm
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./environments/:/src/environments/:ro
   sagcc: # sagcc wrapper
     image: ${CC_REG}/commandcentral-client:${CC_TAG}-alpine
     volumes: 
