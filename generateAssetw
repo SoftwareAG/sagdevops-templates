@@ -37,4 +37,4 @@ docker-compose up -d cc
 
 
 # generate asset 
-docker-compose exec -T cc bash -c "GIT_AUTHOR_EMAIL=bisser.paskalev@softwareag.com GIT_USER=$GIT_USER GIT_PUBLISH_KEY=$GIT_PUBLISH_KEY bash /opt/sagtools/scripts/generateAsset.sh $TEMPLATE_ALIAS" 
+docker-compose exec -T cc bash -c "GIT_AUTHOR_EMAIL=bisser.paskalev@softwareag.com GIT_USER=$GIT_USER GIT_PUBLISH_KEY=$GIT_PUBLISH_KEY bash /opt/sagtools/generateAsset.sh $TEMPLATE_ALIAS" 
