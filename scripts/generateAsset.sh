@@ -53,11 +53,16 @@ cd $ABE_HOME
 ant -v -Dbuild.source.dir=$ASSET_SOURCE_TEMP_FOLDER -Dbuild.output.dir=$ASSET_REPO_FOLDER/sagdevops-templates-repo
 if [ $? -eq 0 ]
 then
+     if [ "$TRAVIS_PULL_REQUEST" ]
+     then
         cd $ASSET_REPO_FOLDER/sagdevops-templates-repo
         git add CC/*
-        git commit -m "test build of asset for template $TEMPLATE"
+        git commit -m "PR $TRAVIS_PULL_REQUEST for $TEMPLATE"
         git push
-        echo "Asset for template $TEMPLATE built and pushed to https://github.com/SoftwareAG/sagdevops-templates-repo"
+        echo "Asset for template $TEMPLATE built and pushed to https://github.com/SoftwareAG/sagdevops-templates-repo "
+     else
+        echo "skipping push to github repo, because it is not a pull request"
+     fi
 else
         echo asset failed to be built from template $TEMPLATE 
         exit 1
