@@ -26,7 +26,7 @@ requirement to have SSH access.
 
 ### Supported Software AG releases
 
-* Command Central 10.2 or higher
+* Command Central 10.3 or higher
 * Platform Manager 9.12 or higher
 
 ### System requirements for the target Windows machines
@@ -48,6 +48,8 @@ PS> Restart-Service winrm
 ```
 
 ### System requirements for the Command Central machine
+
+The machine where Command Central is installed should meet the following requirements:
 
 * Windows 7 of higher
 * PowerShell version 5.0 or higher
