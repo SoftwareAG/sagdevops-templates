@@ -32,6 +32,11 @@ ABE_HOME=/opt/softwareag/common/AssetBuildEnvironment/CC
 # export GIT_USER={secured}
 # export GIT_PUBLISH_KEY={secured}
 
+#debug env vars
+env
+
+
+
 rm -rf $ASSET_REPO_FOLDER
 mkdir -p $ASSET_REPO_FOLDER
 rm -rf $ASSET_SOURCE_TEMP_FOLDER
@@ -53,7 +58,7 @@ cd $ABE_HOME
 ant -v -Dbuild.source.dir=$ASSET_SOURCE_TEMP_FOLDER -Dbuild.output.dir=$ASSET_REPO_FOLDER/sagdevops-templates-repo
 if [ $? -eq 0 ]
 then
-     if [ "$TRAVIS_PULL_REQUEST" ]
+     if [ "$TRAVIS_PULL_REQUEST" != "false"]
      then
         cd $ASSET_REPO_FOLDER/sagdevops-templates-repo
         git add CC/*
