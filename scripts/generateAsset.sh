@@ -29,6 +29,8 @@ ASSET_SOURCE_TEMP_FOLDER=/tmp/abe/source
 ASSET_SOURCE_FOLDER=/opt/sagtools/profiles/CCE/data/templates/composite/
 TEMPLATE=$1
 ABE_HOME=/opt/softwareag/common/AssetBuildEnvironment/CC
+## debug env vars
+env
 # export GIT_USER={secured}
 # export GIT_PUBLISH_KEY={secured}
 
@@ -53,7 +55,7 @@ cd $ABE_HOME
 ant -v -Dbuild.source.dir=$ASSET_SOURCE_TEMP_FOLDER -Dbuild.output.dir=$ASSET_REPO_FOLDER/sagdevops-templates-repo
 if [ $? -eq 0 ]
 then
-     if [ "$TRAVIS_PULL_REQUEST" ]
+     if [ "$TRAVIS_PULL_REQUEST" !="false" ]
      then
         cd $ASSET_REPO_FOLDER/sagdevops-templates-repo
         git add CC/*
