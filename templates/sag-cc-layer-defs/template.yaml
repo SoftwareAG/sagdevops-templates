@@ -53,8 +53,8 @@ templates:
                         "@alias": sag-spm-connect
 
                 CCE-LAYER-TYPES-INFRA-REMOTE-UNIX:
-                  "@name": INFRA-REMOTE-UNIX
-                  Description: Create installations on remote UNIX machines using SSH
+                  "@name": INFRA-REMOTE
+                  Description: Create installations on remote machines using SSH
                   Type: INFRASTRUCTURE
                   Scalable: 'true'
                   Templates:
