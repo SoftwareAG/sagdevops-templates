@@ -27,9 +27,8 @@ env:
   # - IMAGE=universal-messaging
   # - IMAGE=integration-server
   matrix:
-  - T=hello-world
+  - T=sag-spm-boot-ssh
   - T=sag-um-server
-  - T=sag-msc-server
   - T=sag-is-server
   - T=sag-tc-server
   - T=sag-apama-correlator
