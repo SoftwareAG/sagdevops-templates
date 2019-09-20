@@ -49,7 +49,9 @@ if  echo [ "$TEMPLATE_ALIAS"  = "sag-spm-boot-ssh" ]
 then
     docker-compose build node-sshd
     docker-compose up -d node-sshd
+    echo "NODES name 01: '$NODES'"
     export NODES=node-sshd
+    echo "NODES name 02: '$NODES'"
     [ -z "$CC_INSTALLER" ] &&  CC_INSTALLER=cc-def-10.4-fix3-lnxamd64.sh
     PARAMS="os.credentials.key=SAGADMIN cc.installer=$CC_INSTALLER install.dir=/opt/softwareag spm.port=8093 ssh.port=2222 $PARAMS"
     docker-compose exec -T cc bash -c "sagcc list inventory products --wait-for-cc"

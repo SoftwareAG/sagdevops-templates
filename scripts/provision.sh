@@ -54,7 +54,9 @@ echo "Running inventory.sh ..."
 $CC_HOME/inventory.sh
 
 # globals
+echo "NODES name 1: '$NODES'"
 NODES=${NODES:-node}
+echo "NODES name 2: '$NODES'"
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
 RELEASE_MAJOR=${RELEASE_MAJOR:-10}
