@@ -8,5 +8,8 @@ EXPOSE 22
 RUN useradd sagadmin \
    && SSH_USERPASS=sagadmin \
    && echo -e "$SSH_USERPASS\n$SSH_USERPASS" | (passwd --stdin sagadmin) \
-   && echo credentials are sagadmin:sagadmin
+   && echo credentials are sagadmin:sagadmin \
+   && mkdir -p /opt/softwareag \
+   && chown -R sagadmin /opt/softwareag
+
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
