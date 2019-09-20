@@ -111,7 +111,7 @@ services:
     entrypoint: antcc
     command: waitcc mirrors -Drelease=${TAG}
   node-sshd:
-    image centos-sshd:7
+    image: centos-sshd:7
     build: containers/centos-sshd/
     ports:
       - "2222:22"
