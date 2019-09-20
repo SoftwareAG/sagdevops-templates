@@ -110,3 +110,9 @@ services:
       - CC_ENV=${CC_ENV:-devcc}
     entrypoint: antcc
     command: waitcc mirrors -Drelease=${TAG}
+  centos-sshd:
+    image centos-sshd:7
+    context: containers/centos-sshd/
+    build: containers/centos-sshd/
+    ports:
+      - "2222:22"
