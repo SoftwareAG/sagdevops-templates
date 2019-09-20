@@ -49,13 +49,14 @@ if  echo [ "$TEMPLATE_ALIAS"  = "sag-spm-boot-ssh" ]
 then
     docker-compose build node-sshd
     docker-compose up -d node-sshd
-    PARAMS="nodes=node-sshd os.credentials.key=SAGADMIN cc.installer=cc-def-10.4-fix2-lnxamd64.sh install.dir=/opt/softwareag spm.port=8093 ssh.port=2222 $PARAMS"
+    [ -z "$CC_INSTALLER" ] &&  CC_INSTALLER=cc-def-10.4-fix3-lnxamd64.sh
+    PARAMS="nodes=node-sshd os.credentials.key=SAGADMIN cc.installer=$CC_INSTALLER install.dir=/opt/softwareag spm.port=8093 ssh.port=2222 $PARAMS"
     docker-compose exec -T cc bash -c "sagcc list inventory products --wait-for-cc"
     docker-compose exec -T cc bash -c "sagcc exec templates composite apply sag-cc-creds --sync-job -c 5 -e DONE \
             credentials.username=sagadmin \
             credentials.password=sagadmin \
             credentials.key=SAGADMIN"
-
+    docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"
 fi
 
 
