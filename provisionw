@@ -62,9 +62,8 @@ then
     docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"
 fi
 
-
 # apply template
-docker-compose exec -T cc bash -c "/opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS" 
+docker-compose exec -T cc bash -c "NODES=$NODES /opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS" 
 
 echo ""
 echo "===================================================================="
