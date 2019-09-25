@@ -63,7 +63,7 @@ then
 fi
 
 # apply template
-docker-compose exec -T cc bash -c "NODES=$NODES /opt/sagtools/provision.sh $TEMPLATE_ALIAS $PARAMS" 
+docker-compose exec -T cc bash -c "NODES=$NODES /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
 
 echo ""
 echo "===================================================================="
