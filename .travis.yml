@@ -28,6 +28,7 @@ env:
   # - IMAGE=integration-server
   matrix:
   - T=sag-spm-boot-ssh
+  - T=sag-spm-boot-local
   - T=sag-um-server
   - T=sag-is-server
   - T=sag-tc-server

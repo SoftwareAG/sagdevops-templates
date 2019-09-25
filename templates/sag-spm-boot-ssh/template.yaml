@@ -31,6 +31,7 @@ environments:
     spm.port: 8092                # SPM HTTP port
     # custom Administrator/password credentials key to be set at bootstrap time
     spm.credentials.key: DEFAULT_ADMINISTRATOR # by default is Administrator/manage
+    ssh.port: 22                  # SSH port for remote hosts connection                   
 
 layers:
   infra:                 # single infrastructure layer
@@ -57,3 +58,4 @@ nodes:
         installer: ${cc.installer}         # Use Command Central bootstrap installer
         installDir: ${install.dir}         # Remote installation directory
         credentials: ${os.credentials.key} # SPM Administrator password to configure
+        port: ${ssh.port}                  # SSH port for remote host connection        

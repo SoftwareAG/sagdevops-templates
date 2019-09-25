@@ -54,7 +54,9 @@ echo "Running inventory.sh ..."
 $CC_HOME/inventory.sh
 
 # globals
+echo "NODES name 1: '$NODES'"
 NODES=${NODES:-node}
+echo "NODES name 2: '$NODES'"
 REPO_PRODUCT=${REPO_PRODUCT:-products}
 REPO_FIX=${REPO_FIX:-fixes}
 RELEASE_MAJOR=${RELEASE_MAJOR:-10}
@@ -101,7 +103,9 @@ else
     echo "WARNING: No environment variables defined! Will use template defaults."
 fi
 
-if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
+if [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-ssh" ] || [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-local" ]; then
+    echo "The template will provision the node. SKIP: bootstrapping"
+elif [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Found managed node in '$SAG_HOME'. SKIP: bootstrapping"
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
