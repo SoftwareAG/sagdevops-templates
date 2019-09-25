@@ -103,7 +103,7 @@ else
     echo "WARNING: No environment variables defined! Will use template defaults."
 fi
 
-if [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-ssh" || "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-local" ]; then
+if [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-ssh" ] || [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-local" ]; then
     echo "The template will provision the node. SKIP: bootstrapping"
 elif [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Found managed node in '$SAG_HOME'. SKIP: bootstrapping"
