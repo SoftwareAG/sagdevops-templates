@@ -45,26 +45,7 @@ echo "===================================================================="
 echo ""
 
 # start second node if necessary
-if [ "$TEMPLATE_ALIAS" = "sag-spm-boot-ssh" ]; then
-    docker-compose build node-sshd
-    docker-compose up -d node-sshd
-    export NODES=node-sshd
-    [ -z "$CC_INSTALLER" ] &&  CC_INSTALLER=cc-def-10.4-fix3-lnxamd64.sh
-    PARAMS="nodes=$NODES os.credentials.key=SAGADMIN cc.installer=$CC_INSTALLER install.dir=/opt/softwareag spm.port=8093 ssh.port=22 $PARAMS"
-    docker-compose exec -T cc bash -c "sagcc list inventory products --wait-for-cc"
-    docker-compose exec -T cc bash -c "sagcc exec templates composite apply sag-cc-creds --sync-job -c 5 -e DONE \
-            credentials.username=sagadmin \
-            credentials.password=sagadmin \
-            credentials.key=SAGADMIN"
-    docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"
-elif [ "$TEMPLATE_ALIAS" = "sag-spm-boot-local" ]; then
-    export NODES=node-local
-    export NODE=node-local
-    [ -z "$CC_INSTALLER" ] &&  CC_INSTALLER=cc-def-10.4-fix3-lnxamd64.sh
-    PARAMS="nodes=$NODES node=$NODE cc.installer=$CC_INSTALLER install.dir=/tmp/softwareag_local spm.port=8193 $PARAMS"
-    docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"    
-fi
-
+source tests/scripts/provision_additional_nodes.sh
 # apply template
 docker-compose exec -T cc bash -c "NODE=$NODE NODES=$NODES /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
 
