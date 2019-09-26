@@ -1,5 +1,6 @@
 case $TEMPLATE_ALIAS in
     sag-spm-boot-ssh)
+      echo "Provisioning additional host with  ssh server"
       docker-compose build node-sshd
       docker-compose up -d node-sshd
       export NODES=node-sshd
@@ -13,20 +14,37 @@ case $TEMPLATE_ALIAS in
       docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"
       ;;
     sag-spm-boot-local)
+      echo "Provisioning empty local host"
       export NODES=node-local
       export NODE=node-local
       [ -z "$CC_INSTALLER" ] &&  CC_INSTALLER=cc-def-10.4-fix3-lnxamd64.sh
       PARAMS="nodes=$NODES node=$NODE cc.installer=$CC_INSTALLER install.dir=/tmp/softwareag_local spm.port=8193 $PARAMS"
       docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"    
       ;;
-     sag-db-sqlserver)
-       echo sqlserver
+    sag-db-sqlserver)
+       echo "Provisioning MS SQLserver"
+       export PASSWORD=Passw0rd
+       docker-compose up -d sqlserver
+       export DB.ADMIN.USERNAME=sa
+       export DB.ADMIN.PASSWORD=$PASSWORD
+       export DB.HOST=sqlserver
        ;;
-     sag-db-mysql)
-      echo mysql
+    sag-db-mysql)
+       echo "Provisioning MYSQL server"
+       export PASSWORD=Passw0rd
+       docker-compose up -d mysql
+       export DB.ADMIN.USERNAME=root
+       export DB.ADMIN.PASSWORD=$PASSWORD
+       export DB.HOST=mysql
+
       ;;
-     sag-db-oracle)
-      echo oracle
+    sag-db-oracle)
+       echo "Provisioning MYSQL server"
+       export PASSWORD=Passw0rd
+       docker-compose up -d oracle
+       export DB.ADMIN.USERNAME=system
+       export DB.ADMIN.PASSWORD=oracle
+       export DB.HOST=oracle
       ;;
      *)
       echo "The template does not need additional host"
