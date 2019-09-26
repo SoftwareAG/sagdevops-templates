@@ -12,6 +12,7 @@ case $TEMPLATE_ALIAS in
               credentials.password=sagadmin \
               credentials.key=SAGADMIN"
       docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"
+      export ENV_PREFIX="NODES=$NODES"
       ;;
     sag-spm-boot-local)
       echo "Provisioning empty local host"
@@ -20,6 +21,7 @@ case $TEMPLATE_ALIAS in
       [ -z "$CC_INSTALLER" ] &&  CC_INSTALLER=cc-def-10.4-fix3-lnxamd64.sh
       PARAMS="nodes=$NODES node=$NODE cc.installer=$CC_INSTALLER install.dir=/tmp/softwareag_local spm.port=8193 $PARAMS"
       docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"    
+      export ENV_PREFIX="NODES=$NODES NODE=$NODE"
       ;;
     sag-db-sqlserver)
        echo "Provisioning MS SQLserver"
@@ -28,6 +30,7 @@ case $TEMPLATE_ALIAS in
        export DB.ADMIN.USERNAME=sa
        export DB.ADMIN.PASSWORD=$PASSWORD
        export DB.HOST=sqlserver
+       export ENV_PREFIX="DB.ADMIN.USERNAME=$DB.ADMIN.USERNAME DB.ADMIN.PASSWORD=$DB.ADMIN.PASSWORD DB.HOST=$DB.HOST "
        ;;
     sag-db-mysql)
        echo "Provisioning MYSQL server"
@@ -36,6 +39,7 @@ case $TEMPLATE_ALIAS in
        export DB.ADMIN.USERNAME=root
        export DB.ADMIN.PASSWORD=$PASSWORD
        export DB.HOST=mysql
+       export ENV_PREFIX="DB.ADMIN.USERNAME=$DB.ADMIN.USERNAME DB.ADMIN.PASSWORD=$DB.ADMIN.PASSWORD DB.HOST=$DB.HOST "
 
       ;;
     sag-db-oracle)
@@ -45,7 +49,9 @@ case $TEMPLATE_ALIAS in
        export DB.ADMIN.USERNAME=system
        export DB.ADMIN.PASSWORD=oracle
        export DB.HOST=oracle
+       export ENV_PREFIX="DB.ADMIN.USERNAME=$DB.ADMIN.USERNAME DB.ADMIN.PASSWORD=$DB.ADMIN.PASSWORD DB.HOST=$DB.HOST "
       ;;
      *)
       echo "The template does not need additional host"
+      echo "ENV_PREVIX=$ENV_PREFIX"
 esac
