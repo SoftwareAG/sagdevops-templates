@@ -115,32 +115,5 @@ services:
     build: containers/centos-sshd/
     ports:
       - "2222:22"
-  sqlserver:
-    image: microsoft/mssql-server-linux:2017-latest
-    ports:
-      -  "1433:1433"
-    environment:
-      - SA_PASSWORD
-      - ACCEPT_EULA=Y
-    restart: unless-stopped
-  mysql:
-    image: mysql:5.7
-    restart: unless-stopped
-    environment:
-      - MYSQL_DATABASE=db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=
-      - MYSQL_ROOT_PASSWORD=
-    ports:
-      - "3306:3306"
-  oracle:
-#    image: oracle/database:11.2.0.2-xe
-    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
-    ports:
-      - 1521:1521
-      - 8085:8080
-    shm_size: 1g
-    environment:
-      - ORACLE_PWD
-    restart: unless-stopped
+
 
