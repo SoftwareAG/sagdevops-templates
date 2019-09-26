@@ -33,7 +33,7 @@ env:
   - T=sag-is-server
   - T=sag-tc-server
   - T=sag-apama-correlator
-  #- T=sag-abe
+  - T=sag-cc-layer-defs
   - T=sag-apigateway-server
   - T=sag-internaldatastore
 
