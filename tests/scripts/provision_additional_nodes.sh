@@ -73,5 +73,5 @@ case $TEMPLATE_ALIAS in
       ;;
      *)
       echo "The template does not need additional host"
-      echo "ENV_PREVIX=$ENV_PREFIX"
 esac
+echo "ENV_PREVIX=$ENV_PREFIX"
