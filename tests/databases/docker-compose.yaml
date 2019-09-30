@@ -1,0 +1,29 @@
+version: "3.2"
+services:
+  mssql:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      -  "1433:1433"
+    environment:
+      - SA_PASSWORD=Passw0rd
+      - ACCEPT_EULA=Y
+    restart: unless-stopped
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'Passw0rd'
+      MYSQL_ROOT_PASSWORD: 'Passw0rd'
+    ports:
+      - '3306:3306'
+  oracle:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
+    ports:
+      - 1521:1521
+      - 8085:8080
+    shm_size: 1g
+    environment:
+      - ORACLE_PWD=Passw0rd
+    restart: unless-stopped
