@@ -45,7 +45,7 @@ echo "===================================================================="
 echo ""
 
 # start second node if necessary
-source tests/scripts/provision_additional_nodes.sh
+. tests/scripts/provision_additional_nodes.sh
 # apply template
 docker-compose exec -T cc bash -c "$ENV_PREFIX /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
 
