@@ -16,7 +16,7 @@
    limitations under the License.
 -->
 
-# Bootstrapping Platform Manager on remote UNIX machines
+# Bootstrapping Platform Manager on remote machines
 
 With this template you can install Platform Manager (SPM) on remote UNIX or Windows hosts using the SSH protocol.
 
@@ -46,7 +46,7 @@ With this template you can install Platform Manager (SPM) on remote UNIX or Wind
 ### System requirements for the Command Central machine
 
 * All supported UNIX or Windows operating systems
-* Must have Command Central bootstrap installer for the target UNIX platform (*.sh file) or for the target Windows platform (*.bat or *.exe) saved in the `CC_HOME\profiles\CCE\data\installers` folder. Verify by running:
+* Must have Command Central bootstrap installer for the target UNIX platform (\*.sh file) or for the target Windows platform (\*.bat or \*.exe) saved in the `CC_HOME\profiles\CCE\data\installers` folder. Verify by running:
 
 ```bash
 sagcc list provisioning bootstrap installers
