@@ -47,19 +47,19 @@ case $TEMPLATE_ALIAS in
        echo "Provisioning MS SQLserver"
        export PASSWORD=Passw0rd
        docker-compose up -d sqlserver
-       export PARAMS="db.admin.username=sa db.admin.password=$PASSWORD db.host=sqlserver $PARAMS "
+       export PARAMS="db.admin.username=sa db.admin.password=$PASSWORD db.host=sqlserver db.username=webm db.password=webm $PARAMS "
        ;;
     sag-db-mysql*)
        echo "Provisioning MYSQL server"
        export PASSWORD=Passw0rd
        docker-compose up -d mysql
-       export PARAMS="db.admin.username=root db.admin.password=$PASSWORD db.host=mysql $PARAMS "
+       export PARAMS="db.admin.username=root db.admin.password=$PASSWORD db.host=mysql db.username=webm db.password=webm $PARAMS "
       ;;
     sag-db-oracle*)
        echo "Provisioning ORACLE server"
        export PASSWORD=Passw0rd
        docker-compose up -d oracle
-       export PARAMS="db.admin.username=system db.admin.password=oracle db.host=oracle $PARAMS "
+       export PARAMS="db.admin.username=system db.admin.password=oracle db.host=oracle db.username=webm db.password=webm $PARAMS "
       ;;
      *)
       echo "The template does not need additional host"
