@@ -43,7 +43,7 @@ case $TEMPLATE_ALIAS in
       docker-compose exec -T cc bash -c "curl -L -o /opt/sagtools/profiles/CCE/data/installers/$CC_INSTALLER http://empowersdc.softwareag.com/ccinstallers/$CC_INSTALLER"    
       export ENV_PREFIX="NODES=$NODES NODE=$NODE"
       ;;
-    sag-db-sqlserver)
+    sag-db-sqlserver*)
        echo "Provisioning MS SQLserver"
        export PASSWORD=Passw0rd
        docker-compose up -d sqlserver
@@ -52,7 +52,7 @@ case $TEMPLATE_ALIAS in
        export DB.HOST=sqlserver
        export ENV_PREFIX="DB.ADMIN.USERNAME=$DB.ADMIN.USERNAME DB.ADMIN.PASSWORD=$DB.ADMIN.PASSWORD DB.HOST=$DB.HOST "
        ;;
-    sag-db-mysql)
+    sag-db-mysql*)
        echo "Provisioning MYSQL server"
        export PASSWORD=Passw0rd
        docker-compose up -d mysql
@@ -62,7 +62,7 @@ case $TEMPLATE_ALIAS in
        export ENV_PREFIX="DB.ADMIN.USERNAME=$DB.ADMIN.USERNAME DB.ADMIN.PASSWORD=$DB.ADMIN.PASSWORD DB.HOST=$DB.HOST "
 
       ;;
-    sag-db-oracle)
+    sag-db-oracle*)
        echo "Provisioning MYSQL server"
        export PASSWORD=Passw0rd
        docker-compose up -d oracle
