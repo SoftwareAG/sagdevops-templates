@@ -47,6 +47,14 @@ environments:
       - DatabaseManagement
       - OperationManagement
       - ProcessAudit
+      
+   db.OBE.components:
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
        
     db.WOK.components:       
       - BusinessRules
@@ -120,7 +128,7 @@ layers:
         components:  ${db.STR.components}
         version:     latest
         db.type:     ${db.type}
-        db.url:      ${db.admin.url}
+        db.url:      ${db.url}
         db.admin.username: ${db.admin.username}
         db.admin.password: ${db.admin.password}
         db.username: ${db.username}
