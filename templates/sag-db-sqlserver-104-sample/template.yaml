@@ -38,7 +38,7 @@ environments:
       
     db.MAT.components:
       - ActiveTransfer 
-      - ActiveTransferArchive
+      #- ActiveTransferArchive
      
     db.OBE.components:
       - Analysis
