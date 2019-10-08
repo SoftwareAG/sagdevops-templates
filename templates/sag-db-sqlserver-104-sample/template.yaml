@@ -48,7 +48,7 @@ environments:
       - OperationManagement
       - ProcessAudit
       
-   db.OBE.components:
+    db.OBE.components:
       - Analysis
       - ProcessTracker
       - DataPurge
