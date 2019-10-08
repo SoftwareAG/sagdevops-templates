@@ -66,8 +66,8 @@ environments:
     db.MWS.components:  
       - MywebMethodsServer
     
-    db.B2Bcloud.components:      
-      - B2BChannels
+    db.B2Bcloud.components:  []    
+     # - B2BChannels
 
     db.ODE.components:      
       - OneDataMetadata
