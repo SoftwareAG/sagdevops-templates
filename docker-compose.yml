@@ -126,11 +126,13 @@ services:
   mysql:
     image: mysql:5.7
     restart: unless-stopped
+    volumes:
+      - ./templates/sag-db-mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
     environment:
-      - MYSQL_DATABASE=db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=${PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${PASSWORD}
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=webm
+      - MYSQL_USER=webm
+      - MYSQL_PASSWORD=webm
     ports:
       - "3306:3306"
   oracle:

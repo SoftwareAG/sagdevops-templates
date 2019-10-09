@@ -33,7 +33,7 @@ environments:
     db.name:             webm               # webM database name
     db.username:         ${}                # webM database username
     db.password:         ${}                # webM database password
-    db.components:       STR
+    db.components:       []
     db.products:         
       - IS
       - MWS 
