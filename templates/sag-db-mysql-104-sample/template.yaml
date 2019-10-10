@@ -17,42 +17,57 @@
 #
 ###############################################################################
 
-alias: sag-db-sqlserver
-description: SQLServer database and product schemas
+alias: sag-db-mysql-104-sample
+description: MySQL server database and sample component schemas for 10.4 plus releases
 
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.2
-    db.type:             sqlserver          # This is SQLServer database
-    db.port:             1433               # Default port
+    db.version:          latest             # 10.3.0.0           # REQUIRED: e.g. 10.3.0.0
+    db.type:             mysql              # This is MySQL database
+    db.port:             3306               # Default port
     db.admin.username:   ${}                # Admin username for db and user creation
     db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
-
-    db.url:              "jdbc:wm:sqlserver://${db.host}:${db.port};databaseName=${db.name}"
-    db.name:             webm               # webM database name
+    db.admin.url:        "jdbc:mysql://${db.host}:${db.port}"
+    db.url:              "jdbc:mysql://${db.host}:${db.port}/${db.name}"
+    db.name:             webmdb               # webM database name
     db.username:         ${}                # webM database username
     db.password:         ${}                # webM database password
+    db.components:       []
     db.products:         
       - IS
-      - BPM
-      - MWS
-      - OPTI  
-    dbc.fixes:           ALL                # Database component configurator fixes to install
-
+      - MWS 
+      - OPTI 
+      - PRE
+      - TN
+    dbc.products:         
+      - DatabaseComponentConfigurator
+      - OBEcdc      
+      - WOKcdc
+      - TNScdc
+      - MWScdc
+      - B2BCloudCdc
+      - MATcdc
+      - ODEcdc
+      - PIEcdc
+      - PIEEmbeddedCdc
+      - PIEMobileCdc
+      - WMNcdc
+      - WPEcdc
+      - WSTcdc
+      - YAIcdc
+    dbc.fixes:            ALL               # Database component configurator fixes to install         
 layers:
   db:
     productRepo: ${repo.product}            # install products from
     fixRepo:     ${repo.fix}                # install fixes from
-    templates:   
-      - dbc
+    templates:   dbc
     databases:
       storage:
-        components:  
-          - STR
+        components:  ${db.components}
         version:     latest
         db.type:     ${db.type}
-        db.url:      ${db.url}
+        db.url:      ${db.admin.url}
         db.admin.username: ${db.admin.username}
         db.admin.password: ${db.admin.password}
         db.username: ${db.username}
@@ -69,10 +84,11 @@ layers:
     
 templates:
   dbc:
-    products:
-      DatabaseComponentConfigurator:
-    fixes: ${dbc.fixes}
-
+    products:  ${dbc.products}
+    fixes:     ${dbc.fixes}
+    files:
+      # Using the fact that DCC picks up sl53* jars dynamically
+      common/lib/ext/sl53-mysql.jar: mysql-connector-java-5.1.47.jar # MySQL JDBC driver
 provision:
   default:
     db: ${nodes}

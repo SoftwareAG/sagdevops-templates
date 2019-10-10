@@ -19,26 +19,30 @@
 version: "3.2"
 
 services:
-  # this is the sqlserver itself
-  sqlserver:
-    image: microsoft/mssql-server-linux:2017-latest
-    ports:
-      - 1433
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=MaNaGe123
+  # this is the oracle db itself
+  oracle:
+    image: wnameless/oracle-xe-11g:18.04
+    ports: 
+      - 1521
+    environment: 
+      - ORACLE_ALLOW_REMOTE=true
 
   # provisioner for webm db schemas using template.yaml
   provision:
-    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
-    command: >
-      sagcc exec templates composite apply sag-db-sqlserver-103-and-lower 
-        repo.product=products repo.fix=fixes
-        nodes=node db.host=sqlserver db.admin.password=MaNaGe123 --wait-for-cc --wait 600 --sync-job
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}
+    command: > 
+      bash -c '
+      echo "Waiting for repositories ..." &&
+      sagcc list repository products -e products -w 600 --wait-for-cc &&
+      sagcc list repository fixes -e fixes -w 600 --wait-for-cc &&
+      echo "Creating DB schemas ..." &&
+      sagcc exec templates composite apply sag-db-oracle-104-sample \
+        repo.product=products repo.fix=fixes \
+        nodes=node db.host=oracle --wait-for-cc --wait 600 --sync-job'
     depends_on: 
-      - sqlserver
+      - oracle
 
 networks:
   default:
     external:
-      name: sagdevops-templates_default
+      name: ${NET:-sagdevops-templates_default}

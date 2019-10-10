@@ -206,36 +206,36 @@ templates:
                       Template:
                         "@alias": sag-internaldatastore  
                         
-                CCE-LAYER-TYPES-DB-ORACLE-103:
-                  '@name': DB-ORACLE-103
-                  Description: ORACLE database and sample product schemas for 10.3 and lower
+                CCE-LAYER-TYPES-DB-ORACLE-104:
+                  '@name': DB-ORACLE-104
+                  Description: ORACLE database and sample product schemas for 10.4 release and later
                   Type: DATABASE
                   Scalable: 'false'
                   Templates:
                     Template:
-                      '@alias': sag-db-oracle-103-and-lower   
+                      '@alias': sag-db-oracle-104-sample   
                         
-                CCE-LAYER-TYPES-DB-MYSQL-103:
-                  '@name': DB-MYSQL-103
-                  Description: MYSQL server database and sample product schemas for 10.3
+                CCE-LAYER-TYPES-DB-MYSQL-104:
+                  '@name': DB-MYSQL-104
+                  Description: MYSQL server database and sample product schemas for 10.4 release and later
                   Type: DATABASE
                   Scalable: 'false'
                   Templates:
                     Template:
-                      '@alias': sag-db-mysql-103
+                      '@alias': sag-db-mysql-104-sample 
                       
-                CCE-LAYER-TYPES-DB-SQLSERVER-103:
-                  '@name': DB-SQLSERVER-103
-                  Description: SQLSERVER database and sample product schemas for 10.3 and lower
+                CCE-LAYER-TYPES-DB-SQLSERVER-104:
+                  '@name': DB-SQLSERVER-104
+                  Description: SQLSERVER database and sample product schemas for 10.4 release and later
                   Type: DATABASE
                   Scalable: 'false'
                   Templates:
                     Template:
-                      '@alias': sag-db-sqlserver-103-and-lower 
+                      '@alias': sag-db-sqlserver-104-sample  
                 
                 CCE-LAYER-TYPES-DB-ORACLE: 
                   '@name': DB-ORACLE
-                  Description: ORACLE database and components schemas for 10.5 release and higher
+                  Description: ORACLE database and sample product schemas for 10.3 release and earlier
                   Type: DATABASE
                   Scalable: 'false'
                   Templates:
@@ -244,7 +244,7 @@ templates:
                         
                 CCE-LAYER-TYPES-DB-MYSQL:
                   '@name': DB-MYSQL
-                  Description: MYSQL server database and components schemas for 10.5 release and higher
+                  Description: MYSQL server database and sample product schemas for 10.3 release and earlier
                   Type: DATABASE
                   Scalable: 'false'
                   Templates:
@@ -253,7 +253,7 @@ templates:
                       
                 CCE-LAYER-TYPES-DB-SQLSERVER:
                   '@name': DB-SQLSERVER
-                  Description: SQLSERVER database and components schemas for 10.5 release and higher
+                  Description: SQLSERVER database and sample product schemas for 10.3 release and earlier
                   Type: DATABASE
                   Scalable: 'false'
                   Templates:

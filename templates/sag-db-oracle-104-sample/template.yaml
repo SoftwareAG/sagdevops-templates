@@ -17,13 +17,13 @@
 #
 ###############################################################################
 
-alias: sag-db-oracle
-description: Oracle database and product schemas fro versions 10.3 and earlier
+alias: sag-db-oracle-104-sample
+description: Oracle database and sample product schemas for 10.4 plus releases
 
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.1.0.0
+    db.version:          latest             # REQUIRED: target release, e.g. 10.4.0.0
     db.type:             oracle             # oracle
     db.port:             1521               # oracle default port
     db.sid:              XE                 # Database name
@@ -40,47 +40,60 @@ environments:
     db.password:         ${}         # Database password
     db.products:         
       - IS
-      - BPM
-      - MWS
-      - OPTI
-    dbc.fixes:           ALL                 # Database component configurator fixes to install
-
+      - MWS 
+      - PRE
+      - TN
+      - OPTI 
+    dbc.products:         
+      - DatabaseComponentConfigurator
+      - OBEcdc      
+      - WOKcdc
+      - TNScdc
+      - MWScdc
+      - B2BCloudCdc
+      - MATcdc
+      - ODEcdc
+      - PIEcdc
+      - PIEEmbeddedCdc
+      - PIEMobileCdc
+      - WMNcdc
+      - WPEcdc
+      - WSTcdc
+      - YAIcdc   
+    dbc.fixes:           ALL                # Database component configurator fixes to install      
 layers:
   db:
     productRepo: ${repo.product}            # install products from
     fixRepo:     ${repo.fix}                # install fixes from
-    templates:   
-      - dbc
+    templates:   dbc 
     databases:
       storage:
         components:  
           - STR
-        version:     latest
-        db.type:     ${db.type}
-        db.url:      ${db.admin.url}
-        db.admin.username: ${db.admin.username}
-        db.admin.password: ${db.admin.password}
-        db.tablespace.dir: ${db.tablespace.dir}
-        db.tablespace.data: ${db.tablespace.data}
+        version:             latest
+        db.type:             ${db.type}
+        db.url:              ${db.admin.url}
+        db.admin.username:   ${db.admin.username}
+        db.admin.password:   ${db.admin.password}
+        db.tablespace.dir:   ${db.tablespace.dir}
+        db.tablespace.data:  ${db.tablespace.data}
         db.tablespace.index: ${db.tablespace.index}
-        db.username: ${db.username}
-        db.password: ${db.password}
-        db.name:     ${db.name}
+        db.username:         ${db.username}
+        db.password:         ${db.password}
+        db.name:             ${db.name}
       schemas:
-        products:    ${db.products}
-        version:     ${db.version}
-        db.type:     ${db.type}
-        db.url:      ${db.url}
-        db.username: ${db.username}
-        db.password: ${db.password}
-        db.name:     ${db.name}
+        products:            ${db.products}
+        version:             ${db.version}
+        db.type:             ${db.type}
+        db.url:              ${db.url}
+        db.username:         ${db.username}
+        db.password:         ${db.password}
+        db.name:             ${db.name}
     
 templates:
   dbc:
-    products:
-      DatabaseComponentConfigurator:
-    fixes: ${dbc.fixes}
-
+    products: ${dbc.products}
+    fixes:    ${dbc.fixes}   
 provision:
   default:
     db: ${nodes}
