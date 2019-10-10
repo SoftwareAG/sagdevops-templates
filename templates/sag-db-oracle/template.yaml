@@ -130,7 +130,8 @@ layers:
     templates:   dbc
     databases:
       storage:
-        components:          ${db.STR.components}
+        components:  
+          - STR
         version:             latest
         db.type:             oracle
         db.url:              "${db.admin.url}"
