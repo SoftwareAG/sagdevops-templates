@@ -1,6 +1,6 @@
 #########################################################################
 #                                                                       #
-# Copyright (C) 2018 Software AG, Darmstadt, Germany and/or             #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
 # Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
 # and/or its affiliates and/or their licensors.                         #
 #                                                                       #
@@ -16,14 +16,22 @@
 #########################################################################
 
 alias: sag-exx-mq-rpc-server
+dslVersion: "1.2"
 description: Create and configure EntireX rpc server for IBM MQ
-version: 2.0
+version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
+  - 2.1 Tested with 10.5 and adapted Admin Port
+  - 2.2 Added runtimes.skip.start property
 
 environments:
   default:
+  
+    runtimes.skip.start: EntireXCore-RpcServerIbmMq-MqRpcSrv   # Set this flag if you do not want the
+                                                               # newly created instance started automatically
+                                                               # comment it out if you wish autostart after
+                                                               # creation
 
     exx.server.name: MqRpcSrv                           # Instance name of the RPC Server
     exx.server.install.service: false                   # Install as Windows service true/false
@@ -34,10 +42,10 @@ environments:
     exx.server.broker.password: exxpasswd               # Password for Broker when running with security
     exx.server.address: RPC/SRVMQ/CALLNAT               # Server Address
     exx.server.adminport: 7531                          # Administration port
-    exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
-    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false   
+    exx.server.reconnect.attempts: 3                    # Number of recconect tries to Broker
+    exx.server.worker.scalability: false                # Worker Scalability dynamic true/false	
     exx.server.mq.host: ibm2                            # Host name of the MQ server
-    exx.server.mq.port: 3434                            # Port of the MQ server
+    exx.server.mq.port: 3093                            # Port of the MQ server
     # Credentials if the MQ server is running with security
     exx.server.mq.user: mquser                          # User ID
     exx.server.mq.password: mqpassword                  # Password
@@ -101,7 +109,7 @@ templates:
           mq.javalibpath: ${exx.server.mq.libpath}
 
           configuration:
-            EntireXCore-RpcServerXml-${exx.server.name}:
+            EntireXCore-RpcServerIbmMq-${exx.server.name}:
               BROKER:
                 BROKER:
                   BrokerHost: ${exx.server.broker.host}
@@ -141,12 +149,13 @@ templates:
                   IbmMqMapping: ${exx.server.mq.mapping}
                   IbmMqCharacterSetId: ${exx.server.mq.character.setid}
                   IbmMqWaitTime: ${exx.server.mq.wait.time}
-                  IbmMqSsl: ${exx.server.mq.ssl.ciper.suite:}
+                  IbmMqSsl: ${exx.server.mq.ssl.ciper.suite}
                   IbmMqPriority: ${exx.server.mq.priority}
                   IbmMqJavaInstallPath: ${exx.server.mq.installpath}
                   IbmMqJavaLibPath: ${exx.server.mq.libpath}
                   IbmMqUserExit: ${exx.server.mq.user.exit}
                   IbmMqUserExitClasspath: ${exx.server.mq.user.exit.classpath}
+                  IbmMqPriority: ''
 
   
 layers:
