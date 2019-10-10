@@ -24,6 +24,6 @@ export CC_SERVER=cc
 
 sagcc list administration product node DatabaseComponentConfigurator database catalog \
     db.type=oracle db.username=webm db.password=webm db.name=webm db.url="jdbc:wm:oracle://oracle:1521;SID=XE" \
-    -e "ISInternal & ProcessEngine & APIGatewayEvents"    
+    -e "ISI & MWS & PRE"    
 
 echo "TEST SUCCESSFUL"
