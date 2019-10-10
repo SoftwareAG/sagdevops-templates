@@ -33,7 +33,7 @@ environments:
     db.name:             webm               # webM database name
     db.username:         ${}                # webM database username
     db.password:         ${}                # webM database password
-    db.STR.components:   STR
+    db.STR.components:   []
       
     db.MAT.components:
       - ActiveTransfer 
@@ -116,7 +116,7 @@ layers:
     templates:   dbc
     databases:
       storage:
-        components:  ${db.str.components}
+        components:  ${db.STR.components}
         version:     latest
         db.type:     mysql
         db.url:      "${db.admin.url}"
