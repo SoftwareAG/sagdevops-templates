@@ -37,7 +37,7 @@ services:
       sagcc list repository products -e products -w 600 --wait-for-cc &&
       sagcc list repository fixes -e fixes -w 600 --wait-for-cc &&
       echo "Creating DB schemas ..." &&
-      sagcc exec templates composite apply sag-db-oracle \
+      sagcc exec templates composite apply sag-db-oracle-103-and-lower \
         repo.product=products repo.fix=fixes \
         nodes=node db.host=oracle --wait-for-cc --wait 600 --sync-job'
     depends_on: 

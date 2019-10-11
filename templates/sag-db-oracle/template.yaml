@@ -1,86 +1,270 @@
-###############################################################################
-#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 #
-#   SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Apache-2.0
 #
-#     Licensed under the Apache License, Version 2.0 (the "License");
-#     you may not use this file except in compliance with the License.
-#     You may obtain a copy of the License at
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
 #
-#        http://www.apache.org/licenses/LICENSE-2.0
+#       http://www.apache.org/licenses/LICENSE-2.0
 #
-#     Unless required by applicable law or agreed to in writing, software
-#     distributed under the License is distributed on an "AS IS" BASIS,
-#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#     See the License for the specific language governing permissions and
-#     limitations under the License.                                                            
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
 #
-###############################################################################
+#########################################################################################
 
 alias: sag-db-oracle
-description: Oracle database and product schemas fro versions 10.3 and earlier
+description: Oracle database and sample product schemas for release 10.5 and higher
 
 environments:
   default:                 
     db.host:             ${}                # REQUIRED: Database server hostname
-    db.version:          10.3.0.0           # REQUIRED: target release, e.g. 10.1.0.0
-    db.type:             oracle             # oracle
+    db.version:          latest             # REQUIRED: target release, e.g. 10.5
     db.port:             1521               # oracle default port
     db.sid:              XE                 # Database name
     db.admin.url:        "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid};sysLoginRole=sysdba"
-    db.admin.username:   ${}             # REQUIRED: for db storage only
-    db.admin.password:   ${}             # REQUIRED: for db storage only
+    db.admin.username:   ${}                # REQUIRED: for db storage only
+    db.admin.password:   ${}                # REQUIRED: for db storage only
     db.tablespace.data:  WEBMDATA           # for Oracle/DB2
     db.tablespace.index: WEBMINDX           # for Oracle/DB2
-    db.tablespace.dir:   /u01/app/oracle/oradata/XE # REQUIRED: for Oracle/DB2
+    db.tablespace.dir:   "/u01/app/oracle/oradata/XE" # REQUIRED: for Oracle/DB2
 
     db.url:              "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}"
     db.name:             webm
     db.username:         ${}         # Database username
     db.password:         ${}         # Database password
-    db.products:         
-      - IS
-      - BPM
-      - MWS
-      - OPTI
-    dbc.fixes:           ALL                 # Database component configurator fixes to install
+    db.STR.components:   STR
+      
+    db.MAT.components:
+      - ActiveTransfer 
+      - ActiveTransferArchive
+     
+    db.OBE.components:
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+      
+    db.OBE.components:
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+       
+    db.WOK.components:       
+      - BusinessRules
+    
+    db.TNS.components:   
+      - TradingNetworks
+      - TradingNetworksArchive
+      
+    db.MWS.components:  
+      - MywebMethodsServer
+    
+    db.B2Bcloud.components: []     
+     # - B2BChannels
 
+    db.ODE.components:      
+      - OneDataMetadata
+      - OneDataWorkArea
+      - OneDataReleaseArea
+     
+    #Component list for creating DB schemas for Integration Server and Microservices Runtime    
+    db.PIE.components: 
+      - ISInternal
+      - ISCoreAudit
+      - CrossReference
+      - DocumentHistory
+      - DistributedLocking 
+      
+    db.PIEMobile.components: 
+      - MobileSupport
+      
+    db.WMN.components:    
+      - Archive
+      - Staging
+      - Reporting
+      - OperationManagement
+      
+    db.WPE.components:   
+      - ProcessEngine
+      - ProcessAudit
+    
+    db.WST.components:   
+      - CloudStreamsEvents
+      
+    db.YAI.components:  
+      - APIGatewayEvents     
+      
+    db.product.scripts:         
+      - DatabaseComponentConfigurator
+      - OBEcdc      
+      - WOKcdc
+      - TNScdc
+      - MWScdc
+      - B2BCloudCdc
+      - MATcdc
+      - ODEcdc
+      - PIEcdc
+      - PIEEmbeddedCdc
+      - PIEMobileCdc
+      - WMNcdc
+      - WPEcdc
+      - WSTcdc
+      - YAIcdc
+    db.fixes:            ALL                # Database component configurator and scripts fixes to install   
+          
 layers:
   db:
     productRepo: ${repo.product}            # install products from
     fixRepo:     ${repo.fix}                # install fixes from
-    templates:   
-      - dbc
+    templates:   dbc
     databases:
       storage:
         components:  
           - STR
-        version:     latest
-        db.type:     ${db.type}
-        db.url:      ${db.admin.url}
-        db.admin.username: ${db.admin.username}
-        db.admin.password: ${db.admin.password}
-        db.tablespace.dir: ${db.tablespace.dir}
-        db.tablespace.data: ${db.tablespace.data}
+        version:             latest
+        db.type:             oracle
+        db.url:              "${db.admin.url}"
+        db.admin.username:   "${db.admin.username}"
+        db.admin.password:   "${db.admin.password}"
+        db.tablespace.dir:   "${db.tablespace.dir}"
+        db.tablespace.data:  ${db.tablespace.data}
         db.tablespace.index: ${db.tablespace.index}
-        db.username: ${db.username}
-        db.password: ${db.password}
-        db.name:     ${db.name}
-      schemas:
-        products:    ${db.products}
+        db.username:         "${db.username}"
+        db.password:         "${db.password}"
+        db.name:             ${db.name}
+      
+      schemas.MAT:
+        components:  ${db.MAT.components}
         version:     ${db.version}
-        db.type:     ${db.type}
-        db.url:      ${db.url}
-        db.username: ${db.username}
-        db.password: ${db.password}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
         db.name:     ${db.name}
-    
+      
+      schemas.OBE:
+        components:  ${db.OBE.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.WOK:
+        components:  ${db.WOK.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.TNS:
+        components:  ${db.TNS.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+      schemas.MWS:
+        components:  ${db.MWS.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+  
+      schemas.B2Bcloud:
+        components:  ${db.B2Bcloud.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.ODE:
+        components:  ${db.ODE.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.PIE:
+        components:  ${db.PIE.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+      schemas.PIEMobile:
+        components:  ${db.PIEMobile.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+
+      schemas.WMN:
+        components:  ${db.WMN.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.WPE:
+        components:  ${db.WPE.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.WST:
+        components:  ${db.WST.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+      schemas.YAI:
+        components:  ${db.YAI.components}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
 templates:
   dbc:
-    products:
-      DatabaseComponentConfigurator:
-    fixes: ${dbc.fixes}
-
+    products: ${db.product.scripts}
+    fixes:    ${db.fixes}
+    
 provision:
   default:
     db: ${nodes}

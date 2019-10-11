@@ -130,7 +130,7 @@ services:
       - ./templates/sag-db-mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=webmdb
+      - MYSQL_DATABASE=webm
       - MYSQL_USER=webm
       - MYSQL_PASSWORD=webm
     ports:

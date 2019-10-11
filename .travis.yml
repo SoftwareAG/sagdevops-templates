@@ -36,8 +36,8 @@ env:
   #- T=sag-cc-layer-defs
   #- T=sag-apigateway-server
   #- T=sag-internaldatastore
-  - T=sag-db-sqlserver-104-sample
-  - T=sag-db-mysql-104-sample
+  - T=sag-db-sqlserver
+  - T=sag-db-mysql
 
 # stages:
 # - infra
