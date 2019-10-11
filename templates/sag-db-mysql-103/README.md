@@ -23,6 +23,8 @@ With this template you can create user, database, and webMethods database schema
 
 ## Requirements
 
+None.
+
 ### Supported Software AG releases
 
 * Command Central 10.3
@@ -38,7 +40,7 @@ With this template you can create user, database, and webMethods database schema
 
 ## Running as a standalone Composite Template
 
-When importing the composite template to Command Central, you will have to attach the 'mysql-connector-java-5.1.47.jar' file. Add the `template.yaml` and `mysql-connector-java-5.1.47.jar` files into a single template.zip file and import that file using the Command Central CLI with the following command:
+When importing the composite template to Command Central, you have to attach the 'mysql-connector-java-5.1.47.jar' file. Add the `template.yaml` and `mysql-connector-java-5.1.47.jar` files into a single `template.zip` file and import that file using the following command in the Command Central CLI:
 
 ```bash
 sagcc exec templates composite import -i template.zip
@@ -46,7 +48,7 @@ sagcc exec templates composite import -i template.zip
 
 To install Database Component Configurator 10.3 on the Command Central node with alias `local`,
 create a database named `webm` and a database user named `webm` with password `webm`,
-and create IS database product schemas with user `root` with password `root`:
+and create IS database product schemas with user `root` and password `root`:
 
 ```bash
 sagcc exec templates composite apply sag-db-mysql-10.3 \
@@ -60,26 +62,21 @@ sagcc exec templates composite apply sag-db-mysql-10.3 \
 
 ## Using for local development and testing on Docker platforms
 
-Launch the Command Central container from the root folder of this project:
-
+1. Launch the Command Central container from the root folder of the following project:
 ```bash
 docker-compose up -d cc
 ```
-
-Launch the [MySQL](https://hub.docker.com/_/mysql/) container:
-
+2. Launch the [MySQL](https://hub.docker.com/_/mysql/) container:
 ```bash
 docker-compose -f templates/sag-db-mysql-10.3/docker-compose.yml up -d mysql
 ```
-
-Provision sag-db-mysql-10.3-and-lower template and run tests:
-
+3. Provision `sag-db-mysql-10.3` and run tests:
 ```bash
 CC_ENV=mysql ./provisionw sag-db-mysql-10.3
 ```
 If the test is successful, the test ouptut contains `TEST SUCCESSFUL`.
 
-You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server) with the following database connection properties:
+You can now use this database for creating instances of webMethods products (for example, Integration Server and My webMethods Server) with the following database connection properties:
 
 ```bash
 db.url=jdbc:mysql://mysql:3306/webm
@@ -88,7 +85,7 @@ db.password=webm
 db.type=mysql
 ```
 
-The properties are preset in `environments/mysql/env.properties` file and you can use them by pointing to the environment name. For example:
+The properties are pre-set in the `environments/mysql/env.properties` file and you can use them by pointing to the environment name, for example:
 
 ```bash
 CC_ENV=mysql ./provisionw sag-is-cluster
