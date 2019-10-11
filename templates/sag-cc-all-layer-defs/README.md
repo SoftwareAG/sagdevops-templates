@@ -1,5 +1,5 @@
 <!--
- Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc., 
+ Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
  Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 
  SPDX-License-Identifier: Apache-2.0
@@ -17,29 +17,30 @@
    limitations under the License.
 -->
 
-# My webMethods Server
+# Command Central Layer Type Definitions
 
-Use this template to provision My webMethods Server 10.1 and higher.
+Creates configuration instances of layer type definitions that you use when defining layers in a Software AG product stack.
 
 ## Requirements
 
 ### Supported Software AG releases
 
 * Command Central 10.1 and higher
-* My webMethods Server 10.1 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
 
-## Local development and testing using Docker
+## Running as a standalone composite template
 
-### With SQL Server database
-
-Provision [SQL Server](../sag-db-sqlserver) container and schemas
-
-Provision My webMethods Server:
+To create configuration instances of the layer definitions defined in the template:
 
 ```bash
-CC_ENV=sqlserver ./provisionw sag-mws-server
+sagcc exec templates composite apply sag-cc-all-layer-defs --sync-job -- wait 360
+```
+
+> IMPORTANT: If you use Command Central 10.1 you have to monitor the job completion with a separate command, instead of the `--sync-job` option:
+
+```bash
+sagcc list jobmanager jobs <jobIdFromAboveCommand> --wait 360 -e DONE
 ```

@@ -1,0 +1,85 @@
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#########################################################################################
+alias: sag-db-oracle-103-and-lower
+description: Oracle database and product schemas fro versions 10.3 and lower
+
+environments:
+  default:                 
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          10.3.0.0           # latest or exact version 10.3.0.0
+    db.port:             1521               # oracle default port
+    db.sid:              XE                 # Database name
+    db.admin.url:        "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid};sysLoginRole=sysdba"
+    db.admin.username:   ${}             # REQUIRED: for db storage only
+    db.admin.password:   ${}             # REQUIRED: for db storage only
+    db.tablespace.data:  WEBMDATA           # for Oracle/DB2
+    db.tablespace.index: WEBMINDX           # for Oracle/DB2
+    db.tablespace.dir:   "/u01/app/oracle/oradata/XE" # REQUIRED: for Oracle/DB2
+
+    db.url:              "jdbc:wm:oracle://${db.host}:${db.port};SID=${db.sid}"
+    db.name:             webm
+    db.username:         ${}         # Database username
+    db.password:         ${}         # Database password
+    db.products:         
+      - IS
+      - BPM
+      - MWS
+      - OPTI
+    db.fixes:           ALL                 # Database component configurator fixes to install
+
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   
+      - dbc
+    databases:
+      storage:
+        components:  
+          - STR
+        version:     latest
+        db.type:     oracle
+        db.url:      "${db.admin.url}"
+        db.admin.username: "${db.admin.username}"
+        db.admin.password: "${db.admin.password}"
+        db.tablespace.dir: "${db.tablespace.dir}"
+        db.tablespace.data: ${db.tablespace.data}
+        db.tablespace.index: ${db.tablespace.index}
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      schemas:
+        products:    ${db.products}
+        version:     ${db.version}
+        db.type:     oracle
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+    
+templates:
+  dbc:
+    products:
+      DatabaseComponentConfigurator:
+    fixes: ${db.fixes}
+
+provision:
+  default:
+    db: ${nodes}

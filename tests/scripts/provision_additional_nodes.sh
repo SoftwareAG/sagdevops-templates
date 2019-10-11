@@ -51,7 +51,7 @@ case $TEMPLATE_ALIAS in
        ;;
     sag-db-mysql*)
        echo "Provisioning MYSQL server"
-       export PASSWORD=Passw0rd
+       export PASSWORD=root
        docker-compose up -d mysql
        export PARAMS="db.admin.username=root db.admin.password=$PASSWORD db.host=mysql db.username=webm db.password=webm $PARAMS "
       ;;

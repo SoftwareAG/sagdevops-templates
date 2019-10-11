@@ -27,16 +27,20 @@ env:
   # - IMAGE=universal-messaging
   # - IMAGE=integration-server
   matrix:
-  #- T=sag-spm-boot-ssh
-  #- T=sag-spm-boot-local
-  #- T=sag-um-server
-  #- T=sag-is-server
-  #- T=sag-tc-server
-  #- T=sag-apama-correlator
-  #- T=sag-cc-layer-defs
-  #- T=sag-apigateway-server
-  #- T=sag-internaldatastore
-  - T=sag-db-sqlserver-104-sample
+  - T=sag-spm-boot-ssh
+  - T=sag-spm-boot-local
+  - T=sag-um-server
+  - T=sag-is-server
+  - T=sag-cc-layer-defs
+  - T=sag-apigateway-server
+  - T=sag-mws-server
+  - T=sag-db-sqlserver
+  - T=sag-db-mysql
+  - T=sag-db-oracle
+  - T=sag-db-sqlserver-103-and-lower
+  - T=sag-db-mysql-103
+  - T=sag-db-oracle-103-and-lower
+  
 
 # stages:
 # - infra
@@ -52,7 +56,7 @@ script:
 - sudo sysctl -w vm.max_map_count=262144 
 - sudo chown -R 1724:1724 templates
 - ./provisionw sag-abe || travis_terminate 1 
-- ./provisionw $T || travis_terminate 2
+#- ./provisionw $T || travis_terminate 2
 - ./generateAssetw $T || travis_terminate 3
 
 
