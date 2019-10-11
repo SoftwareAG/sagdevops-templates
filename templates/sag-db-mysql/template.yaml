@@ -39,31 +39,31 @@ environments:
       #- ActiveTransfer 
       #- ActiveTransferArchive
      
-    db.OBE.components: []
-     # - Analysis
-     # - ProcessTracker
-#      - DataPurge
-#      - DatabaseManagement
-#      - OperationManagement
-#      - ProcessAudit
+    db.OBE.components: 
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
        
-    db.WOK.components: []   
-     # - BusinessRules
+    db.WOK.components:    
+      - BusinessRules
     
     db.TNS.components: 
       - TradingNetworks
       - TradingNetworksArchive
       
-    db.MWS.components:  []
-     # - MywebMethodsServer
+    db.MWS.components:  
+      - MywebMethodsServer
     
     db.B2Bcloud.components: []     
       #- B2BChannels
 
-    db.ODE.components:   []   
-     # - OneDataMetadata
-     # - OneDataWorkArea
-     # - OneDataReleaseArea
+    db.ODE.components:      
+      - OneDataMetadata
+      - OneDataWorkArea
+      - OneDataReleaseArea
      
     #Component list for creating DB schemas for Integration Server and Microservices Runtime    
     db.PIE.components: 
@@ -73,24 +73,24 @@ environments:
       - DocumentHistory
       - DistributedLocking 
       
-    db.PIEMobile.components: []
-     # - MobileSupport
+    db.PIEMobile.components: 
+      - MobileSupport
       
-    db.WMN.components:    []
-     # - Archive
-     # - Staging
-     # - Reporting
-     # - OperationManagement
+    db.WMN.components:    
+      - Archive
+      - Staging
+      - Reporting
+      - OperationManagement
       
-    db.WPE.components:   []
-     # - ProcessEngine
-    #  - ProcessAudit
+    db.WPE.components:   
+      - ProcessEngine
+      - ProcessAudit
     
-    db.WST.components:   []
-     # - CloudStreamsEvents
+    db.WST.components:   
+      - CloudStreamsEvents
       
-    db.YAI.components:  []
-     # - APIGatewayEvents     
+    db.YAI.components:  
+      - APIGatewayEvents     
       
     db.product.scripts:         
       - DatabaseComponentConfigurator
