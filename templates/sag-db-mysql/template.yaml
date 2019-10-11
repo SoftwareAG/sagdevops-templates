@@ -152,7 +152,7 @@ templates:
     products:  ${db.product.scripts}
     fixes:     ${db.fixes}
     files:
-      # Coping MySQL JDBC driver as sl53* so DatabaseComponentConfigurator will pick it up dynamically
+      # Copying MySQL JDBC driver as sl53* so DatabaseComponentConfigurator will pick it up dynamically
       common/lib/ext/sl53-mysql.jar: mysql-connector-java-5.1.47.jar # MySQL JDBC driver
 provision:
   default:

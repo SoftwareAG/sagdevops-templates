@@ -41,7 +41,7 @@ if [ -d $SAG_HOME/profiles/SPM ] ; then
     sagcc get monitoring runtimestatus TES-default -e ONLINE
 
     # echo "Verifying configs ..."
-    # sagcc get configuration data TES-default COMMON-MEMORY -f text -e 512
+    # sagcc get configuration data TES-default COMMON-MEMORY -e 512
 fi
 
 echo "Verifying product runtime ..."
