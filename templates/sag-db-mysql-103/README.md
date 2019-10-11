@@ -47,7 +47,7 @@ sagcc exec templates composite import -i template.zip
 ```
 
 To install Database Component Configurator 10.3 on the Command Central node with alias `local`,
-create a database named `webm` and a database user named `webm` and password `webm`,
+create a database named `webm` and a database user named `webm` with password `webm`,
 and create IS database product schemas with user `root` and password `root`:
 
 ```bash
