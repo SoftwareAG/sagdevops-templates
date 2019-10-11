@@ -100,7 +100,7 @@ sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDO
   --sync-job --wait 600
 ```
 
-See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for details about the `INFRA-REMOTE-WINDOWS` layer type definition.
+See [sag-cc-all-layer-defs](../sag-cc-all-layer-defs/template.yaml) for details about the `INFRA-REMOTE-WINDOWS` layer type definition.
 
 ## Using the template from the Command Central Stacks user interface
 

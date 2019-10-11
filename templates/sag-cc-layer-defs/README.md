@@ -19,7 +19,7 @@
 
 # Command Central Layer Type Definitions
 
-Creates configuration instances of layer type definitions that you use when defining layers in a Software AG product stack.
+Creates configuration instances of layer type definitions for default templates that you use when defining layers in a Software AG product stack.
 
 ## Requirements
 

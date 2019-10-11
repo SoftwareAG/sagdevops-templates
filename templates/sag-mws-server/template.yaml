@@ -37,7 +37,7 @@ environments:
     mws.lb.host:         localhost
     mws.lb.http.port:    ${mws.http.port}
     mws.lb.https.port:   ${mws.https.port}
-    mws.fixes:           []
+    mws.fixes:           ALL
 
 layers:
   runtime:
