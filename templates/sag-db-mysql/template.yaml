@@ -35,9 +35,6 @@ environments:
     db.password:         ${}                # webM database password
     db.STR.components:   []
       
-    db.MAT.components: []
-      #- ActiveTransfer 
-      #- ActiveTransferArchive
      
     db.OBE.components: 
       - Analysis
@@ -56,14 +53,7 @@ environments:
       
     db.MWS.components:  
       - MywebMethodsServer
-    
-    db.B2Bcloud.components: []     
-      #- B2BChannels
 
-    db.ODE.components:      []
-     # - OneDataMetadata
-     # - OneDataWorkArea
-     # - OneDataReleaseArea
      
     #Component list for creating DB schemas for Integration Server and Microservices Runtime    
     db.PIE.components: 
@@ -72,42 +62,19 @@ environments:
       - CrossReference
       - DocumentHistory
       - DistributedLocking 
-      
-    db.PIEMobile.components: 
-      - MobileSupport
-      
-    db.WMN.components:    
-      - Archive
-      - Staging
-      - Reporting
-      - OperationManagement
-      
+            
     db.WPE.components:   
       - ProcessEngine
       - ProcessAudit
-    
-    db.WST.components:   
-      - CloudStreamsEvents
-      
-    db.YAI.components:  
-      - APIGatewayEvents     
-      
+          
     db.product.scripts:         
       - DatabaseComponentConfigurator
       - OBEcdc      
       - WOKcdc
       - TNScdc
       - MWScdc
-      - B2BCloudCdc
-      - MATcdc
-      - ODEcdc
       - PIEcdc
-      - PIEEmbeddedCdc
-      - PIEMobileCdc
-      - WMNcdc
       - WPEcdc
-      - WSTcdc
-      - YAIcdc
     db.fixes:            ALL                # Database component configurator and scripts fixes to install         
 layers:
   db:
@@ -122,15 +89,6 @@ layers:
         db.url:      "${db.admin.url}"
         db.admin.username: "${db.admin.username}"
         db.admin.password: "${db.admin.password}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-      
-      schemas.MAT:
-        components:  ${db.MAT.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "${db.url}"
         db.username: "${db.username}"
         db.password: "${db.password}"
         db.name:     ${db.name}
@@ -170,25 +128,7 @@ layers:
         db.username: "${db.username}"
         db.password: "${db.password}"
         db.name:     ${db.name}
-  
-      schemas.B2Bcloud:
-        components:  ${db.B2Bcloud.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "${db.url}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-      
-      schemas.ODE:
-        components:  ${db.ODE.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "${db.url}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-      
+
       schemas.PIE:
         components:  ${db.PIE.components}
         version:     ${db.version}
@@ -198,44 +138,8 @@ layers:
         db.password: "${db.password}"
         db.name:     ${db.name}
         
-      schemas.PIEMobile:
-        components:  ${db.PIEMobile.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "${db.url}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-
-      schemas.WMN:
-        components:  ${db.WMN.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "${db.url}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-      
       schemas.WPE:
         components:  ${db.WPE.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "{db.url}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-      
-      schemas.WST:
-        components:  ${db.WST.components}
-        version:     ${db.version}
-        db.type:     mysql
-        db.url:      "${db.url}"
-        db.username: "${db.username}"
-        db.password: "${db.password}"
-        db.name:     ${db.name}
-        
-      schemas.YAI:
-        components:  ${db.YAI.components}
         version:     ${db.version}
         db.type:     mysql
         db.url:      "${db.url}"
