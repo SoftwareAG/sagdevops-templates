@@ -24,10 +24,11 @@ then
         exit 1
 fi
 
-ASSET_REPO_FOLDER=/tmp/abe
-ASSET_SOURCE_TEMP_FOLDER=/tmp/abe/source
-ASSET_SOURCE_FOLDER=/opt/sagtools/profiles/CCE/data/templates/composite/
 TEMPLATE=$1
+ASSET_REPO_FOLDER=/tmp/abe
+ASSET_SOURCE_TEMP_FOLDER=/tmp/abe/source/$TEMPLATE
+ASSET_SOURCE_FOLDER=/opt/sagtools/profiles/CCE/data/templates/composite/
+
 ABE_HOME=/opt/softwareag/common/AssetBuildEnvironment/CC
 # export GIT_USER={secured}
 # export GIT_PUBLISH_KEY={secured}
@@ -36,9 +37,11 @@ rm -rf $ASSET_REPO_FOLDER
 mkdir -p $ASSET_REPO_FOLDER
 rm -rf $ASSET_SOURCE_TEMP_FOLDER
 mkdir -p $ASSET_SOURCE_TEMP_FOLDER
-cp $ASSET_SOURCE_FOLDER/$TEMPLATE/* $ASSET_SOURCE_TEMP_FOLDER
-mv $ASSET_SOURCE_TEMP_FOLDER/template.yaml $ASSET_SOURCE_TEMP_FOLDER/$TEMPLATE.yaml
-mv $ASSET_SOURCE_TEMP_FOLDER/*.jar $ASSET_SOURCE_TEMP_FOLDER
+cp $ASSET_SOURCE_FOLDER/$TEMPLATE/template.yaml $ASSET_SOURCE_TEMP_FOLDER
+cp $ASSET_SOURCE_FOLDER/$TEMPLATE/*.jar $ASSET_SOURCE_TEMP_FOLDER
+
+#mv $ASSET_SOURCE_TEMP_FOLDER/template.yaml $ASSET_SOURCE_TEMP_FOLDER/template.yaml
+
 ##debug
 echo building asset for template $TEMPLATE
 
