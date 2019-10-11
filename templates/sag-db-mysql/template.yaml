@@ -60,10 +60,10 @@ environments:
     db.B2Bcloud.components: []     
       #- B2BChannels
 
-    db.ODE.components:      
-      - OneDataMetadata
-      - OneDataWorkArea
-      - OneDataReleaseArea
+    db.ODE.components:      []
+     # - OneDataMetadata
+     # - OneDataWorkArea
+     # - OneDataReleaseArea
      
     #Component list for creating DB schemas for Integration Server and Microservices Runtime    
     db.PIE.components: 
