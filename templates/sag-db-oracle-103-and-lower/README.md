@@ -78,7 +78,7 @@ db.password=webm
 db.type=oracle
 ```
 
-The properties are pre-set in `environments/oracle/env.properties` file and you can use them by pointing to the environment name, for example:
+The properties are pre-set in the `environments/oracle/env.properties` file and you can use them by pointing to the environment name, for example:
 
 ```bash
 CC_ENV=oracle ./provisionw sag-optimize-analysis
