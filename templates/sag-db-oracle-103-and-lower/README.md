@@ -50,28 +50,26 @@ sagcc exec templates composite apply sag-db-oracle-103-and-lower
 
 ## Using for local development and testing on Docker platforms
 
-Launch the Command Central container from the root folder of this project:
+1. Launch the Command Central container from the root folder of the following project:
 
 ```bash
 docker-compose up -d cc
 ```
 
-Launch the [Oracle Database Express Edition 11g Release 2](https://hub.docker.com/r/wnameless/oracle-xe-11g/) container:
+2. Launch the [Oracle Database Express Edition 11g Release 2](https://hub.docker.com/r/wnameless/oracle-xe-11g/) container:
 
 ```bash
 docker-compose -f templates/sag-db-oracle-103-and-lower/docker-compose.yml up -d oracle
 ```
 
-Provision the `sag-db-oracle` template to create a user, storage, and Integration Server, My webMethods Server and BPM database components for the 10.3 release:
+3. Provision the `sag-db-oracle-103-and-lower` template to create a user, storage, and Integration Server, My webMethods Server and BPM database components for the 10.3 release:
 
 ```bash
 CC_ENV=oracle ./provisionw sag-db-oracle-103-and-lower
 ```
-
-Successful output looks like this:
 If the test is successful, the test ouptut contains `TEST SUCCESSFUL`.
 
-You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server) with the following database connection properties:
+You can now use this database for creating instances of webMethods products (for example, Integration Server and My webMethods Server) with the following database connection properties:
 
 ```bash
 db.url=jdbc:wm:oracle://oracle:1521;SID=XE
@@ -80,7 +78,7 @@ db.password=webm
 db.type=oracle
 ```
 
-The properties are preset in `environments/oracle/env.properties` file and you can use them by poiting to the environment name. For example:
+The properties are pre-set in `environments/oracle/env.properties` file and you can use them by pointing to the environment name, for example:
 
 ```bash
 CC_ENV=oracle ./provisionw sag-optimize-analysis
