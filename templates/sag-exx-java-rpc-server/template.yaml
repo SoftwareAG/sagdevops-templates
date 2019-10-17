@@ -27,14 +27,14 @@ changes:
 
 environments:
   default:
-  
+    exx.server.name: JavaRpcSrv                       # Instance name of the RPC Server
     runtimes.skip.start: EntireXCore-RpcServerJava-JavaRpcSrv   # Set this flag if you do not want the
                                                                 # newly created instance started automatically
                                                                 # comment it out if you wish autostart after
                                                                 # creation
   
 
-    exx.server.name: JavaRpcSrv                       # Instance name of the RPC Server
+                           
     exx.server.install.service: false                 # Install as Windows service true/false
     exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
     exx.server.broker.host: localhost                 # Broker Host
@@ -80,9 +80,9 @@ templates:
     #fixes: ${exx.server.fixes} 
     products:
       EntireXCore:                    
-        ${exx.server.name}:
+        create.server:
           type: RPCSERVERJAVA
-          runtimeComponentId: EntireXCore-RpcServerJava-${exx.server.name}
+          instance.name: ${exx.server.name}
           install.service: ${exx.server.install.service}
           broker.transport: ${exx.server.broker.transport}
           broker.host: ${exx.server.broker.host}
