@@ -1,48 +1,149 @@
-###############################################################################
-#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
-#
-#   SPDX-License-Identifier: Apache-2.0
-#
-#     Licensed under the Apache License, Version 2.0 (the "License");
-#     you may not use this file except in compliance with the License.
-#     You may obtain a copy of the License at
-#
-#        http://www.apache.org/licenses/LICENSE-2.0
-#
-#     Unless required by applicable law or agreed to in writing, software
-#     distributed under the License is distributed on an "AS IS" BASIS,
-#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#     See the License for the specific language governing permissions and
-#     limitations under the License.                                                            
-#
-###############################################################################
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
 
 alias: sag-exx-broker
+dslVersion: "1.2"
 description: Create and configure EntireX Broker
-version: 2.0
+version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
+  - 2.1 Tested with 10.5
+  - 2.2 Added runtimes.skip.start property
 
 environments:
   default:
-    # Broker
-    exx.entirexbroker.license.key: "*_EXX_10.*_*_*"            # license key alias name                                                             
-    exx.broker.fixes: []
+  
+    runtimes.skip.start: EntireXBroker-ETB009   # Set this flag if you do not want the
+                                                # newly created instance started automatically
+                                                # comment it out if you wish autostart after
+                                                # creation
+
+    exx.broker.instance.name: ETB009                           # Broker ID
+    exx.broker.tcp.port: 7922                                  # TCP PORT
+    exx.broker.tcp.enable: true                                # TCP enabled
+    exx.broker.ssl.port: 7923                                  # SSL PORT
+    exx.broker.ssl.enable: true                               # SSL enabled
+    exx.broker.ssl.keyfile: /RDS/TESTSRV/testenv/exx/v105/installed/EntireX/etc/EXXAppKey.pem                      # Key File
+    exx.broker.ssl.keystore: /RDS/TESTSRV/testenv/exx/v105/installed/EntireX/etc/ExxAppCert.pem                    # Key Store
+    exx.broker.ssl.truststore: /RDS/TESTSRV/testenv/exx/v105/installed/EntireX/etc/ExxCACert.pem                   # Trust Store
+    exx.broker.ssl.clienttruststore: /RDS/TESTSRV/testenv/exx/v105/installed/EntireX/etc/ExxCACert.jks             # Client Trust Store
+    exx.broker.ssl.keypasswordencrypted: 0A2FB37E              # encrypted Key Passwortd
+    exx.broker.autostart: false                                # Autostart true/false
+    exx.broker.tracelevel: 0                                   # trace level
+    exx.broker.security: true                                  # Security true/false
+    exx.broker.security.authtype: OS                           # Security Type OS/LDAP
+    exx.broker.security.ldapurl: "ldap://ldaphost:389"         # LDAP URL
+    exx.broker.security.ldapdn: "cn=users,dc=mydomain,dc=de"   # LDAP Domain
+    exx.broker.pstore: true                                    # PStore true/false
+    exx.broker.pstore.pstore: COLD                             # PStore COLD/HOT
+    exx.broker.pstore.type: CTREE                              # PStore type CTREE/ADABAS
+    exx.broker.pstore.adabas.dbid: 24                          # PStore ADABAS DBID
+    exx.broker.pstore.adabas.fnr: 52                           # PStore ADABAS FileNr
+    exx.broker.appmon: false                                   # Application Monitoring true/false
+    exx.broker.appmon.collector.host: collector_host           # Application Monitoring Hots
+    exx.broker.appmon.collector.port: 55432                    # Application Monitoring Port
+       
+    exx.broker.license.key: "EXX_LINSUSE_103"                  # license key, alias name of license key in
+                                                               # license repository
+                                                                  
+    exx.broker.fixes:                                          # minimal recommended set of fixes to apply
+      - ALL
+
+   
+
        
 templates:
-  sag-exx-broker:                                               # template for definition of broker
+    
+  sag-exx-broker:                                                      # template for definition of broker
     licenses:
-      "EntireX/config/license.xml": "${exx.entirexbroker.license.key}"
-    fixes: ${exx.broker.fixes}                                  # fixes to install
+      "EntireX/config/license.xml": "${exx.broker.license.key}"        # license key
+    #fixes: ${exx.broker.fixes}                                         # fixes to install
     products:
       EntireXBroker:                    
-      EntireXCommandLineScripts:
+        ${exx.broker.instance.name}:
+          type: BROKER
+          runtimeComponentId: EntireXBroker-${exx.broker.instance.name}
+          autostart: ${exx.broker.autostart}   
+          tcp.port: ${exx.broker.tcp.port}
+          ssl.port: ${exx.broker.ssl.port}              
+          security: ${exx.broker.security}                
 
+
+          configuration:
+            EntireXBroker-${exx.broker.instance.name}:   
+              BROKER-PORTS:  
+                TCP:         
+                  Enabled: ${exx.broker.tcp.enable}
+                  Port: ${exx.broker.tcp.port}    
+                SSL:         
+                  Enabled: ${exx.broker.ssl.enable} 
+                  Port: ${exx.broker.ssl.port}
+                  KeyFile: ${exx.broker.ssl.keyfile}
+                  KeyStore: ${exx.broker.ssl.keystore}
+                  TrustStore: ${exx.broker.ssl.truststore}
+                  ClientTrustStore: ${exx.broker.ssl.clienttruststore}
+                  KeyPasswdEncrypted: ${exx.broker.ssl.keypasswordencrypted}
+              BROKER-AUTOSTART:     
+                BROKER-AUTOSTART:
+                  Enabled: ${exx.broker.autostart}
+
+              BROKER-TRACELEVEL:
+                BROKER-TRACELEVEL:
+                  Tracelevel: ${exx.broker.tracelevel}
+
+              BROKER-SECURITY:
+                BROKER-SECURITY:
+                  Enabled: ${exx.broker.security}
+                  AuthType: ${exx.broker.security.authtype}
+                  LdapUrl: ${exx.broker.security.ldapurl}
+                  LdapDn: ${exx.broker.security.ldapdn}
+                                 
+              BROKER-PSTORE:
+                BROKER-PSTORE:
+                  Enabled: ${exx.broker.pstore}  
+                  PStore: ${exx.broker.pstore.pstore}
+                  PStoreType: ${exx.broker.pstore.type}
+                  PStoreAdabasDBID: ${exx.broker.pstore.adabas.dbid}
+                  PStoreAdabasFNR: ${exx.broker.pstore.adabas.fnr}                      
+
+              APPLICATION-MONITORING:
+                APPLICATION-MONITORING:
+                  Enabled: ${exx.broker.appmon}
+                  CollectorHost: ${exx.broker.appmon.collector.host}
+                  CollectorPort: ${exx.broker.appmon.collector.port}
+                                    
+              EXX-MONITORING-KPIS:
+                EXX-MONITORING-KPIS: 
+                  ClientsMaximum: '200'
+                  ClientsCriticalPercent: '95'
+                  ClientsMarginalPercent: '80'
+                  ServersMaximum: '50'
+                  ServersCriticalPercent: '95'
+                  ServersMarginalPercent: '80'
+                  ConversationsMaximum: '1000'
+                  ConversationsCriticalPercent: '95'
+                  ConversationsMarginalPercent: '80'
+                                    
+    
 layers:
   runtime:
     productRepo: ${repo.product}    # default repository to install products from
-    fixRepo: ${repo.fix}            # default repository to install fixes from
+    #fixRepo: ${repo.fix}           # default repository to install fixes from
     templates:
       - sag-exx-broker              # template to apply
 
