@@ -62,7 +62,7 @@ For information about applying templates, see [Applying template using Command C
 To provision a new Integration Server instance named "apigateway" with API Gateway 10.3, install all latest fixes, and configure the cluster:
 
 ```bash
-sagcc exec templates composite apply sag-apigateway-cluster nodes=[dev1, dev2] \
+sagcc exec templates composite apply sag-apigateway-cluster nodes=[dev1,dev2] \
   is.instance.type=integrationServer \
   agw.memory.max=512 \ 
   agw.tsa.url="dev1:9010" \
