@@ -32,8 +32,8 @@ My webMethods Server | MWScdc| db.MWS.components | schemas.MWS
 webMethods B2B Cloud  |  B2BcloudCdc| db.B2Bcloud.components | schemas.B2Bcloud
 webMethods Active Transfer | MATcdc | db.MAT.components | schemas.MAT
 webMethods OneData |  ODEcdc | db.ODE.components | schemas.ODE
-webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.MWS
-Integration Server | PIEEmbeddedCdc | db.PIE.components | schemas.PIE
+webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.PIE
+Integration Server | PIEEmbeddedCdc | Not applicable (N/A) | N/A
 Integration Server and Mobile Support | PIEMobileCdc | db.PIEMobile.components | schemas.PIEMobile
 webMethods Monitor | WMNcdc | db.WMN.components | schemas.WMN
 webMethods Process Engine | WPEcdc| db.WPE.components | schemas.WPE
@@ -94,7 +94,7 @@ sagcc exec templates composite apply sag-db-oracle \
   db.host=mysql  db.admin.username=system db.admin.password=oracle \
   db.name=webm db.username=webm db.password=webm \
   db.YAI.components=[] \
-  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, \      PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
   --sync-job --wait 360
 ```
 
