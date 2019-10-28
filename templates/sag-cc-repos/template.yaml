@@ -27,6 +27,9 @@ environments:
 
 repositories:
   product: 
+    webMethods-10.5:           
+      location: ${sdc.url}/dataservewebM105/repository/
+      credentials: ${sdc.credentials.key} 
     webMethods-10.3:           
       location: ${sdc.url}/dataservewebM103/repository/
       credentials: ${sdc.credentials.key} 
