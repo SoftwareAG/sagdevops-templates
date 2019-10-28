@@ -21,18 +21,42 @@
 
 With this template you can create user, database, and webMethods database schemas on a MySQL Server. By default, the template installs the Database Component Configurator and the database scripts for all products, and it creates database schemas for all database components.
 
-You can remove one or more product database scripts from the template if you do not require to install them. If you remove a database script from the product list, you should also set the components for this database script to empty list. The following table maps the database scripts  to their product and database components: 
+If you do not require to install database schemas for all products, remove the database scripts and the respective database components for the unrequired products. The following table maps the products to their database scripts, database component lists, and database actions for creating schemas:
 
-Database Script  |  Product | Database Component Property ID
---------------------|----------|---------------------------------------
-OBEcdc              | Optimize |                         db.OBE.components
-WOKcdc              | BusinessRules |                    db.WOK.components
-TNScdc              | TradingNetworks |                  db.TNS.components
-MWScdc              | MyWebmethodsServer |               db.MWS.components
-PIEcdc              | Integration Server and MSC |       db.PIE.components
-PIEEmbeddedCdc      | Integration Server |               -
-WPEcdc              | Process Engine |                   db.WPE.components
+Product | Database Script | Database Component List | Database Action for Creating Schemas
+--------------------|----------|---------------------|------------------
+webMethods Optimize  | OBEcdc  |  db.OBE.components | schemas.OBE
+webMethods Business Rules | WOKcdc|  db.WOK.components | schemas.WOK
+webMethods Trading Networks | TNScdc  |  db.TNS.components | schemas.TNS
+My webMethods Server | MWScdc| db.MWS.components | schemas.MWS
+webMethods B2B Cloud  |  B2BcloudCdc| db.B2Bcloud.components | Not applicable (N/A)
+webMethods Active Transfer | MATcdc | db.MAT.components | N/A
+webMethods OneData |  ODEcdc | db.ODE.components | N/A
+webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.MWS
+Integration Server | PIEEmbeddedCdc| N/A | schemas.PIE
+Integration Server and Mobile Support | PIEMobileCdc | db.PIEMobile.components | N/A
+webMethods Monitor | WMNcdc | db.WMN.components | N/A
+webMethods Process Engine | WPEcdc| db.WPE.components | schemas.WPE
+webMethods CloudStreams Server | WSTcdc| db.WST.components | N/A
+webMethods API Gateway | YAIcdc| db.YAI.components | N/A
 
+For example, to remove the database scripts and database components for webMethods Optimize:
+1. Replace the database component list for Optimize with an empty list by replacing the following lines from the template:
+```bash
+ db.OBE.components: 
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+```
+With:
+```bash
+db.OBE.components=[]
+```
+>NOTE: The database action for creating schemas for Optimizie will not be executed when the database component list is empty.
+2. Remove the database script for Optimize by removing `OBEcdc` under `db.product.scripts:`
 
 ## Requirements
 
@@ -59,27 +83,26 @@ When importing the composite template in Command Central, you have to attach the
 sagcc exec templates composite import -i template.zip
 ```
 
-To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create all database components schemas with user `root` and password `root`:
+To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database schemas for all products with user `root` and password `root`:
 
 ```bash
 sagcc exec templates composite apply sag-db-mysql \
   db.version=latest repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
   db.host=mysql db.admin.username=root db.admin.password=root \
-  db.STR.components=[STR] \
   db.name=webm db.username=webm db.password=webm \
   --sync-job --wait 360
 ```
 
 
-To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create all database components without My Webmethods Server  with user `root` and password `root`:
+To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database schemas for all products, except API Gateway, with user `root` and password `root`:
 
 ```bash
 sagcc exec templates composite apply sag-db-mysql \
   db.version=latest repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
-  db.MWS.components=[] db.STR.components=[STR]\
-  db.product.scripts=[DatabaseComponentConfigurator, OBEcdc, WOKcdc, TNScdc, PIEcdc, PIEEmbeddedCdc, PIEMobileCdc, WPEcdc] \
+  db.YAI.components=[] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, PIEEmbeddedCdc, PIEMobileCdc, WMNcdc, WPEcdc, WSTcdc] \
   --sync-job --wait 360
 ```
 
