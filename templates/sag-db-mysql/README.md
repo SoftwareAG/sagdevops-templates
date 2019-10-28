@@ -95,7 +95,7 @@ sagcc exec templates composite apply sag-db-mysql \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
   db.MWS.components=[] db.STR.components=[STR]\
-  db.product.scripts=[DatabaseComponentConfigurator, OBEcdc, WOKcdc, TNScdc, PIEcdc, PIEEmbeddedCdc, PIEMobileCdc, WPEcdc] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,PIEcdc,PIEEmbeddedCdc,PIEMobileCdc,WPEcdc] \
   --sync-job --wait 360
 ```
 
@@ -115,7 +115,7 @@ docker-compose -f templates/sag-db-mysql/docker-compose.yml up -d mysql
 ```bash
 CC_ENV=mysql ./provisionw sag-db-mysql
 ```
-If the test is successful, the test ouptut contains `TEST SUCCESSFUL`.
+If the test is successful, the test output contains `TEST SUCCESSFUL`.
 
 You can use the installed database for creating instances of webMethods products (for example, Integration Server and My webMethods Server) with the following database connection properties:
 
