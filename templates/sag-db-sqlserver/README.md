@@ -33,7 +33,7 @@ webMethods B2B Cloud  |  B2BcloudCdc| db.B2Bcloud.components | schemas.B2Bcloud
 webMethods Active Transfer | MATcdc | db.MAT.components | schemas.MAT
 webMethods OneData |  ODEcdc | db.ODE.components | schemas.ODE
 webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.PIE
-Integration Server | PIEEmbeddedCdc| N/A | schemas.PIE
+Integration Server | PIEEmbeddedCdc| Not applicable (N/A) | N/A
 Integration Server and Mobile Support | PIEMobileCdc | db.PIEMobile.components | schemas.PIEMobile
 webMethods Monitor | WMNcdc | db.WMN.components | schemas.WMN
 webMethods Process Engine | WPEcdc| db.WPE.components | schemas.WPE
@@ -89,7 +89,7 @@ sagcc exec templates composite apply sag-db-sqlserver \
 To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create all database components schemas without API Gateway with user `sa` and password `MaNaGe123`:
 
 ```bash
-sagcc exec templates composite apply sag-db-mysql \
+sagcc exec templates composite apply sag-db-sqlserver \
   db.version=latest repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
   db.host=sqlserver db.admin.username=sa db.admin.password=MaNaGe123 \
   db.name=webm db.username=webm db.password=webm \
