@@ -62,12 +62,12 @@ docker-compose up -d cc
 docker-compose -f templates/sag-db-sqlserver-103-and-lower/docker-compose.yml up -d sqlserver
 ```
 
-3. Provision the `sag-db-sqlserver-103-and-loewr` template and run tests:
+3. Provision the `sag-db-sqlserver-103-and-lower` template and run tests:
 
 ```bash
 CC_ENV=sqlserver ./provisionw sag-db-sqlserver-103-and-lower
 ```
-If the test is successful, the test ouptut contains `TEST SUCCESSFUL`.
+If the test is successful, the test output contains `TEST SUCCESSFUL`.
 
 You can now use this database for creating instances of webMethods products (for example, Integration Server and My webMethods Server) with the following database connection properties:
 
