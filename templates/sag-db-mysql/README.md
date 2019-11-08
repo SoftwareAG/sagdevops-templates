@@ -95,7 +95,7 @@ sagcc exec templates composite apply sag-db-mysql \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
   db.MWS.components=[] db.STR.components=[STR]\
-  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,PIEcdc,PIEMobileCdc,WPEcdc] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,PIEcdc,WPEcdc] \
   --sync-job --wait 360
 ```
 
