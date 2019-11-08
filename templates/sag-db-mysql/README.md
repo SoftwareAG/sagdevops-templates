@@ -45,7 +45,7 @@ For example, to remove the database scripts and database components for webMetho
 ```
 With:
 ```bash
-db.OBE.components=[]
+db.OBE.components: []
 ```
 >NOTE: The database action for creating schemas for Optimizie will not be executed when the database component list is empty.
 2. Remove the database script for Optimize by removing `OBEcdc` under `db.product.scripts:`
