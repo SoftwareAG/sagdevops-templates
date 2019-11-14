@@ -95,15 +95,15 @@ sagcc exec templates composite apply sag-db-mysql \
 ```
 
 
-To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database schemas for all products, except API Gateway, with user `root` and password `root`:
+To install Database Component Configurator 10.5 on the Command Central node with alias `local`, create a database named `webm` and a database user named `webm` with password `webm`, and create database schemas for all products, except My webMethods Server, with user `root` and password `root`:
 
 ```bash
 sagcc exec templates composite apply sag-db-mysql \
   db.version=latest repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
-  db.YAI.components=[] \
-  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, PIEEmbeddedCdc, PIEMobileCdc, WMNcdc, WPEcdc, WSTcdc] \
+  db.MWS.components=[] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,PIEcdc,PIEEmbeddedCdc,PIEMobileCdc,WPEcdc] \
   --sync-job --wait 360
 ```
 
