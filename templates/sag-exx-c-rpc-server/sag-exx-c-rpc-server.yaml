@@ -15,76 +15,65 @@
 #                                                                       #
 #########################################################################
 
-alias: sag-exx-ims-rpc-server
+alias: sag-exx-c-rpc-server
 dslVersion: "1.2"
-description: Create and configure EntireX rpc server for IMS
+description: Create and configure EntireX rpc server for C
 version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
   - 2.1 Tested with 10.5 and adapted Admin Port
   - 2.2 Added runtimes.skip.start property
-  
 
 environments:
   default:
-    exx.server.name: ImsRpcSrv                        # Instance name of the RPC Server
-    runtimes.skip.start: EntireXCore-RpcServerImsConnect-ImsRpcSrv   # Set this flag if you do not want the
-                                                                     # newly created instance started automatically
-                                                                     # comment it out if you wish autostart after
-                                                                     # creation
+    exx.server.name: CRpcSrv                          # Instance name of the RPC Server
+    runtimes.skip.start: EntireXCore-RpcServerC-CRpcSrv   # Set this flag if you do not want the
+                                                          # newly created instance started automatically
+                                                          # comment it out if you wish autostart after
+                                                          # creation
 
+                          
     exx.server.install.service: false                 # Install as Windows service true/false
     exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
     exx.server.broker.host: localhost                 # Broker Host
     exx.server.broker.port: 1971                      # Broker Port
     exx.server.broker.user: exxuser                   # User ID for Broker when running with security
     exx.server.broker.password: exxpasswd             # Password for Broker when running with security
-    exx.server.broker.ssl.truststore: ''              # File Name for Trust Store
-    exx.server.broker.ssl.serververify: false         # Verify Server true/false 
+    exx.server.address: RPC/SRV1/CALLNAT              # Server Address
+    exx.server.adminport: 3090                        # Administration port for Command Central
+    exx.server.broker.ssl.truststore: ""              # File Name for Trust Store
+    exx.server.broker.ssl.serververify: false         # Verify Server true/false    
     exx.server.broker.encoding: Cp1252                # Encoding used between RPC Server and Broker
-    exx.server.address: RPC/SRVIMS2/CALLNAT            # Server Address
-    exx.server.adminport: 4712                        # Administration port 
     exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
-    exx.server.worker.scalability: true               # Worker Scalability dynamic true/false
+    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false
     exx.server.fixnumber: 5                           # Fix number of workers
     exx.server.minworkers: 2                          # Minimum number of workers
-    exx.server.maxworkers: 12                         # Maximum number of workers
-    exx.server.tracelevel: 0                          # Trace Level    
-    exx.server.ims.transport: TCP                     # Use TCP or SSL to communicate with IMS Connect
-    exx.server.ims.host: IMSHost                      # Host name or IP address where IMS Connect is running                  
-    exx.server.ims.port: 6655                         # TCP or SSL port number where IMS Connect is listening
-    exx.server.ims.datastoreid: IMSSYS                # Data store ID
-    exx.server.ims.encoding: Cp037                    # EBCDIC encoding used by your IMS Connect
-    exx.server.ims.user: imsuser                      # User ID defined in your underlying security system
-    exx.server.ims.password: imspasswd                # Password defined in your underlying security system
-    exx.server.ims.ssl.truststore: ''                 # Specifies the location of SSL trust store   
-    exx.server.ims.verify.server: true                # false/true, The RPC Server as SSL client checks the identity of IMS Connect as SSL server
-    exx.server.ims.timeout: 10000                     # Socket timeout for connection to IMS Connect (in milliseconds)
-    exx.server.ims.use.old.exit: true                 # true/false 
-    # Exit Name. If left blank, the following defaults will be used: *SAMPLE* for old exit, *SAMPLE1* for new exit
-    exx.server.ims.exit.name: ''
-    
-    exx.server.license.key: "*_EXX_10.*_*_*"          # license key, alias name of license key in
+    exx.server.maxworkers: 10                         # Maximum number of workers
+    exx.server.tracelevel: 1                          # Trace Level
+    # Directory Names for server implementation
+    exx.server.library.directory1: /opt/softwareag/MyApp                  
+    exx.server.library.directory2: /opt/softwareag/MyApp2
+
+    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
                                                       # license repository
                                                                   
-    # fixes
-    exx.server.fixes:                                 # minimal recommended set of fixes to apply 
+    exx.server.fixes:                                 # minimal recommended set of fixes to apply
       - ALL
+       
 
-
-
+        
        
 templates:
 
-  ims.server:
+  c.server:
     licenses:
       "EntireX/config/license.xml": "${exx.server.license.key}"        # license key
     #fixes: ${exx.server.fixes} 
     products:
       EntireXCore:                    
         create.server:
-          type: RPCSERVERIMSCONNECT
+          type: RPCSERVERC
           instance.name: ${exx.server.name}
           install.service: ${exx.server.install.service}
           broker.transport: ${exx.server.broker.transport}
@@ -94,30 +83,21 @@ templates:
           broker.password: ${exx.server.broker.password}
           server.address: ${exx.server.address}
           server.adminport: ${exx.server.adminport}
-          ims.transport: ${exx.server.ims.transport}
-          ims.host: ${exx.server.ims.host}
-          ims.port: ${exx.server.ims.port}
-          ims.datastoreid: ${exx.server.ims.datastoreid}
-          ims.encoding: ${exx.server.ims.encoding}
-          ims.user: ${exx.server.ims.user}
-          ims.password: ${exx.server.ims.password}
+          library.dir: ${exx.server.c.library.dir}
 
-
-          
-          
           configuration:
-            EntireXCore-RpcServerImsConnect-${exx.server.name}:
+            EntireXCore-RpcServerC-${exx.server.name}:
               BROKER:
                 BROKER:
                   BrokerHost: ${exx.server.broker.host}
                   BrokerPort: ${exx.server.broker.port}
                   BrokerTransport: ${exx.server.broker.transport}
-                  BrokerUser: abcd
+                  BrokerUser: ${exx.server.broker.user}
                   BrokerPassword: ${exx.server.broker.password}
                   BrokerEncoding: ${exx.server.broker.encoding}
                   BrokerSslTrustStore: ${exx.server.broker.ssl.truststore}
-                  BrokerSslVerifyServer: true
-
+                  BrokerSslVerifyServer: ${exx.server.broker.ssl.serververify}
+                      
               SERVER:
                 SERVER:
                   ServerAddress: ${exx.server.address}
@@ -127,33 +107,23 @@ templates:
                   FixNumber: ${exx.server.fixnumber}
                   MinWorkers: ${exx.server.minworkers}
                   MaxWorkers: ${exx.server.maxworkers}
-                  
               TRACE:
                 TRACE:
                   TraceLevel: ${exx.server.tracelevel}
-                  
-              IMS-CONNECT:
-                IMS-CONNECT:
-                  ImsTransport: ${exx.server.ims.transport}
-                  ImsHost: ${exx.server.ims.host}
-                  ImsPort: ${exx.server.ims.port}
-                  ImsDataStoreId: ${exx.server.ims.datastoreid}
-                  ImsEncoding: ${exx.server.ims.encoding}
-                  ImsUser: ${exx.server.ims.user}
-                  ImsPassword: ${exx.server.ims.password}
-                  ImsSslTrustStore: ${exx.server.ims.ssl.truststore}
-                  ImsSslVerifyServer: ${exx.server.ims.verify.server}
-                  ImsTimeout: ${exx.server.ims.timeout}
-                  ImsUseOldExit: ${exx.server.ims.use.old.exit}
-                  ImsExitName: ${exx.server.ims.exit.name}
 
-    
+              LIBRARY-LOCATIONS:
+                LIBRARY-LOCATIONS:
+                  LibraryDirectories:
+                    - Directory: ${exx.server.library.directory1} 
+                    - Directory: ${exx.server.library.directory2}
+
+
 layers:
   runtime:
     productRepo: ${repo.product}      # default repository to install products from
     #fixRepo: ${repo.fix}              # default repository to install products from
     templates:
-      - ims.server                    # template to apply
+      - c.server                      # template to apply
 
 provision:                            # PROVISION layers to nodes
   default:                            # default environment type

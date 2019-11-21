@@ -15,25 +15,25 @@
 #                                                                       #
 #########################################################################
 
-alias: sag-exx-csl-rpc-server
+alias: sag-exx-ims-rpc-server
 dslVersion: "1.2"
-description: Create and configure EntireX rpc server for CICS Socket Listener
+description: Create and configure EntireX rpc server for IMS
 version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
   - 2.1 Tested with 10.5 and adapted Admin Port
   - 2.2 Added runtimes.skip.start property
+  
 
 environments:
   default:
-  
-    runtimes.skip.start: EntireXCore-RpcServerCicsSocketListener-CslRpcSrv   # Set this flag if you do not want the
-                                                                             # newly created instance started automatically
-                                                                             # comment it out if you wish autostart after
-                                                                             # creation
+    exx.server.name: ImsRpcSrv                        # Instance name of the RPC Server
+    runtimes.skip.start: EntireXCore-RpcServerImsConnect-ImsRpcSrv   # Set this flag if you do not want the
+                                                                     # newly created instance started automatically
+                                                                     # comment it out if you wish autostart after
+                                                                     # creation
 
-    exx.server.name: CslRpcSrv                        # Instance name of the RPC Server
     exx.server.install.service: false                 # Install as Windows service true/false
     exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
     exx.server.broker.host: localhost                 # Broker Host
@@ -43,48 +43,49 @@ environments:
     exx.server.broker.ssl.truststore: ''              # File Name for Trust Store
     exx.server.broker.ssl.serververify: false         # Verify Server true/false 
     exx.server.broker.encoding: Cp1252                # Encoding used between RPC Server and Broker
-    exx.server.address: RPC/SRVCSL/CALLNAT            # Server Address
-    exx.server.adminport: 3091                        # Administration port 
+    exx.server.address: RPC/SRVIMS2/CALLNAT            # Server Address
+    exx.server.adminport: 4712                        # Administration port 
     exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
     exx.server.worker.scalability: true               # Worker Scalability dynamic true/false
     exx.server.fixnumber: 5                           # Fix number of workers
     exx.server.minworkers: 2                          # Minimum number of workers
     exx.server.maxworkers: 12                         # Maximum number of workers
-    exx.server.tracelevel: 0                          # Trace Level  
-    exx.server.cics.transport: TCP                    # CICS Socket Listener transport type TCP or SSL
-    exx.server.cics.host: DAEF                        # CICS Socket Listener Host
-    exx.server.cics.port: 4717                        # CICS Socket Listener port
-    exx.server.cics.transaction: XRFE                 # CICS Socket Listener transaction name
-    exx.server.cics.encoding: cp037                   # encoding
-    exx.server.cics.ssl.truststore: ''                # Specifies the location of SSL trust store  
-    # false/true, The RPC Server as SSL client checks the identity of CICS Socket Listener as SSL server    
-    exx.server.cics.verify.server: true               
-    exx.server.cics.timeout: 25                       # Timeout for CICS Socket Listener (in seconds)
-    exx.server.cics.user: CICSUse                     # CICS User
-    exx.server.cics.password: CICSpwd                 # CICS password
-    exx-server.cics.pass.ticket: true                 # use pass ticket instead of user id and password
-    exx.server.cics.application: AppNam               # CICS application name
-    exx.server.cics.sec.signonkey: A23456789012345Z   # Secured Signonkey, must be 16 characters
-    exx.server.cics.transaction: XRFE                 # 
-    exx.server.trace.level: 1                         # trace level
-  
-    exx.server.license.key: "*_EXX_10.*_*_*"          # license key, alias name of license key in
+    exx.server.tracelevel: 0                          # Trace Level    
+    exx.server.ims.transport: TCP                     # Use TCP or SSL to communicate with IMS Connect
+    exx.server.ims.host: IMSHost                      # Host name or IP address where IMS Connect is running                  
+    exx.server.ims.port: 6655                         # TCP or SSL port number where IMS Connect is listening
+    exx.server.ims.datastoreid: IMSSYS                # Data store ID
+    exx.server.ims.encoding: Cp037                    # EBCDIC encoding used by your IMS Connect
+    exx.server.ims.user: imsuser                      # User ID defined in your underlying security system
+    exx.server.ims.password: imspasswd                # Password defined in your underlying security system
+    exx.server.ims.ssl.truststore: ''                 # Specifies the location of SSL trust store   
+    exx.server.ims.verify.server: true                # false/true, The RPC Server as SSL client checks the identity of IMS Connect as SSL server
+    exx.server.ims.timeout: 10000                     # Socket timeout for connection to IMS Connect (in milliseconds)
+    exx.server.ims.use.old.exit: true                 # true/false 
+    # Exit Name. If left blank, the following defaults will be used: *SAMPLE* for old exit, *SAMPLE1* for new exit
+    exx.server.ims.exit.name: ''
+    
+    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
                                                       # license repository
                                                                   
-    exx.server.fixes:
+    # fixes
+    exx.server.fixes:                                 # minimal recommended set of fixes to apply 
       - ALL
 
+
+
+       
 templates:
 
-  csl.server:
+  ims.server:
     licenses:
       "EntireX/config/license.xml": "${exx.server.license.key}"        # license key
     #fixes: ${exx.server.fixes} 
     products:
       EntireXCore:                    
         create.server:
-          type: RPCSERVERCICSSOCKETLISTENER
-          instance.name: ${exx.server.name} 
+          type: RPCSERVERIMSCONNECT
+          instance.name: ${exx.server.name}
           install.service: ${exx.server.install.service}
           broker.transport: ${exx.server.broker.transport}
           broker.host: ${exx.server.broker.host}
@@ -93,33 +94,30 @@ templates:
           broker.password: ${exx.server.broker.password}
           server.address: ${exx.server.address}
           server.adminport: ${exx.server.adminport}
-          cics.sl.transport: ${exx.server.cics.transport}
-          cics.sl.host: ${exx.server.cics.host}
-          cics.sl.port: ${exx.server.cics.port}
-          cics.sl.transaction: ${exx.server.cics.transaction}
-          cics.sl.encoding: ${exx.server.cics.encoding}
-          cics.sl.user: ${exx.server.cics.user}
-          cics.sl.password: ${exx.server.cics.password}
-          pass.ticket: ${exx-server.cics.pass.ticket}
-          cics.sl.application.name: ${exx.server.cics.application}
-          cics.sl.secured.signonkey: ${exx.server.cics.sec.signonkey}
+          ims.transport: ${exx.server.ims.transport}
+          ims.host: ${exx.server.ims.host}
+          ims.port: ${exx.server.ims.port}
+          ims.datastoreid: ${exx.server.ims.datastoreid}
+          ims.encoding: ${exx.server.ims.encoding}
+          ims.user: ${exx.server.ims.user}
+          ims.password: ${exx.server.ims.password}
 
-                
+
+          
+          
           configuration:
-            EntireXCore-RpcServerCicsSocketListener-${exx.server.name}:
+            EntireXCore-RpcServerImsConnect-${exx.server.name}:
               BROKER:
                 BROKER:
                   BrokerHost: ${exx.server.broker.host}
                   BrokerPort: ${exx.server.broker.port}
                   BrokerTransport: ${exx.server.broker.transport}
-                  BrokerUser: ${exx.server.broker.user}
+                  BrokerUser: abcd
                   BrokerPassword: ${exx.server.broker.password}
                   BrokerEncoding: ${exx.server.broker.encoding}
                   BrokerSslTrustStore: ${exx.server.broker.ssl.truststore}
-                  BrokerSslVerifyServer: ${exx.server.broker.ssl.serververify}
-                                                            
-                         
-                           
+                  BrokerSslVerifyServer: true
+
               SERVER:
                 SERVER:
                   ServerAddress: ${exx.server.address}
@@ -129,38 +127,34 @@ templates:
                   FixNumber: ${exx.server.fixnumber}
                   MinWorkers: ${exx.server.minworkers}
                   MaxWorkers: ${exx.server.maxworkers}
-                                 
-                                 
+                  
               TRACE:
                 TRACE:
-                  TraceLevel: ${exx.server.trace.level}
+                  TraceLevel: ${exx.server.tracelevel}
+                  
+              IMS-CONNECT:
+                IMS-CONNECT:
+                  ImsTransport: ${exx.server.ims.transport}
+                  ImsHost: ${exx.server.ims.host}
+                  ImsPort: ${exx.server.ims.port}
+                  ImsDataStoreId: ${exx.server.ims.datastoreid}
+                  ImsEncoding: ${exx.server.ims.encoding}
+                  ImsUser: ${exx.server.ims.user}
+                  ImsPassword: ${exx.server.ims.password}
+                  ImsSslTrustStore: ${exx.server.ims.ssl.truststore}
+                  ImsSslVerifyServer: ${exx.server.ims.verify.server}
+                  ImsTimeout: ${exx.server.ims.timeout}
+                  ImsUseOldExit: ${exx.server.ims.use.old.exit}
+                  ImsExitName: ${exx.server.ims.exit.name}
 
-              CICS-SOCKET-LISTENER:
-                CICS-SOCKET-LISTENER:
-                  CicsSocketListenerTransport: ${exx.server.cics.transport}
-                  CicsSocketListenerHost: ${exx.server.cics.host}
-                  CicsSocketListenerPort: ${exx.server.cics.port}
-                  CicsSocketListenerEncoding: ${exx.server.cics.encoding}
-                  CicsSocketListenerSslTrustStore: ${exx.server.cics.ssl.truststore}
-                  CicsSocketListenerSslVerifyServer: ${exx.server.cics.verify.server}
-                  CicsSocketListenerTimeout: ${exx.server.cics.timeout}
-                  CicsSocketListenerUser: ${exx.server.cics.user}
-                  CicsSocketListenerPassword: ${exx.server.cics.password}
-                  CicsSocketListenerPassTicket: ${exx-server.cics.pass.ticket}
-                  CicsSocketListenerApplicationName: ${exx.server.cics.application}
-                  CicsSocketListenerSecuredSignonKey: ${exx.server.cics.sec.signonkey}
-                  CicsSocketListenerTransaction: ${exx.server.cics.transaction}
-
-
-                           
+    
 layers:
   runtime:
     productRepo: ${repo.product}      # default repository to install products from
     #fixRepo: ${repo.fix}              # default repository to install products from
     templates:
-      - csl.server                    # template to apply
+      - ims.server                    # template to apply
 
 provision:                            # PROVISION layers to nodes
   default:                            # default environment type
     runtime: ${nodes}
-
