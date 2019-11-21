@@ -24,29 +24,34 @@ services:
     image: ${REG}/base:${TAG}
     build:
       context: base-centos/
+      args:
+        - BASE_IMAGE=centos:7
 
   java:
     image: ${REG}/java:${TAG}
     build:
       context: java-centos/
+      args:
+        - BASE_IMAGE=${REG}/base:${TAG}
+        - NODE_IMAGE=${CC_REG}/commandcentral-node:${TAG}
     depends_on: 
       - base
 
-  node:
-    image: ${REG}/commandcentral-node:${TAG}
-    ports:
-      - 8092
-    build:
-      context: commandcentral-node/
-      args:
-        - CC_SERVER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG} # base image for the builder, e.g. server-10.3
-        - BASE_IMAGE=${REG}/java:${TAG}
-        - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-release-lnxamd64}
-        - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://empowersdc.softwareag.com/ccinstallers}
-    depends_on:
-      - java
-    environment:
-      - CC_AUTO_REGISTER=0
+  # node:
+  #   image: ${REG}/commandcentral-node:${TAG}
+  #   ports:
+  #     - 8092
+  #   build:
+  #     context: commandcentral-node/
+  #     args:
+  #       - BUILDER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG} # base image for the builder, e.g. server-10.3
+  #       - BASE_IMAGE=${REG}/java:${TAG}
+  #       - CC_INSTALLER=${CC_INSTALLER:-cc-def-10.3-fix1-lnxamd64}
+  #       - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://empowersdc.softwareag.com/ccinstallers}
+  #   depends_on:
+  #     - java
+  #   environment:
+  #     - CC_AUTO_REGISTER=0
 
   builder:
     image: ${REG}/commandcentral-builder:${TAG}
@@ -57,11 +62,12 @@ services:
       context: ../
       dockerfile: infrastructure/commandcentral-builder/Dockerfile
       args:
-        - CC_SERVER_IMAGE=${CC_REG}/commandcentral-server:${CC_TAG}
-        - CC_NODE_IMAGE=${REG}/commandcentral-node:${TAG}
+        - BUILDER_IMAGE=${CC_REG}/commandcentral-builder:${CC_TAG}
+        - NODE_IMAGE=${CC_REG}/commandcentral-node:${TAG}
         - REPO_PRODUCT_URL
+        - REPO_FIX_URL
         - REPO_USERNAME                           # Empower or mirror username
         - REPO_PASSWORD                           # Empower or user password
         - LICENSES_URL                            # licenses .zip, e.g. 10.x
-    depends_on: 
-      - node
+    # depends_on: 
+    #   - node

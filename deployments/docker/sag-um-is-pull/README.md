@@ -62,8 +62,13 @@ export REG=daerepository03.eur.ad.sag:4443/sagdevops
 export CC_REG=daerepository03.eur.ad.sag:4443/ccdevops
 ```
 
-Launch [Command Central Stack](../sag-cc/) first.
+Optionally, launch [Command Central Stack](../sag-cc/) first.
 Command Central is not required but useful for monitoring and troubleshooting of the deployment process.
+If you do not want to use Command Central, set auto-registration off:
+
+```bash
+export CC_AUTO_REGISTER=0
+```
 
 Launch Universal Messaging and Integration Server containers and point to two asset repositories
 that include configuration and code assets for Universal Messaging and Integration Server respectively.

@@ -17,10 +17,10 @@
 #
 ###############################################################################
 
-ARG CC_SERVER_IMAGE
+ARG BUILDER_IMAGE
 ARG BASE_IMAGE
 
-FROM $CC_SERVER_IMAGE as server
+FROM $BUILDER_IMAGE as builder
 
 # bootstrap node using CC bootstrapper 
 ARG CC_INSTALLER
@@ -54,7 +54,7 @@ RUN yum install -y net-tools && \
 WORKDIR $SAG_HOME
 USER 1724
 
-COPY --from=server --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
 
 EXPOSE 8092 8093
 

@@ -21,27 +21,45 @@ version: "3.2"
 
 services:
   cc: # builder service
+    # image: ${CC_REG}/commandcentral-server:${CC_TAG}
     image: ${REG}/commandcentral-builder:${TAG}
+
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
     ports:
-      - 8091 # CCE
-      - 8092 # target node SPM
-    # environment:
-    #   - REPO_HOST                                 # alternative, closest AQU host
-    #   - REPO_PRODUCT                              # alternative, product repo within the same release
-    #   - REPO_FIX                                  # alternative, fix repo
-    #   - LICENSES_URL                              # additional licenses
-    #   - REPO_PRODUCT_URL                        # product mirror URL
-    #   - REPO_FIX_URL                            # fix mirror URL
-    #   - REPO_USERNAME                           # Empower or mirror username
-    #   - REPO_PASSWORD                           # Empower or user password
+      - 8091 # https://$(docker-compose port cc 8091)/cce/web
+      - 8092 # http://$(docker-compose port cc 8092)/spm
     volumes: 
       - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
       - ./licenses/:/opt/sagtools/licenses/:ro
       - ./environments/:/src/environments/:ro
-      - ./scripts/init.sh:/opt/sagtools/init.sh:ro
-      - ./scripts/inventory.sh:/opt/sagtools/inventory.sh:ro
-      - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
-
+      - ./scripts/:/opt/sagtools/scripts/:ro
+      # - ./scripts/init.sh:/opt/sagtools/init.sh:ro
+      # - ./scripts/inventory.sh:/opt/sagtools/inventory.sh:ro
+      # - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
+  abe: # asset builder service
+      # image: ${CC_REG}/commandcentral-server:${CC_TAG}
+    image: ${REG}/commandcentral-builder-abe:${TAG}
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
+    ports:
+      - 8091 # https://$(docker-compose port cc 8091)/cce/web
+      - 8092 # http://$(docker-compose port cc 8092)/spm
+    volumes: 
+      - ./templates/:/opt/sagtools/profiles/CCE/data/templates/composite/
+      - ./environments/:/src/environments/:ro
   sagcc: # sagcc wrapper
     image: ${CC_REG}/commandcentral-client:${CC_TAG}-alpine
     volumes: 
@@ -75,8 +93,8 @@ services:
     entrypoint: sagcc exec templates composite apply --sync-job
     command: --help
 
-  build: # ABE wrapper
-    image: ${CC_REG}/asset-builder:${CC_TAG}
+  build: # ABE wrapper (built locally)
+    image: ${REG}/asset-builder:${TAG}
     volumes:
       - .:/src/ # required
     environment:
@@ -92,3 +110,39 @@ services:
       - CC_ENV=${CC_ENV:-devcc}
     entrypoint: antcc
     command: waitcc mirrors -Drelease=${TAG}
+  node-sshd:
+    image: centos-sshd:7
+    build: containers/centos-sshd/
+    ports:
+      - "2222:22"
+  sqlserver:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      -  "1433:1433"
+    environment:
+      - SA_PASSWORD=${PASSWORD}
+      - ACCEPT_EULA=Y
+    restart: unless-stopped
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    volumes:
+      - ./templates/sag-db-mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=webm
+      - MYSQL_USER=webm
+      - MYSQL_PASSWORD=webm
+    ports:
+      - "3306:3306"
+  oracle:
+#    image: oracle/database:11.2.0.2-xe
+    image: daerepository03.eur.ad.sag:4443/ccdevops/oracle:11.1
+    ports:
+      - 1521:1521
+      - 8085:8080
+    shm_size: 1g
+    environment:
+      - ORACLE_PWD=${PASSWORD}
+    restart: unless-stopped
+

@@ -61,7 +61,7 @@ echo "Generating '$TEMPLATE_ALIAS' template ..."
 
 if ./sagccw exec templates composite generate nodeAlias=$NODE_ALIAS parameterize=true options=CONFIGURATION overwrite=true alias=$TEMPLATE_ALIAS runtimeComponentId=$RUNTIME_COMPONENT_ID paramPrefix=$PREFIX -a application/yaml -o /src/build/templates/$TEMPLATE_ALIAS/template.yaml ; then
     echo ""
-    echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFULL"
+    echo "Generation of '$TEMPLATE_ALIAS' SUCCESSFUL"
     echo ""
     echo "The template file: /src/build/templates/$TEMPLATE_ALIAS/template.yaml"
     echo ""

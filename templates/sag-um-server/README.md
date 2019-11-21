@@ -1,24 +1,24 @@
-<!-- Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+<!--
+ Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 
-   SPDX-License-Identifier: Apache-2.0
+ SPDX-License-Identifier: Apache-2.0
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-
-     limitations under the License.                                                  
-
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
 -->
+
 # Universal Messaging Realm Server
 
-Use this template to provision, maintain, upgrade and migrate Universal Messaging Realm Server
+Use this template to provision, maintain, upgrade Universal Messaging Realm Server
 as well as create Docker images
 
 ## Requirements
@@ -26,7 +26,7 @@ as well as create Docker images
 ### Supported Software AG releases
 
 * Universal Messaging 9.8 and higher
-* Command Central 10.2 and higher
+* Command Central 10.3 and higher
 
 ### Supported platforms
 
@@ -37,11 +37,11 @@ All supported Windows and UNIX platforms.
 * Provisioning of new 9.8 or higher environments
 * Installing latest fixes and support patches
 * In-place upgrades to 9.12 or higher
-* Cross-host migrations to 9.12 or higher
 * Configuration of:
   * License
   * JVM memory
   * NHP and JMX ports
+  * COMMON-JAVASYSPROPS configuration in yaml format used in the template is supported for 10.1 or higher. 
 * Building docker images for 10.x releases
 
 ## Provisioning of new server instance

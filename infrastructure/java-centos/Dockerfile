@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,18 +16,19 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-FROM daerepository03.eur.ad.sag:4443/ibit/java:10.3
+
+ARG BASE_IMAGE
+ARG NODE_IMAGE
+FROM $NODE_IMAGE as javasource
+FROM $BASE_IMAGE as base
 
 ENV SAG_HOME=/opt/softwareag
-
-# Create sagadmin a process owner and group
-# RUN groupadd -g 1724 sagadmin && \
-#    useradd -u 1724 -m -g 1724 -d $SAG_HOME -c "SoftwareAG Admin" sagadmin
-# ENV JAVA_HOME=$SAG_HOME/jvm/jvm/
-# ENV JRE_HOME=$SAG_HOME/jvm/jvm/jre/
-# ENV PATH=$PATH:$JAVA_HOME/bin
+ENV JAVA_HOME=$SAG_HOME/jvm/jvm
+ENV PATH=$PATH:$JAVA_HOME/bin
 
 USER 1724
+
+COPY --from=javasource --chown=1724:1724 $SAG_HOME/jvm/jvm/ $SAG_HOME/jvm/jvm/
 
 RUN env && java -version
 

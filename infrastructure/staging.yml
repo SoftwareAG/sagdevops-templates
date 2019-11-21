@@ -19,18 +19,26 @@
 version: "3.2"
 
 services:
-  node:
+  base:
     build:
       args:
-        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-        - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-dae.eur.ad.sag/PDShare/cc}
-        # - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-bg.eur.ad.sag/cc/installers} # use this until 10.3-release is promoted
+        - BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
+
+  java:
+    build:
+      args:
+        # - BASE_IMAGE=daerepository03.eur.ad.sag:4443/ibit/centos:7
+        - NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:${TAG} # store/softwareag/commandcentral-server
+
+  # node:
+  #   build:
+  #     args:
+  #       - BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
+  #       - CC_INSTALLER_URL=${CC_INSTALLER_URL:-http://aquarius-dae.eur.ad.sag/PDShare/cc}
 
   builder:
     build:
       args:
-        - CC_SERVER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-server:${CC_TAG} # store/softwareag/commandcentral-server
-        - REPO_PRODUCT=${REPO_PRODUCT:-103oct2018_SIC}
-        - REPO_FIX=${REPO_FIX:-GA_Fix_Repo}
-        - REPO_HOST=${REPO_HOST:-aquarius-dae.eur.ad.sag}
+        - BUILDER_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-builder:${CC_TAG} # store/softwareag/commandcentral-server
+        - NODE_IMAGE=daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-node:${TAG}
         - LICENSES_URL=${LICENSES_URL:-http://irepo.eur.ad.sag/projects/DEVOPS/repos/command-central/raw/licenses/sag10-rnd-lnx-licenses.zip?at=refs%2Fheads%2Fmaster}

@@ -41,14 +41,14 @@ templates:
                   wrapper.logfile.maxsize=1m  # Tanuki logfile configuration
 
               COMMON-JAVASYSPROPS:            # Java System Properties configuration
-                COMMON-JAVASYSPROPS: |
-                  hello.world=${hello.world}  # sample static configuration
-                  hello.name=%HELLO_NAME%     # sample dynamic configuration handled by Tanuki
+                COMMON-JAVASYSPROPS: 
+                  hello.world: ${hello.world}  # sample static configuration
+                  hello.name: "%HELLO_NAME%"     # sample dynamic configuration handled by Tanuki
             
             OSGI-SPM-ENGINE:                  # SPM Engine configuration
               COMMON-SYSPROPS:                # System properties
-                com.softwareag.platform.management.common.monitoring.BasicMonitoringService: | # Monitoring service config
-                  com.softwareag.plm.spm.monitoring.poll.interval.seconds=15
+                com.softwareag.platform.management.common.monitoring.BasicMonitoringService:  # Monitoring service config
+                  com.softwareag.plm.spm.monitoring.poll.interval.seconds: 15
 
 provision:
   default:                                  

@@ -1,0 +1,77 @@
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#########################################################################################
+
+alias: sag-db-mysql-103
+description: MySQL server database and sample product schemas for 10.3
+
+environments:
+  default:                 
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          10.3.0.0           # latest or exact version 10.3.0.0
+    db.port:             3306               # Default port
+    db.admin.username:   ${}                # Admin username for db and user creation
+    db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
+    db.admin.url:        "jdbc:mysql://${db.host}:${db.port}"
+    db.url:              "jdbc:mysql://${db.host}:${db.port}/${db.name}"
+    db.name:             webm               # webM database name
+    db.username:         ${}                # webM database username
+    db.password:         ${}                # webM database password
+    db.components:       STR
+    db.products:         
+      - IS
+      - MWS 
+      - OPTI        
+    db.fixes:            ALL                # Database component configurator fixes to install         
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   dbc
+    databases:
+      storage:
+        components:  ${db.components}              
+        version:     latest
+        db.type:     mysql
+        db.url:      "${db.admin.url}"
+        db.admin.username: "${db.admin.username}"
+        db.admin.password: "${db.admin.password}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      schemas:
+        products:    ${db.products}
+        version:     ${db.version}
+        db.type:     mysql
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+    
+templates:
+  dbc:
+    products:  
+      DatabaseComponentConfigurator: 
+    fixes:     ${db.fixes}
+    files:
+      # Copying MySQL JDBC driver as sl53* so DatabaseComponentConfigurator will pick it up dynamically
+      common/lib/ext/sl53-mysql.jar: mysql-connector-java-5.1.47.jar
+provision:
+  default:
+    db: ${nodes}

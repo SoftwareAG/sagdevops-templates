@@ -27,7 +27,7 @@ changes:
 environments:
   default:
     ldap.domain:       sag                              # LDAP alias to create
-    ldap.host:         sofdc02.eur.ad.sag               # LDAP host, replica of SAG corporate LDAP
+    ldap.host:         sofldap.eur.ad.sag               # LDAP host, replica of SAG corporate LDAP
     ldap.port:         389
     ldap.url :         "ldap://${ldap.host}:${ldap.port}"
     ldap.principaldn:  "CN=BGQATest,OU=Generic,OU=Bulgaria,DC=eur,DC=ad,DC=sag"

@@ -73,11 +73,11 @@ templates:
                        "@name": "-XX:MaxDirectMemorySize"
                        $: ${um.memory.direct}
               COMMON-JAVASYSPROPS: 
-                COMMON-JAVASYSPROPS: | 
-                   REALM=${node.alias}                             # IMPORTANT: this can only be set before first startup
-                   com.sun.management.jmxremote.port=${um.jmx.port}
-                   com.sun.management.jmxremote.authenticate=false
-                   com.sun.management.jmxremote.ssl=false
+                COMMON-JAVASYSPROPS:  
+                   REALM: ${node.alias}                             # IMPORTANT: this can only be set before first startup
+                   com.sun.management.jmxremote.port: ${um.jmx.port}
+                   com.sun.management.jmxremote.authenticate: false
+                   com.sun.management.jmxremote.ssl: false
 
 
   um-cluster-2:

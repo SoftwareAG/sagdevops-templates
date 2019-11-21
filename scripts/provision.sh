@@ -35,6 +35,14 @@ echo "Starting up Command Central (if not running) ..."
 $CC_HOME/profiles/SPM/bin/startup.sh
 $CC_HOME/profiles/CCE/bin/startup.sh
 
+echo "Running init.sh ..."
+if ! $CC_HOME/init.sh ; then
+    echo "ERROR: Initialization failed."
+    exit 1
+fi
+
+
+
 # just in case
 export CC_CLI_HOME=$CC_HOME/CommandCentral/client
 export PATH=$PATH:$CC_CLI_HOME/bin
@@ -44,24 +52,41 @@ echo "Waiting for Command Central ..."
 sagcc get monitoring runtimestatus local OSGI-CCE-ENGINE -e ONLINE -c 15 --wait-for-cc 300 -w 240
 echo "Command Central is READY"
 
-echo "Running init.sh ..."
-if ! $CC_HOME/init.sh ; then
-    echo "ERROR: Initialization failed."
-    exit 1
-fi
+
+    	
+
+
+
 
 echo "Running inventory.sh ..."
 $CC_HOME/inventory.sh
 
 # globals
 NODES=${NODES:-node}
-REPO_PRODUCT=${REPO_PRODUCT:-products}
-REPO_FIX=${REPO_FIX:-fixes}
+REPO_PRODUCT_NAME=${REPO_PRODUCT_NAME:-products}
+REPO_FIX_NAME=${REPO_FIX_NAME:-fixes}
 RELEASE_MAJOR=${RELEASE_MAJOR:-10}
 
 if [ "$#" != "0" ]; then  
     MAIN_TEMPLATE_ALIAS=${1}
     shift
+	echo "Waiting for container initilization.."
+	for timer in {1..60}
+	do
+        if [ -f /tmp/init.status ] && grep -q OK /tmp/init.status
+    	then
+        	break
+    	else
+        	echo -n "."
+        	sleep 10
+    	fi
+	done
+	if [ "$timer" -eq 60 ]
+	then
+		echo
+        echo "container not initialized"
+    	exit 102
+	fi    
 fi
 
 PARAMS=$*
@@ -101,7 +126,9 @@ else
     echo "WARNING: No environment variables defined! Will use template defaults."
 fi
 
-if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
+if [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-ssh" ] || [ "$MAIN_TEMPLATE_ALIAS" = "sag-spm-boot-local" ]; then
+    echo "The template will provision the node. SKIP: bootstrapping"
+elif [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Found managed node in '$SAG_HOME'. SKIP: bootstrapping"
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
@@ -114,7 +141,7 @@ if [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Waiting for SPM ..."
     sagcc get landscape nodes $NODES -e ONLINE -w 240
 
-    echo "EXISTING infrastructure $NODES SUCCESSFULL"
+    echo "EXISTING infrastructure $NODES SUCCESSFUL"
 else
     echo "NO managed node in '$SAG_HOME' found"
 
@@ -126,9 +153,9 @@ else
         if [ -f $CC_HOME/profiles/CCE/data/installers/$sagcc_installer ]; then
             echo "Found '$sagcc_installer'. SKIP: downloading installer."
         else
-            echo "Downloading '$sagcc_installer' ..."
+            echo "Downloading '$sagcc_installer' from '${CC_INSTALLER_URL}' ..."
             mkdir -p $CC_HOME/profiles/CCE/data/installers
-            curl -u Administrator:manage -o $CC_HOME/profiles/CCE/data/installers/$sagcc_installer "${CC_INSTALLER_URL}/${sagcc_installer}"
+            curl -k -L -u Administrator:manage -o $CC_HOME/profiles/CCE/data/installers/$sagcc_installer "${CC_INSTALLER_URL}/${sagcc_installer}"
             chmod +x $CC_HOME/profiles/CCE/data/installers/$sagcc_installer
         fi
         echo "Bootstrapping '$SAG_HOME' using '$sagcc_installer' ..."
@@ -143,21 +170,13 @@ else
         echo "Waiting for SPM ..."
         sagcc get landscape nodes $NODES -e ONLINE
 
-        echo "NEW infrastructure $NODES SUCCESSFULL"
+        echo "NEW infrastructure $NODES SUCCESSFUL"
     fi
 fi
 
 if [ -z $MAIN_TEMPLATE_ALIAS ] ; then 
     if [ -f template.yaml ]; then
         echo "Found template.yaml ..."
-        # templatefile=/tmp/t.yaml
-        # replacing template alias as 'container'
-        # sed '/^[[:blank:]]*#/d;s/#.*//' template.yaml>$templatefile
-        # replacing template alias as 'container'
-        #MAIN_TEMPLATE_ALIAS=container
-        #echo alias: $MAIN_TEMPLATE_ALIAS>$templatefile && tail -n +2 template.yaml>>$templatefile
-        # cat $templatefile
-        # get the alias: <value>
         templatefile=template.yaml
         MAIN_TEMPLATE_ALIAS=`awk '/^alias:/{print $NF}' $templatefile`
         echo "Importing template ... $MAIN_TEMPLATE_ALIAS"
@@ -169,8 +188,8 @@ if [ -z $MAIN_TEMPLATE_ALIAS ] ; then
     fi
 fi
 
-
-ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT repo.fix=$REPO_FIX release=$RELEASE release.major=$RELEASE_MAJOR os.platform=lnxamd64 $PARAMS "
+# mandatory parameters
+ADD_PROPERTIES="${ADD_PROPERTIES} node=$NODES nodes=$NODES repo.product=$REPO_PRODUCT_NAME repo.fix=$REPO_FIX_NAME release.major=$RELEASE_MAJOR os.platform=lnxamd64 $PARAMS "
 
 echo "=================================="
 echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
@@ -182,7 +201,7 @@ tailpid=$!
 
 if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -c 10 -e DONE --wait-for-cc 300 --retry 1; then
     echo ""
-    echo "PROVISION '$MAIN_TEMPLATE_ALIAS' SUCCESSFULL"
+    echo "PROVISION '$MAIN_TEMPLATE_ALIAS' SUCCESSFUL"
     echo ""
     kill $tailpid>/dev/null
     sleep 3
