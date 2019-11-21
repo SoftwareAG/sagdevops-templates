@@ -10,10 +10,9 @@
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-
-     limitations under the License.                                                  
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.                                                  
 
 -->
 
@@ -63,8 +62,8 @@ latest fixes, listening on port 15904:
 
 ```bash
 sagcc exec templates composite apply sag-apama-correlator nodes=sag1 \
-  repo.product=products-10.2 \
-  repo.fix=fixes-10.2 \
+  repo.product=webMethods-10.2 \
+  repo.fix=Empower \
   os.platform=LNXAMD64 \
   --sync-job --wait 360
 ```

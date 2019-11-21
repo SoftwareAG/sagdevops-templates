@@ -86,11 +86,11 @@ repositories:
       name: 101oct2017_SIC
       credentials: REPO-PRODUCT
 
-    webMethods-10.2_GA:
-      description: 10.2 GA
-      host: ${aqu.host}
-      name: 102apr2018_SIC
-      credentials: REPO-PRODUCT
+    # webMethods-10.2_GA:
+    #   description: 10.2 GA
+    #   host: ${aqu.host}
+    #   name: 102apr2018_SIC
+    #   credentials: REPO-PRODUCT
 
     webMethods-10.3_GA:
       description: 10.3 GA

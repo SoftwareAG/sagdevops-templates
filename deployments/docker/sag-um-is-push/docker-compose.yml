@@ -30,9 +30,10 @@ services:
 
   um01:
     image: ${REG:-softwareag}/universal-messaging:${TAG:-10.3}
+    hostname: um01
     ports:
       - 9000:9000
-    hostname: um01
+    environment:
       - CC_AUTO_REGISTER=1
       - CC_PASSWORD
 

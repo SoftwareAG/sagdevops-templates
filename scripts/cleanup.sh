@@ -1,6 +1,6 @@
 #!/bin/sh
 #*******************************************************************************
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright ï¿½ 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -24,8 +24,11 @@ cd $SAG_HOME
 echo 'Disk usage before cleaning:'
 du -h -d 2
 
-echo "Removing Update Manager, fixes metadata and backups ..."
-rm -fr SAGUpdateManager/
+echo "Removing Update Manager but keep metadata (SAGUpdateManager/UpdateManager/profile/p2) ..."
+cd SAGUpdateManager && rm -rf bin jvm logs osgi && \
+cd UpdateManager && rm -rf bootstrap conf logs readme repository workdata restart_script && \
+cd profile && rm -rf *.xml *.ini configuration plugins && \
+cd $SAG_HOME
 
 echo "Removing Installer but keep install/products metadata ..."
 rm -fr install/repo install/logs install/jars install/bpms install/etc

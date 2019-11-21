@@ -1,29 +1,57 @@
+# Trigger build on 27.08.2019 16:00
+language: minimal
 sudo: required
-
 services:
-  - docker
-
+- docker
 env:
   global:
-    - TAG=10.2
-#    - LICENSES_URL=
+  - CC_TAG=10.4
+  - TAG=10.4
+  - FIXES=ALL
+  - REG=bpas
+  - REPO_PRODUCT_URL=https://sdc-hq.softwareag.com/dataservewebM104/repository/
+  - REPO_FIX_URL=https://sdc.softwareag.com/updates/prodRepo
+  - REPO_PRODUCT_NAME=products
+  - REPO_FIX_NAME=fixes
+  - secure: "n8ImA47eKB0Q4IdDHwKJi++gh1sfdoILVdwmAwZ/XkUjDY60kJjYsQmcsKfJr+t7LA7bSfzxQjwQ+207hRQ2wA9ujXPfZdKmFYg0NRDYs+ZGnrEmypogBb7h7PVGY4i3jwrlZott9cRmeNy9e5aEY0AUj87W7leSjiYlVTxUxdomO3DueDJfzexjrb7i3KlCb/h8BnQAY9G6FD7wffc48MLQmCDOg4mGVrHIZ36MqnsiFqkhhsckXsuKVIDuMMKCZdq2vYsZu+5FnLVUQ8cvnDAuA/FrtmMpLyU+j+bCYzvo5Wx5/4EZro/QJxtJO4vLOg7by8uilcUOLzX56cJUkQ5rD+nRQwgXOXNKgMb2xTkXNt8EGqQBtGNtPaM+1RvI80POq4oV2pd3knVnGifSdae09BrCfiCAONGvx/MLYiQEFeDdbJYBvWN02lLBAqS5lHoDqMh9efr4F6XbU7U1AVqQGl8wZ9fpiNwRbQAYbxBli9Jbfj+0T8muCoG+rc0/pIJOK6OdQIpd6mHnDh7+zFNwyHTfsiWGzD2GPT1VEfrxclcNq+xyPcX0UOkKZiNdRIweudxa6HogxYzJH2zEc4tCM3fW2+1Wdt156vsHnGeGwCbtPC28U+MXFSAzir+X+R/HcIGe2jpZbtYBEzvk80+bZT20EuHOzZApjQwzyDQ="
+  - secure: "PaVZZrKzjUasDqP52xjDa1+G0E6u05NtMOB+xWFgy1tGhXU7HvRFYM5ZIJOJDFzd8Sp8ZtS2cI+AWHR0VkuLZ5ZnOrEL5uyPPpGRaKIGQW+TzeXiXoaKvSg/Uds4jG5WOVDbDzo8oqWQEmaJ1bSZqleR2n/32AQ6ybnTZJpE/jXCJvJ2r5mR+k5mOEFZ1AblqklsqNs4pb2J/nDp0pPc1c1fNkpHKLsDMc8UmymzLamNfm8mgVJofRtF8Bvg/7p4OsgiGfFdGDoNqWV9uWdHYIDXQsW2lUkGOFwZXYQjVof4UYcl99FASDpnRQiG88Ejw2zHCeUEEJNC4NnEGSrgkWHIy+UfL6drBtqsYmJ4oTmIjvh/5+sWhngMA0Ap69gwdSWSoRl5EaZc/7ItZtC+W3JxQVzKJaZ+sUDajCPpMBhebZlbaKm1D8qY3bsKL1Y3123/bYi9L+ymuxMKU+VRqcyXfFs+BEkA9TcyrKclla3BYLIMz/20W/yg1wV1C3SoaeVl2nKaj3HaGzrbTHP3tqgrLoHFo9bsq0HloOXMdR5Qk2BQttFuYGL0uGcQtr+VT9F+lkb72QMU+vtRXUV8u/ahExZvgbX1Tr5ebG90HivzjXt4DpzfyqlUOqcbasBQeJ+UEz+bDumvO5kX9bQB2pyR8IfmqHCjdpWy35mrwp0="
+  - secure: "SO4hY4l4tdIuXawVptaMD7aaAaWiAuGbKCwsZDeM6Q5w8es61eg38mggLGc0KO2OM+i8/9rGzMBSgV5RxvWOsxbrSBnF9yK2bSjf/rFy8GBVypFQ1XVC65We0EHp/rm0BjhR+iZzEIbkS6ai3NnX79mjARPV/xiua6B/EF8s1ZwvpswXFQ2QKn1BPVqU2MT3h7jbdzOejaYvc2miY1Qw7XRsxe0Q1kFMUd9AgFQo7ag7TEh2newNu7ru0bIoYtXO7B3gSF+QGKfII1sTrTlTLYhuB3lutIQ8pmDTXFBh5JSUNuAtXEMpwmDKF0elnXDMd9jdbUmo26bzcH6ladtpYbGPHNUs6fybH7DaC3/k4TMxOYNsLggSESGyy7D+ZOJFizvAc4yYd9xDRC/emXb0dF/0kS5h+4Pjzt1HdNiejqxRaM/5f2TcvY0fkGC524rSkeL3KXszVPKExAxVK2ZuG0D2PTA3uHaIj1Hx2IDXB9gIcHE6jXJwnJ/GcvFrFxDwo9KfjOhwVkBMN1vIo/t2zy3jPdSo3UDqlLFQOb9CwIoR27f6bvgobZjV3cKR1AXRHneIfu1j6+lPQoDRMIGkkR1L8ij6pH9jROKehxokwH1eZg8r8vRNG+/mV8ieOJvJikJE0P5+6Pv9ulvxMaSZpYCTUKnIJb05h772DSMHh7w="
+  - secure: "oEccSrNWPDvMEIS0zFzsK3LvNJK5IxlofKdY22P9MFUXyuZhONEmsdCu9pcDgPEObxdqcIG9xisg/tDomSC0N23Tl3E95EgTmcISNtVX1j4yDckeVraKLUUoEgl74IpxZDOIJsaz1pfLwM8rKyH0oFVohPNyYDdVWVZNWWviUU+VaHZmbLhA8y8FZz2sJ9jhvC55Mw785vom01+bs0U7AQMYvJT2VBgysxbPpux7ieQurGhUBNUaWQ1FnExd94gOONQrQosboK4I8tZ3/toWtDEHnglbL1+gDfjRRrfU+m6MO184IW/UojsIS0FgpGZ8lWR5ennVQV/yNqWn5lY87tSs6pscwDh6Au+/6oK+XIETVjcPHWvQ3cpgZOwHEmWRJXQTPcKxeAoxAPMYqRmSD4Imm1oT0z/tR1p6XTdN767+3fAxxL6hZZEuVEp5XNhUQlYm0mRW6eoujrKLLgOX4EWF95nUR5LAUnfDw1xwgiAAeUdtNgbOKUyG4ip6ks1cT4hl29c4uAOkUz/D6FH2HUmkKmhZfajru+pE0FEkRIYzfGMeAc3Mwbg1bWyJl9yZVVmwcNrX3fBgeKMd4ZkvgC1qigyyEvV0RMnPS9W/7nDar6F7e1ynwo10GWuLF7VPZp/JRa83vHzrgB972SNhm+gfGp+MtunBZB2zd3iPU7g="
+  - secure: "M6qO+yozYHWSr0b7qgrYuSL5I2CPWHIS2LvoCUYDBXigahJ8EJouz7g/0N1wU7IngX1p9Ulmeiytr4JU/3gk78c9MsqGf1xxvjA3EQ5AwBKd3AEduzsJNMhew+xoNfhEol6RmMZ+IRAxej53F40GSh3QNIpUBZtwGrpmAtVJ1//m3iYpHSg/N9s2UC4ELK7RMJZcFQyGWemjcNRq5OHIFq30m7m7uhZ3Su5PvJ7+YKBLl7w5z7vQUc/nZuQNju5ABCnEbil6Um/w22DlvE6qh7ESGuH2Ltw1V4p+1iOj9JOg7ThKr9YlLMNM0M0oVJZ9oufmASKEJ2OvIPEVWowbnu1kVHbA077lJxZH8avXTKSdvO1FtIu/1nOtjbbt3Rc/3dgA0LC0iCPKIafhIE5Q2LhFARCMV3DREq277H1airFtC8tg2VtDAX16oNswdCHJYERUxWEGXQOtZ7sBwORgg6ibtnNMEZ/Mbm+503wT+QUD0A8rkXl4WhbxqH2rGAJSM6RUy2ROZotDfPRj+ld+S4R6wvvnBzIKcbuqM0Six8PgCRaAxnGoA57m9kC+vIQljHzPy4G/SaYIyqMEPuROYIGAm35ehw68UYqCOqTsJX3hqL7x6qA0xEERmWm3EYq0+sOVIPaR1qxyYJm9r65iJJ539rfB2yqg8z9NO9T+R9E="
+  - secure: "A5ZwiiK3FmJhmiQ8KFuD3ypOfu/hu02hJBUWRjW17ytf2M5ebBdKS5oMg1evHkJLDSvWY/L2v58BPwcwYKqjZ1fiJ1hJAvMGakx5salmH3A5DeVEJifzYPA5f8QLoAEizUQ72cAURaQj4vsNSdWduGQsZnYmfUnVPAubshhcCSrpNMnIMQzCb3UIok/2hWvAsJe0ILItC9JTMKIbQdZRMFU4aOmZw0lYHoPs9wyp7vduDj8ojeHB8nT8c0OKyfzJmF/ADqrbDws1YV0To7pb2mrmkRQzAK763zItpYhgwmuw1T5hdAP6Qnq+jklrgQyJY/yHtCyiUi793EBqH6CgRL43rw91p7ZhDqBbCCMOK8/jPGaialGil/Aq8aAKn4huK6VvvDzLwlom/ES3ZWvHI4llut7zjlqcwidE7g/GXV83LAqCtICz+lkAzrPAKG4NGWO5n9leQEbkEpdyawZJhiRi6Oa6JRiYxD1HKJUJjgOPXyNJ5EfvGvzG3kkT+FxqzEIhr/DhwMAoBOR4ojaq3MwcvGZuSzHJbEtqKIiDZzHJtHuEEnOuwftcLA5Pzm5+JEruvf/vcjF1QoYRzlqCLDFwOJMrrXrUn56DYKW4qbFlmzbkxa+9ePAbw+WQTbaPg87BH+L4f7bypPbIIE+wCeqDbiedwDkN9y9X7s69BL0="
+  - secure: "UjF3gILiEXcFJUtc1HPzpPAKBEOMgQgcYvrR7BkIUr6DT9zZ2C2exuRky2Qd54k9B6n+oXxkuoLIJMnqJt1YV9FXjxaGkJeqke3vkk1fx5eEH9111CH9qSDbDo+gWSVlf2Salffg7L/ngnj7hbOyQrmQTBlRy9Wl9iKra19VL2qXmJNLwkBvUJz2IuSkRlU98pWAglkt+RLI9ginws073uD8oGDiz9+atCqkyumglF/qP931n+B99wFjmgLGxm1NPiZ11XL/d3ougZHYw466f5sNtsewfUR2JLtBngErVEr7nlIjH0ohud2tuCfOzVByz1lAKAtw+++/FM7BdQZIHNcu+jbbQlJesuxghF3j2BMo29sFHcjPQlaeqHbNqfQPvL93zjRrVW9yEcDdSFAI/cbI2juCEldI03KZt+oL6qcDlVN3nG7t78i6/Szgd2am4X9NzEAWmBNrOVjQZ27+Cvy/P5h1aDN7LJlqthSAeCyurMzXKOfeJYcbVTK0xCwaZ9+bo8cruipF4sb6cNq5clhEgUG6Hb/fYaKgmfvOG+h8g74UZJx9gSSeGbYvZE3oCX/H9JhWeHGGtYZKwpL3a/PjGytcjUs5XC8XAwxyewJFg1DDGhmHENp5qFfQxr59PRGQQ25y1U/ej/ONCT0o6Q6ypKjwt4HVvI+2I487Zlw="
+  - secure: "psO96bradqpcmwsLhsyURb4TdKG4kEskQmzCqZgu27UKtIsOtpOxm2MsGkH/BW5XbNld8ZeH+SmTf5Udja6ZFh0Kv/wvG0ZXvbwr2/8HH5zHc1FlLfEMuIce0LJgD1XsQQbDnC9ofgkkfYvfmmoKHTyLzwyZsz/yosWUSbmdZMxKmM9hli+cwOmPLBnZXew133te12XgtxSLFNfZnwwrfWeM77ka46ZQy8vGzt1HRU7SiNJpcEEBSgUbnbFw4jllXzjTuT28z+lvfO17kC6hEOQ9G0w/Jvp40nYibI72lM3tJabIjcfjyaFtFRyQ41jIyVBjFRssDeROmd1uGA6YoVZRT5yg0weZciW5dCkGKD4pDDhoLx1mpLDqUyZS+vBZH7fecJ1fNbobAc8WNbiOisoJ2TaiXDgvJFDfYXxC7nVWqXSM0xtTa9GmVOBDuObxuEYC9LhJl4Odv9gOKXls/DwKqyLu4sbK54XPWfHeXb9Jd1bGrnAhSwHYTkrU/308+ty+GVICaUAqgMKBRGhqDvBNdI/w1eC7A9iBdO3FQalHL+TTb+DjLdtClCznuiJVmt8uf5FBwC+M7D50XyHcLZuYsDruz0ZawCE4zZoKWHJQt4Ly8/dvkShRFMOSzJNLKtrJ/U9kHLTkFLGYsN5tdL5nxc4JTG75IuKpHF/Vxbc="
+  - secure: "B3ADxcnpXjel29yY1Qi1NoBmarp/Xt2jATl6Ay3dcB/mgsFJjhf+qQvny8u/oIGb442ekNYeJai4dqRFQ9Dc8fCOny2G+8aPboqS0t6ExuxuWLM1BtRiF0V7JOw5g+SgDp1CATe1efmAvxCwyJzTWtPmbI7hLYmmswtFI2hjGF+AwR0E+1EvyddplV8Ckdc2c7Cim6c5ZLythjNb3EZ2o64kpgPyCGyIjp/RttfRSxTOuw9uzt1cE++5vfQFGf6QHMeJlU3pCvqPHKobG6BKK1wlLBk8Vi0POdBx0hmcjXpCqYfg3PdpEz51nda8/b/Q0DX4CJ24ISpdvERjQt7Y0IOC0HamICOJ+G4+XJ7UW1ixvnRm+wQEJv/VZ2v0Y2IzrbkpTgYw8ubxZ/3Y3RsoCINEcSiUFYuS/ss/pVN/JpSg+VN6FLsbeQqIqQl+bmb20LHc+rkpSjrkDt+qdH3qBRiHp8NOA4ZMhj4HzC96iKIin+cRHmbNfaTn0O8DYCEGTiqUAH4QVREvSPXKAYAoaUdha8jkiQe7PGDX4jvLJ3eCcmNRLa8npqUk7kABhHh+aO1lsAflcoO0tKtJreWNvvN0NvxqJ+HKUKvx9Fg9mKpC/B9mO88tb2LJMR5yndjFGfK8MLNgE2sKbcO15QshdcaEVyRFg3GcY9dMbvjfwRU="
+
+  # matrix:
+  # - IMAGE=universal-messaging
+  # - IMAGE=integration-server
   matrix:
-    - CC_TEMPLATE=sag-um-server
-    - CC_TEMPLATE=sag-um-server TAG=10.1
+  - T=sag-spm-boot-ssh
+  - T=sag-spm-boot-local
+  - T=sag-um-server
+  - T=sag-is-server
+  - T=sag-cc-layer-defs
+  - T=sag-apigateway-server
+  - T=sag-db-sqlserver
+  - T=sag-db-mysql
+  - T=sag-tc-server
 
-    - CC_TEMPLATE=sag-msc-server
-    - CC_TEMPLATE=sag-msc-server TAG=10.1
-    - CC_TEMPLATE=sag-msc-server TAG=9.12
-
+# stages:
+# - infra
+# - test
+# - deploy
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - cd templates/$CC_TEMPLATE
+  - if [ -f licenses/product_licenses.zip.enc ]; then openssl enc -d -aes-256-cbc -md sha256 -out licenses/product_licenses.zip -in licenses/product_licenses.zip.enc -d -k $ENCRYPTION_KEY && chmod 777 licenses/product_licenses.zip; fi
+  - ls -l licenses/
 
-#  - docker-compose up -d cc
-#  - docker-compose run --rm sagcc -h
-#  - docker-compose logs
 
-script: 
-  - echo "Testing $CC_TEMPLATE with release $TAG from `pwd`"
-#     - docker-compose run --rm provision
-#     - docker-compose logs
+script:
+- sudo sysctl -w vm.max_map_count=262144 
+- sudo chown -R 1724:1724 templates
+- ./provisionw sag-abe || travis_terminate 1 
+- ./provisionw $T || travis_terminate 2
+- ./generateAssetw $T || travis_terminate 3
+
+

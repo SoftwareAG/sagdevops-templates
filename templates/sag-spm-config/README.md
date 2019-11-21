@@ -44,7 +44,7 @@ All supported Windows and UNIX platforms.
 Apply custom configurations to Platform Managers, registered as `node1` and `node2`:
 
 ```bash
-sagcc exec templates composite apply sag-spm-config nodes=node1,node2 \
+sagcc exec templates composite apply sag-spm-config nodes=[node1,node2] \
     hello.world=spm \
     --sync-job --wait 360
 ```

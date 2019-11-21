@@ -17,106 +17,44 @@
 
 -->
 
-# Command Central builder repositories registration
+# Software AG Repositories for the Command Central Docker Builder
 
-Use this template to configure the following types of repositories for Command Central Builder:
+Use this template to add public Software AG product and fix repositories to use with the Command Central Docker builder.
 
-* Public master repositories hosted on Empower SDC
-* Private mirror repositories hosted on Platform Managers
-* Internal mirror repositories hosted on SAG AQU servers
+## Requirements
 
-## Requirements and limitations
+Create Empower credentials by running the sag-cc-creds template:
+
+```bash
+sagcc exec templates composite apply sag-cc-creds \
+  credentials.username=yourusername \
+  credentials.password=yourpassword \
+  credentials.key=EMPOWER \
+  --sync-job --wait 360
+```
+
+For more information, see [sag-cc-creds](https://github.com/SoftwareAG/sagdevops-templates/tree/master/templates/sag-cc-creds).
 
 ### Supported Software AG releases
 
-* Command Central 10.3 and higher
+* Command Central 10.1 and higher
 
 ### Supported platforms
 
 All supported Windows and UNIX platforms.
 
-## Configuring public master repositories hosted on Empower SDC
+## Running as a standalone composite template
 
-Configure Empower SDC credentials first:
-
-```bash
-sagcc exec templates composite apply sag-cc-creds \
-    credentials.username=you@company.com credentials.password=**** credentials.key=EMPOWER \
-    --sync-job
-```
-
-Disover available product repositories on Empower SDC:
-
-```bash
-sagcc list repository products discover properties="version,location"
-Version	Location
-9.8    	https://sdc.softwareag.com/dataservewebM98/repository/
-9.10   	https://sdc.softwareag.com/dataservewebM910/repository/
-10.0   	https://sdc.softwareag.com/dataservewebM100/repository/
-10.1   	https://sdc.softwareag.com/dataservewebM101/repository/
-9.9    	https://sdc.softwareag.com/dataservewebM99/repository/
-9.12   	https://sdc.softwareag.com/dataservewebM912/repository/
-10.2   	https://sdc.softwareag.com/dataservewebM102/repository/
-```
-
-Configure Empower SDC `products` and `fixes` repositories that point to the target release repository, for example, release 10.2:
+To add Software AG repositories to use with the Command Central Docker builder:
 
 ```bash
 sagcc exec templates composite apply sag-cc-builder-repos \
-    repo.product.url=http://sdc.softwareag.com/dataservewebM102/repository \
-    repo.product.credentials.key=EMPOWER \
-    fix.product.credentials.key=EMPOWER \
-    --sync-job
+  repo.product.url=https://sdc.softwareag.com/dataservewebM103/repository \
+  repo.product.credentials.key=EMPOWER \
+  repo.product.name=webM103 \
+  repo.fix.url=https://sdc.softwareag.com/updates/prodRepo \
+  repo.fix.credentials.key=EMPOWER \
+  repo.fix.name=fixRepo103 \
+  --sync-job --wait 360
 ```
 
-## Configuring private mirror repositories hosted on Platform Manager
-
-First configure credentials for the Platform Manager that will host mirror repositories:
-
-```bash
-sagcc exec templates composite apply sag-cc-creds \
-    credentials.username=Administrator credentials.password=**** credentials.key=MIRROR \
-    --sync-job
-```
-
-List the available mirror `product` and `fix` repositories that are managed through unstream Command Central listening at https://upstreamCC:8091/cce:
-
-```bash
-sagcc list repository products properties=type,version,location -s upstreamCC | grep MIRROR
-MIRROR	10.2   	https://MIRRORSPMHOST:8093/products-10.2/repository
-
-sagcc list repository fixes properties=type,version,location -s upstreamCC | grep MIRROR
-MIRROR	10.2   	http://MIRRORSPMHOST:8092/fix-fixes-10.2/repository
-```
-
-Configure `products` and `fixes` repositories that point to the mirror repositories from the above locations:
-
-```bash
-sagcc exec templates composite apply sag-cc-builder-repos \
-    repo.product.url=https://MIRRORSPMHOST:8093/products-10.2/repository \
-    repo.product.credentials.key=MIRROR \
-    repo.fix.url=http://MIRRORSPMHOST:8092/fix-fixes-10.2/repository \
-    repo.fix.credentials.key=MIRROR \
-    --sync-job
-```
-
-## Configuring internal mirror repositories hosted on SAG AQU server
-
-> IMPORTANT: You must have acesss to the Software AG network in order to access these repositories.
-
-Configure internal credentials first:
-
-```bash
-sagcc exec templates composite apply sag-cc-creds-dev --sync-job
-```
-
-Configure `products` and `fixes` repositories that point to the mirror repositories from the above locations:
-
-```bash
-sagcc exec templates composite apply sag-cc-builder-repos \
-    repo.product.url=http://aquarius-bg.eur.ad.sag/dataserveCC_PI_103oct2018/repository \
-    repo.product.credentials.key=REPO-PRODUCT \
-    repo.fix.url=http://aquarius-va.ame.ad.sag/updates/QARepo \
-    repo.fix.credentials.key=REPO-FIX \
-    --sync-job
-```

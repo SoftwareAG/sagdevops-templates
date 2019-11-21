@@ -35,7 +35,8 @@ RUN $CC_HOME/provision.sh $BASE_TEMPLATE && \
     $CC_HOME/provision.sh sag-is-cloudstreams && \
     $CC_HOME/profiles/CCE/data/templates/composite/$BASE_TEMPLATE/test.sh && \
     $CC_HOME/profiles/CCE/data/templates/composite/sag-is-cloudstreams/test.sh && \
-    $CC_HOME/cleanup.sh
+    $CC_HOME/cleanup.sh && \
+    rm -rf $SAG_HOME/profiles/CTP
 
 FROM $BASE_IMAGE
 

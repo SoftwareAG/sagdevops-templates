@@ -1,0 +1,53 @@
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#########################################################################################
+version: "3.2"
+
+volumes:
+  mysql_data: {}
+
+services:
+  # this is the sqlserver itself
+  mysql:
+    image: mysql:5.7.24
+    ports:
+      - 3306
+    volumes:
+      - ./mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=webm
+      - MYSQL_USER=webm
+      - MYSQL_PASSWORD=webm
+
+  # provisioner for webm db schemas using template.yaml
+  provision:
+    image: daerepository03.eur.ad.sag:4443/ccdevops/commandcentral-client:10.3
+    command: >
+      sagcc exec templates composite apply sag-db-mysql
+        repo.product=products repo.fix=fixes db.url="jdbc:mysql://mysql:3306/webm" db.name=webm
+         release=10.3 nodes=node db.host=mysql db.admin.user=root db.admin.password=root db.username=webm db.password=webm db.components=[] --wait-for-cc --wait 600 --sync-job
+    depends_on: 
+      - mysql
+
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

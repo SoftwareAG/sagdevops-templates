@@ -26,7 +26,7 @@ services:
       - 5555:5555
       - 8192:8092
     environment:
-      - CC_AUTO_REGISTER=1 # can be 0    
+      - CC_AUTO_REGISTER # 0 or 1 (if you wnat to use CC)
       - CC_PASSWORD
       - REPO_ASSET_URL=${IS_ASSET_REPO_URL}
 #      - REPO_ASSET_BRANCH=develop
@@ -43,7 +43,7 @@ services:
       - 8292:8092
     hostname: um01
     environment:    
-      - CC_AUTO_REGISTER=1 # can be 0
+      - CC_AUTO_REGISTER # 0 or 1 (if you wnat to use CC)
       - CC_PASSWORD
       - REPO_ASSET_URL=${UM_ASSET_REPO_URL}
 #      - REPO_ASSET_BRANCH=develop

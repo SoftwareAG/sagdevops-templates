@@ -1,0 +1,265 @@
+#######################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc., 
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#######################################################################################
+
+alias: sag-cc-all-layer-defs
+description: Software AG all base layer type definitions
+version: 0.1
+
+layers:
+  cce:
+    templates:
+      - layer-types
+
+templates:
+  layer-types:
+    products:
+      CCE:
+        default:
+          configuration:
+            OSGI-CCE-ENGINE:              
+              CCE-LAYER-TYPES:
+                CCE-LAYER-TYPES-INFRA-LOCAL:
+                  "@name": INFRA-LOCAL
+                  Description: Create installation on Command Central host
+                  Type: INFRASTRUCTURE
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-spm-boot-local
+                
+                CCE-LAYER-TYPES-INFRA-CONNECT:
+                  "@name": INFRA-CONNECT
+                  Description: Add and register existing installations
+                  Type: INFRASTRUCTURE
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-spm-connect
+
+                CCE-LAYER-TYPES-INFRA-REMOTE-UNIX:
+                  "@name": INFRA-REMOTE
+                  Description: Create installations on remote machines using SSH
+                  Type: INFRASTRUCTURE
+                  Scalable: 'true'
+                  Templates:
+                    Template:
+                      "@alias": sag-spm-boot-ssh
+
+                CCE-LAYER-TYPES-INFRA-REMOTE-WINDOWS:
+                  "@name": INFRA-REMOTE-WINDOWS
+                  Description: Create installations on remote Windows machines using WinRM
+                  Type: INFRASTRUCTURE
+                  Scalable: 'true'
+                  Templates:
+                    Template:
+                      "@alias": sag-spm-boot-winrm                                                
+                      
+                CCE-LAYER-TYPES-UM-SERVER:
+                  "@name": UM-SERVER
+                  Description: Create Universal Messaging standalone realm server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-um-server  
+
+                CCE-LAYER-TYPES-UM-CLUSTER:
+                  "@name": UM-CLUSTER
+                  Description: Create Universal Messaging cluster
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-um-cluster
+
+                CCE-LAYER-TYPES-MSC-SERVER:
+                  "@name": MSC-SERVER
+                  Description: Create Miscroservices Container instance
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-msc-server                    
+
+                CCE-LAYER-TYPES-IS-SERVER:
+                  "@name": IS-SERVER
+                  Description: Create core Integration Server instance
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-is-server                
+                         
+                CCE-LAYER-TYPES-IS-STATELESS-CLUSTER:
+                  "@name": IS-STATELESS-CLUSTER
+                  Description: Create Integration STATELESS cluster. Requires RDBMS
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                    Template:
+                      "@alias": sag-is-cluster         
+
+                CCE-LAYER-TYPES-IS-STATEFUL-CLUSTER:
+                   "@name": IS-STATEFUL-CLUSTER
+                   Description: Create Integration STATEFUL cluster Requires RDBMS and Terracotta layer
+                   Type: RUNTIME
+                   Scalable: 'true'
+                   Templates:
+                     Template:
+                       "@alias": sag-is-stateful-cluster          
+
+                CCE-LAYER-TYPES-TC-SERVER:
+                  "@name": TC-SERVER
+                  Description: Create Terracotta Big Memory standalone server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tc-server 
+
+                CCE-LAYER-TYPES-TC-CLUSTER:
+                  "@name": TC-CLUSTER
+                  Description: Create Terracotta Big Memory cluster
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tc-cluster  
+
+                CCE-LAYER-TYPES-TDB-SERVER:
+                  "@name": TDB-SERVER
+                  Description: Create Terracotta DB standalone server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-tdb-server 
+
+                CCE-LAYER-TYPES-APAMA-CORRELATOR:
+                  "@name": APAMA-CORRELATOR
+                  Description: Create Apama Correlator
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-apama-correlator 
+
+                CCE-LAYER-TYPES-EXX-BROKER:
+                  "@name": EXX-BROKER
+                  Description: Create EntireX Broker
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-exx-broker 
+
+                CCE-LAYER-TYPES-EXX-C-RPC-SERVER:
+                  "@name": EXX-C-RPC-SERVER
+                  Description: Create EntireX C RPC Server
+                  Type: RUNTIME
+                  Scalable: 'false'
+                  Templates:
+                      Template:
+                        "@alias": sag-exx-broker 
+
+                CCE-LAYER-TYPES-APIGATEWAY-SERVER:
+                  "@name": APIGATEWAY-SERVER
+                  Description: Create API Gateway server
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-apigateway-server 
+
+                CCE-LAYER-TYPES-APIGATEWAY-CLUSTER:
+                  "@name": APIGATEWAY-CLUSTER
+                  Description: Create API Gateway cluster
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-apigateway-cluster  
+                                                
+                CCE-LAYER-TYPES-INTERNALDATASTORE:
+                  "@name": INTERNALDATASTORE
+                  Description: Create Internal Data Store server or cluster
+                  Type: RUNTIME
+                  Scalable: 'true'
+                  Templates:
+                      Template:
+                        "@alias": sag-internaldatastore  
+                        
+                CCE-LAYER-TYPES-DB-ORACLE-103:
+                  '@name': DB-ORACLE-103
+                  Description: ORACLE database and sample product schemas for 10.3 and lower
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-oracle-103-and-lower   
+                        
+                CCE-LAYER-TYPES-DB-MYSQL-103:
+                  '@name': DB-MYSQL-103
+                  Description: MYSQL server database and sample product schemas for 10.3
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-mysql-103
+                      
+                CCE-LAYER-TYPES-DB-SQLSERVER-103:
+                  '@name': DB-SQLSERVER-103
+                  Description: SQLSERVER database and sample product schemas for 10.3 and lower
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-sqlserver-103-and-lower 
+                
+                CCE-LAYER-TYPES-DB-ORACLE: 
+                  '@name': DB-ORACLE
+                  Description: ORACLE database and components schemas for 10.5 release and higher
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-oracle   
+                        
+                CCE-LAYER-TYPES-DB-MYSQL:
+                  '@name': DB-MYSQL
+                  Description: MYSQL server database and components schemas for 10.5 release and higher
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-mysql 
+                      
+                CCE-LAYER-TYPES-DB-SQLSERVER:
+                  '@name': DB-SQLSERVER
+                  Description: SQLSERVER database and components schemas for 10.5 release and higher
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-sqlserver                                  
+
+provision:
+  default:
+    cce: local

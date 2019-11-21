@@ -24,7 +24,7 @@ environments:
   default:                      
     credentials.username: ${}    # REQUIRED, username
     credentials.password: ${}    # REQUIRED, password
-    credentials.key: ${}         # REQUIRED: credentials key alias
+    credentials.key:      ${}
 
 layers:
   cce:

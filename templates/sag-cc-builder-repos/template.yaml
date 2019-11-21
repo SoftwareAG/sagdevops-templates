@@ -17,16 +17,16 @@
 #
 ###############################################################################
 alias: sag-cc-builder-repos
-description: Register products and fixes repos for the builder
+description: Register products and fixes repos
 
 environments:
   default:
-    repo.product.url:             ${} # REQUIRED: e.g. http://sdc.softwareag.com/dataservewebM102/repository
-    repo.product.credentials.key: ${} # REQUIRED: e.g. EMPOWER
-    repo.product.name:            products
-    repo.fix.url:                 http://sdc.softwareag.com/updates/prodRepo # default is Empower
-    repo.fix.credentials.key:     ${repo.product.credentials.key} # by default is the same as for products
-    repo.fix.name:                fixes
+    repo.product.url:             ${}
+    repo.product.credentials.key: ${}
+    repo.product.name:            ${}
+    repo.fix.url:                 ${}
+    repo.fix.credentials.key:     ${}
+    repo.fix.name:                ${}
 
 repositories:
   product:                     

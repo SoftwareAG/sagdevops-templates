@@ -13,7 +13,7 @@
 #     distributed under the License is distributed on an "AS IS" BASIS,
 #     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #     See the License for the specific language governing permissions and
-#     limitations under the License.                                                            
+#     limitations under the License.
 #
 ###############################################################################
 
@@ -32,25 +32,25 @@ environments:
     # First digit of the release version being used
     release.major: 10
     # Correlator instance name
-    apama.instance.name: default  
+    apama.instance.name: default
     # Correlator instance port
-    apama.port: 15904                
+    apama.port: 15904
     # Apama license key
     apama.pamserver.license.key: "*_PAM*_${release.major}.*_*_${os.platform}"
     # Fixes to install. ALL by default
     apama.fixes: ALL
 
-templates:                                                                      
+templates:
   apama-correlator:
     description: |
       Install and patch Apama, then configure and start a correlator with an application running in it
     files:
       # Make an application available to the correlator instance that is going to run it. The zip should be attached to the
       # template at import time. 'HelloWorld.zip' is a dummy application, but you can create your own using 'engine_deploy'.
-      "Apama/command-central/instances/correlator/${apama.instance.name}/HelloWorld.zip": "HelloWorld.zip"      
+      "Apama/command-central/instances/correlator/${apama.instance.name}/HelloWorld.zip": "HelloWorld.zip"
     licenses:
       # Make the license key available to the correlator instance
-      "Apama/command-central/instances/correlator/${apama.instance.name}/ApamaCorrelatorLicense.xml": "${apama.pamserver.license.key}" 
+      "Apama/command-central/instances/correlator/${apama.instance.name}/ApamaCorrelatorLicense.xml": "${apama.pamserver.license.key}"
     # Install Apama fixes
     fixes: ${apama.fixes}
     products:
@@ -64,7 +64,7 @@ templates:
           # help SPM to match existing instance and skip creation operation and perform noop update
           runtimeComponentId: Apama-correlator-${instance.name}
 
-          configuration:                                                      
+          configuration:
             Apama-correlator-${instance.name}:
               APAMA-ARGS:
                 APAMA-ARGS: |
@@ -80,12 +80,12 @@ templates:
                   persistentDatastorePath: persistence_store.db
                   # Arbitrary extra command line arguments to the correlator
                   extraArgs: -j
-                  
+
               # Define arbitrary environment variables to launch the correlator with. There is not usually much need for this.
               APAMA-ENVVAR:
                 APAMA-ENVVAR: |
                   APAMA_DUMMY_VARIABLE=foobar
-              
+
               # Connects to another correlator with a supplied host, port and channel
               APAMA-ENGINE-CONNECT:
                 APAMA-ENGINE-CONNECT-localhost-15905:
@@ -112,7 +112,7 @@ templates:
       # Install Apama | Platform Manager Plug-in
       PAMspm:
 
-layers:                                                                         
+layers:
   runtime:
     # Product repository to install from
     productRepo: ${repo.product}

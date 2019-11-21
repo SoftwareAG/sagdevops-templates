@@ -1,0 +1,41 @@
+#!/bin/sh -e
+###############################################################################
+#  Copyright 2013 - 2019 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+
+TEMPLATE_ALIAS=$1
+DIRNAME=`dirname $0`
+
+CC_ENV=${CC_ENV:-dev}
+echo "Environment name: $CC_ENV"
+
+shift
+PARAMS=$*
+
+
+echo "generating asset from  $TEMPLATE_ALIAS "
+
+export COMPOSE_FILE=$DIRNAME/docker-compose.yml
+
+# docker-compose pull cc
+docker-compose up -d cc
+
+#debug env vars
+env
+# generate asset 
+docker-compose exec -T cc bash -c "TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST GIT_AUTHOR_EMAIL=bisser.paskalev@softwareag.com GIT_USER=$GIT_USER GIT_PUBLISH_KEY=$GIT_PUBLISH_KEY bash /opt/sagtools/scripts/generateAsset.sh $TEMPLATE_ALIAS" 

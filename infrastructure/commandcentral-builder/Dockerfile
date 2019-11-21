@@ -17,34 +17,23 @@
 #
 ###############################################################################
 
-ARG CC_SERVER_IMAGE
-ARG CC_NODE_IMAGE
+ARG BUILDER_IMAGE
+ARG NODE_IMAGE
 
-FROM $CC_NODE_IMAGE as node
-
-FROM $CC_SERVER_IMAGE as builder
-
-ARG LICENSES_URL
-ARG REPO_PRODUCT
-ARG REPO_FIX
-ARG REPO_HOST
-ARG REPO_PRODUCT_URL
-ARG REPO_FIX_URL
-ARG REPO_CREDS
-ARG REPO_USERNAME
-ARG REPO_PASSWORD
+FROM $NODE_IMAGE as node
+FROM $BUILDER_IMAGE as builder
 
 WORKDIR $CC_HOME
 
 USER 1724
 
 # add all templates
-ADD templates/ profiles/CCE/data/templates/composite/
+ADD --chown=1724:1724 templates/ profiles/CCE/data/templates/composite/
 # replace default scripts
-ADD scripts/*.sh ./
+# ADD --chown=1724:1724 scripts/*.sh ./
 
 # add licenses.zip, if any
-ADD licenses/*.zip ./licenses/
+ADD --chown=1724:1724 licenses/*.zip ./licenses/
 
 # Copy target node from the $NODE_IMAGE
 COPY --from=node --chown=1724:1724 /opt/softwareag/ /opt/softwareag/

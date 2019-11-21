@@ -26,7 +26,7 @@ requirement to have SSH access.
 
 ### Supported Software AG releases
 
-* Command Central 10.2 or higher
+* Command Central 10.3 or higher
 * Platform Manager 9.12 or higher
 
 ### System requirements for the target Windows machines
@@ -49,6 +49,8 @@ PS> Restart-Service winrm
 
 ### System requirements for the Command Central machine
 
+The machine where Command Central is installed should meet the following requirements:
+
 * Windows 7 of higher
 * PowerShell version 5.0 or higher
 * DotNet 4.5 or higher ( used for unzip )
@@ -64,6 +66,12 @@ Set-Item WSMan:\localhost\Client\TrustedHosts -Value '<targetHost1>,<targetHost2
 ```
 
 ## Running as a standalone Composite Template
+
+When importing the composite template to Command Central, you will have to attach the 'push-bootstrap.ps1' script file. Add the `template.yaml` and `push-bootstrap.ps1` files into a single template.zip file and import that file using the Command Central CLI with the following command:
+
+```bash
+sagcc exec templates composite import -i template.zip
+```
 
 Bootstrap remote Windows machines on host1 and host2 with version 10.2 of Platform Manager into the C:\SoftwareAG2
 installation directory on port 8292. The remote connection user account is the `sagadmin` account, which
@@ -84,7 +92,7 @@ Create a new stack with version "10.2" and alias "Dev02" and provision the Windo
 
 ```bash
 sagcc create stacks alias=Dev02 release=10.2
-sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDOWS nodes=host1,host2 \
+sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDOWS nodes=[host1,host2] \
   cc.installer=cc-def-10.2-fix1-w64.zip \
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
@@ -92,7 +100,7 @@ sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDO
   --sync-job --wait 600
 ```
 
-See [sag-cc-layer-defs](../sag-cc-layer-defs/template.yaml) for details about the `INFRA-REMOTE-WINDOWS` layer type definition.
+See [sag-cc-all-layer-defs](../sag-cc-all-layer-defs/template.yaml) for details about the `INFRA-REMOTE-WINDOWS` layer type definition.
 
 ## Using the template from the Command Central Stacks user interface
 
