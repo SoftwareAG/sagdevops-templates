@@ -1,0 +1,155 @@
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
+
+alias: sag-exx-broker-attr
+dslVersion: "1.2"
+description: Create and configure EntireX Broker
+version: 2.1
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
+
+environments:
+  default:
+  
+    runtimes.skip.start: EntireXBroker-ETB777   # Set this flag if you do not want the
+                                                # newly created instance started automatically
+                                                # comment it out if you wish autostart after
+                                                # creation
+
+    exx.broker.instance.name: ETB777                           # Broker ID
+    exx.broker.tcp.port: 9922                                  # TCP PORT
+    exx.broker.tcp.enable: true                                # TCP enabled
+    exx.broker.ssl.port: 9923                                  # SSL PORT
+    exx.broker.ssl.enable: false                               # SSL enabled
+    exx.broker.autostart: false                                # Autostart true/false
+    exx.broker.security: true                                  # Security true/false
+       
+    exx.broker.license.key: "EXX_LINSUSE_103"                  # license key, alias name of license key in
+                                                               # license repository
+                                                                  
+    exx.broker.fixes:
+      - ALL
+
+   
+
+       
+templates:
+    
+  sag-exx-broker-attr:                                                      # template for definition of broker
+    licenses:
+      "EntireX/config/license.xml": "${exx.broker.license.key}"        # license key
+    #fixes: ${exx.broker.fixes}                                         # fixes to install
+    products:
+      EntireXBroker:                    
+        ${exx.broker.instance.name}:
+          type: BROKER
+          runtimeComponentId: EntireXBroker-${exx.broker.instance.name}
+          autostart: ${exx.broker.autostart}   
+          tcp.port: ${exx.broker.tcp.port}
+          ssl.port: ${exx.broker.ssl.port}              
+          security: ${exx.broker.security}                
+
+
+          configuration:
+            EntireXBroker-${exx.broker.instance.name}:   
+              ATTRIBUTE-FILE:
+                ATTRIBUTE-FILE: |                           
+                  ***********************************************************************
+                  *                                                                     *
+                  *                    EntireX Broker Attibute File v10.3               *
+                  *                                                                     *
+                  ***********************************************************************
+                  
+                  DEFAULTS = BROKER
+                    BROKER-ID                 = ETB777
+                  * APPLICATION-MONITORING    = YES
+                    DYNAMIC-MEMORY-MANAGEMENT = YES
+                  * DYNAMIC-WORKER-MANAGEMENT = YES
+                    MAX-MEMORY                = UNLIM
+                  * PSTORE                    = COLD
+                  * PSTORE-TYPE               = CTREE
+                    SECURITY                  = NO
+                  * STORE                     = BROKER
+                    TRACE-LEVEL               = 0
+                    TRANSPORT                 = TCP
+                  
+                  * DEFAULTS = APPLICATION-MONITORING
+                  * COLLECTOR-BROKER-ID       = <appmondc-host>:<appmondc-port>
+                  
+                  * DEFAULTS = CTREE
+                  * MAXSIZE                   = 1G
+                  * PAGESIZE                  = 16K
+                  * PATH                      = "PSTORE"
+                  
+                  DEFAULTS = DIV
+                    DATASPACE-NAME = STORE01
+                    DATASPACE-PAGES = 524284
+                    DDNAME = STORE01
+                    STORE = ETBSTORE
+                    TRACE-LEVEL = 0
+                  
+                  * DEFAULTS = SECURITY
+                  * SECURITY-SYSTEM           = OS
+                  * SECURITY-LEVEL            = AUTHORIZATION
+                  * AUTHORIZATION-DEFAULT     = NO
+                  
+                  * DEFAULTS = SSL
+                  * CONNECTION-NONACT         = 1H
+                  * PORT                      = 22223
+                  * VERIFY-CLIENT             = NO
+                  * KEY-PASSWD-ENCRYPTED      = 448F9D8172826F61BACBD523E35E6E07F0D0E719117F74B0B623A0ADBE3295D5
+                  * KEY-FILE                  = ExxAppKey.pem
+                  * KEY-STORE                 = ExxAppCert.pem
+                  * TRUST-STORE               = ExxCACert.pem
+                  
+                  DEFAULTS = TCP
+                    PORT                      = 7777
+                    CONNECTION-NONACT         = 1H
+                  
+                  DEFAULTS = SERVICE
+                    CONV-NONACT               = 5M
+                    SERVER-NONACT             = 10M
+                  *
+                  * Example of a definition of an ACI Server
+                  * CLASS = <ACI Server Class>, SERVER = <ACI Server Name>, SERVICE = <ACI Service>
+                  * DEFERRED = NO, CONVERSION = SAGTCHA, APPMON = NO
+                  *
+                  * Example of a definition of a Server used for replication (Reptor)
+                  * CLASS = <Reptor Class>, SERVER = <Reptor Server Name>, SERVICE = <Reptor Service>
+                  * DEFERRED = YES, TRANSLATION = NO, APPMON = NO
+                  *
+                  * Generic definition for RPC Server (used if no specific service is defined prior)
+                    CLASS = *, SERVER = *, SERVICE = *, DEFERRED = NO, CONVERSION = SAGTRPC
+                    APPMON = NO
+                  
+                  
+                  ******************** END **********************************************
+              
+                                    
+                                    
+    
+layers:
+  runtime:
+    productRepo: ${repo.product}    # default repository to install products from
+    #fixRepo: ${repo.fix}            # default repository to install fixes from
+    templates:
+      - sag-exx-broker-attr         # template to apply
+
+provision:                          # PROVISION layers to nodes
+  default:                          # default environment type
+    runtime: ${nodes}
