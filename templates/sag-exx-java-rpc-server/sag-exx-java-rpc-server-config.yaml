@@ -1,0 +1,133 @@
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
+
+alias: sag-exx-java-rpc-server-config
+dslVersion: "1.2"
+description: Create and configure EntireX rpc server for Java
+version: 2.1
+changes:
+  - 1.0 First published version
+  - 2.0 Reworked version for version 10.3
+  - 2.1 Using dslVersion 1.2
+
+environments:
+  default:
+  
+    runtimes.skip.start: EntireXCore-RpcServerJava-MyJavaRpcServer   # Set this flag if you do not want the
+                                                                     # newly created instance started automatically
+                                                                     # comment it out if you wish autostart after
+                                                                     # creation
+
+    exx.server.name: MyJavaRpcServer                  # Instance name of the RPC Server
+    exx.server.install.service: false                 # Install as Windows service true/false
+    exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
+    exx.server.broker.host: localhost                 # Broker Host
+    exx.server.broker.port: 1971                      # Broker Port
+    exx.server.broker.user: exxuser                   # User ID for Broker when running with security
+    exx.server.broker.password: exxpasswd             # Password for Broker when running with security
+    exx.server.address: RPC/SRV1/CALLNAT              # Server Address
+    exx.server.adminport: 3096                        # Administration port for Command Central
+    exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
+    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false
+
+    # classpath when creating the instance
+    exx.server.classpath: /RDS/TESTSRV/testenv/exxv103/installed/EntireX/classes
+
+
+    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
+                                                      # license repository
+                                                                  
+    exx.server.fixes:
+      - ALL
+       
+
+        
+       
+templates:
+
+  java.server:
+    licenses:
+      "EntireX/config/license.xml": "${exx.server.license.key}"        # license key
+    #fixes: ${exx.server.fixes} 
+    products:
+      EntireXCore:                    
+        ${exx.server.name}:
+          type: RPCSERVERJAVA
+          runtimeComponentId: EntireXCore-RpcServerJava-${exx.server.name}
+          install.service: ${exx.server.install.service}
+          broker.transport: ${exx.server.broker.transport}
+          broker.host: ${exx.server.broker.host}
+          broker.port: ${exx.server.broker.port}
+          broker.user: ${exx.server.broker.user}
+          broker.password: ${exx.server.broker.password}
+          server.address: ${exx.server.address}
+          server.adminport: ${exx.server.adminport}
+          classpath: ${exx.server.classpath}
+
+          configuration:
+            EntireXCore-RpcServerJava-${exx.server.name}:
+              CONFIGURATION:
+                CONFIGURATION: |
+                  # EntireX RPC Server for Java - Configuration File 
+                  
+                  # Broker Connection
+                  entirex.server.brokerid=localhost:1971
+                  entirex.server.codepage=UTF8
+                  
+                  # Broker - Credentials
+                  entirex.server.userid=fred
+                  entirex.server.password=fredpwd
+                  entirex.server.password.e=
+                  entirex.server.security=auto
+                  
+                  # Server - RPC Server
+                  entirex.server.serveraddress=RPC/MYSRV/CALLJAVA
+                  entirex.server.monitorport=2012
+                  entirex.server.restartcycles=15
+                  
+                  # Server - Worker Scalability
+                  entirex.server.fixedservers=no
+                  entirex.server.minservers=1
+                  entirex.server.maxservers=10
+                  
+                  # Trace
+                  entirex.server.logfile=server.log
+                  entirex.trace=2
+                  
+                  # Timeouts
+                  entirex.server.waitattach=666S
+                  entirex.server.waitserver=333S
+                  entirex.timeout=22
+                  
+                  # User Exits
+                  entirex.server.customclass=
+                  
+                  # Classpath for server implementations (comma separated list of URLs)
+                  entirex.rpcserver.classpath=file:/opt/softwareag/EntireX/myClasses
+                  entirex.rpcserver.packagename.myexample=my.example.library     
+            
+
+layers:
+  runtime:
+    productRepo: ${repo.product}      # default repository to install products from
+    #fixRepo: ${repo.fix}              # default repository to install products from
+    templates:
+      - java.server                   # template to apply
+
+provision:                            # PROVISION layers to nodes
+  default:                            # default environment type
+    runtime: ${nodes}
