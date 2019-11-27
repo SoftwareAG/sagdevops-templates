@@ -53,7 +53,7 @@ For example, to remove the database scripts and database components for webMetho
 ```
 With:
 ```bash
-db.OBE.components=[]
+db.OBE.components: []
 ```
 >NOTE: The database action for creating schemas for Optimizie will not be executed when the database component list is empty.
 2. Remove the database script for Optimize by removing `OBEcdc` under `db.product.scripts:`
@@ -94,7 +94,8 @@ sagcc exec templates composite apply sag-db-oracle \
   db.host=mysql  db.admin.username=system db.admin.password=oracle \
   db.name=webm db.username=webm db.password=webm \
   db.YAI.components=[] \
-  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, \      PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, \             
+  PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
   --sync-job --wait 360
 ```
 
