@@ -90,6 +90,7 @@ To install Database Component Configurator 10.5 on the Command Central node with
 sagcc exec templates composite apply sag-db-mysql \
   db.version=latest repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
   db.host=mysql db.admin.username=root db.admin.password=root \
+  db.STR.components=[STR] \
   db.name=webm db.username=webm db.password=webm \
   --sync-job --wait 360
 ```
