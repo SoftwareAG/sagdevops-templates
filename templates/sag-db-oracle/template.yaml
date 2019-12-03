@@ -111,7 +111,6 @@ environments:
       - WOKcdc
       - TNScdc
       - MWScdc
-      - B2BCloudCdc
       - MATcdc
       - ODEcdc
       - PIEcdc
@@ -121,6 +120,7 @@ environments:
       - WPEcdc
       - WSTcdc
       - YAIcdc
+      #- B2BCloudCdc
     db.fixes:            ALL                # Database component configurator and scripts fixes to install   
           
 layers:
