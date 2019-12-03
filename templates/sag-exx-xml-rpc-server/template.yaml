@@ -1,50 +1,210 @@
-###############################################################################
-#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
-#
-#   SPDX-License-Identifier: Apache-2.0
-#
-#     Licensed under the Apache License, Version 2.0 (the "License");
-#     you may not use this file except in compliance with the License.
-#     You may obtain a copy of the License at
-#
-#        http://www.apache.org/licenses/LICENSE-2.0
-#
-#     Unless required by applicable law or agreed to in writing, software
-#     distributed under the License is distributed on an "AS IS" BASIS,
-#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#     See the License for the specific language governing permissions and
-#     limitations under the License.                                                            
-#
-###############################################################################
+#########################################################################
+#                                                                       #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
+# Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
+# and/or its affiliates and/or their licensors.                         #
+#                                                                       #
+# The name Software AG and all Software AG product names are either     #
+# trademarks or registered trademarks of Software AG and/or             #
+# Software AG USA Inc. and/or its subsidiaries and/or its affiliates    #
+# and/or their licensors. Other company and product names mentioned     #
+# herein may be trademarks of their respective owners.                  #
+#                                                                       #
+# Detailed information on trademarks and patents owned by Software AG   #
+# and/or its subsidiaries is located at http://softwareag.com/licenses. #
+#                                                                       #
+#########################################################################
 
 alias: sag-exx-xml-rpc-server
-description: Create and configure EntireX XML RPC Server
-version: 2.0
+dslVersion: "1.2"
+description: Create and configure EntireX rpc server for XML/SOAP
+version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
+  - 2.1 Tested with 10.5 and adapted Admin Port
+  - 2.2 Added runtimes.skip.start property
 
 environments:
   default:
-    # XML RPC Server
-    exx.core.license.key: "*_EXX_10.*_*_*"            # license key alias name                                                             
-    exx.core.fixes: []
+    exx.server.name: XmlRpcSrv                        # Instance name of the RPC Server
+    runtimes.skip.start: EntireXCore-RpcServerXml-XmlRpcSrv   # Set this flag if you do not want the
+                                                              # newly created instance started automatically
+                                                              # comment it out if you wish autostart after
+                                                              # creation
+                             
+    exx.server.install.service: false                 # Install as Windows service true/false
+    exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
+    exx.server.broker.host: localhost                 # Broker Host
+    exx.server.broker.port: 1971                      # Broker Port
+    exx.server.broker.user: exxuser                   # User ID for Broker when running with security
+    exx.server.broker.password: exxpasswd             # Password for Broker when running with security
+    exx.server.address: RPC/SRVXML/CALLXML            # Server Address
+    exx.server.adminport: 3095                        # Administration port for Command Central
+    exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
+    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false
+
+    # classpath when creating the instance
+    exx.server.classpath: /RDS/TESTSRV/testenv/exxv103/installed/EntireX/classes
+    exx.server.broker.ssl.truststore: ""              # File Name for Trust Store
+    exx.server.broker.ssl.serververify: false         # Verify Server true/false    
+    exx.server.broker.encoding: Cp1252                # Encoding used between RPC Server and Broker
+    exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
+    exx.server.worker.scalability: false              # Worker Scalability dynamic true/false
+    exx.server.fixnumber: 5                           # Fix number of workers
+    exx.server.minworkers: 2                          # Minimum number of workers
+    exx.server.maxworkers: 10                         # Maximum number of workers
+    exx.server.tracelevel: 1                          # Trace Level
+    exx.server.deployment: false                      # Deployment true/false
+    exx.server.http.proxy.host: ProxyHost             # Name of HTTP Proxy Host
+    exx.server.http.proxy.port: 8899                  # HTTP Proxy Port
+    exx.server.http.proxy.user: ProxyUser             # HTTP Proxy User
+    exx.server.http.proxy.password: pwd               # HTTP Proxy User password
+    exx.server.https.proxy.host: SProxyHost           # Name of HTTPS Proxy Host
+    exx.server.https.proxy.port: 9988                 # HTTPS Proxy Port
+    exx.server.https.proxy.user: SProxyUser           # HTTPS Proxy User
+    exx.server.https.proxy.password: Spwd             # HTTPS Proxy User password
+    # Location, i.e. path, for trust store
+    exx.server.trust.store.location: /opt/softwareag/EntireX/truststore
+    exx.server.nonproxy.host.pattern1: nonProxyHost1  # Non Proxy Host
+    exx.server.nonproxy.host.pattern2: nonProxyHost2  # Non Proxy Host
+    exx.server.xmm.filename: abc.xmm                  # XMM mapping file
+    exx.server.xmm.file: /opt/softwareag/exx/abc.xmm  # absoluite location including XMM mapping file
+    exx.server.xmm.filename2: qwerty.xmm              # XMM mapping file 2
+    exx.server.xmm.file2: /opt/map/qwerty.xmm         # absoluite location including XMM mapping file
+    exx.server.conncetion.url: http://service         # URL of Web Service to call
+    exx.server.connection.timeout: 60                 # HTTP(S) connection timeout in seconds
+    exx.server.soap.version: soap11                   # SOAP Version
+    exx.server.basic.authentication: disabled         # disabled/baFixed
+    exx.server.auth.user: fred                        # User for basic authentication
+    exx.server.auth.password: freds-pwd               # Password for basic authentication
+    # Authenticate with username token security disabled/passwordtext/passworddigest
+    exx.server.username.token: passworddigest              
+    # Absolute location including name of WSDL file
+    exx.server.wsdl.file: /opt/software/EntireX/config/yxz.wsdl
+    exx.server.wsdl.service: WsdlService              # WSDL Service Name
+    exx.server.wsdl.port: 7007                        # WSDL Port
+
+
+    
+    exx.server.license.key: "EXX_LINSUSE_103"         # license key, alias name of license key in
+                                                      # license repository
+                                                                  
+    exx.server.fixes:                                 # minimal recommended set of fixes to apply
+      - ALL
        
+
+     
 templates:
-  sag-exx-xml-rpc-server:                                               # template for definition of broker
+
+  xml.server:
     licenses:
-      "EntireX/config/license.xml": "${exx.core.license.key}"
-    fixes: ${exx.core.fixes}                                  # fixes to install
+      "EntireX/config/license.xml": "${exx.server.license.key}"        # license key
+    #fixes: ${exx.server.fixes} 
     products:
       EntireXCore:                    
+        create.server:
+          type: RPCSERVERXML
+          instance.name: ${exx.server.name}
+          install.service: ${exx.server.install.service}
+          broker.transport: ${exx.server.broker.transport}
+          broker.host: ${exx.server.broker.host}
+          broker.port: ${exx.server.broker.port}
+          broker.user: ${exx.server.broker.user}
+          broker.password: ${exx.server.broker.password}
+          server.address: ${exx.server.address}
+          server.adminport: ${exx.server.adminport}
+          deployment: ${exx.server.deployment}
+
+          configuration:
+            EntireXCore-RpcServerXml-${exx.server.name}:
+              BROKER:
+                BROKER:
+                  BrokerHost: ${exx.server.broker.host}
+                  BrokerPort: ${exx.server.broker.port}
+                  BrokerTransport: ${exx.server.broker.transport}
+                  BrokerUser: ${exx.server.broker.user}
+                  BrokerPassword: ${exx.server.broker.password}
+                  BrokerEncoding: ${exx.server.broker.encoding}
+                  BrokerSslTrustStore: ${exx.server.broker.ssl.truststore}
+                  BrokerSslVerifyServer: ${exx.server.broker.ssl.serververify}
+                      
+              SERVER:
+                SERVER:
+                  ServerAddress: ${exx.server.address}
+                  ServerAdminport: ${exx.server.adminport}
+                  ReconnectionAttempts: ${exx.server.reconnect.attempts}
+                  WorkerScalability: ${exx.server.worker.scalability}
+                  FixNumber: ${exx.server.fixnumber}
+                  MinWorkers: ${exx.server.minworkers}
+                  MaxWorkers: ${exx.server.maxworkers}
+                  
+              TRACE:
+                TRACE:
+                  TraceLevel: ${exx.server.tracelevel}
+    
+    
+                  
+              DEPLOYMENT:
+                DEPLOYMENT:
+                  Enabled: ${exx.server.deployment}
+                  
+              HTTPS:
+                HTTPS:
+                  HttpProxyHost: ${exx.server.http.proxy.host}
+                  HttpProxyPort: ${exx.server.http.proxy.port}
+                  HttpProxyUser: ${exx.server.http.proxy.user}
+                  HttpProxyPassword: ${exx.server.http.proxy.password}
+                  HttpsProxyHost: ${exx.server.https.proxy.host}
+                  HttpsProxyPort: ${exx.server.https.proxy.port}
+                  HttpsProxyUser: ${exx.server.https.proxy.user}
+                  HttpsProxyPassword: ${exx.server.https.proxy.password}
+                  TrustStoreLocation: ${exx.server.trust.store.location}
+                  HttpNonProxyHosts:
+                    - HostPattern: ${exx.server.nonproxy.host.pattern1}
+                    - HostPattern: ${exx.server.nonproxy.host.pattern2}
+                    
+              MAPPING:
+                XMM-1:
+                  ID: XMM-1
+                  XmmFilename: ${exx.server.xmm.filename}
+                  XmmFile: ${exx.server.xmm.file}
+                  SoapVersion: ${exx.server.soap.version}
+                  WsdlFile: ${exx.server.wsdl.file}
+                  WsdlService: ${exx.server.wsdl.service}
+                  WsdlPort: ${exx.server.wsdl.port}
+                  UsernameToken: ${exx.server.username.token}
+                  ConnectionUrl: ${exx.server.conncetion.url}
+                  TimeOut: ${exx.server.connection.timeout}
+                  BasicAuthentication: ${exx.server.basic.authentication}
+                  AuthUser: ${exx.server.auth.user}
+                  AuthPassword: ${exx.server.auth.password}
+                  
+
+                XMM-2:
+                  ID: XMM-2
+                  XmmFilename: ${exx.server.xmm.filename2}
+                  XmmFile: ${exx.server.xmm.file2}
+                  SoapVersion: ${exx.server.soap.version}
+                  WsdlFile: ${exx.server.wsdl.file}
+                  WsdlService: ${exx.server.wsdl.service}
+                  WsdlPort: ${exx.server.wsdl.port}
+                  UsernameToken: ${exx.server.username.token}
+                  ConnectionUrl: ${exx.server.conncetion.url}
+                  TimeOut: ${exx.server.connection.timeout}
+                  BasicAuthentication: ${exx.server.basic.authentication}
+                  AuthUser: ${exx.server.auth.user}
+                  AuthPassword: ${exx.server.auth.password}
+                  
+
 
 layers:
   runtime:
-    productRepo: ${repo.product}    # default repository to install products from
-    fixRepo: ${repo.fix}            # default repository to install fixes from
+    productRepo: ${repo.product}      # default repository to install products from
+    #fixRepo: ${repo.fix}              # default repository to install products from
     templates:
-      - sag-exx-xml-rpc-server     # template to apply
+      - xml.server                    # template to apply
 
-provision:                          # PROVISION layers to nodes
-  default:                          # default environment type
+provision:                            # PROVISION layers to nodes
+  default:                            # default environment type
     runtime: ${nodes}

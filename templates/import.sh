@@ -1,4 +1,4 @@
-#i/bin/bash
+#!/bin/bash
 
 if ! [ -x "$(command -v sagcc)" ]; then
   echo "Error: sagcc is not installed." >&2

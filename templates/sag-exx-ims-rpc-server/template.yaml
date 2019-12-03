@@ -1,6 +1,6 @@
 #########################################################################
 #                                                                       #
-# Copyright (C) 2018 Software AG, Darmstadt, Germany and/or             #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
 # Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
 # and/or its affiliates and/or their licensors.                         #
 #                                                                       #
@@ -16,16 +16,24 @@
 #########################################################################
 
 alias: sag-exx-ims-rpc-server
+dslVersion: "1.2"
 description: Create and configure EntireX rpc server for IMS
-version: 2.0
+version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
+  - 2.1 Tested with 10.5 and adapted Admin Port
+  - 2.2 Added runtimes.skip.start property
+  
 
 environments:
   default:
-
     exx.server.name: ImsRpcSrv                        # Instance name of the RPC Server
+    runtimes.skip.start: EntireXCore-RpcServerImsConnect-ImsRpcSrv   # Set this flag if you do not want the
+                                                                     # newly created instance started automatically
+                                                                     # comment it out if you wish autostart after
+                                                                     # creation
+
     exx.server.install.service: false                 # Install as Windows service true/false
     exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
     exx.server.broker.host: localhost                 # Broker Host
@@ -35,7 +43,7 @@ environments:
     exx.server.broker.ssl.truststore: ''              # File Name for Trust Store
     exx.server.broker.ssl.serververify: false         # Verify Server true/false 
     exx.server.broker.encoding: Cp1252                # Encoding used between RPC Server and Broker
-    exx.server.address: RPC/SRVIMS2/CALLNAT           # Server Address
+    exx.server.address: RPC/SRVIMS2/CALLNAT            # Server Address
     exx.server.adminport: 4712                        # Administration port 
     exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
     exx.server.worker.scalability: true               # Worker Scalability dynamic true/false
@@ -75,9 +83,9 @@ templates:
     #fixes: ${exx.server.fixes} 
     products:
       EntireXCore:                    
-        ${exx.server.name}:
+        create.server:
           type: RPCSERVERIMSCONNECT
-          runtimeComponentId: EntireXCore-RpcServerImsConnect-${exx.server.name}
+          instance.name: ${exx.server.name}
           install.service: ${exx.server.install.service}
           broker.transport: ${exx.server.broker.transport}
           broker.host: ${exx.server.broker.host}

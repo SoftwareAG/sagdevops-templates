@@ -24,6 +24,10 @@ Please see [Default Templates Library wiki](https://github.com/SoftwareAG/sagdev
 ______________________
 These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
 ______________________
+For more information you can Ask a Question in the [TECHcommunity Forums](http://techcommunity.softwareag.com/home/-/product/name/command-central).
+
+You can find additional information in the [Software AG TECHcommunity](http://tech.forums.softwareag.com/techjforum/forums/list.page?product=command-central).
+______________________
 
 Contact us at [TECHcommunity](mailto:technologycommunity@softwareag.com?subject=Github/SoftwareAG) if you have any questions.
 ______________________
@@ -50,17 +54,17 @@ The following table lists all stable micro templates for creating database compo
 
 Template alias | Description
 -------------------------|--------------------------------
-[sag-db-oracle](templates/sag-db-oracle) | Creates a user, database, and webMethods database schemas on an Oracle database server. Use with Command Central 10.3 and lower.
-[sag-db-oracle-104-sample](templates/sag-db-oracle-104-sample) | Creates a user, database, and webMethods database schemas on an Oracle database server. Use with Command Central 10.4.
-[sag-db-sqlserver](templates/sag-db-sqlserver) | Creates a user, database, and webMethods database schemas on a SQL Server database server. Use with Command Central 10.3 and lower.
-[sag-db-sqlserver-104-sample](templates/sag-db-sqlserver-104-sample) | Creates a user, database, and webMethods database schemas on a SQL Server database server. Use with Command Central 10.4.
+[sag-db-oracle-103-and-lower](templates/sag-db-oracle-103-and-lower) | Creates a user, database, and webMethods database schemas on an Oracle database server. Use with Command Central 10.3 and lower.
+[sag-db-oracle](templates/sag-db-oracle) | Creates a user, database, and webMethods database schemas on an Oracle database server. Use with Command Central 10.5 and higher.
+[sag-db-sqlserver-103-and-lower](templates/sag-db-sqlserver-103-and-lower) | Creates a user, database, and webMethods database schemas on a SQL Server database server. Use with Command Central 10.3 and lower.
+[sag-db-sqlserver](templates/sag-db-sqlserver) | Creates a user, database, and webMethods database schemas on a SQL Server database server. Use with Command Central 10.5 and higher.
 
 The following table lists micro templates that are still in the testing phase.
 
 Template alias | Description
 -------------------|--------------------------
-[sag-db-mysql](templates/sag-db-mysql) | Creates a user, database, and webMethods database schemas on a MySQL Server. Use with Command Central 10.3 and lower.
-[sag-db-mysql-104-sample](templates/sag-db-mysql-104-sample) | Creates a user, database, and webMethods database schemas on a MySQL Server. Use with Command Central 10.4.
+[sag-db-mysql-103](templates/sag-db-mysql-103) | Creates a user, database, and webMethods database schemas on a MySQL Server. Use with Command Central 10.3.
+[sag-db-mysql](templates/sag-db-mysql) | Creates a user, database, and webMethods database schemas on a MySQL Server. Use with Command Central 10.5 and higher.
 
 ### Micro Templates for provisioning Software AG products
 

@@ -21,24 +21,42 @@
 
 With this template you can create user, database, and webMethods database schemas on Oracle. By default, the template installs the Database Component Configurator and the database scripts for all products, and it creates database schemas for all database components.
 
-You can remove one or more product database scripts from the template if you do not require to install them. If you remove a database script from the product list, you should also set the components for this database script to empty list. The following table maps the database scripts  to their product and database components: 
+If you do not require to install database schemas for all products, remove the database scripts and the respective database components for the unrequired products. The following table maps the products to their database scripts, database component lists, and database actions for creating schemas:
 
-Database Script  |  Product | Database Component Property ID
---------------------|----------|---------------------------------------
-OBEcdc              | Optimize |                         db.OBE.components
-WOKcdc              | BusinessRules |                    db.WOK.components
-TNScdc              | TradingNetworks |                  db.TNS.components
-MWScdc              | MyWebmethodsServer |               db.MWS.components
-B2BcloudCdc         | B2B Cloud |                        db.B2Bcloud.components
-MATcdc              | Active Transfer |                  db.MAT.components
-ODEcdc              | One Data |                         db.ODE.components
-PIEcdc              | Integration Server and MSC |       db.PIE.components
-PIEEmbeddedCdc      | Integration Server |               -
-PIEMobileCdc        | Integration Server Mobile Support |db.PIEMobile.components
-WMNcdc              | Monitor |                          db.WMN.components
-WPEcdc              | Process Engine |                   db.WPE.components
-WSTcdc              | Cloud Streams |                    db.WST.components
-YAIcdc              | API Gateway |                      db.YAI.components
+Product | Database Script | Database Component List | Database Action for Creating Schemas
+--------------------|----------|---------------------|------------------
+webMethods Optimize  |OBEcdc  |  db.OBE.components | schemas.OBE
+webMethods Business Rules | WOKcdc|  db.WOK.components | schemas.WOK
+webMethods Trading Networks | TNScdc  |  db.TNS.components | schemas.TNS
+My webMethods Server | MWScdc| db.MWS.components | schemas.MWS
+webMethods B2B Cloud  |  B2BcloudCdc| db.B2Bcloud.components | schemas.B2Bcloud
+webMethods Active Transfer | MATcdc | db.MAT.components | schemas.MAT
+webMethods OneData |  ODEcdc | db.ODE.components | schemas.ODE
+webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.PIE
+Integration Server | PIEEmbeddedCdc | Not available (N/A) | N/A
+Integration Server and Mobile Support | PIEMobileCdc | db.PIEMobile.components | schemas.PIEMobile
+webMethods Monitor | WMNcdc | db.WMN.components | schemas.WMN
+webMethods Process Engine | WPEcdc| db.WPE.components | schemas.WPE
+webMethods CloudStreams Server | WSTcdc| db.WST.components | schemas.WST
+webMethods API Gateway | YAIcdc| db.YAI.components | schemas.YAI
+
+For example, to remove the database scripts and database components for webMethods Optimize:
+1. Replace the database component list for Optimize with an empty list by replacing the following lines from the template:
+```bash
+ db.OBE.components: 
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+```
+With:
+```bash
+db.OBE.components: []
+```
+>NOTE: The database action for creating schemas for Optimizie will not be executed when the database component list is empty.
+2. Remove the database script for Optimize by removing `OBEcdc` under `db.product.scripts:`
 
 ## Requirements
 
@@ -76,34 +94,34 @@ sagcc exec templates composite apply sag-db-oracle \
   db.host=mysql  db.admin.username=system db.admin.password=oracle \
   db.name=webm db.username=webm db.password=webm \
   db.YAI.components=[] \
-  db.product.scripts=[DatabaseComponentConfigurator, OBEcdc, WOKcdc, TNScdc, MWScdc, B2BCloudCdc, MATcdc, ODEcdc, PIEcdc, PIEEmbeddedCdc, PIEMobileCdc, WMNcdc, WPEcdc, WSTcdc] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, \             
+  PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
   --sync-job --wait 360
 ```
 
 ## Using for local development and testing on Docker platforms
 
-Launch the Command Central container from the root folder of this project:
+1. Launch the Command Central container from the root folder of the following project:
 
 ```bash
 docker-compose up -d cc
 ```
 
-Launch the [Oracle Database Express Edition 11g Release 2](https://hub.docker.com/r/wnameless/oracle-xe-11g/) container:
+2. Launch the [Oracle Database Express Edition 11g Release 2](https://hub.docker.com/r/wnameless/oracle-xe-11g/) container:
 
 ```bash
 docker-compose -f templates/sag-db-oracle/docker-compose.yml up -d oracle
 ```
 
-Provision the `sag-db-oracle` template to create a user, storage, and database components:
+3. Provision `sag-db-oracle` template to create a user, storage, and database components:
 
 ```bash
 CC_ENV=oracle ./provisionw sag-db-oracle
 ```
 
-If the test is successful, the test ouptut contains `TEST SUCCESSFUL`.
-```
+If the test is successful, the test output contains `TEST SUCCESSFUL`.
 
-You can now use this database for creating instances of webMethods products (Integration Server, My webMethods Server) with the following database connection properties:
+You can now use this database for creating instances of webMethods products (for example, Integration Server and My webMethods Server) with the following database connection properties:
 
 ```bash
 db.url=jdbc:wm:oracle://oracle:1521;SID=XE
@@ -112,7 +130,7 @@ db.password=webm
 db.type=oracle
 ```
 
-The properties are preset in `environments/oracle/env.properties` file and you can use them by poiting to the environment name. For example:
+The properties are pre-set in `environments/oracle/env.properties` file and you can use them by pointing to the environment name, for example:
 
 ```bash
 CC_ENV=oracle ./provisionw sag-optimize-analysis

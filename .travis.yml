@@ -5,11 +5,11 @@ services:
 - docker
 env:
   global:
-  - CC_TAG=10.4
-  - TAG=10.4
+  - CC_TAG=10.5
+  - TAG=10.5
   - FIXES=ALL
   - REG=bpas
-  - REPO_PRODUCT_URL=https://sdc-hq.softwareag.com/dataservewebM104/repository/
+  - REPO_PRODUCT_URL=https://sdc-hq.softwareag.com/dataservewebM105/repository/
   - REPO_FIX_URL=https://sdc.softwareag.com/updates/prodRepo
   - REPO_PRODUCT_NAME=products
   - REPO_FIX_NAME=fixes

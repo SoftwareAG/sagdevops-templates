@@ -21,18 +21,34 @@
 
 With this template you can create user, database, and webMethods database schemas on a MySQL Server. By default, the template installs the Database Component Configurator and the database scripts for all products, and it creates database schemas for all database components.
 
-You can remove one or more product database scripts from the template if you do not require to install them. If you remove a database script from the product list, you should also set the components for this database script to empty list. The following table maps the database scripts  to their product and database components: 
+If you do not require to install database schemas for all products, remove the database scripts and the respective database components for the unrequired products. The following table maps the products to their database scripts, database component lists, and database actions for creating schemas:
 
-Database Script  |  Product | Database Component Property ID
---------------------|----------|---------------------------------------
-OBEcdc              | Optimize |                         db.OBE.components
-WOKcdc              | BusinessRules |                    db.WOK.components
-TNScdc              | TradingNetworks |                  db.TNS.components
-MWScdc              | MyWebmethodsServer |               db.MWS.components
-PIEcdc              | Integration Server and MSC |       db.PIE.components
-PIEEmbeddedCdc      | Integration Server |               -
-WPEcdc              | Process Engine |                   db.WPE.components
+Product | Database Script | Database Component List | Database Action for Creating Schemas
+--------------------|----------|---------------------|------------------
+webMethods Optimize  | OBEcdc  |  db.OBE.components | schemas.OBE
+webMethods Business Rules | WOKcdc|  db.WOK.components | schemas.WOK
+webMethods Trading Networks | TNScdc  |  db.TNS.components | schemas.TNS
+My webMethods Server | MWScdc| db.MWS.components | schemas.MWS
+webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.PIE
+webMethods Process Engine | WPEcdc| db.WPE.components | schemas.WPE
 
+For example, to remove the database scripts and database components for webMethods Optimize:
+1. Replace the database component list for Optimize with an empty list by replacing the following lines from the template:
+```bash
+ db.OBE.components: 
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+```
+With:
+```bash
+db.OBE.components: []
+```
+>NOTE: The database action for creating schemas for Optimizie will not be executed when the database component list is empty.
+2. Remove the database script for Optimize by removing `OBEcdc` under `db.product.scripts:`
 
 ## Requirements
 
@@ -79,7 +95,7 @@ sagcc exec templates composite apply sag-db-mysql \
   db.host=mysql db.admin.username=root db.admin.password=root \
   db.name=webm db.username=webm db.password=webm \
   db.MWS.components=[] db.STR.components=[STR]\
-  db.product.scripts=[DatabaseComponentConfigurator, OBEcdc, WOKcdc, TNScdc, PIEcdc, PIEEmbeddedCdc, PIEMobileCdc, WPEcdc] \
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,PIEcdc,WPEcdc] \
   --sync-job --wait 360
 ```
 
@@ -99,7 +115,7 @@ docker-compose -f templates/sag-db-mysql/docker-compose.yml up -d mysql
 ```bash
 CC_ENV=mysql ./provisionw sag-db-mysql
 ```
-If the test is successful, the test ouptut contains `TEST SUCCESSFUL`.
+If the test is successful, the test output contains `TEST SUCCESSFUL`.
 
 You can use the installed database for creating instances of webMethods products (for example, Integration Server and My webMethods Server) with the following database connection properties:
 

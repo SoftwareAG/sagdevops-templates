@@ -1,6 +1,6 @@
 #########################################################################
 #                                                                       #
-# Copyright (C) 2018 Software AG, Darmstadt, Germany and/or             #
+# Copyright (C) 2018 - 2019 Software AG, Darmstadt, Germany and/or      #
 # Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries        #
 # and/or its affiliates and/or their licensors.                         #
 #                                                                       #
@@ -15,18 +15,24 @@
 #                                                                       #
 #########################################################################
 
-
 alias: sag-exx-net-rpc-server
+dslVersion: "1.2"
 description: Create and configure EntireX rpc server for .NET
-version: 2.0
+version: 2.1
 changes:
   - 1.0 First published version
   - 2.0 Reworked version for version 10.3
+  - 2.1 Tested with 10.5 and adapted Admin Port
+  - 2.2 Added runtimes.skip.start property
 
 environments:
   default:
-
     exx.server.name: NetRpcSrv                        # Instance name of the RPC Server
+    runtimes.skip.start: EntireXCore-RpcServerNet-NetRpcSrv   # Set this flag if you do not want the
+                                                              # newly created instance started automatically
+                                                              # comment it out if you wish autostart after
+                                                              # creation
+                                                              
     exx.server.install.service: false                 # Install as Windows service true/false
     exx.server.broker.transport: TCP                  # Connection type to Broker TCP/SSL
     exx.server.broker.host: localhost                 # Broker Host
@@ -34,7 +40,7 @@ environments:
     exx.server.broker.user: exxuser                   # User ID for Broker when running with security
     exx.server.broker.password: exxpasswd             # Password for Broker when running with security
     exx.server.address: RPC/SRVNET/CALLNET            # Server Address
-    exx.server.adminport: 3097                        # Administration port for Command Central
+    exx.server.adminport: 3094                        # Administration port for Command Central
     exx.server.reconnect.attempts: 3                  # Number of recconect tries to Broker
     exx.server.worker.scalability: false              # Worker Scalability dynamic true/false
 
@@ -73,9 +79,9 @@ templates:
     #fixes: ${exx.server.fixes} 
     products:
       EntireXCore:                    
-        ${exx.server.name}:
+        create.server:
           type: RPCSERVERNET
-          runtimeComponentId: EntireXCore-RpcServerNet-${exx.server.name} 
+          instance.name: ${exx.server.name} 
           install.service: ${exx.server.install.service}
           broker.transport: ${exx.server.broker.transport}
           broker.host: ${exx.server.broker.host}
