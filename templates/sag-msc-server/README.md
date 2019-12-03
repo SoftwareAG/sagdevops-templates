@@ -29,7 +29,7 @@ None.
 
 * Command Central 10.3 and higher
 * Microservices Runtime 10.1 to 10.3
->NOTE: This template is not supported for Microservices Runtime version 10.4.
+>NOTE: This template is not supported for Microservices Runtime version 10.5 and higher.
 
 ### Supported platforms
 
