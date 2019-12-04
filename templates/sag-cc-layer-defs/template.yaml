@@ -144,7 +144,17 @@ templates:
                   Scalable: 'false'
                   Templates:
                     Template:
-                      '@alias': sag-db-sqlserver                                  
+                      '@alias': sag-db-sqlserver  
+                
+                CCE-LAYER-TYPES-DB-SQLSERVER-IS-SCHEMAS:
+                  '@name': DB-SQLSERVER-IS-SCHEMAS
+                  Description: SQLSERVER database and IS components schemas for 10.5 release and higher
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-sqlserver-is-schemas                                  
+                                                      
 
 provision:
   default:
