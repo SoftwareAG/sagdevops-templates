@@ -58,7 +58,7 @@ echo "Testing '$TEMPLATE_ALIAS' ..."
 echo ""
 
 # test
-if docker-compose exec -T cc bash -c "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if [ -f test.sh ]; then ./test.sh ; else echo 'WARNING: No test.sh found!'; fi" ; then
+if docker-compose exec -T cc bash -c "cd /opt/sagtools/profiles/CCE/data/templates/composite/$TEMPLATE_ALIAS; if [ -f test.sh ]; then . ./test.sh ; else echo 'WARNING: No test.sh found!'; fi" ; then
     echo ""
     echo "===================================================================="
     echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose.yml port cc 8091`"
