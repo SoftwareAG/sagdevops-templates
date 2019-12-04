@@ -37,8 +37,11 @@ $CC_HOME/profiles/CCE/bin/startup.sh
 
 echo "Running init.sh ..."
 if ! $CC_HOME/init.sh ; then
-    echo "ERROR: Initialization failed."
-    exit 1
+    echo "ERROR: Initialization failed - retrying."
+        if ! $CC_HOME/init.sh ; then
+	    echo "ERROR: Initialization failed"
+	    exit 1
+	fi
 fi
 
 
