@@ -1,0 +1,73 @@
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#########################################################################################
+
+alias: sag-db-sqlserver-is-schemas
+description: SQLServer database Integration Server product schemas for release 10.5 and higher 
+
+environments:
+  default:                 
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          latest             # latest or exact version 10.5
+    db.port:             1433               # Default port
+    db.admin.username:   ${}                # Admin username for db and user creation
+    db.admin.password:   ${}                # REQUIRED: sa password for webm db and user creation
+
+    db.url:              "jdbc:wm:sqlserver://${db.host}:${db.port};databaseName=${db.name}"
+    db.name:             webm               # webM database name
+    db.username:         ${}                # webM database username
+    db.password:         ${}                # webM database password
+
+    db.fixes:            ALL                # Database component configurator and scripts fixes to install         
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   dbc
+    databases:
+      storage:
+        components:  [STR]
+        version:     latest
+        db.type:     sqlserver
+        db.url:      "${db.url}"
+        db.admin.username: "${db.admin.username}"
+        db.admin.password: "${db.admin.password}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.PIE:
+        products:    [IS]
+        version:     ${db.version}
+        db.type:     sqlserver
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+templates:
+  dbc:
+    products:
+      DatabaseComponentConfigurator: 
+      PIEcdc:
+      PIEEmbeddedCdc: 
+    fixes:    ${db.fixes}
+provision:
+  default:
+    db: ${nodes}

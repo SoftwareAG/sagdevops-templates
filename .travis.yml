@@ -26,7 +26,7 @@ env:
   # matrix:
   # - IMAGE=universal-messaging
   # - IMAGE=integration-server
-  matrix:
+  matrix: 
   - T=sag-spm-boot-ssh
   - T=sag-spm-boot-local
   - T=sag-um-server
@@ -36,6 +36,8 @@ env:
   - T=sag-db-sqlserver
   - T=sag-db-mysql
   - T=sag-tc-server
+  - T=sag-db-sqlserver-is-schemas
+  
 
 # stages:
 # - infra
