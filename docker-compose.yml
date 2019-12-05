@@ -45,6 +45,14 @@ services:
       # - ./scripts/provision.sh:/opt/sagtools/provision.sh:ro
   dev1:
     image: ${REG}/commandcentral-node:${TAG}
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
     ports:
       - 8092
       - 8093
@@ -52,6 +60,14 @@ services:
       - ./scripts/:/opt/sagtools/scripts/:ro
   dev2:
     image: ${REG}/commandcentral-node:${TAG}
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD    
     ports:
       - 8092
       - 8093
@@ -61,6 +77,14 @@ services:
       - dev1
   dev3:
     image: ${REG}/commandcentral-node:${TAG}
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
     ports:
       - 8092
       - 8093
@@ -70,6 +94,14 @@ services:
       - dev2      
   dev4:
     image: ${REG}/commandcentral-node:${TAG}
+    environment: 
+      - REPO_PRODUCT_URL
+      - REPO_FIX_URL
+      - LICENSES_URL
+      - REPO_PRODUCT_NAME
+      - REPO_FIX_NAME
+      - REPO_USERNAME
+      - REPO_PASSWORD
     ports:
       - 8092
       - 8093
