@@ -18,18 +18,35 @@
 #
 ###############################################################################
 
-TEMPLATE_ALIAS=$1
+## usage:
+## note template-name-list is a comma separated list of templates to be applied. The last one from the list will be tested
+##
+# provisionw <template-name-list> [--number-of-nodes <number of nodes>] [< additional params>]
+
+TEMPLATE_ALIAS_LIST=$1
 DIRNAME=`dirname $0`
 
 CC_ENV=${CC_ENV:-dev}
 echo "Environment name: $CC_ENV"
 
 shift
+
+if [ "$1" = "--number-of-nodes" ]
+then
+        NUMBER_OF_NODES="$2"
+        shift 2
+else
+        NUMBER_OF_NODES=0
+fi
+
+
+
+
 PARAMS=$*
 
 PARAMS="$PARAMS -i /src/environments/$CC_ENV/env.properties"
 
-echo "Apply template $TEMPLATE_ALIAS with $PARAMS"
+echo "Apply templates in order $TEMPLATE_ALIAS_LIST with $PARAMS"
 
 export COMPOSE_FILE=$DIRNAME/docker-compose.yml
 
@@ -44,10 +61,19 @@ echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
 
-# start second node if necessary
-. tests/scripts/provision_additional_nodes.sh
-# apply template
-docker-compose exec -T cc bash -c "$ENV_PREFIX /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
+for TEMPLATE_ALIAS in `echo $TEMPLATE_ALIAS_LIST | tr "," " "`
+do
+
+    # start additional nodes if necessary
+    . tests/scripts/provision_additional_nodes.sh $TEMPLATE_ALIAS $NUMBER_OF_NODES
+    # apply template
+    echo ""
+    echo "===================================================================="
+    echo "Applying template $TEMPLATE_ALIAS"
+    echo "===================================================================="
+    echo ""
+    docker-compose exec -T cc bash -c "$ENV_PREFIX /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
+done
 
 echo ""
 echo "===================================================================="
