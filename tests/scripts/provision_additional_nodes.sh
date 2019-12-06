@@ -18,6 +18,8 @@
 #
 ###############################################################################
 
+TEMPLATE_ALIAS=$1
+NUMBER_OF_NODES=${2:-0}
 case $TEMPLATE_ALIAS in
     sag-spm-boot-ssh)
       echo "Provisioning additional host with  ssh server"
@@ -62,7 +64,21 @@ case $TEMPLATE_ALIAS in
        export PARAMS="db.admin.username=system db.admin.password=oracle db.host=oracle db.username=webm db.password=webm $PARAMS "
       ;;
      *)
-      echo "The template does not need additional host"
+        if [ $NUMBER_OF_NODES -ne 0]
+            then
+                echo "provisioning $NUMBER_OF_NODES additional SPM nodes"
+                docker-compose up -d dev$NUMBER_OF_NODES
+                NODES="["
+                for i in `seq 1 $NUMBER_OF_NODES`
+                do 
+                    NODES="${NODES}dev$i,"
+                done
+                NODES=${NODES: : -1}"]"
+                #export PARAMS="nodes=$NODES"
+                export ENV_PREFIX="NODES=$NODES "
+        fi
+      echo "The template does not need additional DB host"
 esac
+
 echo "PARAMS=$PARAMS"
 echo "ENV_PREVIX=$ENV_PREFIX"
