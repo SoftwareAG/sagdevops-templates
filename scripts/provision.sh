@@ -196,7 +196,7 @@ echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
 echo "$CC_WAIT seconds timeout"
 echo "=================================="
 
-tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log &
+tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log $SAG_HOME/Terracotta/server/wrapper/logs/wrapper-tsa.log $SAG_HOME/Terracotta/server/wrapper/logs/terracotta-server.log&
 tailpid=$!
 
 if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -c 10 -e DONE --wait-for-cc 300 --retry 1; then
