@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #*******************************************************************************
 #  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
@@ -17,17 +17,22 @@
 #     limitations under the License.                                                            
 #
 #*******************************************************************************
+echo "$SAG_HOME/IntegrationServer/bin/startup.sh"
+$SAG_HOME/IntegrationServer/bin/startup.sh
+# wait until IS server.log comes up
+while [  ! -f $SAG_HOME/IntegrationServer/logs/server.log ]; do
+     sleep 5
+done
 
-# if managed image
-if [ -d $SAG_HOME/profiles/SPM ] ; then
-    # point to local SPM
-    export CC_SERVER=http://localhost:8092/spm
+echo "IS process successfully started. Waiting for HTTP stack ..."
+until curl -u Administrator:manage -s http://`hostname`:5555/ 
+do 
+    sleep 5
+    tail $SAG_HOME/IntegrationServer/logs/server.log
+done
 
-    echo "Verifying managed container $CC_SERVER ..."
-    sagcc get inventory products -e MSC --wait-for-cc
-fi
+# this is our main container process
 
-echo "Verifying product runtime ..."
-curl -u Administrator:manage -s http://`hostname`:5555/
+echo "Integration Server is ONLINE at http://`hostname`:5555/"
 
-echo "DONE testing"
+tail -f $SAG_HOME/IntegrationServer/logs/server.log

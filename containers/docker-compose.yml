@@ -92,14 +92,16 @@ services:
   microservices-runtime:
     image: ${REG:-softwareag}/microservices-runtime:$TAG # target image
     build:
-      context: integration-server/
+      context: microservices-runtime/
       args:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
-        - __is_fixes=$FIXES             # [] or ALL, from the env
+        - TEMPLATE=sag-msc-server
+        - __msc_fixes=$FIXES                  # [] or ALL, from the env
+        - __msc_products=${PRODUCTS:-[MSC]}   # [MSC] or [MSC,someLayerProduct] 
     ports:
       - 5555                            # container specific ports
-    hostname: microservices-runtime
+    hostname: integration-server
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
 
@@ -111,6 +113,7 @@ services:
         - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.3}
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
         - __is_fixes=$FIXES             # [] or ALL, from the env
+        - __is_products=$PRODUCTS       # 
         - TEMPLATE=sag-is-server
     ports:
       - 5555                            # container specific ports

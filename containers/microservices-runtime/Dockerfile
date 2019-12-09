@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright � 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -16,31 +16,32 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-alias: sag-msc-server
-description: Microservices container instance
-dslVersion: "1.2"
 
-options:  
-  forceRestartWhenDone: false  
-  startupLayers: false
+ARG BUILDER_IMAGE
+ARG BASE_IMAGE
 
-environments:
-  default:
-    msc.license.key: "*_MSC_10.*_*_*"    # license key
-    msc.fixes: []
-    msc.products:  [MSC]
-layers:
-  runtime:
-    productRepo: ${repo.product}
-    fixRepo:     ${repo.fix}
-    templates:
-      - msc-server
-templates:
-  msc-server:
-    licenses:
-      "IntegrationServer/config/licenseKey.xml": "${msc.license.key}" 
-    fixes: ${msc.fixes}
-    products: ${msc.products}       
-provision:
-  default:
-    runtime: ${nodes}
+FROM $BUILDER_IMAGE as builder
+
+# can be sag-msc-server or a custom one
+ARG TEMPLATE=sag-msc-server
+ARG __msc_fixes=[]
+# can be only MSC or MSC and layer product, ex [MSC,WmSAP] 
+ARG __msc_products=[MSC]
+
+# provision and unit test
+RUN $CC_HOME/provision.sh $TEMPLATE && \
+    $CC_HOME/cleanup.sh
+
+FROM $BASE_IMAGE
+
+EXPOSE 5555 9999 8094 8092 8093
+
+# copy everything from the builder stage $SAG_HOME
+COPY --from=builder --chown=1724:1724 $SAG_HOME/ $SAG_HOME/
+
+# custom entry point
+ADD entrypoint.sh $SAG_HOME/
+ENTRYPOINT $SAG_HOME/entrypoint.sh
+
+# Current working directory for all commands. This is where the MSC installation is copied to within the image.
+WORKDIR $SAG_HOME

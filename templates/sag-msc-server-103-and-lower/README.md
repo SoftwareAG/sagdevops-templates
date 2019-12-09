@@ -27,8 +27,9 @@ None.
 
 ### Supported Software AG releases
 
-* Command Central 10.5 and higher
-* Microservices Runtime 10.5 and higher
+* Command Central 10.3 and higher
+* Microservices Runtime 10.1 to 10.3
+>NOTE: This template is not supported for Microservices Runtime version 10.5 and higher.
 
 ### Supported platforms
 
@@ -36,35 +37,39 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.5 or higher environments
+* Provisioning of new 10.1 or higher environments
 * Installing latest fixes and support patches
 * Configuration of:
   * License
-
+  * JVM memory
+  * Primary, diagnostics and JMX ports
 
 ## Provisioning of new server instance
 
 For information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-To provision a `default` instance of Microservices Runtime 10.5 with all latest fixes, using license key alias `MSC_LIC`
-on a managed installation node alias `dev1`:
+To provision a `default` instance of Microservices Runtime 10.1 with all latest fixes, using license key alias `MSC_LIC`,
+listening on default ports 5555, 9999 and 8094 (jmx), with 512mb of memory on a managed installation node alias `dev1`:
 
 ```bash
-sagcc exec templates composite apply sag-msc-server nodes=dev1 \
-  repo.product=webMethods-10.5 \
+sagcc exec templates composite apply sag-msc-server-103-and-lower nodes=dev1 \
+  is.memory.max=512 \
+  repo.product=webMethods-10.1 \
   repo.fix=Empower \
-  msc.license.key=MSC_LIC \
+  is.msc.license.key=MSC_LIC \
   --sync-job --wait 360
-  
-To provision a `default` instance of Microservices Runtime 10.5 + layer product WmSAP with all latest fixes, using license key alias `MSC_LIC`
-on a managed installation node alias `dev1`:
-
-```bash
-sagcc exec templates composite apply sag-msc-server nodes=dev1 \
-  repo.product=webMethods-10.5 \
-  repo.fix=Empower \
-  msc.products=[MSC,WmSAP] \
-  msc.license.key=MSC_LIC \
-  --sync-job --wait 360
-  
 ```
+## Creating a new stack with using Web UI
+
+For information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
+
+* Open Stacks UI
+* Click `(+)` to add a new stack
+* Add a new Infrastructure layer
+* Add a new Runtime layer
+  * Select `MSC-SERVER-103-and-lower` layer definition
+  * Select product and fix repositories
+  * Select a single node on which to provision Integration Server
+  * Review and adjust the optional parameters as required
+  * Finish the wizard
+* Wait until the provision jobs completes. Use the Jobs view to monitor the job progress.

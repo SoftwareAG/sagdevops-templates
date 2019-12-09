@@ -53,10 +53,10 @@ All supported Windows and UNIX platforms.
 
 ### Provisioning Application Platform on Microservices Runtime
 
-1. Provision an instance of Microservices Runtime on a managed node with alias `dev1` using the sag-msc-server template:
+1. Provision an instance of Microservices Runtime on a managed node with alias `dev1` using the sag-msc-server-103-and-lower template:
 
 	```bash
-	sagcc exec templates composite apply sag-msc-server nodes=dev1 \
+	sagcc exec templates composite apply sag-msc-server-103-and-lower nodes=dev1 \
   	repo.product=products-10.1 \
   	repo.fix=fixes-10.1 \
   	--sync-job --wait 360
@@ -69,6 +69,7 @@ All supported Windows and UNIX platforms.
 	sagcc exec templates composite apply sag-is-applatform nodes=dev1 \
 	 repo.product=products-10.1 \
 	 repo.fix=fixes-10.1 \
+	 is.instance.type=MSC \
 	 --sync-job --wait 360
 	```
 

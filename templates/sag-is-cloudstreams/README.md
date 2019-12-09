@@ -53,16 +53,16 @@ All supported Windows and UNIX platforms.
 
 ### Provisioning CloudStreams on Microservices Runtime
 
-1. Provision an instance of Microservices Runtime on managed node with alias `dev1` using the sag-msc-server template:
+1. Provision an instance of Microservices Runtime on managed node with alias `dev1` using the sag-msc-server-and-lower template:
 
 ```bash
-sagcc exec templates composite apply sag-msc-server nodes=dev1 \
+sagcc exec templates composite apply sag-msc-server-and-lower nodes=dev1 \
   repo.product=products-10.1 \
   repo.fix=fixes-10.1 \
   --sync-job --wait 360
 ```
 
-See [sag-msc-server](../sag-msc-server/) for details.
+See [sag-msc-server-and-lower](../sag-msc-server-and-lower/) for details.
 
 2. Provision CloudStreams on top of the above Microservices Runtime instance:
 
@@ -71,6 +71,7 @@ See [sag-msc-server](../sag-msc-server/) for details.
 sagcc exec templates composite apply sag-is-cloudstreams nodes=dev1 \
   repo.product=products-10.1 \
   repo.fix=fixes-10.1 \
+  is.instance.type=MSC \
   --sync-job --wait 360
 ```
 
