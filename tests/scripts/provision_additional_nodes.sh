@@ -18,9 +18,9 @@
 #
 ###############################################################################
 
-TEMPLATE_ALIAS=$1
+TEMPLATE_ALIAS_LOCAL=$1
 NUMBER_OF_NODES=${2:-0}
-case $TEMPLATE_ALIAS in
+case $TEMPLATE_ALIAS_LOCAL in
     sag-spm-boot-ssh)
       echo "Provisioning additional host with  ssh server"
       docker-compose build node-sshd
@@ -77,7 +77,7 @@ case $TEMPLATE_ALIAS in
                 #export PARAMS="nodes=$NODES"
                 export ENV_PREFIX="NODES=$NODES "
         fi
-      echo "The template does not need additional DB host"
+      echo "The template $TEMPLATE_ALIAS_LOCAL does not need additional DB host"
 esac
 
 echo "PARAMS=$PARAMS"
