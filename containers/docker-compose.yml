@@ -101,7 +101,7 @@ services:
         - __msc_products=${PRODUCTS:-[MSC]}   # [MSC] or [MSC,someLayerProduct] 
     ports:
       - 5555                            # container specific ports
-    hostname: integration-server
+    hostname: microservices-runtime
     environment:
       - CC_AUTO_REGISTER               # No auto register as we don't have a server
 
