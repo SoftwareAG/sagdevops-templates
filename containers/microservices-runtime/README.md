@@ -25,7 +25,7 @@ Use this template to build a Microservices Runtime container image.
 
 ### Supported Software AG releases
 
-* Universal Messaging 10.5 or higher
+* Microservices Runtime 10.5 or higher
 * Command Central 10.5 or higher
 
 ### Supported platforms
