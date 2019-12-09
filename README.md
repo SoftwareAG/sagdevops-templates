@@ -98,6 +98,7 @@ Template alias | Provisions
 [sag-is-mft](templates/sag-is-mft) | ActiveTransfer Server / ActiveTransfer Gateway on Integration Server
 [sag-is-server](templates/sag-is-server) | webMethods Integration Server instance
 [sag-msc-server](templates/sag-msc-server) | webMethods Microservices Runtime
+[sag-msc-server-103-and-lower](templates/sag-msc-server-103-and-lower) | webMethods Microservices Runtime for version 10.3 and lower
 [sag-mws-applatform](templates/sag-mws-applatform) | Application Platform on My webMethods Server
 [sag-mws-infradcui](templates/sag-mws-infradcui) | Infrastructure Data Collector web user interface on My webMethods Server
 [sag-mws-mftui](templates/sag-mws-mftui) | ActiveTransfer web user interface
@@ -151,6 +152,7 @@ Docker image | Description
 [entirex-broker](containers/entirex-broker) | Entire X Broker
 [entirex-java-rpc-server](containers/entirex-java-rpc-server) | Entire Java RPC server
 [entirex-xml-rpc-server](containers/entirex-xml-rpc-server) | Entire XML RPC server
-[integration-server](containers/integration-server) | webMethods Microservices runtime and Integration Server
+[integration-server](containers/integration-server) | webMethods Integration Server
 [terracotta-server](containers/terracotta-server) | Terracotta BigMemory server
 [universal-messaging](containers/universal-messaging) | Universal Messaging server
+[microservices-runtime](containers/microservices-runtime) | webMethods Microservices runtime

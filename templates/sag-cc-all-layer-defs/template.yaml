@@ -89,14 +89,14 @@ templates:
                       Template:
                         "@alias": sag-um-cluster
 
-                CCE-LAYER-TYPES-MSC-SERVER:
-                  "@name": MSC-SERVER
-                  Description: Create Miscroservices Container instance
+                CCE-LAYER-TYPES-MSC-SERVER-103:
+                  "@name": MSC-SERVER-103
+                  Description: Create Miscroservices Container instance 10.3 and lower
                   Type: RUNTIME
                   Scalable: 'true'
                   Templates:
                       Template:
-                        "@alias": sag-msc-server                    
+                        "@alias": sag-msc-server-103-and-lower                    
 
                 CCE-LAYER-TYPES-IS-SERVER:
                   "@name": IS-SERVER

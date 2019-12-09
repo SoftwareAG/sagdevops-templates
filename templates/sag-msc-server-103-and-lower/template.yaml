@@ -1,0 +1,64 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+alias: sag-msc-server-103-and-lower
+description: Microservices container instance
+
+environments:
+  default:
+    is.msc.license.key: "*_MSC_10.*_*_*"    # license key
+    is.instance.name:   default             # Instance name
+    is.primary.port:    5555                # Primary port number
+    is.diagnostic.port: 9999                # Dialgnostic port number
+    is.jmx.port:        8094                # JMX port number
+    is.memory.init:     64                  # Initial memory size
+    is.memory.max:      256                 # Maximum memory size
+    is.install.service: false
+    is.fixes:                               # Minimally recommended set of fixes 
+      - wMFix.integrationServer.Core        # Integration Server Core fix
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - msc-server
+
+templates:
+  msc-server:
+    licenses:
+      "IntegrationServer/config/licenseKey.xml": "${is.msc.license.key}" 
+    fixes: ${is.fixes}
+    products:
+      MSC:
+        ${is.instance.name}: 
+          primary.port:    ${is.primary.port}
+          diagnostic.port: ${is.diagnostic.port}
+          jmx.port:        ${is.jmx.port}
+          license.file:    IntegrationServer/config/licenseKey.xml
+          install.service: ${is.install.service}
+          configuration:
+            OSGI-IS_${instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${is.memory.init}
+                  MaxSize:  ${is.memory.max}
+            
+provision:
+  default:
+    runtime: ${nodes}

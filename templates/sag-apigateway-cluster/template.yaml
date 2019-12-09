@@ -5,7 +5,7 @@ environments:
   default:
     release.major:                     10                                                   
     os.platform:                       lnxamd64   
-    is.instance.type:                  MSC                                                               # IS instance type: MSC or integrationServer
+    is.instance.type:                  integrationServer           # IS instance type: MSC (for 10.3 and lower version) or integrationServer
     agw.key.license:                   "*_YAIAA_10.*_*_*"      
     tsa.key.license:                   "*Terracotta.key"
     agw.tsa.url:                       "dev1:9010"
