@@ -60,10 +60,11 @@ echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose
 echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
-
+env
 for TEMPLATE_ALIAS in `echo $TEMPLATE_ALIAS_LIST | tr "," " "`
 do
-
+    echo "incycle"
+    env
     # start additional nodes if necessary
     . tests/scripts/provision_additional_nodes.sh $TEMPLATE_ALIAS $NUMBER_OF_NODES
     # apply template
