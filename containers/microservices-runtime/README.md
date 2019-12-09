@@ -43,7 +43,7 @@ cd sagdevops-template/containers
 CC_TAG=10.5 TAG=10.5 docker-compose build microservices-runtime
 ```
 
-Build the container image with Microservices Runtime and a layer product (ex: WmSAP):
+Build the container image with Microservices Runtime and a layered product (for example, WmSAP):
 
 ```bash
 cd sagdevops-template/containers
