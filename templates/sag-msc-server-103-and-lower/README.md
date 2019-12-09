@@ -29,7 +29,6 @@ None.
 
 * Command Central 10.3 and higher
 * Microservices Runtime 10.1 to 10.3
->NOTE: This template is not supported for Microservices Runtime version 10.5 and higher.
 
 ### Supported platforms
 
@@ -37,7 +36,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.1 or higher environments
+* Provisioning of new 10.1 or 10.3 environments
 * Installing latest fixes and support patches
 * Configuration of:
   * License
@@ -59,7 +58,7 @@ sagcc exec templates composite apply sag-msc-server-103-and-lower nodes=dev1 \
   is.msc.license.key=MSC_LIC \
   --sync-job --wait 360
 ```
-## Creating a new stack with using Web UI
+## Creating a new stack using the web user interface
 
 For information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
 
