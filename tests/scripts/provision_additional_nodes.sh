@@ -20,9 +20,7 @@
 
 TEMPLATE_ALIAS_LOCAL=$1
 NUMBER_OF_NODES=${2:-0}
-echo local $TEMPLATE_ALIAS_LOCAL
-echo $1
-echo local2 $*
+echo providing $NUMBER_OF_NODES additional SPM nodes and additional DB nodes for template $ TEMPLATE_ALIAS_LOCAL
 case $TEMPLATE_ALIAS_LOCAL in
     sag-spm-boot-ssh)
       echo "Provisioning additional host with  ssh server"
