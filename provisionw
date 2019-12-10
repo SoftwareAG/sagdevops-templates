@@ -68,7 +68,7 @@ do
     echo "incycle"
     echo $TEMPLATE_ALIAS $NUMBER_OF_NODES
     # start additional nodes if necessary
-    . tests/scripts/provision_additional_nodes.sh $TEMPLATE_ALIAS $NUMBER_OF_NODES
+    tests/scripts/provision_additional_nodes.sh $TEMPLATE_ALIAS $NUMBER_OF_NODES
     # apply template
     echo ""
     echo "===================================================================="
