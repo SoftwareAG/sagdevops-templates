@@ -1,6 +1,6 @@
-#!/bin/sh -e
+#!/bin/bash 
 ###############################################################################
-#  Copyright � 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright  2013 - 2019 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -22,6 +22,7 @@
 ## note template-name-list is a comma separated list of templates to be applied. The last one from the list will be tested
 ##
 # provisionw <template-name-list> [--number-of-nodes <number of nodes>] [< additional params>]
+set -e
 
 TEMPLATE_ALIAS_LIST=$1
 DIRNAME=`dirname $0`
