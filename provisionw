@@ -61,13 +61,8 @@ echo "Command Central Web UI: https://`docker-compose -f $DIRNAME/docker-compose
 echo "NOTE: it takes up to a minute to become available"
 echo "===================================================================="
 echo ""
-echo iterating on $TEMPLATE_ALIAS_LIST
-echo prased templates:
-echo $TEMPLATE_ALIAS_LIST | tr "," " "
 for TEMPLATE_ALIAS in `echo $TEMPLATE_ALIAS_LIST | tr "," " "`
 do
-    echo "incycle"
-    echo $TEMPLATE_ALIAS $NUMBER_OF_NODES
     # start additional nodes if necessary
     . tests/scripts/provision_additional_nodes.sh $TEMPLATE_ALIAS $NUMBER_OF_NODES
     # apply template
@@ -76,7 +71,7 @@ do
     echo "Applying template $TEMPLATE_ALIAS"
     echo "===================================================================="
     echo ""
-#    docker-compose exec -T cc bash -c "$ENV_PREFIX /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
+    docker-compose exec -T cc bash -c "$ENV_PREFIX /opt/sagtools/scripts/provision.sh $TEMPLATE_ALIAS $PARAMS" 
 done
 
 exit 0
