@@ -20,7 +20,7 @@
 
 TEMPLATE_ALIAS_LOCAL=$1
 NUMBER_OF_NODES=${2:-0}
-echo providing $NUMBER_OF_NODES additional SPM nodes and additional DB nodes for template $ TEMPLATE_ALIAS_LOCAL
+echo providing $NUMBER_OF_NODES additional SPM nodes and additional DB nodes for template $TEMPLATE_ALIAS_LOCAL
 case $TEMPLATE_ALIAS_LOCAL in
     sag-spm-boot-ssh)
       echo "Provisioning additional host with  ssh server"
@@ -65,7 +65,7 @@ case $TEMPLATE_ALIAS_LOCAL in
        export PARAMS="db.admin.username=system db.admin.password=oracle db.host=oracle db.username=webm db.password=webm $PARAMS "
       ;;
      *)
-        if [ $NUMBER_OF_NODES -ne 0]
+        if [ "$NUMBER_OF_NODES" -ne 0]
             then
                 echo "provisioning $NUMBER_OF_NODES additional SPM nodes"
                 docker-compose up -d dev$NUMBER_OF_NODES
