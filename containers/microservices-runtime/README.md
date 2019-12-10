@@ -57,10 +57,10 @@ CC_TAG=10.5 TAG=10.5 docker-compose up microservices-runtime
 docker-compose port microservices-runtime 5555
 ```
 
-Open Microservices Runtime in the browser using the address printed above:
+Open Microservices Runtime in the browser using the port printed above:
 
 ```bash
-open http://localhost:PORT
+http://localhost:PORT
 ```
 
 Login as `Administrator/manage`
