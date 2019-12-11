@@ -54,6 +54,7 @@ script:
 - sudo chown -R 1724:1724 templates
 #- ./provisionw sag-abe || travis_terminate 1 
 - ./provisionw $T --number-of-nodes ${N:-0} || travis_terminate 2
-- ./generateAssetw ${T##*,} || travis_terminate 3
+- docker-compose ps
+#- ./generateAssetw ${T##*,} || travis_terminate 3
 
 
