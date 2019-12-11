@@ -51,7 +51,8 @@ echo "Apply templates in order $TEMPLATE_ALIAS_LIST with $PARAMS"
 
 export COMPOSE_FILE=$DIRNAME/docker-compose.yml
 
-
+echo list containers
+docker-compose ps
 # docker-compose pull cc
 docker-compose up -d cc
 
