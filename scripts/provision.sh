@@ -133,7 +133,7 @@ elif [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
 
-    if [ $self_provision -eq 0 ]; then
+    if [ $self_provision -eq 0 ] && [ "$NODES" = "node" ]; then
         echo "Registering managed installation '$NODES' ..."
         sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
     fi
@@ -164,13 +164,16 @@ else
         echo "Deleting '$sagcc_installer' ..."
         rm -f $CC_HOME/profiles/CCE/data/installers/$sagcc_installer
         
-        echo "Registering managed installation '$NODES' ..."
-        sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
+	if [ "$NODES" = "node" ]
+	then
+		echo "Registering managed installation '$NODES' ..."
+		sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
 
-        echo "Waiting for SPM ..."
-        sagcc get landscape nodes $NODES -e ONLINE
+		echo "Waiting for SPM ..."
+		sagcc get landscape nodes $NODES -e ONLINE
 
-        echo "NEW infrastructure $NODES SUCCESSFUL"
+		echo "NEW infrastructure $NODES SUCCESSFUL"
+	fi
     fi
 fi
 
