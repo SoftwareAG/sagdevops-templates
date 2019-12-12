@@ -181,7 +181,7 @@ fi
 if [ -n "$NODES" ] && [ "$NODES" != "node" ]
 then
 	NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "`
-	echo "Registering additional nodes: $NODES_LIST
+	echo "Registering additional nodes: $NODES_LIST"
 	for NODE_INDEX in  $NODES_LIST
 	do
 		sagcc add landscape nodes alias=$NODE_INDEX url=https://$NODE_INDEX:8093 
