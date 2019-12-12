@@ -136,10 +136,11 @@ elif [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     if [ $self_provision -eq 0 ] && [ "$NODES" = "node" ]; then
         echo "Registering managed installation '$NODES' ..."
         sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
+	echo "Waiting for SPM ..."
+        sagcc get landscape nodes $NODES -e ONLINE -w 240
     fi
 
-    echo "Waiting for SPM ..."
-    sagcc get landscape nodes $NODES -e ONLINE -w 240
+
 
     echo "EXISTING infrastructure $NODES SUCCESSFUL"
 else
@@ -210,11 +211,16 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     sleep 3
 
     echo "Capturing metadata ..."
-    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.txt -f tsv
-    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.xml -f xml
+    NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "
+    for NODE_INDEX in  $NODES_LIST
+    do
+	    echo "metadata for node $NODE_INDEX"
+	    sagcc list inventory products nodeAlias=$NODE_INDEX properties=product.displayName,product.version.string -o $SAG_HOME/products.txt -f tsv
+	    sagcc list inventory products nodeAlias=$NODE_INDEX properties=product.displayName,product.version.string -o $SAG_HOME/products.xml -f xml
 
-    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt -f tsv
-    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.xml -f xml
+	    sagcc list inventory fixes nodeAlias=$NODE_INDEX properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt -f tsv
+	    sagcc list inventory fixes nodeAlias=$NODE_INDEX properties=fix.displayName,fix.version -o $SAG_HOME/fixes.xml -f xml
+    done
 
     echo "Cleaning up ..."
     rm -rf $SAG_HOME/common/conf/nodeId.txt
