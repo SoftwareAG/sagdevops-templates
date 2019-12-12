@@ -211,7 +211,7 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     sleep 3
 
     echo "Capturing metadata ..."
-    NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "
+    NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "`
     for NODE_INDEX in  $NODES_LIST
     do
 	    echo "metadata for node $NODE_INDEX"
