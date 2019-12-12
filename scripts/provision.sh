@@ -178,6 +178,20 @@ else
     fi
 fi
 
+if [ -n "$NODES" ] && [ "$NODES" != "node" ]
+then
+	NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "`
+	echo "Registering additional nodes: $NODES_LIST
+	for NODE_INDEX in  $NODES_LIST
+	do
+		sagcc add landscape nodes alias=$NODE_INDEX url=https://$NODE_INDEX:8093 
+	done
+	while sagcc get landscape nodes | grep OFFLINE
+	do 
+		echo waiting for nodes $NODES_LIST to become available
+		sleep 5
+	done 
+fi
 if [ -z $MAIN_TEMPLATE_ALIAS ] ; then 
     if [ -f template.yaml ]; then
         echo "Found template.yaml ..."
