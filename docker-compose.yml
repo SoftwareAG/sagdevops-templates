@@ -53,7 +53,7 @@ services:
       - REPO_FIX_NAME
       - REPO_USERNAME
       - REPO_PASSWORD
-      - CC_AUTO_REGISTER=1
+      #- CC_AUTO_REGISTER=1
     ports:
       - 8092
       - 8093
@@ -69,7 +69,7 @@ services:
       - REPO_FIX_NAME
       - REPO_USERNAME
       - REPO_PASSWORD   
-      - CC_AUTO_REGISTER=1
+      #- CC_AUTO_REGISTER=1
     ports:
       - 8092
       - 8093
@@ -87,7 +87,7 @@ services:
       - REPO_FIX_NAME
       - REPO_USERNAME
       - REPO_PASSWORD
-      - CC_AUTO_REGISTER=1
+      #- CC_AUTO_REGISTER=1
     ports:
       - 8092
       - 8093
@@ -105,7 +105,7 @@ services:
       - REPO_FIX_NAME
       - REPO_USERNAME
       - REPO_PASSWORD
-      - CC_AUTO_REGISTER=1
+      #- CC_AUTO_REGISTER=1
     ports:
       - 8092
       - 8093
