@@ -28,15 +28,15 @@ env:
   # - IMAGE=integration-server
   matrix: 
   - T=sag-spm-boot-ssh
-  #- T=sag-spm-boot-local
-  #- T=sag-um-server
-  #- T=sag-is-server
-  #- T=sag-cc-layer-defs
-  #- T=sag-apigateway-server
-  #- T=sag-db-sqlserver
+  - T=sag-spm-boot-local
+  - T=sag-um-server
+  - T=sag-is-server
+  - T=sag-cc-layer-defs
+  - T=sag-apigateway-server
+  - T=sag-db-sqlserver
   - T=sag-db-mysql,hello-world -N=2
-  #- T=sag-tc-server
-  #- T=sag-db-sqlserver-is-schemas
+  - T=sag-tc-server
+  - T=sag-db-sqlserver-is-schemas
   
 
 # stages:
@@ -52,9 +52,9 @@ before_install:
 script:
 - sudo sysctl -w vm.max_map_count=262144 
 - sudo chown -R 1724:1724 templates
-#- ./provisionw sag-abe || travis_terminate 1 
+- ./provisionw sag-abe || travis_terminate 1 
 - ./provisionw $T --number-of-nodes ${N:-0} || travis_terminate 2
 - docker-compose ps
-#- ./generateAssetw ${T##*,} || travis_terminate 3
+- ./generateAssetw ${T##*,} || travis_terminate 3
 
 
