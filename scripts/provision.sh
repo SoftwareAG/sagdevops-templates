@@ -178,7 +178,7 @@ else
     fi
 fi
 NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "`
-if [ -n "$NODES_LIST" ]
+if [ -n "$NODES_LIST" ] && [ "$NODES_LIST" != "node" ]
 then
 	echo "Registering additional nodes: $NODES_LIST"
 	for NODE_INDEX in  $NODES_LIST
