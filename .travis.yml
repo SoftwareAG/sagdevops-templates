@@ -35,14 +35,14 @@ env:
   matrix: 
   - T=sag-spm-boot-ssh
   - T=sag-spm-boot-local
-  - T=sag-um-server
-  - T=sag-is-server
-  - T=sag-cc-layer-defs
-  - T=sag-apigateway-server
-  - T=sag-db-sqlserver
-  - T=sag-db-mysql
-  - T=sag-tc-server
-  - T=sag-db-sqlserver-is-schemas
+  #- T=sag-um-server
+  #- T=sag-is-server
+  #- T=sag-cc-layer-defs
+  #- T=sag-apigateway-server
+  - T=sag-db-sqlserver,hello-world N=2
+  #- T=sag-db-mysql
+  #- T=sag-tc-server
+  #- T=sag-db-sqlserver-is-schemas
   
 
 # stages:
