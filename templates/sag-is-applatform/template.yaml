@@ -22,7 +22,7 @@ description: Application Platform provisioning on top of IS instance
 environments:
   default:
     is.instance.name:   default             # IS instance name to provision on top
-    is.instance.type:   integrationServer   # IS instance type: MSC (for 10.3 and lower version) or integrationServer
+    is.instance.type:   integrationServer   # IS instance type: integrationServer (for all versions) or MSC (for 10.3 and lower version)
     applatform.fixes:   ALL                 # Application Platform default fix list
 
 layers:
