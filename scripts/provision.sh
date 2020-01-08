@@ -183,7 +183,7 @@ then
 	echo "Registering additional nodes: $NODES_LIST"
 	for NODE_INDEX in  $NODES_LIST
 	do
-		if [ "$NODE_INDEX" != "node" ] && [ "$NODE_INDEX" != "node-sshd" ] && ["$NODE_INDEX" != "node-local"]
+		if [ "$NODE_INDEX" != "node" ] && [ "$NODE_INDEX" != "node-sshd" ] && [ "$NODE_INDEX" != "node-local" ]
 		then
 			sagcc add landscape nodes alias=$NODE_INDEX url=https://$NODE_INDEX:8093 
 		fi
