@@ -188,7 +188,7 @@ then
 			sagcc add landscape nodes alias=$NODE_INDEX url=https://$NODE_INDEX:8093 
 		fi
 	done
-	while sagcc get landscape nodes | grep OFFLINE
+	while sagcc get landscape nodes |grep  -v "^node.*OFFLINE"| grep OFFLINE
 	do 
 		echo waiting for nodes $NODES_LIST to become available
 		sleep 5
