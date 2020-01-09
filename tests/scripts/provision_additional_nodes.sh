@@ -48,7 +48,7 @@ case $TEMPLATE_ALIAS_LOCAL in
       ;;
     sag-db-sqlserver*)
        echo "Provisioning MS SQLserver"
-       export PASSWORD=Passw0rd
+       export PASSWORD=MaNaGe123
        docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up -d sqlserver
        export PARAMS="db.admin.username=sa db.admin.password=$PASSWORD db.host=sqlserver db.username=webm db.password=webm $PARAMS "
        ;;
