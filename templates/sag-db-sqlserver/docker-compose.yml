@@ -27,7 +27,7 @@ services:
       - 1433
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=${PASSWORD}
+      - SA_PASSWORD=MaNaGe123
 
   # provisioner for webm db schemas using template.yaml
   provision:
