@@ -27,7 +27,7 @@ environments:
     db.version:          latest             # REQUIRED: target release, e.g. 10.5
     db.port:             50000               # oracle default port
     db.name:             webm
-    db.url:              "jdbc:wm:oracle://${db.host}:${db.port};databaseName=${db.name}"
+    db.url:              "jdbc:wm:db2://${db.host}:${db.port};databaseName=${db.name}"
 
     db.username:         ${}         # Database username
     db.password:         ${}         # Database password
