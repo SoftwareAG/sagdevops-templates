@@ -49,15 +49,22 @@ case $TEMPLATE_ALIAS_LOCAL in
     sag-db-sqlserver*)
        echo "Provisioning MS SQLserver"
        export PASSWORD=Passw0rd
-       docker-compose up -d sqlserver
+       docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up -d sqlserver
        export PARAMS="db.admin.username=sa db.admin.password=$PASSWORD db.host=sqlserver db.username=webm db.password=webm $PARAMS "
        ;;
     sag-db-mysql*)
        echo "Provisioning MYSQL server"
        export PASSWORD=root
-       docker-compose up -d mysql
+       docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up -d mysql
        export PARAMS="db.admin.username=root db.admin.password=$PASSWORD db.host=mysql db.username=webm db.password=webm $PARAMS "
       ;;
+    sag-db-db2)
+       echo "Provisioning DB2 server"
+       export PASSWORD=manage
+       docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up --build -d db2
+       export PARAMS="db.admin.username=db2inst1 db.admin.password=$PASSWORD db.host=db2 db.username=webm db.password=webm $PARAMS "
+      ;;
+
     sag-db-oracle*)
        echo "Provisioning ORACLE server"
        export PASSWORD=Passw0rd

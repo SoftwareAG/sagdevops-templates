@@ -41,6 +41,7 @@ env:
   - T=sag-apigateway-server
   - T=sag-db-sqlserver
   - T=sag-db-mysql
+  - T=sag-db-db2
   - T=sag-tc-server
   - T=sag-db-sqlserver-is-schemas
   
