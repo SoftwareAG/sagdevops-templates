@@ -62,7 +62,7 @@ case $TEMPLATE_ALIAS_LOCAL in
        echo "Provisioning DB2 server"
        export PASSWORD=manage
        docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up --build -d db2
-       export PARAMS="db.admin.username=db2inst1 db.admin.password=$PASSWORD db.host=db2 db.username=webm db.password=webm db.tablespace.dir=alabala $PARAMS "
+       export PARAMS="db.admin.username=db2inst1 db.admin.password=$PASSWORD db.host=db2 db.username=webm db.password=manage db.tablespace.dir=alabala $PARAMS "
       ;;
 
     sag-db-oracle*)
