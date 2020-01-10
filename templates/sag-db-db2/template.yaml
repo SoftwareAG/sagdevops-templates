@@ -1,0 +1,226 @@
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#########################################################################################
+
+alias: sag-db-db2
+description: DB2 database and product schemas for release 10.5 and higher
+
+environments:
+  default:                 
+    db.host:             ${}                # REQUIRED: Database server hostname
+    db.version:          latest             # REQUIRED: target release, e.g. 10.5
+    db.port:             50000               # oracle default port
+    db.name:             webm
+    db.url:              "jdbc:wm:db2://${db.host}:${db.port};databaseName=${db.name}"
+
+    db.username:         ${}         # Database username
+    db.password:         ${}         # Database password
+    db.admin.username:   ${}                # REQUIRED: for db storage only
+    db.admin.password:   ${}                # REQUIRED: for db storage only
+    db.tablespace.data:  WEBMDATA           # for Oracle/DB2
+    db.tablespace.index: WEBMINDX           # for Oracle/DB2
+    db.tablespace.dir:   ${}
+    db.STR.components:   STR
+     
+    db.OBE.components:
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+      
+    db.OBE.components:
+      - Analysis
+      - ProcessTracker
+      - DataPurge
+      - DatabaseManagement
+      - OperationManagement
+      - ProcessAudit
+       
+    db.WOK.components:       
+      - BusinessRules
+    
+    db.TNS.components:   
+      - TradingNetworks
+      - TradingNetworksArchive
+      
+    db.MWS.components:  
+      - MywebMethodsServer
+     
+    #Component list for creating DB schemas for Integration Server and Microservices Runtime    
+    db.PIE.components: 
+      - ISInternal
+      - ISCoreAudit
+      - CrossReference
+      - DocumentHistory
+      - DistributedLocking 
+      
+    db.PIEMobile.components: 
+      - MobileSupport
+      
+    db.WMN.components:    
+      - Archive
+      - Staging
+      - Reporting
+      - OperationManagement
+      
+    db.WPE.components:   
+      - ProcessEngine
+      - ProcessAudit
+    
+    db.WST.components:   
+      - CloudStreamsEvents
+      
+    db.YAI.components:  
+      - APIGatewayEvents     
+      
+    db.product.scripts:         
+      - DatabaseComponentConfigurator
+      - OBEcdc      
+      - WOKcdc
+      - TNScdc
+      - MWScdc
+      - PIEcdc
+      - PIEEmbeddedCdc
+      - PIEMobileCdc
+      - WMNcdc
+      - WPEcdc
+      - WSTcdc
+      - YAIcdc
+      
+    db.fixes:            ALL                # Database component configurator and scripts fixes to install   
+          
+layers:
+  db:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   dbc
+    databases:  
+      storage:
+        components:          ${db.STR.components}
+        version:             latest
+        db.type:             db2luw
+        db.url:              "${db.url}"
+        db.admin.username:   "${db.admin.username}"
+        db.admin.password:   "${db.admin.password}"
+        db.tablespace.dir:   "${db.tablespace.dir}"
+        db.tablespace.data:  ${db.tablespace.data}
+        db.tablespace.index: ${db.tablespace.index}
+        db.username:         "${db.username}"
+        db.password:         "${db.password}"
+        db.name:             ${db.name}
+   
+      schemas.OBE:
+        components:  ${db.OBE.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.WOK:
+        components:  ${db.WOK.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.TNS:
+        components:  ${db.TNS.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+      schemas.MWS:
+        components:  ${db.MWS.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+            
+      schemas.PIE:
+        components:  ${db.PIE.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+      schemas.PIEMobile:
+        components:  ${db.PIEMobile.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+
+      schemas.WMN:
+        components:  ${db.WMN.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.WPE:
+        components:  ${db.WPE.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+      
+      schemas.WST:
+        components:  ${db.WST.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+        
+      schemas.YAI:
+        components:  ${db.YAI.components}
+        version:     ${db.version}
+        db.type:     db2luw
+        db.url:      "${db.url}"
+        db.username: "${db.username}"
+        db.password: "${db.password}"
+        db.name:     ${db.name}
+templates:
+  dbc:
+    products: ${db.product.scripts}
+    fixes:    ${db.fixes}
+    
+provision:
+  default:
+    db: ${nodes}

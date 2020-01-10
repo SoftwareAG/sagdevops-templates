@@ -18,7 +18,10 @@
 #
 ###############################################################################
 
-case $TEMPLATE_ALIAS in
+TEMPLATE_ALIAS_LOCAL=$1
+NUMBER_OF_NODES=${2:-0}
+echo providing $NUMBER_OF_NODES additional SPM nodes and additional DB nodes for template $TEMPLATE_ALIAS_LOCAL
+case $TEMPLATE_ALIAS_LOCAL in
     sag-spm-boot-ssh)
       echo "Provisioning additional host with  ssh server"
       docker-compose build node-sshd
@@ -45,16 +48,23 @@ case $TEMPLATE_ALIAS in
       ;;
     sag-db-sqlserver*)
        echo "Provisioning MS SQLserver"
-       export PASSWORD=Passw0rd
-       docker-compose up -d sqlserver
+       export PASSWORD=MaNaGe123
+       docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up -d sqlserver
        export PARAMS="db.admin.username=sa db.admin.password=$PASSWORD db.host=sqlserver db.username=webm db.password=webm $PARAMS "
        ;;
     sag-db-mysql*)
        echo "Provisioning MYSQL server"
        export PASSWORD=root
-       docker-compose up -d mysql
+       docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up -d mysql
        export PARAMS="db.admin.username=root db.admin.password=$PASSWORD db.host=mysql db.username=webm db.password=webm $PARAMS "
       ;;
+    sag-db-db2)
+       echo "Provisioning DB2 server"
+       export PASSWORD=manage
+       docker-compose -f templates/${TEMPLATE_ALIAS_LOCAL}/docker-compose.yml up --build -d db2
+       export PARAMS="db.admin.username=db2inst1 db.admin.password=$PASSWORD db.host=db2 db.username=webm db.password=manage db.tablespace.dir=alabala $PARAMS "
+      ;;
+
     sag-db-oracle*)
        echo "Provisioning ORACLE server"
        export PASSWORD=Passw0rd
@@ -62,7 +72,21 @@ case $TEMPLATE_ALIAS in
        export PARAMS="db.admin.username=system db.admin.password=oracle db.host=oracle db.username=webm db.password=webm $PARAMS "
       ;;
      *)
-      echo "The template does not need additional host"
+        if [ "$NUMBER_OF_NODES" -ne 0 ]
+            then
+                echo "provisioning $NUMBER_OF_NODES additional SPM nodes"
+                docker-compose up -d dev$NUMBER_OF_NODES
+                NODES="["
+                for i in `seq 1 $NUMBER_OF_NODES`
+                do 
+                    NODES="${NODES}dev$i,"
+                done
+                NODES=${NODES: : -1}"]"
+                #export PARAMS="nodes=$NODES"
+                export ENV_PREFIX="NODES=$NODES "
+        fi
+      echo "The template $TEMPLATE_ALIAS_LOCAL does not need additional DB host"
 esac
+
 echo "PARAMS=$PARAMS"
 echo "ENV_PREVIX=$ENV_PREFIX"
