@@ -39,14 +39,14 @@ Use this template to build a Microservices Runtime container image.
 Build the container image only with Microservices Runtime:
 
 ```bash
-cd sagdevops-template/containers
+cd sagdevops-templates/containers
 CC_TAG=10.5 TAG=10.5 docker-compose build microservices-runtime
 ```
 
 Build the container image with Microservices Runtime and a layered product (for example, WmSAP):
 
 ```bash
-cd sagdevops-template/containers
+cd sagdevops-templates/containers
 CC_TAG=10.5 TAG=10.5 PRODUCTS=[MSC,WmSAP] docker-compose build microservices-runtime
 ```
 
@@ -57,10 +57,10 @@ CC_TAG=10.5 TAG=10.5 docker-compose up microservices-runtime
 docker-compose port microservices-runtime 5555
 ```
 
-Open Microservices Runtime in the browser using the address printed above:
+Open Microservices Runtime in the browser using the port printed above:
 
 ```bash
-open http://localhost:PORT
+http://localhost:PORT
 ```
 
 Login as `Administrator/manage`

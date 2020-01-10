@@ -1,0 +1,53 @@
+########################################################################################
+# Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
+# Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#########################################################################################
+version: "3.2"
+
+services:
+  # this is the oracle db itself
+  db2:
+    image: sag-db2:latest
+    build: .
+    ports: 
+      - 50000
+    environment: 
+      - LICENSE=accept
+      - DB2INST1_PASSWORD=manage
+      #- DBNAME=webm
+      - AUTOCONFIG=false
+    privileged: true  
+
+  # provisioner for webm db schemas using template.yaml
+  provision:
+    image: ${CC_REG}/commandcentral-client:${CC_TAG}
+    command: > 
+      bash -c '
+      echo "Waiting for repositories ..." &&
+      sagcc list repository products -e products -w 600 --wait-for-cc &&
+      sagcc list repository fixes -e fixes -w 600 --wait-for-cc &&
+      echo "Creating DB schemas ..." &&
+      sagcc exec templates composite apply sag-db-db2 \
+        repo.product=products repo.fix=fixes \
+        nodes=node db.host=db2 db.username=db2inst1 db.password=manage --wait-for-cc --wait 600 --sync-job'
+    depends_on: 
+      - db2
+networks:
+  default:
+    external:
+      name: sagdevops-templates_default

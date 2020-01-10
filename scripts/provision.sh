@@ -133,13 +133,14 @@ elif [ -f "$SAG_HOME/profiles/SPM/bin/startup.sh" ]; then
     echo "Starting SPM ..."
     $SAG_HOME/profiles/SPM/bin/startup.sh
 
-    if [ $self_provision -eq 0 ]; then
+    if [ $self_provision -eq 0 ] && [ "$NODES" = "node" ]; then
         echo "Registering managed installation '$NODES' ..."
         sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
+	echo "Waiting for SPM ..."
+        sagcc get landscape nodes $NODES -e ONLINE -w 240
     fi
 
-    echo "Waiting for SPM ..."
-    sagcc get landscape nodes $NODES -e ONLINE -w 240
+
 
     echo "EXISTING infrastructure $NODES SUCCESSFUL"
 else
@@ -164,15 +165,37 @@ else
         echo "Deleting '$sagcc_installer' ..."
         rm -f $CC_HOME/profiles/CCE/data/installers/$sagcc_installer
         
-        echo "Registering managed installation '$NODES' ..."
-        sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
+	if [ "$NODES" = "node" ]
+	then
+		echo "Registering managed installation '$NODES' ..."
+		sagcc add landscape nodes alias=$NODES url=http://localhost:8092 -e OK
 
-        echo "Waiting for SPM ..."
-        sagcc get landscape nodes $NODES -e ONLINE
+		echo "Waiting for SPM ..."
+		sagcc get landscape nodes $NODES -e ONLINE
 
-        echo "NEW infrastructure $NODES SUCCESSFUL"
+		echo "NEW infrastructure $NODES SUCCESSFUL"
+	fi
     fi
 fi
+NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "`
+if [ -n "$NODES_LIST" ] 
+then
+	echo "Registering additional nodes: $NODES_LIST"
+	for NODE_INDEX in  $NODES_LIST
+	do
+		if [ "$NODE_INDEX" != "node" ] && [ "$NODE_INDEX" != "node-sshd" ] && [ "$NODE_INDEX" != "node-local" ]
+		then
+			sagcc add landscape nodes alias=$NODE_INDEX url=https://$NODE_INDEX:8093 
+		fi
+	done
+	while sagcc get landscape nodes |grep  -v "^node.*OFFLINE"| grep OFFLINE
+	do 
+		echo waiting for nodes $NODES_LIST to become available
+		sleep 5
+	done 
+fi
+
+
 
 if [ -z $MAIN_TEMPLATE_ALIAS ] ; then 
     if [ -f template.yaml ]; then
@@ -207,11 +230,16 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
     sleep 3
 
     echo "Capturing metadata ..."
-    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.txt -f tsv
-    sagcc list inventory products nodeAlias=$NODES properties=product.displayName,product.version.string -o $SAG_HOME/products.xml -f xml
+    NODES_LIST=`echo $NODES | tr -d "[]" | tr "," " "`
+    for NODE_INDEX in  $NODES_LIST
+    do
+	    echo "metadata for node $NODE_INDEX"
+	    sagcc list inventory products nodeAlias=$NODE_INDEX properties=product.displayName,product.version.string -o $SAG_HOME/products.txt -f tsv
+	    sagcc list inventory products nodeAlias=$NODE_INDEX properties=product.displayName,product.version.string -o $SAG_HOME/products.xml -f xml
 
-    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt -f tsv
-    sagcc list inventory fixes nodeAlias=$NODES properties=fix.displayName,fix.version -o $SAG_HOME/fixes.xml -f xml
+	    sagcc list inventory fixes nodeAlias=$NODE_INDEX properties=fix.displayName,fix.version -o $SAG_HOME/fixes.txt -f tsv
+	    sagcc list inventory fixes nodeAlias=$NODE_INDEX properties=fix.displayName,fix.version -o $SAG_HOME/fixes.xml -f xml
+    done
 
     echo "Cleaning up ..."
     rm -rf $SAG_HOME/common/conf/nodeId.txt
