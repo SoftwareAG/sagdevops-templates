@@ -29,8 +29,6 @@ webMethods Optimize  |OBEcdc  |  db.OBE.components | schemas.OBE
 webMethods Business Rules | WOKcdc|  db.WOK.components | schemas.WOK
 webMethods Trading Networks | TNScdc  |  db.TNS.components | schemas.TNS
 My webMethods Server | MWScdc| db.MWS.components | schemas.MWS
-webMethods Active Transfer | MATcdc | db.MAT.components | schemas.MAT
-webMethods OneData |  ODEcdc | db.ODE.components | schemas.ODE
 webMethods Integration Server and webMethods Microservices Runtime | PIEcdc | db.PIE.components | schemas.PIE
 Integration Server | PIEEmbeddedCdc | Not available (N/A) | N/A
 Integration Server and Mobile Support | PIEMobileCdc | db.PIEMobile.components | schemas.PIEMobile
@@ -75,13 +73,14 @@ None.
 
 ## Running as a standalone Composite Template
 
-To install Database Component Configurator 10.5 on the Command Central node with alias `local`, and create all database components schemas for already created database `webm` and a database user named `webm` with password `webm`:
+To install Database Component Configurator 10.5 on the Command Central node with alias `local`, and create storage and all database components schemas for database `webm` and a database user named `webm` with password `webm`:
 
 ```bash
 sagcc exec templates composite apply sag-db-db2 \
   db.version=10.5 repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
   db.host=db2 \
-  db.name=webm db.username=webm db.password=webm \
+  db.name=webm db.username=webm db.password=webm db.tablespace.dir="\home\sag\db2\webm" \
+  db.admin.username=db2inst1 db.admin.password=db2inst1 \
   --sync-job --wait 360
 ```
 
@@ -90,9 +89,10 @@ To install Database Component Configurator 10.5 on the Command Central node with
 ```bash
 sagcc exec templates composite apply sag-db-db2 \
   db.version=latest repo.product=products-10.5 repo.fix=fixes-10.5 nodes=local \
-  db.name=webm db.username=webm db.password=webm \
+  db.name=webm db.username=webm db.password=webm db.tablespace.dir="\home\sag\db2\webm" \
+  db.admin.username=db2inst1 db.admin.password=db2inst1 \
   db.YAI.components=[] \
-  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,MATcdc,ODEcdc,PIEcdc, \             
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,PIEcdc, \             
   PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
   --sync-job --wait 360
 ```
@@ -117,8 +117,8 @@ You can now use this database for creating instances of webMethods products (for
 
 ```bash
 db.url=jdbc:wm:db2://db2:50000;databaseName=webm
-db.username=db2inst1
-db.password=manage
+db.username=webm
+db.password=webm
 db.type=db2luw
 db.name=webm
 ```
