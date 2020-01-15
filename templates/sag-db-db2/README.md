@@ -92,20 +92,20 @@ sagcc exec templates composite apply sag-db-db2 \
   db.name=webm db.username=webm db.password=webm db.tablespace.dir="\home\sag\db2\webm" \
   db.admin.username=db2inst1 db.admin.password=db2inst1 \
   db.YAI.components=[] \
-  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,B2BCloudCdc,PIEcdc, \             
+  db.product.scripts=[DatabaseComponentConfigurator,OBEcdc,WOKcdc,TNScdc,MWScdc,PIEcdc, \             
   PIEEmbeddedCdc,PIEMobileCdc,WMNcdc,WPEcdc,WSTcdc] \
   --sync-job --wait 360
 ```
 
 ## Using for local development and testing on Docker platforms
 
-1. Launch the Command Central container from the root folder of the followLaunch the [DB2](https://hub.docker.com/r/ibmcom/db2) container:
+1. Launch the [DB2](https://hub.docker.com/r/ibmcom/db2) container:
 
 ```bash
 docker-compose -f templates/sag-db-db2/docker-compose.yml up -d db2
 ```
 
-3. Provision `sag-db-db2` template to create database components:
+2. Provision `sag-db-db2` template to create database components and run tests:
 
 ```bash
 CC_TAG=10.5 TAG=10.5 CC_ENV=db2 ./provisionw sag-db-db2
