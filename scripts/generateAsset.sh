@@ -58,6 +58,8 @@ cd $ABE_HOME
 ant -v -Dbuild.source.dir=$ASSET_SOURCE_TEMP_FOLDER -Dbuild.output.dir=$ASSET_REPO_FOLDER/sagdevops-templates-repo
 if [ $? -eq 0 ]
 then
+     echo "debug env variables"
+     env
      if [ "$TRAVIS_PULL_REQUEST" != "false" ]
      then
         cd $ASSET_REPO_FOLDER/sagdevops-templates-repo
