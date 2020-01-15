@@ -153,7 +153,16 @@ templates:
                   Scalable: 'false'
                   Templates:
                     Template:
-                      '@alias': sag-db-sqlserver-is-schemas                                  
+                      '@alias': sag-db-sqlserver-is-schemas   
+                
+                CCE-LAYER-TYPES-DB-DB2:
+                  '@name': DB-DB2
+                  Description: DB2 database and components schemas for 10.5 release and higher
+                  Type: DATABASE
+                  Scalable: 'false'
+                  Templates:
+                    Template:
+                      '@alias': sag-db-db2                                 
                                                       
 
 provision:
