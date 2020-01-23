@@ -86,11 +86,11 @@ templates:
                   Servers:                                      
                     Server:
                       - 
-                        "@name": ${runtime.nodes[0]}
-                        URL: "nsp://${runtime.hosts[0]}:${um.instance.port}"
-                      - 
                         "@name": ${runtime.nodes[1]}
                         URL: "nsp://${runtime.hosts[1]}:${um.instance.port}"
+                      - 
+                        "@name": ${runtime.nodes[2]}
+                        URL: "nsp://${runtime.hosts[2]}:${um.instance.port}"
 
   um-cluster-3:
     description: Cluster configuration for 3 node cluster
@@ -106,14 +106,14 @@ templates:
                   Servers:                                      
                     Server:
                       - 
-                        "@name": ${runtime.nodes[0]}
-                        URL: "nsp://${runtime.hosts[0]}:${um.instance.port}"
-                      - 
                         "@name": ${runtime.nodes[1]}
                         URL: "nsp://${runtime.hosts[1]}:${um.instance.port}"
                       - 
                         "@name": ${runtime.nodes[2]}
                         URL: "nsp://${runtime.hosts[2]}:${um.instance.port}"
+                      - 
+                        "@name": ${runtime.nodes[3]}
+                        URL: "nsp://${runtime.hosts[3]}:${um.instance.port}"
 
 
   um-cluster-4:
@@ -130,14 +130,6 @@ templates:
                   Servers:                                      
                     Server:
                       - 
-                        "@name": ${runtime.nodes[0]}
-                        URL: "nsp://${runtime.hosts[0]}:${um.instance.port}"
-                        ExtendedProperties: 
-                          Property: 
-                            - 
-                              "@name": "siteName"
-                              $: site1
-                      - 
                         "@name": ${runtime.nodes[1]}
                         URL: "nsp://${runtime.hosts[1]}:${um.instance.port}"
                         ExtendedProperties: 
@@ -152,10 +144,18 @@ templates:
                           Property: 
                             - 
                               "@name": "siteName"
-                              $: site2
+                              $: site1
                       - 
                         "@name": ${runtime.nodes[3]}
                         URL: "nsp://${runtime.hosts[3]}:${um.instance.port}"
+                        ExtendedProperties: 
+                          Property: 
+                            - 
+                              "@name": "siteName"
+                              $: site2
+                      - 
+                        "@name": ${runtime.nodes[4]}
+                        URL: "nsp://${runtime.hosts[4]}:${um.instance.port}"
                         ExtendedProperties: 
                           Property: 
                             - 

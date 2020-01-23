@@ -33,17 +33,18 @@ env:
   # - T=template N=3
   # - T=template1,template2 N=2
   matrix: 
-  - T=sag-spm-boot-ssh
-  - T=sag-spm-boot-local
-  - T=sag-um-server
-  - T=sag-is-server
-  - T=sag-cc-layer-defs
-  - T=sag-apigateway-server
+  #- T=sag-spm-boot-ssh
+  #- T=sag-spm-boot-local
+  #- T=sag-um-server
+  #- T=sag-is-server
+  #- T=sag-cc-layer-defs
+  #- T=sag-apigateway-server
   - T=sag-db-sqlserver
-  - T=sag-db-mysql
-  - T=sag-db-db2
-  - T=sag-tc-server
-  - T=sag-db-sqlserver-is-schemas
+  #- T=sag-db-mysql
+  #- T=sag-db-db2
+  #- T=sag-tc-server
+ # - T=sag-db-sqlserver-is-schemas
+  - T=sag-um-cluster N=2
   
 
 # stages:
