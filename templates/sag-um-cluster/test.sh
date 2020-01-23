@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #*******************************************************************************
 # Copyright (c) 2011-2019 Software AG, Darmstadt, Germany and/or Software AG USA Inc.,
 # Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -20,29 +20,26 @@
 #*******************************************************************************
 
 # if managed image
-if [ -d $SAG_HOME/profiles/SPM ] ; then
-    # point to local SPM
-    export CC_SERVER=http://localhost:8092/spm
+export CC_SERVER=http://dev1:8092/spm
 
-    echo "Verifying managed container $CC_SERVER ..."
-    sagcc get inventory products -e NUMRealmServer --wait-for-cc
+echo "Verifying managed container $CC_SERVER ..."
+sagcc get inventory products -e NUMRealmServer --wait-for-cc
 
-    export CC_WAIT=60
-    echo "Verifying fixes ..."
-    sagcc get inventory fixes 
-    # -e wMFix.NUMRealmServer
+export CC_WAIT=60
+echo "Verifying fixes ..."
+sagcc get inventory fixes 
+# -e wMFix.NUMRealmServer
 
-    echo "Verifying instances ..."
-    sagcc get inventory components -e Universal-Messaging-default
+echo "Verifying instances ..."
+sagcc get inventory components -e Universal-Messaging-default
 
-    echo "Start the instance ..."
-    sagcc exec lifecycle components Universal-Messaging-default start  -e DONE --sync-job
+echo "Start the instance ..."
+sagcc exec lifecycle components Universal-Messaging-default start  -e DONE --sync-job
 
-    echo "Verifying status ..."
-    sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE
+echo "Verifying status ..."
+sagcc get monitoring runtimestatus Universal-Messaging-default -e ONLINE
 
-    echo "Verifying configs ..."
-    sagcc get configuration data Universal-Messaging-default COMMON-CLUSTER -f xml -e cluster
-fi
+echo "Verifying configs ..."
+sagcc get configuration data Universal-Messaging-default COMMON-CLUSTER -f xml -e cluster
 
 echo "DONE testing"
