@@ -44,7 +44,7 @@ env:
   #- T=sag-db-db2
   #- T=sag-tc-server
  # - T=sag-db-sqlserver-is-schemas
- # - T=sag-um-cluster N=2
+  - T=sag-um-cluster N=2
   
 
 # stages:
