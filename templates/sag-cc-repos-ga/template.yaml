@@ -97,3 +97,9 @@ repositories:
       host: ${aqu.host}
       name: 103oct2018_SIC
       credentials: REPO-PRODUCT
+      
+    webMethods-10.5_GA:
+      description: 10.5 GA
+      host: ${aqu.host}
+      name: 105oct2019_SIC
+      credentials: REPO-PRODUCT
