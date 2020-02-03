@@ -50,12 +50,6 @@ repositories:
       name: SuiteInt
       host: ${aqu.host}
       credentials: REPO-PRODUCT
-
-    SuiteTest:
-      description: Latest RELEASE candidates
-      host: ${aqu.host}
-      name: SuiteTest
-      credentials: REPO-PRODUCT
       
     CC_XPC:
       description: CC XPC testing sandbox
