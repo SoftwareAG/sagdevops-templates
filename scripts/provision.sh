@@ -219,7 +219,9 @@ echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
 echo "$CC_WAIT seconds timeout"
 echo "=================================="
 
-tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log &
+echo "LS:"
+ls -lR $SAG_HOME/SAGUpdateManager/UpdateManager/logs
+tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log $SAG_HOME/profiles/SPM/logs/wrapper.log $SAG_HOME/SAGUpdateManager/UpdateManager/logs/info/info*.log &
 tailpid=$!
 
 if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -c 10 -e DONE --wait-for-cc 300 --retry 1; then
@@ -258,6 +260,10 @@ if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --s
 
 else 
     kill $tailpid>/dev/null
+    
+    echo "LS:"
+    ls -lR $SAG_HOME/SAGUpdateManager/UpdateManager/logs
+    cat $SAG_HOME/SAGUpdateManager/UpdateManager/logs/info/info*.log
     echo ""
     echo "ERROR: PROVISION '$MAIN_TEMPLATE_ALIAS' FAILED !"
     echo ""

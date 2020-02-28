@@ -1,0 +1,94 @@
+alias: sag-um-server-migrate
+description: Universal Messaging Realm Server migration
+
+environments:
+  default:
+    # Product and fix repositories
+    version:      "10.1"                    
+    repo.product: webMethods-${version}     # source product repository name, must be pre-registered
+    repo.spm:     ${repo.product}           # source product repo for SPM
+    repo.fix:     GA_Fix_Repo               # source fix repository name, must be pre-registered
+    repo.fix.spm: ${repo.fix}               # source fix repo for SPM
+
+    # Command Central
+    platform: w64
+    cc.installer: cc-def-${version}-latest-${platform}.exe
+
+    # Source Platform Manager
+    src.spm.http.port: 8392
+    src.spm.https.port: 8393
+    src.host: localhost
+
+    # Target Patform Manager
+    spm.http.port: 8492
+    spm.https.port: 8493
+
+    # UM Server
+    um.numrealmserver.license.key: "*_NUMWF_10.*_*_*" # UM license key
+    um.instance.name:    default            # server instance name
+    um.realm:            default            # realm name
+    um.instance.port:    9000               # main listener port number
+    um.jmx.port:         9988               # jmx port number
+    um.memory.init:      64                 # initial memory size in MB
+    um.memory.max:       128                # maximum memory size in MB
+    um.memory.direct:    1G                 # direct memory size
+    um.fixes:            ALL                # minimal recommended set of fixes to apply
+
+layers:
+  runtime:
+    productRepo: ${repo.product}            # default repository to install products from
+    fixRepo:     ${repo.fix}                # default repository to install fixes from
+    templates:
+      - um-server                           # template to apply
+
+templates:
+  um-server:
+    licenses:                               # lisenses to copy from central license repository
+      "UniversalMessaging/server/templates/licence.xml": "${um.numrealmserver.license.key}" # license file
+    fixes: ${um.fixes}                      # fixes to install
+    products:                               # products to install
+      NUMRealmServer:                                              # Universal Messaging | Realm Server
+        ${um.instance.name}:                                       # instance name is different from realm
+          instance.port: ${um.instance.port}                       # instance port
+          # instance.ip:   ${node.host}                            # bind to node's host name
+          runtimeComponentId: Universal-Messaging-${instance.name} # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${instance.name}:                  # configuration for UM instance
+              COMMON-MEMORY: 
+                COMMON-MEMORY:                                     # memory configuration
+                  InitSize: ${um.memory.init}                      # initial JVM memory size
+                  MaxSize:  ${um.memory.max}                       # maximum JVM memory size
+                  ExtendedProperties:                              
+                    Property: 
+                      - 
+                       "@name": "-XX:MaxDirectMemorySize"
+                       $: ${um.memory.direct}                     # JVM maximum direct memory size 
+              COMMON-JAVASYSPROPS: 
+                COMMON-JAVASYSPROPS:  
+                   REALM: ${um.realm}                                # realm name IMPORTANT: this can only be set before first startup
+                   com.sun.management.jmxremote.port: ${um.jmx.port} # JVM JMX port number
+                   com.sun.management.jmxremote.authenticate: false  # do not use JMX authentication
+                   com.sun.management.jmxremote.ssl: false           # do not use JMX SSL
+            
+provision:
+  default:
+    runtime: ${nodes} # apply to selected nodes
+
+migration:
+  nodes:        
+    default:
+      default:                # source nodes info
+        port: ${src.spm.http.port}
+        host: ${src.host}
+        bootstrapInfo:
+          installDir:   ${install.dir}
+          credentials: ${os.credentials.key}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.http.port}
+      bootstrapInfo:
+        installer: ${cc.installer} # CC bootstrap installer file name
+        installDir: ${install.dir}_${version} # local installation directory
+        credentials: ${os.credentials.key}
