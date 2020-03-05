@@ -219,9 +219,7 @@ echo "Applying '$MAIN_TEMPLATE_ALIAS' with $ADD_PROPERTIES"
 echo "$CC_WAIT seconds timeout"
 echo "=================================="
 
-echo "LS:"
-ls -lR $SAG_HOME/SAGUpdateManager/UpdateManager/logs
-tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log $SAG_HOME/profiles/SPM/logs/wrapper.log $SAG_HOME/SAGUpdateManager/UpdateManager/logs/info/info*.log &
+tail -f $CC_HOME/profiles/CCE/logs/default.log $SAG_HOME/profiles/SPM/logs/default.log $SAG_HOME/profiles/SPM/logs/wrapper.log &
 tailpid=$!
 
 if sagcc exec templates composite apply $MAIN_TEMPLATE_ALIAS $ADD_PROPERTIES --sync-job -c 10 -e DONE --wait-for-cc 300 --retry 1; then
