@@ -51,7 +51,7 @@ All supported Windows and UNIX platforms.
 
 For information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-To perform side-by-side migration of a cluster with two nodes, `dev1` and `dev2`, where each node has a `default` instance of Universal Messaging 10.1 in directory /home/vmtest/sag, to a target cluster with two nodes, `dev1` and `dev2`, where each node has a `default` instance of Universal Messaging 10.5 in directory /home/vmtest/sag_10.5, and each node is listening on default ports 9000 and 9988 (JMX), has 512 MB of memory, and has all latest fixes installed:
+To perform side-by-side migration of a cluster with two nodes, `dev1` and `dev2`, where each node has a `default` instance of Universal Messaging 10.1 in directory /home/vmtest/sag, to a target cluster with two nodes, `dev1` and `dev2`, where each node has a `default` instance of Universal Messaging 10.5 in directory /home/vmtest/sag_10.5, and each Universal Messaging node is listening on default ports 9000 and 9988 (JMX), has 512 MB of memory, and has all latest fixes installed:
 
 ```bash
 sagcc exec templates composite apply sag-um-cluster-migrate environment.mode=migration \ 
