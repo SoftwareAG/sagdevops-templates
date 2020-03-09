@@ -1,5 +1,7 @@
 # Universal Messaging Cluster
 
+> STATUS: INCUBATING
+
 Use this template to provision, maintain, or upgrade a Universal Messaging cluster with two or three nodes, or a Universal Messaging cluster with four nodes and two sites.
 
 ## Requirements
