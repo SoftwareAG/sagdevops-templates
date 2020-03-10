@@ -102,9 +102,6 @@ Template alias | Provisions
 [sag-tc-cluster](templates/sag-tc-cluster) | Terracotta BigMemory cluster
 [sag-tc-server](templates/sag-tc-server) | Terracotta BigMemory server
 [sag-tdb-server](templates/sag-tdb-server) | Terracotta DB server
-[sag-um-cluster](templates/sag-um-cluster) | Universal Messaging cluster
-[sag-um-config](templates/sag-um-config) | Universal Messaging configuration
-[sag-um-server](templates/sag-um-server) | Universal Messaging server
 
 The following table lists micro templates that are still in the testing phase.
 
@@ -117,6 +114,12 @@ Template alias | Provisions
 [sag-onedata](templates/sag-onedata) | OneData
 [sag-optimize-wsdc](templates/sag-optimize-wsdc) | Optimize Web Service Data Collector
 [sag-optimize-analysis](templates/sag-optimize-analysis) | Optimize Analytic Engine
+[sag-um-cluster](templates/sag-um-cluster) | Universal Messaging cluster
+[sag-um-cluster-migrate](templates/sag-um-cluster-migrate) | Migrates a Universal Messaging cluster
+[sag-um-config](templates/sag-um-config) | Universal Messaging configuration
+[sag-um-server](templates/sag-um-server) | Universal Messaging server
+[sag-um-server-migrate](templates/sag-um-server-migrate) | Migrates a Universal Messaging server
+
 
 ### Micro Templates for configuring Command Central and Platform Manager
 
