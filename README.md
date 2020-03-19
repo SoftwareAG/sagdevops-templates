@@ -72,6 +72,7 @@ Template alias | Provisions
 [sag-abe](templates/sag-abe) | Asset Build Environment
 [sag-apama-correlator](templates/sag-apama-correlator) | Apama correlator instance
 [sag-apigateway-cluster](templates/sag-apigateway-cluster) | API Gateway cluster
+[sag-apigateway-config](templates/sag-apigateway-config) | Configures an API Gateway server instance
 [sag-apigateway-server](templates/sag-apigateway-server) | API Gateway server
 [sag-des-config](templates/sag-des-config) | Digital Event Services configuration
 [sag-des](templates/sag-des) | Digital Event Services
