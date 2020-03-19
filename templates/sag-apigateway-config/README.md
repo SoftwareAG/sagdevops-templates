@@ -21,8 +21,7 @@ Use this template to configure API Gateway server.
 
 ## Requirements and limitations
 
-The template only configures API Gateway instance. 
-The product and the instance should be provisioned before that using one of sag-apigateway-server or sag-api-gateway-cluster templates
+This template configures a single API Gateway server instance. Before running this template, you should provision the required API Gateway instance. To provision an API Gateway server, you can use the [sag-apigateway-server](../sag-apigateway-server/) template. To provision an API GAteway cluster, you can use the [sag-apigateway-cluster](../sag-apigateway-cluster/) template.
 
 ### Supported Software AG releases
 
@@ -41,10 +40,18 @@ All supported Windows and UNIX platforms.
   * Cluster
   * Logging
   
+### Using the template to configure an existing API Gateway instance
 
 For information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-To configure API Gateway 10.5:
+To apply configurations to the API Gateway 10.5 instance installed on the `local` node:
 ```bash
-sagcc exec templates composite apply sag-apigateway-config nodes=local is.tenant=apigateway es.ssl.user=admin es.ssl.password=admin es.hostname=daeyaimig102 es.port=9202 kibana.host=vmyaibvt092 kibana.port=8492 port.name="httpPort2" port.type=HTTPListener@6792 port.number=6792 port.description="Http Port on 6792" cluster.name="APIGateway Cluster" cluster.terracottaurl=daeirnd33902:9612 logger.mode=Debug --sync-job --wait 360
+sagcc exec templates composite apply sag-apigateway-config nodes=local \
+  is.tenant=apigateway \
+  es.ssl.user=admin es.ssl.password=admin es.hostname=daeyaimig102 es.port=9202 \
+  kibana.host=vmyaibvt092 kibana.port=8492 \
+  port.name="httpPort2" port.type=HTTPListener@6792 port.number=6792 port.description="Http Port on 6792" \
+  cluster.name="APIGateway Cluster" cluster.terracottaurl=daeirnd33902:9612 \
+  logger.mode=Debug \
+  --sync-job --wait 360
 ```
