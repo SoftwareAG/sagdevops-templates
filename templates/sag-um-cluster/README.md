@@ -25,6 +25,7 @@ All supported Windows and UNIX platforms.
   * JVM memory
   * NHP and JMX ports
   * COMMON-JAVASYSPROPS configuration in YAML format (supported for Universal Messaging 10.1 and higher)
+  * COMMON-CLUSTER configuration for two, three, or four nodes
 * Building docker images for 10.x releases
 
 ## Provisioning a new cluster instance
@@ -41,18 +42,3 @@ sagcc exec templates composite apply sag-um-cluster nodes=[dev1,dev2] \
   um.cluster=testCluster \
   --sync-job --wait 360
 ```
-
-## Creating a new stack with Universal Messaging layer using Web UI
-
-For more information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
-
-* Open Stacks UI
-* Add new stack by clicking `(+)` icon
-* Add new Infrastructure layer
-* Add new Runtime layer
-  * Select UM-SERVER layer definition
-  * Select product and fix repositories
-  * Select exactly one node on which to provision Universal Messaging Realm server
-  * Review and adjust optional parameters as needed
-  * Finish the wizard
-* Wait until provision jobs completes. Use Jobs view to monitor
