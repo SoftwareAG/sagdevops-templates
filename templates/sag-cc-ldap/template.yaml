@@ -19,19 +19,31 @@
 
 alias: sag-cc-ldap
 description: Command Central sample configuration for LDAP and users, groups and roles
-version: 0.2
+version: 0.3
 changes:
   - 0.1 Initial draft
   - 0.2 CC LDAP 9.10+ configuration including Domain property
-
+  - 0.3 CC LDAP extend configurable properties
 environments:
   default:
-    ldap.domain:       sag                              # LDAP alias to create
-    ldap.host:         sofldap.eur.ad.sag               # LDAP host, replica of SAG corporate LDAP
-    ldap.port:         389
-    ldap.url :         "ldap://${ldap.host}:${ldap.port}"
-    ldap.principaldn:  "CN=BGQATest,OU=Generic,OU=Bulgaria,DC=eur,DC=ad,DC=sag"
-    ldap.password:     qatest123
+    ldap.domain:                sag                              # LDAP alias to create
+    ldap.host:                  sofldap.eur.ad.sag               # LDAP host, replica of SAG corporate LDAP
+    ldap.port:                  389
+    ldap.url :                  "ldap://${ldap.host}:${ldap.port}"
+    ldap.principal.dn:          "CN=BGQATest,OU=Generic,OU=Bulgaria,DC=eur,DC=ad,DC=sag"
+    ldap.user.root.dn:          "DC=eur,DC=ad,DC=sag"
+    ldap.group.root.dn:         "DC=eur,DC=ad,DC=sag"
+    ldap.password:              qatest123
+    ldap.user.id.attribute:     sAMAccountName
+    ldap.group.id.attribute:    sAMAccountName
+    ldap.connection.timeout:    5000
+    ldap.pool.minsize:          0
+    ldap.pool.maxsize:          10
+    ldap.user.object.class:     person
+    ldap.group.object.class:    group
+    ldap.membership.attribute:  member
+    ldap.membership.type:       GROUP
+    ldap.resolve.nested.groups: 1
     
     ldap.group.viewer:   CommandCentral-Swat
     ldap.group.operator: RnD-wM-CommandCentralWorkgroup
@@ -62,20 +74,20 @@ templates:
                   Domain: ${ldap.domain}            # login as domain\userid
                   URL: ${ldap.url}
                   Enabled: true
-                  PrincipalDn: ${ldap.principaldn}
+                  PrincipalDn: ${ldap.principal.dn}
                   Password: ${ldap.password}
-                  ConnectionTimeout: 5000
-                  PoolMinSize: 0
-                  PoolMaxSize: 10
-                  UserIdAttribute: sAMAccountName
-                  UserRootDn: "DC=eur,DC=ad,DC=sag"
-                  UserObjectClass: person
-                  GroupIdAttribute: sAMAccountName
-                  GroupRootDn: "DC=eur,DC=ad,DC=sag"
-                  GroupObjectClass: group
-                  MembershipAttribute: member
-                  MembershipType: GROUP
-                  ResolveNestedGroups: 1
+                  ConnectionTimeout: ${ldap.connection.timeout}
+                  PoolMinSize: ${ldap.pool.minsize}
+                  PoolMaxSize: ${ldap.pool.maxsize}
+                  UserIdAttribute: ${ldap.user.id.attribute}
+                  UserRootDn: ${ldap.user.root.dn}
+                  UserObjectClass: ${ldap.user.object.class}
+                  GroupIdAttribute: ${ldap.group.id.attribute}
+                  GroupRootDn: ${ldap.group.root.dn}
+                  GroupObjectClass: ${ldap.group.object.class}
+                  MembershipAttribute: ${ldap.membership.attribute}
+                  MembershipType: ${ldap.membership.type}
+                  ResolveNestedGroups: ${ldap.resolve.nested.groups}
 
   cc-internal-users:
     products:
