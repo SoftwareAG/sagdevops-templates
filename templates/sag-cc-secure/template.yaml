@@ -1,0 +1,170 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+alias: sag-cc-secure
+description: Command Central and SPM SSL configuration
+version: 10.2
+
+environments:
+  default:
+    spm.https.port:                 8093
+    
+    spm.https.keystore.type:        JKS
+    spm.https.keystore.location:    ${}
+    spm.https.keystore.password:    ${}
+    spm.https.key.alias:            ${}
+
+    spm.truststore.location:        ${}
+    spm.truststore.password:        ${}
+    
+    cce.https.port:                 8091
+    
+    cce.https.keystore.type:        JKS
+    cce.https.keystore.location:    ${}
+    cce.https.keystore.password:    ${}
+    cce.https.key.alias:            ${}
+
+    cce.truststore.location:        ${}
+    cce.truststore.password:        ${}
+    cce.truststore.type:            jks
+    cce.truststore.trust.all.hosts: true
+    
+    # List of SPM nodes/hosts to configure
+    nodes: [local]
+
+layers:
+  cce:
+    templates:
+      - cce-tuneup
+      - spm-tuneup
+  spm:
+    templates:
+      - spm-tuneup
+
+templates:
+  cce-tuneup:
+    products:
+      CCE:
+        default:
+          configuration:
+            OSGI-CCE:              
+              COMMON-PORTS:
+                COMMON-PORTS-defaultHttps:
+                  Port:
+                    '@alias': defaultHttps
+                    Enabled: 'true'
+                    Type: STANDARD
+                    Number: ${cce.https.port}
+                    Protocol: https
+                    ThreadPool:
+                      '@enabled': 'false'
+                      Max: '150'
+                    SSL:
+                      ClientAuth: NONE
+                      KeystoreDefinition:
+                        Type: ${cce.https.keystore.type}
+                        Location: ${cce.https.keystore.location}
+                        Password: ${cce.https.keystore.password}
+                    ExtendedProperties:
+                      Property:
+                        - '@name': sslProtocol
+                          $: TLS
+                        - '@name': sslEnabledProtocols
+                          $: TLSv1,TLSv1.1,TLSv1.2
+                        - '@name': enableLookups
+                          $: 'false'
+                        - '@name': keyAlias
+                          $: ${cce.https.key.alias}
+                        - '@name': server
+                          $: SoftwareAG-Runtime
+                        - '@name': disableUploadTimeout
+                          $: 'true'
+                        - '@name': algorithm
+                          $: SunX509
+                        - '@name': ciphers
+                          $: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384, TLS_DHE_DSS_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSVF
+                        - '@name': minSpareThreads
+                          $: '25'
+                        - '@name': acceptCount
+                          $: '100'
+                        - '@name': maxHttpHeaderSize
+                          $: '8192'
+            OSGI-CCE-ENGINE:
+              COMMON-SYSPROPS:
+                COMMON-SYSPROPS-com.softwareag.platform.management.ssl.connection.properties: |
+                  trust.store.type=${cce.truststore.type}
+                  @secure.truststore.password=${cce.truststore.password}
+                  trust.all.hosts=${cce.truststore.trust.all.hosts}
+                  trust.store.location=${cce.truststore.location}
+  spm-tuneup:
+    products:
+      SPM:
+        default:
+          configuration:
+            OSGI-SPM: 
+              COMMON-JAVASYSPROPS:
+                COMMON-JAVASYSPROPS: |
+                  javax.net.ssl.trustStore=${spm.truststore.location}
+                  javax.net.ssl.trustStorePassword=${spm.truststore.password}
+              COMMON-PORTS:
+                COMMON-PORTS-defaultHttps:
+                  Port:
+                    '@alias': defaultHttps
+                    Enabled: 'true'
+                    Type: STANDARD
+                    Number: ${spm.https.port}
+                    Protocol: https
+                    ThreadPool:
+                      '@enabled': 'false'
+                      Max: '10'
+                    SSL:
+                      ClientAuth: NONE
+                      KeystoreDefinition:
+                        Type: ${spm.https.keystore.type}
+                        Location: ${spm.https.keystore.location}
+                        Password: ${spm.https.keystore.password}
+                    ExtendedProperties:
+                      Property:
+                        - '@name': sslProtocol
+                          $: TLS
+                        - '@name': sslEnabledProtocols
+                          $: TLSv1,TLSv1.1,TLSv1.2
+                        - '@name': enableLookups
+                          $: 'false'
+                        - '@name': maxSpareThreads
+                          $: '1'
+                        - '@name': keyAlias
+                          $: ${spm.https.key.alias}
+                        - '@name': disableUploadTimeout
+                          $: 'true'
+                        - '@name': server
+                          $: SoftwareAG-Runtime
+                        - '@name': algorithm
+                          $: SunX509
+                        - '@name': ciphers
+                          $: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384, TLS_DHE_DSS_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSVF
+                        - '@name': minSpareThreads
+                          $: '0'
+                        - '@name': acceptCount
+                          $: '100'
+                        - '@name': maxHttpHeaderSize
+                          $: '8192'
+provision:
+  default:
+    cce: local    # apply to local CCE
+    spm: ${nodes} # apply to all SPM's identified by a list of node aliases
