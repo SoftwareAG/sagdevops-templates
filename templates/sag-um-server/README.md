@@ -18,8 +18,7 @@
 
 # Universal Messaging Realm Server
 
-Use this template to provision, maintain, upgrade Universal Messaging Realm Server
-as well as create Docker images
+Use this template to provision, maintain, or upgrade a Universal Messaging realm server, or to create Docker images containing a Universal Messaging realm server.
 
 ## Requirements
 
@@ -41,15 +40,15 @@ All supported Windows and UNIX platforms.
   * License
   * JVM memory
   * NHP and JMX ports
-  * COMMON-JAVASYSPROPS configuration in yaml format used in the template is supported for 10.1 or higher. 
+  * COMMON-JAVASYSPROPS configuration in YAML format (supported for Universal Messaging 10.1 and higher) 
 * Building docker images for 10.x releases
 
 ## Provisioning of new server instance
 
-Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
+For information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-Provision `default` instance of Universal Messaging Realm 10.1 server with all latest fixes,
-listening on default ports 9000 and 9988 (jmx), with 512mb of memory:
+To provision a `default` instance of a Universal Messaging 10.1 realm server,
+listening on default ports 9000 and 9988 (JMX), with 512 MB of memory, and install all latest fixes:
 
 ```bash
 sagcc exec templates composite apply sag-um-server nodes=dev1 \
@@ -61,8 +60,7 @@ sagcc exec templates composite apply sag-um-server nodes=dev1 \
 
 ## Creating a new stack with Universal Messaging layer using Web UI
 
-Consult [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui)
-for additional information about using Stacks UI.
+For information about using stacks and layers, see [Creating a stack using Command Central Web UI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#creating-a-new-stack-using-web-ui).
 
 * Open Stacks UI
 * Add new stack by clicking `(+)` icon

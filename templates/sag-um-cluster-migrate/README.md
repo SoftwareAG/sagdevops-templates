@@ -17,11 +17,12 @@
 
 -->
 
-# Universal Messaging Realm Cluster
-
-Use this template to migrate side-by-side Universal Messaging Realm Cluster
+# Universal Messaging Cluster Side-by-Side Migration
 
 > STATUS: INCUBATING
+
+Use this template to perform side-by-side migration of a Universal Messaging cluster.
+
 ## Requirements
 
 ### Supported Software AG releases
@@ -35,24 +36,22 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of the product 
+* Provisioning of Universal Messaging 
 * Installing latest fixes and support patches
-* Side-by-side migration to 10.1 or higher
+* Side-by-side migration of Universal Messaging to version 10.1 or higher
 * Configuration of:
   * License
   * JVM memory
   * NHP and JMX ports
   * COMMON-JAVASYSPROPS
-  * COMMON-CLUSTER - supporting 2/3/4 node cluster 
+  * COMMON-CLUSTER - supporting clusters with two, three, or four nodes
 
 
 ## Migration of new server instance
 
-Consult [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli) for additional information about applying templates.
+For information about applying templates, see [Applying template using Command Central CLI](https://github.com/SoftwareAG/sagdevops-templates/wiki/Using-default-templates#applying-template-using-command-central-cli).
 
-Migrate side-by-side 2 node cluster of `default` instance of Universal Messaging Realm 10.1 installed on 2 nodes dev1 and dev2 in directory /home/vmtest/sag
-to target 2 node cluster of `default` instance of Universal Messaging Realm 10.5 on 2 ndoes dev1 and dev2 in directory /home/vmtest/sag_10.5 with all latest fixes,
-listening on default ports 9000 and 9988 (jmx), with 512mb of memory:
+To perform side-by-side migration of a cluster with two nodes, `dev1` and `dev2`, where each node has a `default` instance of Universal Messaging 10.1 in directory /home/vmtest/sag, to a target cluster with two nodes, `dev1` and `dev2`, where each node has a `default` instance of Universal Messaging 10.5 in directory /home/vmtest/sag_10.5, and each Universal Messaging node is listening on default ports 9000 and 9988 (JMX), has 512 MB of memory, and has all latest fixes installed:
 
 ```bash
 sagcc exec templates composite apply sag-um-cluster-migrate environment.mode=migration \ 
