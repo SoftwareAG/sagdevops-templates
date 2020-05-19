@@ -54,6 +54,14 @@ environments:
     # Enable or disable fix dependency validation when installing fixes (true/false)
     fix.dependencies.validation: true
 
+    # SPM memory settings
+    spm.memory.init.size: 32
+    spm.memory.max.size:  512
+
+    # CCE memory settings    
+    cce.memory.init.size: 256
+    cce.memory.max.size:  512
+    
     # List of SPM nodes/hosts to configure
     nodes: [local]
 
@@ -87,7 +95,10 @@ templates:
                   com.softwareag.platform.management.client.template.composite.restart.online.status.poll.timeout.miliseconds: ${timeout.status.runtime.seconds}000
                   com.softwareag.platform.management.client.remote.requests.connect.timeout: ${timeout.spm.connect.seconds}000
                   com.softwareag.platform.management.client.remote.requests.sync.read.timeout: ${timeout.spm.read.seconds}000
-
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${cce.memory.init.size}
+                  MaxSize: ${cce.memory.max.size}
   spm-tuneup:
     products:
       SPM:
@@ -101,7 +112,10 @@ templates:
                   org.eclipse.ecf.provider.filetransfer.retrieve.readTimeout: ${timeout.repo.read.seconds}000
                   org.eclipse.ecf.provider.filetransfer.retrieve.closeTimeout: ${timeout.repo.read.seconds}000
                   com.softwareag.plm.sum.cc.override.resolve.validation: ${fix.dependencies.validation}
-
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${spm.memory.init.size}
+                  MaxSize: ${spm.memory.max.size}
 provision:
   default:
     cce: local    # apply to local CCE

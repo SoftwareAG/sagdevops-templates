@@ -1,0 +1,40 @@
+###############################################################################
+#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#
+#   SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.                                                            
+#
+###############################################################################
+alias: sag-cc-repos-custom
+description: Custom SAG master repositories
+version: 10.5
+
+environments:
+  default: 
+    sdc.url:                      http://sdc.softwareag.com  # SDC url
+    sdc.credentials.key:          EMPOWER        # SDC/Empower credentials key
+    master.repo.product.name:     webMethods-10.5
+    master.repo.product.version:  105
+    master.repo.fix.name:         Empower
+
+repositories:
+  product: 
+    ${master.repo.product.name}:           
+      location: ${sdc.url}/dataservewebM${master.repo.product.version}/repository/
+      credentials: ${sdc.credentials.key} 
+ 
+  fix:                                  
+    ${master.repo.fix.name}:
+      location: ${sdc.url}/updates/prodRepo
+      credentials: ${sdc.credentials.key}
