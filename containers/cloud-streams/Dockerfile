@@ -23,6 +23,9 @@ ARG BASE_IMAGE
 FROM $BUILDER_IMAGE as builder
 
 ARG BASE_TEMPLATE=sag-is-server
+#add custom template.yaml and test.sh if one exists
+ADD --chown=1724:1724 template.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+ADD --chown=1724:1724 test.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
 
 ARG __is_fixes=[]
 ARG __cst_fixes=[]

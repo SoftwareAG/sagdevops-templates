@@ -28,6 +28,11 @@ ARG TEMPLATE=sag-msc-server
 ARG __is_fixes=[]
 ARG __is_instance_name=default
 
+#add custom template if exists
+ADD --chown=1724:1724 template.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+ADD --chown=1724:1724 test.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+
+
 # provision and unit test
 RUN $CC_HOME/provision.sh $TEMPLATE && \
     $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/test.sh && \

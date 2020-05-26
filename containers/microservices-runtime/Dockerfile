@@ -27,7 +27,9 @@ ARG TEMPLATE=sag-msc-server
 ARG __msc_fixes=[]
 # can be only MSC or MSC and layer product, ex [MSC,WmSAP] 
 ARG __msc_products=[MSC]
-
+#add custom template.yaml and test.sh if one exists
+ADD --chown=1724:1724 template.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+ADD --chown=1724:1724 test.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
 # provision and unit test
 RUN $CC_HOME/provision.sh $TEMPLATE && \
     $CC_HOME/cleanup.sh

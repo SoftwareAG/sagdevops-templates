@@ -32,7 +32,9 @@ ARG __tc_backup_dir="/data/backup"
 ARG __tc_logs_dir="stdout:"
 
 ARG TEMPLATE=sag-tc-server
-
+#add custom template.yaml and test.sh if one exists
+ADD --chown=1724:1724 template.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+ADD --chown=1724:1724 test.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
 # provision and unit test
 RUN $CC_HOME/provision.sh $TEMPLATE && \
     $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/test.sh && \

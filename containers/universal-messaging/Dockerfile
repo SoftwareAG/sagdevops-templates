@@ -33,6 +33,9 @@ ARG __um_instance_name=default
 ARG __um_instance_port=9000
 ARG __um_realm=default
 ARG __um_fixes=[]
+#add custom template.yaml and test.sh if one exists
+ADD --chown=1724:1724 template.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+ADD --chown=1724:1724 test.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
 
 # provision and unit test
 RUN $CC_HOME/provision.sh $TEMPLATE && \

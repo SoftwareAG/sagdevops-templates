@@ -30,6 +30,9 @@ ARG __hello_world=default
 
 # run-time container init parameter
 ENV HELLO_NAME=default
+#add custom template.yaml and test.sh if one exists
+ADD --chown=1724:1724 template.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
+ADD --chown=1724:1724 test.* $CC_HOME/profiles/CCE/data/templates/composite/$TEMPLATE/
 
 # Apply template.yaml, run smoke tests, cleanup
 RUN $CC_HOME/provision.sh $TEMPLATE && \
