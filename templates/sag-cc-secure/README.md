@@ -18,9 +18,9 @@
 -->
 # Secure connections in Command Central and Platform Manager
 
-Use this template to configure Secure connections in Command Central and Platform Manager (local or remote)
-- HTTPS port of Command Central using custom Keystore certificate
-- HTTPS port of Platform Manager using custom Keystore certificate
+Use this template to configure secure connections (local and remote) in Command Central and Platform Manager.
+- The HTTPS port of Command Central using a custom keystore certificate
+- The HTTPS port of Platform Manager using a custom keystore certificate
 - Command Central SSL connection using custom Truststore certificate
 - Platform Manager SSL connection using custom Truststore certificate
 

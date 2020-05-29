@@ -16,11 +16,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-# Command Central SSH credential keys configuration examples
+# Command Central credentials for SSH public key authentication
 
-Use this template to configure credentials for accessing remote hosts for SSH private key authentication type
+Use this template to configure the credentials alias for SSH public key authentication 
+that Command Central uses when accessing remote hosts. 
 
 ## Requirements
+
+None.
 
 ### Supported Software AG releases
 
@@ -32,7 +35,7 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-Configure SSH credentials:
+To configure the SSH credentials and set the SSH credentials alias:
 
 ```bash
 sagcc exec templates composite apply sag-cc-creds-ssh \
@@ -47,9 +50,9 @@ ssh.credentials.key.password=mysshkeypassword \
 
 * Open the Command Central web user interface.
 * Navigate to CCE > Command Central > Configurations > Credentials.
-* Click the **+** icon and select **Username and password** type from the menu.
-* Fill in the required fields, including password and save the configuration.
-* Click on the newly created configuration and click **Export**.
+* Click the **+** icon and select the **Username and password** type from the menu.
+* Fill in the required fields, including the password and save the configuration.
+* Click the alias of the new configuration and then **Export**.
 * Use the encrypted value of the `Password:` property.
 
-The encrypted password can be stored in a YAML file, or a properties file and added to a version control system.
+Store the encrypted password in a YAML or properties file, which you can add to a version control system.

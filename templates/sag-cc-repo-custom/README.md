@@ -18,7 +18,7 @@
 -->
 # Command Central Public Product and Fix Master Repositories
 
-Use this template to add Software AG product and fix repositories for specific officially supported releases and using custom repository names.
+Use this template to add Software AG product and fix repositories with custom repository names and for specific officially supported releases.
 
 ## Requirements
 
@@ -45,8 +45,8 @@ All supported Windows and UNIX platforms.
 
 ## Running as a standalone composite template
 
-To add Software AG product repository for version 10.5 using repository name 'myspecific-product-repo' 
-and fix repository for all officially supported releases using repository name 'myspecific-fix-repo'
+To add a Software AG product repository with name 'myspecific-product-repo' for version 10.5
+and a fix repository with name 'myspecific-fix-repo' for all officially supported releases.
 
     
 ```bash
