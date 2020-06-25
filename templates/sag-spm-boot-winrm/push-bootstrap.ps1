@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright © 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright Â© 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -56,7 +56,7 @@ if(($PlainCredentials.Length -gt 0 ) -and ($PlainCredentials.Contains(":"))){
 	Write-Host "Wrong format username:pass"
 	exit 1
 }
-foreach ($comp in $computers.Replace("[","").Replace("]","").Replace("`"","")){
+foreach ($comp in $computers.Replace("[","").Replace("]","").Replace("`"","").Replace(" ","").trim()){
 	start-job -ScriptBlock { 
 		param($comp,$cred,$srz,$rtp,$rip,$iar) 
 		$s=New-PSSession -ComputerName $comp -Credential $cred
