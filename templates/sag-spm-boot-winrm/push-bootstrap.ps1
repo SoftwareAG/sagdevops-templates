@@ -42,7 +42,7 @@ param
 )
 
 $command=""
-$computers=$computername.split(",").trim("[] ")
+$computers=$computername.split(",").trim("[] '")
 $InstallerArgs=" -d $RemoteInstallPath -p $AdministratorPassword -s $HttpPort -S $HttpsPort -D SPM"
 if($AcceptLicense){
 	$installerArgs+=" --accept-license"
