@@ -1,0 +1,35 @@
+#Amit Fri, 30 Aug 2019 14:42:37 +0200
+#ActiveTransfer properties
+#Tue Jan 22 15:05:06 IST 2013
+mft.http.default.port=2080
+mft.http.default.port.secure=false
+mft.gatewayServer.port=8500
+mft.gatewayServer.accept.ip.list=
+mft.user.email.from=
+mft.user.email.public.ip=
+mft.user.email.subject=ActiveTransfer User Registration
+mft.event.sleep.time=1
+mft.session.replication.enable=false
+mft.session.replication.address=
+mft.session.replication.other.nodes=
+mft.ssl.client.acceptAnyCert=true
+mft.server.init.isInitTimeout=500
+mft.server.ssl.useISCertMap=false
+mft.never.ban.list=
+mft.web.security.csrf=false
+mft.web.security.httpOnly=false
+mft.log.sesssionlog.disable=false
+mft.client.ftp.list.command=
+mft.partners.useTNPartners=false
+mft.aliases.tn=
+mft.group.aliases=
+mft.client.outbound.useProxy=false
+mft.sharing.account.tempdir=
+mft.vfs.tree.pagination.pageSize=200
+mft.vfs.tree.pagination.depth=1
+mft.agent.user=
+mft.server.ftp.list.allowEmpty=false
+mft.agent.event.log.activityTypes=asset, auth, event
+mft.server.dmz.auth.publicKey.internal=true
+mft.server.https.auth.saml=
+mft.server.https.auth.saml.redirecturi=
