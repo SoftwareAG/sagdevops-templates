@@ -178,4 +178,32 @@ services:
         - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.3}
         - __exx_core_fixes=$FIXES     # [] or ALL from the env
 
-        
+  activetransfer:
+    image: ${REG:-softwareag}/activetransfer:${TAG:-10.5}
+    build:
+      context: activetransfer/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.5}
+        - BASE_IMAGE=${REG:-softwareag}/base:${TAG:-10.5}
+        - __exx_mat_fixes=$FIXES     # [] or ALL from the env
+    ports:
+      - 9100                            # container specific ports
+      - 9102                            # container specific ports
+
+  sag-is-activetransfer:
+    image: ${REG:-softwareag}/sag-is-activetransfer:$TAG # target image
+    build:
+      context: sag-is-activetransfer/
+      args:
+        - BUILDER_IMAGE=${REG:-softwareag}/commandcentral-builder:${TAG:-10.5}
+        - BASE_IMAGE=${REG:-softwareag}/java:${TAG:-10.5}
+        - TEMPLATE=sag-is-activetransfer
+        - __mft_fixes=$FIXES                  # [] or ALL, from the env
+        - __mft_products=${PRODUCTS:-[MFT]}   # [MSC] or [MSC,someLayerProduct]
+     
+    ports:
+      - 5555                            # container specific ports
+      - 9100
+    hostname: activetransfer-runtime
+    environment:
+      - CC_AUTO_REGISTER               # No auto register as we don't have a server

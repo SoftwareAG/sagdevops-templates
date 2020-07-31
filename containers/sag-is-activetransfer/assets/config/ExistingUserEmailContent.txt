@@ -1,0 +1,12 @@
+Hi {firstName},
+
+Your account has been created. 
+Please use the following login credentials and URL(s) to exchange files with our enterprise:
+
+Your username: {userName}
+
+
+{serverList}
+
+Sincerely,
+File Infrastructure Team.

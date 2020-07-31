@@ -1,0 +1,6 @@
+#Default KeyStore password file. 
+# Please change these property values to update the default keystore details
+#Fri Aug 09 16:36:54 IST 2013
+mft.ssl.certificate.file.name=builtin
+mft.ssl.privatekey.password=password
+mft.ssl.keystore.password=password
