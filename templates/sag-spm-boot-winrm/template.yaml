@@ -32,6 +32,7 @@ environments:
     # OPTIONAL
     install.dir: C:\SoftwareAG  # Remote installation directory
     spm.port: 8092              # SPM HTTP port
+    spm.secure.port: 8093       # SPM HTTPS port 
     os.temp.dir: C:\Windows\Temp # %TEMP% folder on the remote machine
 
     actions:
@@ -40,13 +41,13 @@ environments:
         description: Bootstrap SPM on remote Windows hosts from Command Central Windows host
         phase: pre 
         script: |
-          powershell.exe -command ${com.softwareag.install.root}\profiles\CCE\data\templates\composite\sag-spm-boot-winrm\push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller  ${com.softwareag.install.root}\profiles\CCE\data\installers\${cc.installer} -RemoteInstallPath ${install.dir} -AcceptLicense -PlainCredentials ${os.username}:${os.password}
+          powershell.exe -command ${com.softwareag.install.root}\profiles\CCE\data\templates\composite\sag-spm-boot-winrm\push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller  ${com.softwareag.install.root}\profiles\CCE\data\installers\${cc.installer} -RemoteInstallPath ${install.dir}  -HttpPort ${spm.port} -HttpsPort ${spm.secure.port} -AcceptLicense -PlainCredentials ${os.username}:${os.password}
       bootstrap.sh:
         target: POSIX 
         description: Bootstrap SPM on remote Windows hosts from Command Central Linux/Mac host
         phase: pre 
         script: |
-          pwsh -f ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/sag-spm-boot-winrm/push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller ${com.softwareag.install.root}/profiles/CCE/data/installers/${cc.installer} -RemoteInstallPath ${install.dir} -AcceptLicense -PlainCredentials ${os.username}:${os.password}
+          pwsh -f ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/sag-spm-boot-winrm/push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller ${com.softwareag.install.root}/profiles/CCE/data/installers/${cc.installer} -RemoteInstallPath ${install.dir} -HttpPort ${spm.port} -HttpsPort ${spm.secure.port} -AcceptLicense -PlainCredentials ${os.username}:${os.password}
 
 layers:
   infra:
