@@ -166,7 +166,7 @@ templates:
                     
               MAPPING:
                 XMM-1:
-                  ID: XMM-1
+                  Id: XMM-1
                   XmmFilename: ${exx.server.xmm.filename}
                   XmmFile: ${exx.server.xmm.file}
                   SoapVersion: ${exx.server.soap.version}
@@ -182,7 +182,7 @@ templates:
                   
 
                 XMM-2:
-                  ID: XMM-2
+                  Id: XMM-2
                   XmmFilename: ${exx.server.xmm.filename2}
                   XmmFile: ${exx.server.xmm.file2}
                   SoapVersion: ${exx.server.soap.version}
