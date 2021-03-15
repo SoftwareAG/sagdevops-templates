@@ -44,6 +44,7 @@ Run the following commands from the PowerShell window as Administrator to ensure
 PS> Enable-PSRemoting -SkipNetworkProfileCheck
 PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
 PS> Set-Item WSMan:\localhost\Plugin\Microsoft.PowerShell\Quotas\MaxMemoryPerShellMB 2048
+PS> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 PS> Restart-Service winrm
 ```
 
