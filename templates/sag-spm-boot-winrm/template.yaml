@@ -34,7 +34,9 @@ environments:
     spm.port: 8092              # SPM HTTP port
     spm.secure.port: 8093       # SPM HTTPS port 
     os.temp.dir: C:\Windows\Temp # %TEMP% folder on the remote machine
-
+    
+    skip.nodes.validation: true
+    
     actions:
       bootstrap.bat:
         target: WINDOWS 
