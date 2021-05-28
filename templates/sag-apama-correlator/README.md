@@ -1,4 +1,4 @@
-<!-- Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+<!-- Copyright 2013 - 2020 Software AG, Darmstadt, Germany and/or its licensors
 
    SPDX-License-Identifier: Apache-2.0
 
@@ -46,6 +46,8 @@ All supported Windows and UNIX platforms.
   * All other supported correlator configuration items
 
 ## Running as a composite template
+
+This template assumes that a valid Apama license key has been uploaded to Command Central, and applies it to correlator. It will not successfully apply if you have not done this yet.
 
 When importing the composite template to Command Central, you will have to
 attach the simple 'HelloWorld' application. Add the `template.yaml` and
