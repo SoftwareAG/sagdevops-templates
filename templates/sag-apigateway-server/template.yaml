@@ -27,54 +27,105 @@ environments:
     agw.primary.port:                  5555                                                              
     agw.diagnostic.port:               9999                                                                  
     agw.jmx.port:                      5559
-    agw.memory.init:                   128                                                               
-    agw.memory.max:                    256                                                               
-    agw.install.service:               false
+    agw.memory.init:                   512                                                               
+    agw.memory.max:                    2024                                                               
     agw.fixes:                         ALL   
 
 layers:
   runtime:
     productRepo: ${repo.product}
     fixRepo:     ${repo.fix}
-    templates:   agw-server
+    templates:
+    - agw-server
+    - agw-config
 
 templates:
   agw-server:
     licenses:
-      "IntegrationServer/config/APIGatewayLicenseKey.xml": ${agw.YAI.license.key} 
-    fixes: ${agw.fixes}
+      IntegrationServer/config/licenseKey.xml: ${agw.YAI.license.key}
     products:
       YAI:
       ${is.instance.type}:
-        ${agw.instance.name}: 
-          primary.port:    ${agw.primary.port}
+        ${agw.instance.name}:
+          primary.port: ${agw.primary.port}
           diagnostic.port: ${agw.diagnostic.port}
-          jmx.port:        ${agw.jmx.port}
-          license.file:    IntegrationServer/config/APIGatewayLicenseKey.xml
-          install.service: ${agw.install.service}
-          package.list:    WmAPIGateway
+          jmx.port: ${agw.jmx.port}
+          license.file: IntegrationServer/config/licenseKey.xml
+          install.service: false
+          package.list: WmAPIGateway
+  agw-config:
+    fixes: ${agw.fixes}
+    products:
+      ${is.instance.type}:
+        ${agw.instance.name}:
+          primary.port: ${agw.primary.port}
+          diagnostic.port: ${agw.diagnostic.port}
+          jmx.port: ${agw.jmx.port}
+          license.file: IntegrationServer/config/licenseKey.xml
+          install.service: false
+          package.list: WmAPIGateway
           configuration:
             OSGI-IS_${instance.name}:
               COMMON-MEMORY:
                 COMMON-MEMORY:
                   InitSize: ${agw.memory.init}
-                  MaxSize:  ${agw.memory.max}
-              COMMON-JVM-OPTIONS:                             
-                COMMON-JVM-OPTIONS:                          
-                    option: 
-                      - "-Xbootclasspath/a:\"%JAVA_BOOT_CLASSPATH%\""
-                      - "-server"
-                      - "-verbose:gc"
-                      - "-XX:+PrintGC"
-                      - "-XX:+PrintGCDetails"
-                      - "-XX:+PrintGCTimeStamps"
-                      - "-XX:+PrintTenuringDistribution"
-                      - "-XX:+PrintGCCause"
-                      - "-XX:+PrintAdaptiveSizePolicy"
-                      - "-XX:+UseGCLogFileRotation"
-                      - "-XX:NumberOfGCLogFiles=5"
-                      - "-XX:GCLogFileSize=10M"
-                      - "-Xloggc:%OSGI_INSTALL_AREA%/logs/gc_agw.log"             
-provision:
+                  MaxSize: ${agw.memory.max}
+              COMMON-JVM-OPTIONS:
+                COMMON-JVM-OPTIONS:
+                  option:
+                  - -Xbootclasspath/a:"%JAVA_BOOT_CLASSPATH%"
+                  - -Xbootclasspath/a:"%JAVA_BOOT_CLASSPATH%".stripquotes=TRUE
+                  - -server
+                  - -d64
+                  - -verbose:gc
+                  - -Xloggc:%OSGI_INSTALL_AREA%/logs/gc_agw.log
+                  - -XX:+PrintGC
+                  - -XX:+PrintGCDetails
+                  - -XX:+PrintGCTimeStamps
+                  - -XX:+UseGCLogFileRotation
+                  - -XX:NumberOfGCLogFiles=10
+                  - -XX:GCLogFileSize=15M
+                  - -XX:+HeapDumpOnOutOfMemoryError
+                  - -XX:HeapDumpPath=/apps/logs/GC_LOGS/HeapDumpOnOutOfMemoryError.hprof
+                  - -XX:+PrintTenuringDistribution
+                  - -XX:+PrintGCCause
+                  - -XX:+PrintAdaptiveSizePolicy
+                  - -XX:+UseParNewGC
+                  - -XX:+UseConcMarkSweepGC
+                  - -XX:+CMSIncrementalMode
+                  - -XX:ParallelGCThreads=2
+                  - -XX:NewRatio=2
+                  - -XX:SurvivorRatio=8
+                  - -XX:TargetSurvivorRatio=90
+                  - -XX:MaxTenuringThreshold=15
+                  - -XX:+UseBiasedLocking
+                  - -XX:+DisableExplicitGC
+            integrationServer-${instance.name}:
+              IS-RESOURCES:
+                IS-RESOURCES:
+                  Resources:
+                    ServerThreadPool:
+                      MaximumThreads: '400'
+                      MinimumThreads: '10'
+                      AvailableThreadsWarningThreshold: '15'
+                      SchedulerThreadThrottle: '75'
+                    Session:
+                      SessionTimeout: '30'
+                      EnableStatefulSessionLimit: 'true'
+                      MaximumStatefulSessions: '2147483647'
+                      AvailableStatefulSessionWarningThreshold: '20'
+                  StoreSettings:
+                    DefaultDocumentStore:
+                      StoreLocation: DocumentStore
+                      InitialStoreSize: '25'
+                    TriggerDocumentStore:
+                      StoreLocation: DocumentStore
+                      InitialStoreSize: '25'
+                      User: Administrator
+                    OutboundDocumentStore:
+                    XARecoverystore:
+                      StoreLocation: XAStore
+                      InitialStoreSize: '10'
+                    BrokerConfigured: 'false'
   default:
     runtime: ${nodes}
