@@ -25,7 +25,7 @@ changes:
 environments:
   default:
      repo.asset: assets-repo
-     repo.asset.url: http://irepo.eur.ad.sag/scm/devops/assets-repo.git
+     repo.asset.url: https://irepo.eur.ad.sag/scm/devops/assets-repo.git
 
 repositories:
   asset:          
