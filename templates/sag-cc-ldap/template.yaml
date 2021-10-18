@@ -27,13 +27,13 @@ changes:
 environments:
   default:
     ldap.domain:                sag                              # LDAP alias to create
-    ldap.host:                  sofldap.eur.ad.sag               # LDAP host, replica of SAG corporate LDAP
+    ldap.host:                  ${}               # LDAP host, replica of SAG corporate LDAP
     ldap.port:                  389
     ldap.url :                  "ldap://${ldap.host}:${ldap.port}"
     ldap.principal.dn:          "CN=BGQATest,OU=Generic,OU=Bulgaria,DC=eur,DC=ad,DC=sag"
     ldap.user.root.dn:          "DC=eur,DC=ad,DC=sag"
     ldap.group.root.dn:         "DC=eur,DC=ad,DC=sag"
-    ldap.password:              qatest123
+    ldap.password:              ${}
     ldap.user.id.attribute:     sAMAccountName
     ldap.group.id.attribute:    sAMAccountName
     ldap.connection.timeout:    5000
