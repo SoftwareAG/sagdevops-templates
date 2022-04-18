@@ -1,0 +1,6 @@
+#Command Central Server Details.
+mft.server.commandCentral.host=
+mft.server.commandCentral.port=
+mft.server.commandCentral.port.secure=
+mft.server.commandCentral.username=
+mft.server.commandCentral.password=

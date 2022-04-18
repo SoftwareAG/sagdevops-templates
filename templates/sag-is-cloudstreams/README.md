@@ -93,7 +93,7 @@ See [sag-is-server](../sag-is-server/) for details.
 ```bash
 
 sagcc exec templates composite apply sag-is-cloudstreams nodes=dev2 \
-  is.instance.type=integrationSever \
+  is.instance.type=integrationServer \
   repo.product=products-10.1 \
   repo.fix=fixes-10.1 \
   --sync-job --wait 360

@@ -1,5 +1,5 @@
 ###############################################################################
-#  Copyright 2013 - 2018 Software AG, Darmstadt, Germany and/or its licensors
+#  Copyright 2013 - 2019 Software AG, Darmstadt, Germany and/or its licensors
 #
 #   SPDX-License-Identifier: Apache-2.0
 #
@@ -13,24 +13,13 @@
 #     distributed under the License is distributed on an "AS IS" BASIS,
 #     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #     See the License for the specific language governing permissions and
-#     limitations under the License.                                                            
+#     limitations under the License.
 #
 ###############################################################################
-alias: sag-cc-repos-asset
-description: Sample assets repository
-version: 0.1
-changes:
-  - 0.1 Initial draft
+version: "3.2"
 
-environments:
-  default:
-     repo.asset: assets-repo
-     repo.asset.url: https://irepo.eur.ad.sag/scm/devops/assets-repo.git
-
-repositories:
-  asset:          
-    ${repo.asset}:
-      type: git
-      description: Samples assets
-      location: ${repo.asset.url}
-      credentials: NONE
+services:
+  builder:
+    build:
+      args:
+        - REPO_PRODUCT_URL=https://sdc.softwareag.com/dataservewebM107/repository

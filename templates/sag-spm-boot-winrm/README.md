@@ -44,6 +44,7 @@ Run the following commands from the PowerShell window as Administrator to ensure
 PS> Enable-PSRemoting -SkipNetworkProfileCheck
 PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
 PS> Set-Item WSMan:\localhost\Plugin\Microsoft.PowerShell\Quotas\MaxMemoryPerShellMB 2048
+PS> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 PS> Restart-Service winrm
 ```
 
@@ -83,6 +84,7 @@ sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] 
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
   os.username=sagadmin os.password=**** \
+  
   --sync-job --wait 600
 ```
 
@@ -97,6 +99,7 @@ sagcc create stacks Dev02 layers alias=WindowsInfra layerType=INFRA-REMOTE-WINDO
   install.dir=C:\\SoftwareaAG2 \
   spm.port=8292 \
   os.username=sagadmin os.password=**** \
+  skip.runtime.validation=true \
   --sync-job --wait 600
 ```
 

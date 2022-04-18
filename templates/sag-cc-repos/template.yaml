@@ -49,9 +49,7 @@ repositories:
     webMethods-9.9:
       location: ${sdc.url}/dataservewebM99/repository/
       credentials: ${sdc.credentials.key}
-    webMethods-9.8:
-      location: ${sdc.url}/dataservewebM98/repository/
-      credentials: ${sdc.credentials.key}
+
  
   fix:                                  # public fix repository for all versions
     Empower:

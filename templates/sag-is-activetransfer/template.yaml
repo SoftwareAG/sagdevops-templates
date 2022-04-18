@@ -1,0 +1,98 @@
+alias: sag-is-activetransfer
+description: ActiveTransfer Server/Gateway
+
+environments:
+  default:
+    is.instance.name: ${is.instancename}                
+    mft.license.key: "*_(MAT|MAG)_10.*_*_*"
+    is.license.key: "*_PIE_10.*_*_*"
+    mft.fixes: ALL                          
+    db.type: ${dbtype}
+    db.url: ${dburl}
+    db.password: ${dbusername}
+    db.username: ${dbpassword}
+    is.primary.port: ${is.primaryport}
+    is.diagnostic.port: ${is.diagnosticport}
+
+layers:
+  dcc:
+     description: Database configuration
+     templates: DBC
+     productRepo: ${repo.product}
+     databases: 
+        dbc-components:
+            components:  ${db.components}
+            version:     ${db.component.version}
+            db.type:     ${dbtype}
+            db.url:      ${dburl}
+            db.username: ${dbusername}
+            db.password: ${dbpassword}
+            db.name:     ${dbname}
+        dbc-products:
+            products:    ${db.products}
+            version:     ${db.product.version}
+            db.type:     ${dbtype}
+            db.url:      ${dburl}
+            db.username: ${dbusername}
+            db.password: ${dbpassword}
+            db.name:     ${dbname} 
+  mft:
+    description: ActiveTransfer Server/Gateway 
+    productRepo: ${repo.product}
+    fixRepo: ${repo.fix}
+    templates: MFT-SERVER
+      
+
+templates:
+  DBC:
+     products:
+       DatabaseComponentConfigurator:   
+       PIEEmbeddedCdc:                   
+       MATcdc: 
+       PIEcdc:       
+ 
+  MFT-SERVER:
+    licenses:      
+      "IntegrationServer/instances/${is.instance.name}/packages/WmMFT/config/licenseKey.xml": ${mft.license.key}
+      "IntegrationServer/instances/${is.instance.name}/config/licenseKey.xml": ${is.license.key}
+    fixes: ${mft.fixes}
+    products:           
+      MFT:
+      MFTSupport:
+      integrationServer:
+        ${is.instance.name}:   
+          primary.port: ${is.primary.port}
+          diagnostic.port: ${is.diagnostic.port}		
+          package.list:  WmMFT
+          db.type:         ${db.type}
+          db.url:          ${db.url}
+          db.username:     ${db.username}
+          db.password:     ${db.password}
+          db.alias:        Default          
+          configuration:            
+            integrationServer-${instance.name}:
+              COMMON-JDBC:              
+                COMMON-JDBC-Default:
+                  Pool: 
+                    "@alias": "Default"
+                    Name: "Default"
+                    Description: "Default DBConnection"
+                    MinSize: "0"
+                    MaxSize: "10"
+                    MaxIdleTime: "60000"
+                    DatabaseServer: 
+                      "@type": ${db.type}
+                      URL: ${db.url}
+                      User: ${db.username}
+                      Password: ${db.password}                                    
+              COMMON-DBFUNCTION:                
+                COMMON-DBFUNCTION-ActiveTransfer:
+                  Function:
+                      "@alias": "ActiveTransfer"
+                      Description: "ActiveTransfer Function"
+                      PoolAlias: "Default"                            
+
+provision:
+  default:
+    #dcc: ${nodes}
+    mft: ${nodes}

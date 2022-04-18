@@ -16,21 +16,11 @@
 #     limitations under the License.                                                            
 #
 ###############################################################################
-alias: sag-cc-repos-asset
-description: Sample assets repository
-version: 0.1
-changes:
-  - 0.1 Initial draft
+version: "3.2"
 
-environments:
-  default:
-     repo.asset: assets-repo
-     repo.asset.url: https://irepo.eur.ad.sag/scm/devops/assets-repo.git
-
-repositories:
-  asset:          
-    ${repo.asset}:
-      type: git
-      description: Samples assets
-      location: ${repo.asset.url}
-      credentials: NONE
+services:
+  builder:
+    build:
+      args:
+        - REPO_PRODUCT_URL=http://aquarius-bg.eur.ad.sag/dataserve107oct2020_SIC/repository/
+        - REPO_FIX_URL=http://aquarius-va.ame.ad.sag/updates/QARepo
