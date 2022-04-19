@@ -47,7 +47,7 @@ env:
   - T=sag-tc-server
   - T=sag-db-sqlserver-is-schemas
   - T=sag-um-cluster N=2
-  
+  #- T=sag-tc-cluster,sag-internaldatastore,sag-apigateway-cluster N=2
 
 # stages:
 # - infra
