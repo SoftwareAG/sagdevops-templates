@@ -41,11 +41,11 @@ requirement to have SSH access.
 Run the following commands from the PowerShell window as Administrator to ensure that the WinRM service is running and the PowerShell memory is set properly:
 
 ```powershell
-PS> Enable-PSRemoting -SkipNetworkProfileCheck
-PS> Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
-PS> Set-Item WSMan:\localhost\Plugin\Microsoft.PowerShell\Quotas\MaxMemoryPerShellMB 2048
-PS> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
-PS> Restart-Service winrm
+Enable-PSRemoting -SkipNetworkProfileCheck
+Set-Item WSMan:\localhost\Shell\MaxMemoryPerShellMB 2048
+Set-Item WSMan:\localhost\Plugin\Microsoft.PowerShell\Quotas\MaxMemoryPerShellMB 2048
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+Restart-Service winrm
 ```
 
 ### System requirements for the Command Central machine
