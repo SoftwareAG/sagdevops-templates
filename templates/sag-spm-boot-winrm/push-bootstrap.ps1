@@ -26,6 +26,8 @@ param
 	[ValidateNotNullOrEmpty()]
 	[string]$PlainCredentials,
 	
+	[string]$Base64Credentials,
+	
 	[string]$RemoteTempPath="c:\temp",
 	
 	[string]$RemoteInstallPath="c:\softwareag\",
@@ -50,6 +52,12 @@ if($AcceptLicense){
 if(($PlainCredentials.Length -gt 0 ) -and ($PlainCredentials.Contains(":"))){
 	$ruser=$PlainCredentials.Split(":")[0]
 	$rpass=$PlainCredentials.Split(":")[1]
+	$srpass=ConvertTo-SecureString -AsPlainText -Force -string $rpass
+	$credentials=new-object -TypeName System.Management.Automation.PSCredential -ArgumentList $ruser,$srpass
+}ElseIf($Base64Credentials.Length -gt 0 ){
+	$Base64Decoded=([Text.Encoding]::ASCII.GetString([Convert]::FromBase64String($Base64Credentials))).trim()
+	$ruser=$Base64Decoded.Split(":")[0]
+	$rpass=$Base64Decoded.Split(":")[1]
 	$srpass=ConvertTo-SecureString -AsPlainText -Force -string $rpass
 	$credentials=new-object -TypeName System.Management.Automation.PSCredential -ArgumentList $ruser,$srpass
 }else{
