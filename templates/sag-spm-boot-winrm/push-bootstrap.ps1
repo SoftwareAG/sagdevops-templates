@@ -22,8 +22,6 @@ param
 	[ValidateNotNullOrEmpty()]
 	[string[]]$Computername,
 	
-	[Parameter(Mandatory)]
-	[ValidateNotNullOrEmpty()]
 	[string]$PlainCredentials,
 	
 	[string]$Base64Credentials,
