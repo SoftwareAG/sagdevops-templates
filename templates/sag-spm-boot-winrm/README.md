@@ -135,7 +135,7 @@ See [sag-cc-all-layer-defs](../sag-cc-all-layer-defs/template.yaml) for details 
   * Specify the required parameters, such as:
     * os.username - the username of the remote connection account
     * os.password - the password of the remote connection account
-    * os.base64credentials - base64 encoded credentials in form user:password
+    * os.base64credentials - base64 encoded credentials in the format user:password of the remote connection
     * nodes - one or more host names
     * install.dir - the remote installation directory
   * Finish the wizard
