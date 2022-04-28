@@ -87,6 +87,26 @@ sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] 
   
   --sync-job --wait 600
 ```
+If there are special characters in the password a base64 encoded  credentials in form user:password could be provided as parameter using -Base64Credentials. credentials could be encoded with oneliner as described below
+For bash(like):
+```bash
+echo -n 'username:password' |  base64
+```
+For powershell:
+```bash
+[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('username:password'))
+```
+In that case the bootstrap should be done:
+```bash
+sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] \
+  cc.installer=cc-def-10.2-fix1-w64.zip \
+  install.dir=C:\\SoftwareaAG2 \
+  spm.port=8292 \
+  os.base64credentials=****** \
+  
+  --sync-job --wait 600
+```
+
 
 ## Adding a Windows infrastructure layer to a stack
 
