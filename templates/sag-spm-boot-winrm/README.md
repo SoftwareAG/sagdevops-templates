@@ -87,6 +87,26 @@ sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] 
   
   --sync-job --wait 600
 ```
+If there are special characters in the password base64-encoded credentials in the format user:password could be provided as a parameter using -Base64Credentials. The credentials could be encoded with oneliner as described below
+For bash(like):
+```bash
+echo -n 'username:password' |  base64
+```
+For powershell:
+```bash
+[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('username:password'))
+```
+In that case the bootstrap should be done:
+```bash
+sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] \
+  cc.installer=cc-def-10.2-fix1-w64.zip \
+  install.dir=C:\\SoftwareaAG2 \
+  spm.port=8292 \
+  os.base64credentials=****** \
+  
+  --sync-job --wait 600
+```
+
 
 ## Adding a Windows infrastructure layer to a stack
 
@@ -115,6 +135,7 @@ See [sag-cc-all-layer-defs](../sag-cc-all-layer-defs/template.yaml) for details 
   * Specify the required parameters, such as:
     * os.username - the username of the remote connection account
     * os.password - the password of the remote connection account
+    * os.base64credentials - base64 encoded credentials in the format user:password of the remote connection
     * nodes - one or more host names
     * install.dir - the remote installation directory
   * Finish the wizard

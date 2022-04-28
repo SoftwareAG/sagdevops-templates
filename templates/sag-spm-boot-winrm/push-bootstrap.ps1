@@ -21,10 +21,10 @@ param
 	[Parameter(Mandatory)]
 	[ValidateNotNullOrEmpty()]
 	[string[]]$Computername,
-	
-	[Parameter(Mandatory)]
-	[ValidateNotNullOrEmpty()]
+
 	[string]$PlainCredentials,
+	
+	[string]$Base64Credentials,
 	
 	[string]$RemoteTempPath="c:\temp",
 	
@@ -47,15 +47,26 @@ $InstallerArgs=" -d $RemoteInstallPath -p $AdministratorPassword -s $HttpPort -S
 if($AcceptLicense){
 	$installerArgs+=" --accept-license"
 }
-if(($PlainCredentials.Length -gt 0 ) -and ($PlainCredentials.Contains(":"))){
+if(($PlainCredentials.Length -gt 0 ) -and ($PlainCredentials.Contains(":")) -and ( $PlainCredentials -ne "changeme:changeme" )){
 	$ruser=$PlainCredentials.Split(":")[0]
 	$rpass=$PlainCredentials.Split(":")[1]
 	$srpass=ConvertTo-SecureString -AsPlainText -Force -string $rpass
 	$credentials=new-object -TypeName System.Management.Automation.PSCredential -ArgumentList $ruser,$srpass
+}ElseIf(($Base64Credentials.Length -gt 0) -and ($Base64Credentials -ne "changeme") ){
+	$Base64Decoded=([Text.Encoding]::ASCII.GetString([Convert]::FromBase64String($Base64Credentials))).trim()
+	if (!$?){
+		Write-Host "Invalid base64 encoded string"
+		exit 1
+	}
+	$ruser=$Base64Decoded.Split(":")[0]
+	$rpass=$Base64Decoded.Split(":")[1]
+	$srpass=ConvertTo-SecureString -AsPlainText -Force -string $rpass
+	$credentials=new-object -TypeName System.Management.Automation.PSCredential -ArgumentList $ruser,$srpass
 }else{
-	Write-Host "Wrong format username:pass"
+	Write-Host "Wrong format username:password"
 	exit 1
 }
+
 foreach ($comp in $computers.Replace("[","").Replace("]","").Replace("`"","").Replace(" ","").trim()){
 	start-job -ScriptBlock { 
 		param($comp,$cred,$srz,$rtp,$rip,$iar) 
