@@ -87,7 +87,7 @@ sagcc exec templates composite apply sag-spm-boot-winrm nodes=["host1","host2"] 
   
   --sync-job --wait 600
 ```
-If there are special characters in the password a base64 encoded  credentials in form user:password could be provided as parameter using -Base64Credentials. credentials could be encoded with oneliner as described below
+If there are special characters in the password base64-encoded credentials in the format user:password could be provided as a parameter using -Base64Credentials. The credentials could be encoded with oneliner as described below
 For bash(like):
 ```bash
 echo -n 'username:password' |  base64
