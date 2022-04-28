@@ -26,9 +26,9 @@ environments:
     # REQUIRED
     nodes: ${}                  # Remote hostnames to bootstrap, e.g ["host1","host2"]
     cc.installer: ${}           # Command Central bootstrap installer for Windows, e.g. cc-def-10.2-fix1-w64.zip
-    os.username: ${}            # Remote connection user account username
-    os.password: ${}            # Remove connection user account password
-    os.base64credentials: ${}   # Remote connection credentials in form user:pass base64 encoded
+    os.username: changeme            # Remote connection user account username
+    os.password: changeme            # Remove connection user account password
+    os.base64credentials: changeme   # Remote connection credentials in form user:pass base64 encoded
 
     # OPTIONAL
     install.dir: C:\SoftwareAG  # Remote installation directory
@@ -44,13 +44,13 @@ environments:
         description: Bootstrap SPM on remote Windows hosts from Command Central Windows host
         phase: pre 
         script: |
-          powershell.exe -command ${com.softwareag.install.root}\profiles\CCE\data\templates\composite\sag-spm-boot-winrm\push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller  ${com.softwareag.install.root}\profiles\CCE\data\installers\${cc.installer} -RemoteInstallPath ${install.dir}  -HttpPort ${spm.port} -HttpsPort ${spm.secure.port} -AcceptLicense -Base64Credentials ${os.base64credentials}
+          powershell.exe -command ${com.softwareag.install.root}\profiles\CCE\data\templates\composite\sag-spm-boot-winrm\push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller  ${com.softwareag.install.root}\profiles\CCE\data\installers\${cc.installer} -RemoteInstallPath ${install.dir}  -HttpPort ${spm.port} -HttpsPort ${spm.secure.port} -AcceptLicense -PlainCredentials ${os.username}:${os.password} -Base64Credentials ${os.base64credentials}
       bootstrap.sh:
         target: POSIX 
         description: Bootstrap SPM on remote Windows hosts from Command Central Linux/Mac host
         phase: pre 
         script: |
-          pwsh -f ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/sag-spm-boot-winrm/push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller ${com.softwareag.install.root}/profiles/CCE/data/installers/${cc.installer} -RemoteInstallPath ${install.dir} -HttpPort ${spm.port} -HttpsPort ${spm.secure.port} -AcceptLicense -Base64Credentials ${os.base64credentials}
+          pwsh -f ${com.softwareag.install.root}/profiles/CCE/data/templates/composite/sag-spm-boot-winrm/push-bootstrap.ps1 -Computername '${nodes}' -RemoteTempPath ${os.temp.dir} -LocalInstaller ${com.softwareag.install.root}/profiles/CCE/data/installers/${cc.installer} -RemoteInstallPath ${install.dir} -HttpPort ${spm.port} -HttpsPort ${spm.secure.port} -AcceptLicense -PlainCredentials ${os.username}:${os.password} -Base64Credentials ${os.base64credentials}
 
 layers:
   infra:
