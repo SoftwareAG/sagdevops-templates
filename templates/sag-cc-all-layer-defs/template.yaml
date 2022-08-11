@@ -152,15 +152,6 @@ templates:
                       Template:
                         "@alias": sag-tdb-server 
 
-                CCE-LAYER-TYPES-APAMA-CORRELATOR:
-                  "@name": APAMA-CORRELATOR
-                  Description: Create Apama Correlator
-                  Type: RUNTIME
-                  Scalable: 'false'
-                  Templates:
-                      Template:
-                        "@alias": sag-apama-correlator 
-
                 CCE-LAYER-TYPES-EXX-BROKER:
                   "@name": EXX-BROKER
                   Description: Create EntireX Broker

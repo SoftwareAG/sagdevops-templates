@@ -181,7 +181,6 @@ pipeline {
                             changeset "templates/sag-um-*" 
                             changeset "templates/sag-tc-*"
                             changeset "templates/sag-tdb-*"  
-                            changeset "templates/sag-apama-*" 
                         } 
                     }
                     agent { label 'docker' }
@@ -194,8 +193,6 @@ pipeline {
 
                         sh './provisionw sag-um-server'
                         sh './provisionw sag-um-config'
-
-                        sh './provisionw sag-apama-correlator'
 
                         sh './provisionw sag-tc-server'
                         //sh './provisionw sag-tdb-server'
