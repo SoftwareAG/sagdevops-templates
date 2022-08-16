@@ -30,7 +30,6 @@ environments:
     infradc.pollingInterval:           1       # polling interval
     infradc.adabasLoadFlag:            true    # whether to load metadata for Adabas
     infradc.adabasSOAGatewayLoadFlag:  true    # whether to load metadata for AdabasSOAGateway
-    infradc.apamaLoadFlag:             true    # whether to load metadata for Apama
     infradc.applinxLoadFlag:           true    # whether to load metadata for Applinx
     infradc.brokerLoadFlag:            true    # whether to load metadata for Broker
     infradc.completeDCLoadFlag:        true    # whether to load metadata for Complete
@@ -154,7 +153,6 @@ templates:
                   pollingInterval: ${infradc.pollingInterval}
                   adabasLoadFlag: ${infradc.adabasLoadFlag}
                   adabasSOAGatewayLoadFlag: ${infradc.adabasSOAGatewayLoadFlag}
-                  apamaLoadFlag: ${infradc.apamaLoadFlag}
                   applinxLoadFlag: ${infradc.applinxLoadFlag}
                   brokerLoadFlag: ${infradc.brokerLoadFlag}
                   completeDCLoadFlag: ${infradc.completeDCLoadFlag}

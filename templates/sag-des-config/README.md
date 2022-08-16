@@ -49,31 +49,3 @@ and configure that service group to use the messaging service:
     des.service.name=sampleService \
     des.servicegroup.name=sampleServiceGroup
 ```
-
-### Provisioning Digital Event Services into Apama correlator
-
-Provision a default instance of [Apama correlator instance](../sag-apama-correlator):
-
-```bash
-sagcc exec templates composite apply sag-apama-correlator nodes=dev1 \
-  repo.product=products-10.1 \
-  repo.fix=fixes-10.1 \
-  os.platform=W64 \
-  --sync-job --wait 360
-```
-
-Provision Digital Event Services into the default Apama correlator instance, configure truststore and keystore locations,
-configure the default messaging service with a username and a password for Universal Messaging,
-point the messaging service to the [Universal Messaging realm server](../sag-um-server/) that listens at `nsp://umhost:9000`,
-configure the messaging service to use the specified keystore and truststore, add a predefined digital event type to a service group,
-and configure that service group to use the messaging service:
-
- ```bash
- sagcc exec templates composite apply sag-des-config nodes=dev1 \
-    des.instance.id=Apama-Correlator-default \
-    des.um.url=nsp://umhost:9000 \
-    des.truststore.location=C:\SoftwareAG\UniversalMessaging\server\default\bin\nirvanacacerts.jks \
-    des.keystore.location=C:\SoftwareAG\UniversalMessaging\server\default\bin\server.jks \
-    des.service.name=sampleService \
-    des.servicegroup.name=sampleServiceGroup
-```
