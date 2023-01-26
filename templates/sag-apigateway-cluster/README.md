@@ -37,7 +37,7 @@ Before using this template, you must provision Terracotta cluster and API Data S
 ### Supported Software AG releases
 
 * Command Central 10.3 and higher
-* API Gateway with Integration Server 10.1 and higher
+* API Gateway with Integration Server 10.1 to 10.15
 * API Gateway with Microservices Runtime 10.1 to 10.3
 > NOTE: This template is not supported for Microservices Runtime version 10.4.
 
