@@ -30,7 +30,7 @@ Use this template to provision and maintain API Gateway cluster.
 
 There should not be any other packages installed on the Integration Server or Microservices Runtime instance where API Gateway is running.
 
-Before using this template, you must provision Terracotta cluster and Internal Data Store cluster by applying:
+Before using this template, you must provision Terracotta cluster and API Data Store cluster by applying:
 * [sag-tc-cluster](../sag-tc-cluster/)
 * [sag-internaldatastore](../sag-internaldatastore/)
 
