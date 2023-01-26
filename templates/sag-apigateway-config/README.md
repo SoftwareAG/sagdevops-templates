@@ -26,7 +26,7 @@ This template configures a single API Gateway server instance. Before running th
 ### Supported Software AG releases
 
 * Command Central 10.5 and higher
-* API Gateway with Integration Server 10.5 and higher
+* API Gateway with Integration Server 10.5 to 10.15
 
 ### Supported platforms
 
