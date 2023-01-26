@@ -88,7 +88,7 @@ Template alias | Provisions
 [sag-exx-net-rpc-server](templates/sag-exx-net-rpc-server) | EntireX RPC Server for .NET
 [sag-exx-xml-rpc-server](templates/sag-exx-xml-rpc-server) | EntireX XML RPC server
 [sag-infradc](templates/sag-infradc) | Infrastructure Data Collector
-[sag-internaldatastore](templates/sag-internaldatastore) | Internal Data Store
+[sag-internaldatastore](templates/sag-internaldatastore) | API Data Store
 [sag-is-applatform](templates/sag-is-applatform) | Application Platform on Integration Server or Microservices runtime
 [sag-is-cloudstreams](templates/sag-is-cloudstreams) | Cloudstreams on Integration Server or Microservices runtime
 [sag-is-config](templates/sag-is-config) | webMethods Integration Server configurations
