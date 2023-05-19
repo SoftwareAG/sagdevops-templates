@@ -23,7 +23,7 @@ environments:
   default:
     # Command Central Administrator password. Encrypted using default shared secret
     cc.password: "{AES/CBC/PKCS5Padding}{0IDwPE50uQt+BrNz8WwkfWi4lLd+uBUEqitNTsb5pf0=}{bTGWq5f0SFZ4EQHIbfomiQ==}X+Rl+oF3oJ+EGe4a194gXw=="
-
+    vmtest.password: '{AES/CBC/PKCS5Padding}{MPY51jPxhvU2/hkiF9O0GspDsVJ5CRYIlrGj9/waBY0=}{jwS16ftmouyveONqU3ntuA==}JHNIxQmATDCElGGaniRrSA=='
 layers:
   cce:
     templates:
@@ -54,7 +54,7 @@ templates:
                   "@alias": VMTEST
                   AuthenticationType: BASIC
                   UserName: vmtest                 #
-                  Password: '{AES/CBC/PKCS5Padding}{MPY51jPxhvU2/hkiF9O0GspDsVJ5CRYIlrGj9/waBY0=}{jwS16ftmouyveONqU3ntuA==}JHNIxQmATDCElGGaniRrSA=='                 
+                  Password: "${vmtest.password}"                 
                   Description: "Internal VM access SSH user account"
                 COMMON-CREDENTIALS-SSH-PRIVATE-KEY:
                   '@alias': SSH-PRIVATE-KEY
