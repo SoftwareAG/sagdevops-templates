@@ -13,11 +13,12 @@ environments:
     # Command Central
     platform: w64
     cc.installer: cc-def-${version}-latest-${platform}.exe
-
+    spm.credentials.key: DEFAULT_ADMINISTRATOR # by default is Administrator/manage
+    
     # Source Platform Manager
     src.spm.http.port: 8392
     src.spm.https.port: 8393
-    src.host: localhost
+    src.host: localhost   
 
     # Target Patform Manager
     spm.http.port: 8492
@@ -79,15 +80,18 @@ migration:
     default:
       default:                # source nodes info
         port: ${src.spm.http.port}
-        host: ${src.host}
+        host: ${src.host}        
+        credentials: ${spm.credentials.key}  # SPM connection credentials, the same as bootstrap credentials
         bootstrapInfo:
+          installer: ${cc.installer}
           installDir:   ${install.dir}
           credentials: ${os.credentials.key}
 
 nodes:
   default:
     default:
-      port:   ${spm.http.port}
+      port:   ${spm.http.port}      
+      credentials: ${spm.credentials.key}  # SPM connection credentials, the same as bootstrap credentials
       bootstrapInfo:
         installer: ${cc.installer} # CC bootstrap installer file name
         installDir: ${install.dir}_${version} # local installation directory
