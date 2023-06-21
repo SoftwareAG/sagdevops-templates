@@ -17,6 +17,7 @@ environments:
     
     # Source Platform Manager
     src.host: localhost   
+    src.install.dir: ${install.dir}
 
     # Target Patform Manager
     spm.http.port: 8392
@@ -82,7 +83,7 @@ migration:
         credentials: ${spm.credentials.key}  # SPM connection credentials, the same as bootstrap credentials
         bootstrapInfo:
           installer: ${cc.installer}
-          installDir:   ${install.dir}
+          installDir:   ${src.install.dir}
           credentials: ${os.credentials.key}
 
 nodes:
@@ -92,5 +93,5 @@ nodes:
       credentials: ${spm.credentials.key}  # SPM connection credentials, the same as bootstrap credentials
       bootstrapInfo:
         installer: ${cc.installer} # CC bootstrap installer file name
-        installDir: ${install.dir}_${version} # local installation directory
+        installDir: ${install.dir} # local installation directory
         credentials: ${os.credentials.key}
