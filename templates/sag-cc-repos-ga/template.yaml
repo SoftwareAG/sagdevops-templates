@@ -49,24 +49,6 @@ repositories:
       credentials: REPO-FIX
 
   product: # GA repos, oldest first to allow registration by older CC without failures
-
-    webMethods-9.9_GA:
-      description: 9.9 GA
-      host: ${aqu.host}
-      name: 99oct2015_SuiteProd
-      credentials: REPO-PRODUCT
-       
-    webMethods-9.10_GA:
-      description: 9.10 GA
-      host: ${aqu.host}
-      name: 910apr2016_SIC
-      credentials: REPO-PRODUCT
-      
-    webMethods-9.12_GA:
-      description: 9.12 GA
-      host: ${aqu.host}
-      name: 912oct2016_SIC
-      credentials: REPO-PRODUCT
     
     # webMethods-10.0_GA:
     #   description: 10.0 GA
