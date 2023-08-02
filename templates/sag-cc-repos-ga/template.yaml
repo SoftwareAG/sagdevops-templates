@@ -79,21 +79,3 @@ repositories:
       host: ${aqu.host}
       name: 105oct2019_SIC
       credentials: REPO-PRODUCT
-
-    webMethods-10.7_GA:
-      description: 10.7 GA
-      host: ${aqu.host}
-      name: 107oct2020_SIC
-      credentials: REPO-PRODUCT
-
-    webMethods-10.11_GA:
-      description: 10.11 GA
-      host: ${aqu.host}
-      name: 1011oct2021_SIC
-      credentials: REPO-PRODUCT
-
-    webMethods-10.15_GA:
-      description: 10.15 GA
-      host: ${aqu.host}
-      name: 1015oct2022_SIC
-      credentials: REPO-PRODUCT
