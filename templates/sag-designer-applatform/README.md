@@ -25,7 +25,8 @@ Use this template to provision Application Platform in Designer.
 
 ### Supported Software AG releases
 
-* Designer 10.1 and higher
+* Designer 10.1 to 10.15
+* Application Platform 10.1 to 10.15
 * Command Central 10.1 and higher
 
 ### Supported platforms
@@ -34,7 +35,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-Provisioning Application Platform in Software AG Designer 10.1 and higher.
+Provisioning Application Platform in Software AG Designer 10.1 to 10.15.
 
 ## Running as a composite template
 
