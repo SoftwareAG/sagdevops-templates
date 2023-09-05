@@ -22,12 +22,15 @@ With this template you can install Platform Manager (SPM) on remote
 Windows hosts using the native Windows remoting protocol, which eliminates the
 requirement to have SSH access.
 
+>Important! You cannot use this template to bootstrap Platform Manager 10.11 on remote Windows hosts. Use the "sag-spm-boot-ssh" template instead.
+
+
 ## Requirements
 
 ### Supported Software AG releases
 
-* Command Central 10.3 or higher
-* Platform Manager 9.12 or higher
+* Command Central 10.3 to 10.7
+* Platform Manager 9.12 to 10.7
 
 ### System requirements for the target Windows machines
 
