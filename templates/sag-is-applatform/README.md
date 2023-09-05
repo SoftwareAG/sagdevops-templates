@@ -19,7 +19,7 @@
 
 # Application Platform
 
-Use this template to provision Application Platform 10.1 and higher on an existing Microservices Runtime or Integration Server instance with the same version.
+Use this template to provision Application Platform 10.1 to 10.15 on an existing Microservices Runtime or Integration Server instance with the same version.
 
 ## Requirements and Limitations
 
@@ -30,8 +30,8 @@ None.
 The template is tested and supported for the following releases:
 
 * Command Central 10.1 and higher
-* Application Platform 10.1 and higher
-* Integration Server 10.1 and higher
+* Application Platform 10.1 to 10.15
+* Integration Server 10.1 to 10.15
 * Microservices Runtime 10.1 to 10.3
 > NOTE: This template is not supported for Microservices Runtime version 10.4.
 
@@ -41,7 +41,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new 10.1 and higher environments
+* Provisioning of new 10.1 to 10.15 environments
 * Installing the latest fixes
 
 ## Running as a composite template
