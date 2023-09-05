@@ -1,13 +1,13 @@
 # Configuring Digital Event Services
 
-Use this template to configure Software AG Digital Event Services 10.2 and higher.
+Use this template to configure Software AG Digital Event Services 10.2 to 10.15.
 
 ## Requirements
 
 ### Supported Software AG releases
 
 * Command Central 10.2 or higher
-* Digital Event Services 10.2 or higher
+* Digital Event Services 10.2 to 10.15
 
 ### Supported platforms
 
