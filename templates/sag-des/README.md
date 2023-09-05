@@ -18,14 +18,14 @@
 -->
 # Digital Event Services
 
-Use this template to provision Software AG Digital Event Services 10.1 and higher.
+Use this template to provision Software AG Digital Event Services 10.1 to 10.15.
 
 ## Requirements
 
 ### Supported Software AG releases
 
 * Command Central 10.1 or higher
-* Digital Event Services 10.1 or higher
+* Digital Event Services 10.1 to 10.15
 
 ### Supported platforms
 
@@ -33,7 +33,7 @@ All supported Windows and UNIX platforms.
 
 ### Supported use cases
 
-* Provisioning of new environments version 10.1 or higher
+* Provisioning of new environments version 10.1 to 10.15
 * Installing latest fixes
 * Configuration of:
   * Messaging Services
