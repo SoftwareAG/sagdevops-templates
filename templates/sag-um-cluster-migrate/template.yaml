@@ -17,11 +17,13 @@ environments:
     # Source Platform Manager
     src.spm.http.port: 8392
     src.spm.https.port: 8393
+    src.host: localhost 
 
     # Target Patform Manager
     spm.http.port: 8492
     spm.https.port: 8493
 
+    spm.credentials.key: DEFAULT_ADMINISTRATOR # by default is Administrator/manage
     # UM Cluster
     nodes:               ${}
     um.numrealmserver.license.key: "*_NUMWF_10.*_*_*" # UM license key
@@ -177,6 +179,7 @@ migration:
     default:
       default:                # source nodes info
         port: ${src.spm.http.port}
+        credentials: ${spm.credentials.key} 
         bootstrapInfo:
           installDir:   ${install.dir}
           credentials: ${os.credentials.key}
@@ -184,7 +187,8 @@ migration:
 nodes:
   default:
     default:
-      port:   ${spm.http.port}
+      port:   ${spm.http.port}    
+      credentials: ${spm.credentials.key}
       bootstrapInfo:
         installer: ${cc.installer} # CC bootstrap installer file name
         installDir: ${install.dir}_${version} # local installation directory
