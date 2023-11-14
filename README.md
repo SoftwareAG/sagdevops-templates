@@ -139,3 +139,5 @@ Template alias | Description
 [sag-spm-config](templates/sag-spm-config) | Configures Platform Manager.
 [sag-spm-proxy](templates/sag-spm-proxy) | Configures proxy settings for Platform Manager.
 [sag-update](templates/sag-update) | Installs the latest fixes.
+
+### The Command Central Docker Builder has been removed. For more information about alternatives, contact Software AG Global Support.
