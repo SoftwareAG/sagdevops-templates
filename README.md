@@ -140,19 +140,4 @@ Template alias | Description
 [sag-spm-proxy](templates/sag-spm-proxy) | Configures proxy settings for Platform Manager.
 [sag-update](templates/sag-update) | Installs the latest fixes.
 
-## Default Docker Images Reference
-
-The following table lists the default Docker images.
-
-Docker image | Description
--------------------------|--------------------------------
-[hello-world](containers/hello-world) | Hello World example
-[asset-builder](containers/asset-builder) | webMethods Asset builder (ABE)
-[cloud-streams](containers/cloud-streams) | Cloudstreams on Microservices runtime
-[entirex-broker](containers/entirex-broker) | Entire X Broker
-[entirex-java-rpc-server](containers/entirex-java-rpc-server) | Entire Java RPC server
-[entirex-xml-rpc-server](containers/entirex-xml-rpc-server) | Entire XML RPC server
-[integration-server](containers/integration-server) | webMethods Integration Server
-[terracotta-server](containers/terracotta-server) | Terracotta BigMemory server
-[universal-messaging](containers/universal-messaging) | Universal Messaging server
-[microservices-runtime](containers/microservices-runtime) | webMethods Microservices runtime
+### The Command Central Docker Builder has been removed. For more information about alternatives, contact Software AG Global Support.
