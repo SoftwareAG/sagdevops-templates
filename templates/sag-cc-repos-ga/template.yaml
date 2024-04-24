@@ -27,8 +27,8 @@ changes:
   
 environments:
   default:
-    aqu.host:      aquarius-bg.eur.ad.sag  # closest AQU server
-    sum.host:      aquarius-va.eur.ad.sag  # closest SUM server
+    aqu.host:      aquarius-eu.infra.webmethods.io  # closest AQU server
+    sum.host:      aquarius-eu.infra.webmethods.io  # closest SUM server
 
 repositories:
   fix: # cross-version fix repos                         
