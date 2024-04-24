@@ -26,9 +26,9 @@ environments:
     repo.fix:          GA_Fix_Repo             # fix repo
     repo.asset.url:    http://irepo.eur.ad.sag/scm/devops/assets-repo.git # asset repo URL
 
-    repo.host:         aquarius-bg.eur.ad.sag  # closest AQU server mirror host
+    repo.host:         aquarius-eu.infra.webmethods.io  # closest AQU server mirror host
     repo.product.host: ${repo.host}
-    repo.fix.host:     aquarius-va.ame.ad.sag
+    repo.fix.host:     aquarius-eu.infra.webmethods.io
 
 repositories:
   product:                     
