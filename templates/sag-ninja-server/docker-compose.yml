@@ -27,7 +27,7 @@ services:
   #     - ./:/src/ # required
   #   environment:
   #     - __ninja_memory_max=256          # template test specific param
-  #     - REPO_HOST=aquarius-bg.eur.ad.sag
+  #     - REPO_HOST=aquarius-eu.infra.webmethods.io
   #     - REPO_PRODUCT=CC_PI_103oct2018
   #     - REPO_FIX=QARepo
   
@@ -40,7 +40,7 @@ services:
       args:
         - TAG
         - __ninja_memory_max=256        # template test specific param
-        - REPO_HOST=aquarius-bg.eur.ad.sag
+        - REPO_HOST=aquarius-eu.infra.webmethods.io
         - REPO_PRODUCT=CC_PI_103oct2018
         - REPO_FIX=QARepo
     ports:
