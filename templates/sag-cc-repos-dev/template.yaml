@@ -27,9 +27,9 @@ changes:
 
 environments:
   default:
-    aqu.host:      aquarius-bg.eur.ad.sag  # closest AQU server
+    aqu.host:      aquarius-eu.infra.webmethods.io  # closest AQU server
     sandbox:       CC_PI_103oct2018        # product trunk sandbox
-    sum.host:      aquarius-va.eur.ad.sag  # closest SUM server
+    sum.host:      aquarius-eu.infra.webmethods.io  # closest SUM server
 
 repositories:
   fix: # dev and qa fix repos only                   
