@@ -32,20 +32,20 @@ environments:
 
 repositories:
   fix: # cross-version fix repos                         
-    QARepo:
+    QARepo_WM:
       description: LATEST Fix MILESTONE candidates
       host: ${sum.host}
       credentials: REPO-FIX
 
-    intRepo:
+    intRepo_WM:
       description: LATEST Fix RELEASE candidates
       host: ${sum.host}
       credentials: REPO-FIX
 
-    GA_Fix_Repo:
+    GA_Fix_Repo_WM:
       description: LATEST Fix RELEASES
       host: ${sum.host}
-      name: GA_Fix_Repo
+      name: GA_Fix_Repo_WM
       credentials: REPO-FIX
 
   product: # GA repos, oldest first to allow registration by older CC without failures
