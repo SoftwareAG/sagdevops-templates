@@ -38,7 +38,7 @@ repositories:
       host: ${sum.host}
       credentials: REPO-FIX
 
-    QARepo:
+    QARepo_WM:
       description: LATEST Fix MILESTONE candidates
       host: ${sum.host}
       credentials: REPO-FIX
