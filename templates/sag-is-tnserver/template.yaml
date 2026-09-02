@@ -1,0 +1,198 @@
+alias: sag-is-tnserver
+description: TN Server
+dslVersion: ${dsl.version}
+environments:
+  default:
+    dsl.version: '1.2'
+    is.instance.name: ${is.instance.name}
+    is.jdbc.pool.alias: ${is.jdbc.pool.alias}
+    integrationserver-${is.instance.name}.common-dbfunction-centralusers.function.poolalias: ${tn.centralusers.poolalias}
+    integrationserver-${is.instance.name}.common-dbfunction-tn.function.poolalias: ${tn.dbfunction.poolalias}
+    integrationserver.${is.instance.name}.db.alias: ${is.db.alias}
+    integrationserver.${is.instance.name}.db.password: ${is.db.password}
+    integrationserver.${is.instance.name}.db.type: ${is.db.type}
+    integrationserver.${is.instance.name}.db.url: ${is.db.url}
+    integrationserver.${is.instance.name}.db.username: ${is.db.username}
+    integrationserver.${is.instance.name}.diagnostic.port: ${is.diagnostic.port}
+    integrationserver.${is.instance.name}.install.service: ${is.install.service}
+    integrationserver.${is.instance.name}.jmx.port: ${is.jmx.port}
+    integrationserver.${is.instance.name}.package.list: ${is.package.list}
+    integrationserver.${is.instance.name}.primary.port: ${is.primary.port}
+    integrationserver.${is.instance.name}.secure.port: ${is.secure.port}
+    repo.product: ${repo.product}
+    repo.fix: ${repo.fix}
+    TN.fixes: ${TN.fixes}
+    nodes:
+        - ${nodes}
+uimetadata:
+  prefix:
+  properties:
+    integrationserver.${is.instance.name}.db.url:
+      displayName: IntegrationServer Instance Db Url
+      data_type: string
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.diagnostic.port:
+      displayName: IntegrationServer Instance Diagnostic Port
+      data_type: number
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.secure.port:
+      displayName: IntegrationServer Instance Secure Port
+      data_type: number
+      isSecure: 'false'
+    integrationserver-${is.instance.name}.common-jdbc-${is.jdbc.pool.alias}.pool.databaseserver.host:
+      displayName: JDBC Host Name
+      data_type: string
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.jmx.port:
+      displayName: IntegrationServer Instance Jmx Port
+      data_type: number
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.db.type:
+      displayName: IntegrationServer Instance Db Type
+      data_type: string
+      isSecure: 'false'
+    repo.product:
+      displayName: Product Repository
+      data_type: string
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.db.username:
+      displayName: IntegrationServer Instance Db Username
+      data_type: string
+      isSecure: 'false'
+    integrationserver-${is.instance.name}.common-jdbc-${is.jdbc.pool.alias}.pool.databaseserver.user:
+      displayName: JDBC User Name
+      data_type: string
+      isSecure: 'false'
+    integrationserver-${is.instance.name}.common-dbfunction-tn.function.poolalias:
+      displayName: Function Alias
+      data_type: string
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.package.list:
+      displayName: IntegrationServer Instance Package List
+      data_type: string
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.install.service:
+      displayName: IntegrationServer Instance Install Service
+      data_type: boolean
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.db.alias:
+      displayName: IntegrationServer Instance Db Alias
+      data_type: string
+      isSecure: 'false'
+    integrationserver-${is.instance.name}.common-dbfunction-centralusers.function.poolalias:
+      displayName: Function Alias
+      data_type: string
+      isSecure: 'false'
+    repo.fix:
+      displayName: Fix Repository
+      data_type: string
+      isSecure: 'false'
+    TN.fixes:
+      displayName: TN Fixes
+      data_type: string
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.primary.port:
+      displayName: IntegrationServer Instance Primary Port
+      data_type: number
+      isSecure: 'false'
+    integrationserver.${is.instance.name}.db.password:
+      displayName: IntegrationServer Instance Db Password
+      data_type: string
+      isSecure: 'true'
+    is.instance.name:
+      displayName: Integration Server Instance Name
+      data_type: string
+      isSecure: 'false'
+    is.jdbc.pool.alias:
+      displayName: JDBC Pool Alias
+      data_type: string
+      isSecure: 'false'
+layers:
+  dcc:
+    description: Database configuration
+    templates: DBC
+    productRepo: ${repo.product}
+    databases:
+      dbc-products:
+        products: TradingNetworks
+        version: latest
+        db.type: ${integrationserver.${is.instance.name}.db.type}
+        db.url: ${integrationserver.${is.instance.name}.db.url}
+        db.username: ${integrationserver.${is.instance.name}.db.username}
+        db.password: ${integrationserver.${is.instance.name}.db.password}
+  TN:
+    description: TradingNetworks Server
+    productRepo: ${repo.product}
+    fixRepo: ${repo.fix}
+    templates: TN-SERVER
+templates:
+  DBC:
+    products:
+      DatabaseComponentConfigurator:
+      PIEEmbeddedCdc:
+      TNScdc:
+      PIEcdc:
+  TN-SERVER:
+    fixes: ${TN.fixes}
+    products:
+      TNServer:
+      integrationServer:
+        ${is.instance.name}:
+          install.service: ${integrationserver.${is.instance.name}.install.service}
+          db.alias: ${integrationserver.${is.instance.name}.db.alias}
+          db.type: ${integrationserver.${is.instance.name}.db.type}
+          db.password: '${integrationserver.${is.instance.name}.db.password}'
+          primary.port: ${integrationserver.${is.instance.name}.primary.port}
+          db.url: '${integrationserver.${is.instance.name}.db.url}'
+          diagnostic.port: ${integrationserver.${is.instance.name}.diagnostic.port}
+          secure.port: ${integrationserver.${is.instance.name}.secure.port}
+          db.username: ${integrationserver.${is.instance.name}.db.username}
+          package.list: ${integrationserver.${is.instance.name}.package.list}
+          jmx.port: ${integrationserver.${is.instance.name}.jmx.port}
+          configuration:
+            integrationServer-${is.instance.name}:
+              COMMON-DBFUNCTION:
+                COMMON-DBFUNCTION-CentralUsers:
+                  Function:
+                    '@alias': CentralUsers
+                    Description: Central User Management Configuration
+                    PoolAlias: ${integrationserver-${is.instance.name}.common-dbfunction-centralusers.function.poolalias}
+                    FailFastMode: 'false'
+                    CurrentlyInFailFast: 'No'
+                COMMON-DBFUNCTION-TN:
+                  Function:
+                    '@alias': TN
+                    Description: Trading Networks Function
+                    PoolAlias: ${integrationserver-${is.instance.name}.common-dbfunction-tn.function.poolalias}
+                    FailFastMode: 'false'
+                    CurrentlyInFailFast: 'No'
+              COMMON-JDBC:
+                COMMON-JDBC-${is.jdbc.pool.alias}:
+                  Pool:
+                    '@alias': ${is.jdbc.pool.alias}
+                    Name: ${is.jdbc.pool.alias}
+                    MinSize: '0'
+                    MaxSize: '10'
+                    MaxIdleTime: '60000'
+                    DatabaseServer:
+                      '@type': ORACLE
+                      URL: '${integrationserver.${is.instance.name}.db.url}'
+                      User: ${integrationserver.${is.instance.name}.db.username}
+                      Password: '${integrationserver.${is.instance.name}.db.password}'
+                    ExtendedProperties:
+                      Property:
+                      - '@name': AvailConnWarningThreshold
+                        $: '0'
+                      - '@name': WaitingThreadThresholdCount
+                        $: '0'
+                      - '@name': SpyEnabled
+                        $: 'false'
+                      - '@name': SnoopEnabled
+                        $: 'false'
+                      - '@name': SpyParams
+                        $: SpyAttributes=(log=(file)logs/spy/${is.jdbc.pool.alias}.log;logTName=yes;timestamp=yes)
+                      - '@name': SnoopParams
+                        $: ddtdbg.ProtocolTraceEnable=true;ddtdbg.ProtocolTraceMaxline=16;ddtdbg.ProtocolTraceLocation=logs/snoop/${is.jdbc.pool.alias}.log;ddtdbg.ProtocolTraceShowTime=true
+provision:
+  default:
+    TN: ${nodes}
