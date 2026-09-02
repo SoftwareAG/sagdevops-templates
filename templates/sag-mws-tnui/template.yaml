@@ -1,0 +1,182 @@
+alias: sag-mws-tnui
+description: Trading Networks UI provisioning on top of MWS
+
+environments:
+  default:
+    mws.instance.name:  ${mws.instance.name}   # MWS instance name
+    mws.http.port:      ${mws.http.port}        # MWS HTTP port
+    mws.https.port:     ${mws.https.port}       # MWS HTTPS port
+    mws.jmx.port:       ${mws.jmx.port}        # MWS JMX port
+    mws.memory.init:    ${mws.memory.init}      # MWS JVM initial heap (MB)
+    mws.memory.max:     ${mws.memory.max}       # MWS JVM max heap (MB)
+    mws.lb.host:        ${mws.lb.host}          # Load balancer hostname
+    mws.lb.http.port:   ${mws.lb.http.port}     # Load balancer HTTP port
+    mws.lb.https.port:  ${mws.lb.https.port}    # Load balancer HTTPS port
+    mws.fixes:          ${mws.fixes}            # MWS fixes
+    repo.product:       ${repo.product}         # Product repository name
+    repo.fix:           ${repo.fix}             # Fix repository name
+    is.host:            ${is.host}              # Integration Server hostname
+    is.port:            ${is.port}              # Integration Server port
+
+    # Database connection (Trading Networks DB)
+    db.type:            ${db.type}              # REQUIRED: Database type: oracle, sqlserver, db2
+    db.url:             ${db.url}               # REQUIRED: JDBC URL e.g. jdbc:wm:oracle://host:1521;sid=orcl
+    db.username:        ${db.username}          # REQUIRED: Database username
+    db.password:        ${db.password}          # REQUIRED: Database password
+
+uimetadata:
+  prefix:
+  properties:
+    mws.instance.name:
+      displayName: MWS Instance Name
+      data_type: string
+      isSecure: 'false'
+    mws.http.port:
+      displayName: MWS HTTP Port
+      data_type: number
+      isSecure: 'false'
+    mws.https.port:
+      displayName: MWS HTTPS Port
+      data_type: number
+      isSecure: 'false'
+    mws.jmx.port:
+      displayName: MWS JMX Port
+      data_type: number
+      isSecure: 'false'
+    mws.memory.init:
+      displayName: MWS JVM Initial Heap Size (MB)
+      data_type: number
+      isSecure: 'false'
+    mws.memory.max:
+      displayName: MWS JVM Max Heap Size (MB)
+      data_type: number
+      isSecure: 'false'
+    mws.lb.host:
+      displayName: Load Balancer Hostname
+      data_type: string
+      isSecure: 'false'
+    mws.lb.http.port:
+      displayName: Load Balancer HTTP Port
+      data_type: number
+      isSecure: 'false'
+    mws.lb.https.port:
+      displayName: Load Balancer HTTPS Port
+      data_type: number
+      isSecure: 'false'
+    mws.fixes:
+      displayName: MWS Fixes
+      data_type: string
+      isSecure: 'false'
+    repo.product:
+      displayName: Product Repository
+      data_type: string
+      isSecure: 'false'
+    repo.fix:
+      displayName: Fix Repository
+      data_type: string
+      isSecure: 'false'
+    is.host:
+      displayName: Integration Server Hostname
+      data_type: string
+      isSecure: 'false'
+    is.port:
+      displayName: Integration Server Port
+      data_type: number
+      isSecure: 'false'
+    db.type:
+      displayName: Database Type
+      data_type: string
+      isSecure: 'false'
+    db.url:
+      displayName: Database JDBC URL
+      data_type: string
+      isSecure: 'false'
+    db.username:
+      displayName: Database Username
+      data_type: string
+      isSecure: 'false'
+    db.password:
+      displayName: Database Password
+      data_type: string
+      isSecure: 'true'
+
+layers:
+  dcc:
+    description: Database component configuration for MWS and Trading Networks
+    templates: DBC
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    databases:
+      dbc-mws:
+        products:    MywebMethodsServer
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.username: ${db.username}
+        db.password: ${db.password}
+      dbc-tn:
+        products:    TradingNetworks
+        version:     latest
+        db.type:     ${db.type}
+        db.url:      ${db.url}
+        db.username: ${db.username}
+        db.password: ${db.password}
+
+  runtime:
+    description: Trading Networks UI on MWS
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - tn-portal
+
+templates:
+  DBC:
+    products:
+      DatabaseComponentConfigurator:
+      TNScdc:
+      MWScdc:
+
+  tn-portal:
+    fixes: ${mws.fixes}
+    products:
+      TNPortal:
+      MwsProgramFiles:
+        ${mws.instance.name}:
+          node.name:   ${node.alias}
+          http.port:   ${mws.http.port}
+          https.port:  ${mws.https.port}
+          jmx.port:    ${mws.jmx.port}
+          db.type:     ${db.type}
+          db.url:      "${db.url}"
+          db.username: "${db.username}"
+          db.password: "${db.password}"
+          configuration:
+            OSGI-MWS_${mws.instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${mws.memory.init}
+                  MaxSize:  ${mws.memory.max}
+            MwsProgramFiles-${mws.instance.name}:
+              COMMON-CLUSTER:
+                COMMON-CLUSTER:
+                  ExtendedProperties:
+                    Property:
+                    - '@name': LoadBalancerHost
+                      $: ${mws.lb.host}
+                    - '@name': LoadBalancerHttpPort
+                      $: ${mws.lb.http.port}
+                    - '@name': LoadBalancerHttpsPort
+                      $: ${mws.lb.https.port}
+                    - '@name': jndiEnabled
+                      $: false
+                    - '@name': ISHost
+                      $: ${is.host}
+                    - '@name': ISPort
+                      $: ${is.port}
+
+provision:
+  default:
+    dcc:
+      - ${nodes}
+    runtime:
+      - ${nodes}
